@@ -1,0 +1,15 @@
+# Per-cycle test sequence definition. Lives at project/test/test.sequence.yml
+# under the cloned YURUNA_PROJECT_REPO. The runner reads this at cycle start
+# to know which top-level sequences drive the cycle.
+#
+# Each baseline entry resolves to <name>.yml under either
+#   project/<...>/test/<mode>/   (project-specific)
+# or
+#   test/sequences/<mode>/       (framework-generic).
+# Per-sequence baselines (keyed by guest OS) chain backwards from each
+# entry to derive the full execution order across all required guests.
+
+baseline:
+  - workload.guest.amazon.linux
+  - workload.guest.windows.11
+  - workload.guest.ubuntu.server.k8s.website

@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=../../../../../yuruna/test/schemas/sequence.schema.yml
+
+# SSH-driven equivalent of gui/workload.guest.ubuntu.server.k8s.website.yml.
+# Selected automatically when test-config.json has keystrokeMechanism='SSH'.
+# See possible actions in the actions.yml file.
+
+description: "Ubuntu Server: install Kubernetes, deploy website to localhost cluster, verify HTTP 200 - parallel path to the keystroke sequence."
+baseline:
+  ubuntu.server:
+    - workload.guest.ubuntu.server
+variables:
+  username: yuuser1
+
+steps:
+  - action: sshWaitReady
+    timeoutSeconds: 300
+    description: "Wait for sshd + authorized_keys"
+
+  - action: sshExec
+    command: "whoami && hostname"
+    description: "Smoke test: whoami/hostname"
+
+  - action: sshFetchAndExecute
+    command: "/automation/fetch-and-execute.sh guest/ubuntu.server/ubuntu.server.k8s.sh"
+    timeoutSeconds: 1800
+    description: "ubuntu.server.k8s.sh"
+
+  - action: sshExec
+    command: "kubectl get nodes | grep -w Ready"
+    timeoutSeconds: 120
+    description: "Verify at least one node Ready"
+
+  - action: sshFetchAndExecute
+    command: "/automation/fetch-and-execute.sh guest/ubuntu.server/ubuntu.server.workload.k8s.website.sh"
+    timeoutSeconds: 1800
+    description: "ubuntu.server.workload.k8s.website.sh"
+
+  - action: waitForSeconds
+    seconds: 30
+    description: "Pause for pods to start"
+
+  - action: sshExec
+    command: "bash /home/${username}/yuruna/test/test-localhost.sh 2>&1 | tee /tmp/test-localhost.out; grep -q 200 /tmp/test-localhost.out"
+    timeoutSeconds: 120
+    description: "Check HTTP 200 in test output"
