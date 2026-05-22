@@ -10,6 +10,8 @@
 # entry to derive the full execution order across all required guests.
 
 baseline:
-  - workload.guest.amazon.linux
+  - workload.guest.amazon.linux.2023
   - workload.guest.windows.11
-  - workload.guest.ubuntu.server.k8s.website
+  - workload.guest.ubuntu.server.24.k8s.website
+#  - workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline
+#  - workload.guest.ubuntu.server.24.k8s.text-to-sql.test

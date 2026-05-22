@@ -1,0 +1,104 @@
+@* Copyright (c) 2019-2026 by Alisson Sol et al. *@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Ask";
+}
+
+<section class="ask-card">
+  <h1>Ask the warehouse</h1>
+  <p class="muted">
+    Natural-language question → six-stage agent → PostgreSQL. The timeline
+    below traces the pipeline stages: Planner → Schema Retriever → SQL Gen
+    → Validator → Executor → Observer.
+  </p>
+
+  <form method="post" class="ask-form">
+    <textarea name="Question" rows="3" required
+              placeholder="e.g. churn rate by plan tier in EMEA">@Model.Question</textarea>
+    <div class="ask-controls">
+      <button type="submit">Ask</button>
+      <div class="examples">
+        <span class="muted">Try:</span>
+        <a href="?q=churn+rate+by+plan+tier+in+EMEA">churn by plan tier in EMEA</a>
+        <a href="?q=MRR+by+tier">MRR by tier</a>
+        <a href="?q=active+subscriptions+by+region">active subs by region</a>
+        <a href="?q=top+10+customers+by+invoice">top customers</a>
+        <a href="?q=drop+table+customer">drop table customer</a>
+      </div>
+    </div>
+  </form>
+</section>
+
+@if (Model.Run is { } run)
+{
+  <section class="run-summary @(run.Succeeded ? "ok" : (run.RefusalReason is not null ? "refused" : "fail"))">
+    <div class="run-summary-head">
+      <span class="pill">@(run.Succeeded ? "success" : (run.RefusalReason is not null ? "refused" : "error"))</span>
+      <span class="muted">@(run.TotalMs) ms total · @(run.ResultRows.Count) rows · @(run.Steps.Count) stages</span>
+    </div>
+    @if (run.RefusalReason is not null)
+    {
+      <div class="refusal"><strong>Agent refused.</strong> @run.RefusalReason</div>
+    }
+    @if (run.Error is not null)
+    {
+      <div class="refusal"><strong>Error.</strong> @run.Error</div>
+    }
+  </section>
+
+  <section class="timeline">
+    <h2>Agent timeline</h2>
+    <ol>
+      @foreach (var step in run.Steps)
+      {
+        <li class="step step-@step.Status">
+          <span class="step-stage">@step.Stage</span>
+          <span class="step-status">@step.Status</span>
+          <span class="step-ms">@step.ElapsedMs ms</span>
+          <span class="step-note">@step.Note</span>
+        </li>
+      }
+    </ol>
+  </section>
+
+  @if (!string.IsNullOrWhiteSpace(run.PlanText))
+  {
+    <section class="plan-block">
+      <h2>Planner notes</h2>
+      <pre>@run.PlanText</pre>
+    </section>
+  }
+
+  @if (!string.IsNullOrWhiteSpace(run.SafeSql))
+  {
+    <section class="sql-block">
+      <h2>Validated SQL <span class="muted">(after guardrails)</span></h2>
+      <pre>@run.SafeSql</pre>
+    </section>
+  }
+
+  @if (run.ResultRows.Count > 0)
+  {
+    <section class="results">
+      <h2>Results <span class="muted">(@run.ResultRows.Count rows)</span></h2>
+      <div class="results-wrap">
+        <table>
+          <thead>
+            <tr>
+              @foreach (var c in run.ResultColumns) { <th>@c</th> }
+            </tr>
+          </thead>
+          <tbody>
+            @foreach (var row in run.ResultRows)
+            {
+              <tr>
+                @foreach (var v in row) { <td>@(v?.ToString() ?? "—")</td> }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+}

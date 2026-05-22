@@ -14,19 +14,17 @@ EXPOSE 443
 
 FROM ${REGISTRY}dotnet/sdk:10.0 AS build
 WORKDIR /src
-COPY ["website.csproj", "."]
-RUN dotnet restore "./website.csproj"
+COPY ["text-to-sql-ui.csproj", "."]
+RUN dotnet restore "./text-to-sql-ui.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet tool install -g Microsoft.Web.LibraryManager.Cli
-RUN ~/.dotnet/tools/libman restore
-RUN dotnet build "website.csproj" -c Release -o /app/build
+RUN dotnet build "text-to-sql-ui.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "website.csproj" -c Release -o /app/publish
+RUN dotnet publish "text-to-sql-ui.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 COPY --from=build /src/aspnetapp.pfx . 
-ENTRYPOINT ["dotnet", "website.dll"]
+ENTRYPOINT ["dotnet", "text-to-sql-ui.dll"]

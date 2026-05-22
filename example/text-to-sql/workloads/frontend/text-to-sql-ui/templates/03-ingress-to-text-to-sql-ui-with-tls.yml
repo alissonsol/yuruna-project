@@ -1,0 +1,31 @@
+# Copyright (c) 2019-2026 by Alisson Sol et al.
+# reference: https://kubernetes.github.io/ingress-nginx/user-guide/basic-usage/
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-to-text-to-sql-ui
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: text-to-sql-ui
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  ingressClassName: {{ .Values.ingressClass }}
+  tls:
+  - hosts:
+    - {{ .Values.appHost }}
+    secretName: {{ .Values.appTlsSecret }}
+  rules:
+  - host: {{ .Values.appHost }}
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: text-to-sql-ui
+            port:
+              number: 443

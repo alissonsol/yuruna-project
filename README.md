@@ -10,9 +10,12 @@ shared independently.
 - [template/](template/) — folder structure for starting a new project
   (resources / components / workloads / config / test).
 - [example/](example/) — end-to-end examples that exercise the
-  framework against real clouds. See [example/README.md](example/README.md).
+  framework against real clouds. See [Yuruna Examples ...](example/README.md).
   - [example/website/](example/website/) — .NET C# website container
     deployed to Kubernetes on localhost, Azure, or AWS.
+  - [example/text-to-sql/](example/text-to-sql/) — **Early release.**
+    Agentic read-only text-to-SQL on ASP.NET Core + PostgreSQL
+    (runs locally; full Yuruna deployment pending).
 
 ## Read more
 

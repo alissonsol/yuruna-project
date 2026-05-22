@@ -1,0 +1,87 @@
+# yaml-language-server: $schema=../../../../../yuruna/test/schemas/sequence.schema.yml
+
+# Interaction sequence for driving VM workload testing.
+# See possible actions in the actions.yml file.
+# ${vmName}, ${hostType}, ${guestKey} are built-in. ${ext:area.Method(args)}
+# invokes the active extension under test/extension/<area>/.
+
+# Perf-log identity (see https://yuruna.link/test/perf). Bump revision on step add/remove.
+sequenceGuid: 423775c5-e5e9-4ab5-b07b-b38a91bb9fda
+sequenceRevision: 1
+
+description: "Ubuntu Server: log in, install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
+baseline:
+  ubuntu.server.26:
+    - workload.guest.ubuntu.server.26
+variables:
+  username: yuuser26
+
+steps:
+  - action: retry
+    maxAttempts: 2
+    description: "Login (restart on timeout)"
+    steps:
+      - action: passwdPrompt
+        pattern: "login:"
+        timeoutSeconds: 600
+        text: "${username}"
+        description: "${vmName} login:"
+
+      - action: passwdPrompt
+        pattern: "Password:"
+        text: "${ext:authentication.GetPassword(${username})}"
+        description: "Password:"
+
+  - action: waitForText
+    pattern: "${username}@${vmName}"
+    timeoutSeconds: 90
+    description: "${username}@${vmName}"
+
+  - action: fetchAndExecute
+    text: "/automation/fetch-and-execute.sh guest/ubuntu.server.26/ubuntu.server.26.k8s.sh"
+    description: "ubuntu.server.26.k8s.sh"
+    waitPattern: "FETCHED AND EXECUTED:"
+    timeoutSeconds: 1800
+
+  - action: inputTextAndEnter
+    text: "kubectl wait --for=condition=Ready nodes --all --timeout=300s; clear; kubectl get nodes"
+    description: "Check node status"
+
+  - action: waitForText
+    pattern: "Ready"
+    timeoutSeconds: 90
+    description: "Ready"
+
+  - action: inputTextAndEnter
+    text: "clear; newgrp docker"
+    description: "Activate docker group"
+
+  - action: fetchAndExecute
+    text: "/automation/fetch-and-execute.sh project/example/website/test/ubuntu.server.26/ubuntu.server.26.workload.k8s.website.sh"
+    description: "ubuntu.server.26.workload.k8s.website.sh"
+    waitPattern: "FETCHED AND EXECUTED:"
+    timeoutSeconds: 900
+
+  # Wait on Deployment readiness rather than Endpoints addresses. The
+  # old check looked at `endpoints/website-service`, which (a) targeted
+  # the wrong name -- the helm chart's Service is `website`, not
+  # `website-service` (that name is on the standalone manifest in
+  # components/frontend/website/ used for ad-hoc kubectl-apply, not
+  # in-cluster) -- and (b) reported "NotFound" instantly when the
+  # Deployment was 0/1 ready, masking the real fault (pod Evicted by
+  # ephemeral-storage pressure, replacement stuck on the disk-pressure
+  # taint -- cycle 152). condition=available blocks on the actual
+  # Deployment.status.conditions readiness signal, so the test waits
+  # the full 240s and the diagnostic captures a useful pod state.
+  - action: fetchAndExecute
+    text: "kubectl wait --for=condition=available deployment/website -n website --timeout=240s; kubectl wait --for=condition=available deployment/nginx-ingress-ingress-nginx-controller -n ingress-ns --timeout=240s; clear; /automation/fetch-and-execute.sh test/test-localhost.sh"
+    description: "test-localhost.sh"
+    waitPattern: "200 OK"
+
+  - action: saveSystemDiagnostic
+    id: k8s.website
+    description: "Capture diagnostics"
+
+  - action: inputTextAndEnter
+    text: "clear; exit;"
+    description: "Exit back to login"

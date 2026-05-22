@@ -1,0 +1,30 @@
+@* Copyright (c) 2019-2026 by Alisson Sol et al. *@
+@page
+@{
+    ViewData["Title"] = "About";
+}
+
+<h1>About this example</h1>
+<p>
+  This is the Yuruna <em>text-to-SQL</em> example: a read-only agentic
+  text-to-SQL application that implements a six-stage agent pipeline on
+  top of PostgreSQL.
+</p>
+<p>
+  The default LLM client is a deterministic rule-based stand-in so the
+  example runs offline; setting <code>ANTHROPIC_API_KEY</code> in the
+  environment will (in a future iteration) swap in a real Claude
+  tool-use loop without changing the rest of the pipeline — the value
+  of the <code>ILlmClient</code> seam.
+</p>
+<ul>
+  <li><strong>Planner / SQL Generator</strong> — <code>Services/RuleBasedLlmClient.cs</code></li>
+  <li><strong>Schema Retriever</strong> — <code>Services/SchemaCatalog.cs</code> (introspects <code>information_schema</code> + FK graph)</li>
+  <li><strong>Validator / Guardrail</strong> — <code>Services/SqlValidator.cs</code> (static checks + EXPLAIN cost gate)</li>
+  <li><strong>Executor</strong> — <code>Services/AgentOrchestrator.cs</code> (statement timeout, LIMIT enforced)</li>
+  <li><strong>Observer</strong> — the timeline you see on <a asp-page="/Index">Ask</a></li>
+</ul>
+
+<h2>Try the guardrails</h2>
+<p>From the Ask page, try the question <code>drop table customer</code>.
+The agent refuses; the timeline shows where in the pipeline it stopped.</p>

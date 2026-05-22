@@ -1,0 +1,13 @@
+@* Copyright (c) 2019-2026 by Alisson Sol et al. *@
+@page
+@model ErrorModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1>Something went wrong</h1>
+<p>An unexpected error occurred.</p>
+@if (Model.RequestId is not null)
+{
+  <p>Request ID: <code>@Model.RequestId</code></p>
+}

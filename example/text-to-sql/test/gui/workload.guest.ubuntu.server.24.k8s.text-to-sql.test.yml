@@ -1,0 +1,87 @@
+# yaml-language-server: $schema=../../../../../yuruna/test/schemas/sequence.schema.yml
+
+# Interaction sequence for driving VM workload testing.
+# See possible actions in the actions.yml file.
+# ${vmName}, ${hostType}, ${guestKey} are built-in. ${ext:area.Method(args)}
+# invokes the active extension under test/extension/<area>/.
+
+# Perf-log identity (see https://yuruna.link/test/perf). Bump revision on step add/remove.
+sequenceGuid: 42ed7613-c319-4d8f-9391-66001c258b2d
+sequenceRevision: 1
+
+description: "Ubuntu Server: restore snapshot, install PostgreSQL, deploy text-to-sql, verify HTTP 200."
+baseline:
+  ubuntu.server.24:
+    - workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline
+# requiresSnapshot: warm-path skip + persisted VM-name override.
+# See https://yuruna.link/test/requires-snapshot for the contract,
+# including the on-disk-state bake-in warning that applies when this
+# sequence redefines a variable also used by .baseline.
+requiresSnapshot:
+  id: "k8s.text-to-sql"
+variables:
+  username: yt2sqluser
+
+# TODO: Need a variable for the vmname in the snapshot
+steps:
+  - action: loadDiskSnapshot
+    id: "k8s.text-to-sql"
+    description: "Snapshot before Postgres in text-to-sql workload"
+
+  - action: retry
+    maxAttempts: 2
+    description: "Login (restart on timeout)"
+    steps:
+      - action: passwdPrompt
+        pattern: "login:"
+        timeoutSeconds: 600
+        text: "${username}"
+        description: "login: ${username}"
+
+      - action: passwdPrompt
+        pattern: "Password:"
+        text: "${ext:authentication.GetPassword(${username})}"
+        description: "Password: ${username}"
+
+  - action: waitForText
+    pattern: "${username}@"
+    timeoutSeconds: 90
+    description: "${username}@"
+
+  - action: break
+    id: k8s.text-to-sql
+    description: "Breakpoint before Postgres in text-to-sql workload"
+
+  - action: fetchAndExecute
+    text: "/automation/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.postgresql.sh"
+    description: "ubuntu.server.24.postgresql.sh"
+    waitPattern: "FETCHED AND EXECUTED:"
+    timeoutSeconds: 900
+
+  - action: break
+    id: k8s.text-to-sql
+    description: "Breakpoint after Postgres in text-to-sql workload"
+
+  - action: fetchAndExecute
+    text: "/automation/fetch-and-execute.sh project/example/text-to-sql/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.text-to-sql.sh"
+    description: "ubuntu.server.24.workload.k8s.text-to-sql.sh"
+    waitPattern: "FETCHED AND EXECUTED:"
+    timeoutSeconds: 900
+
+  - action: break
+    id: k8s.text-to-sql
+    description: "Breakpoint after workload.k8s.text-to-sql.sh"
+
+  - action: fetchAndExecute
+    text: "kubectl wait --for=condition=available deployment/text-to-sql-ui -n text-to-sql --timeout=240s; kubectl wait --for=condition=available deployment/nginx-ingress-ingress-nginx-controller -n ingress-ns --timeout=240s; clear; /automation/fetch-and-execute.sh test/test-localhost.sh"
+    description: "test-localhost.sh"
+    waitPattern: "200 OK"
+
+  - action: saveSystemDiagnostic
+    id: k8s.text-to-sql
+    description: "Capture diagnostics"
+
+  - action: break
+    id: k8s.text-to-sql
+    description: "Breakpoint after workload.k8s.text-to-sql.sh"
+

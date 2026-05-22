@@ -1,0 +1,48 @@
+@* Copyright (c) 2019-2026 by Alisson Sol et al. *@
+@page
+@model SchemaModel
+@{
+    ViewData["Title"] = "Schema";
+}
+
+<h1>Schema catalog</h1>
+<p class="muted">
+  This is what the schema retriever indexes at build time — table comments,
+  columns, FK edges. Scaling to 1000+ tables starts here: only the relevant
+  slice ever goes into the LLM prompt.
+</p>
+
+@foreach (var t in Model.Tables)
+{
+  <section class="schema-table">
+    <h2>@t.Name</h2>
+    @if (!string.IsNullOrWhiteSpace(t.Comment))
+    {
+      <p class="muted">@t.Comment</p>
+    }
+    <table class="schema-cols">
+      <thead><tr><th>Column</th><th>Type</th><th>Null?</th><th>Notes</th></tr></thead>
+      <tbody>
+        @foreach (var c in t.Columns)
+        {
+          <tr>
+            <td>@c.Name</td>
+            <td>@c.DataType</td>
+            <td>@(c.Nullable ? "yes" : "—")</td>
+            <td>@(c.IsPii ? "PII (redacted by policy)" : "")</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    @if (t.FkOut.Count > 0)
+    {
+      <div class="fk-list">
+        <strong>FK out:</strong>
+        @foreach (var (n, e) in t.FkOut)
+        {
+          <span class="fk-pill">@e &rarr; @n</span>
+        }
+      </div>
+    }
+  </section>
+}
