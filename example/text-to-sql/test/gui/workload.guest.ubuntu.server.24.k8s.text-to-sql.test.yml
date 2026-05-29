@@ -1,5 +1,6 @@
 # yaml-language-server: $schema=../../../../../yuruna/test/schemas/sequence.schema.yml
 
+# Copyright (c) 2019-2026 by Alisson Sol et al.
 # Interaction sequence for driving VM workload testing.
 # See possible actions in the actions.yml file.
 # ${vmName}, ${hostType}, ${guestKey} are built-in. ${ext:area.Method(args)}
@@ -53,7 +54,7 @@ steps:
     description: "Breakpoint before Postgres in text-to-sql workload"
 
   - action: fetchAndExecute
-    text: "/automation/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.postgresql.sh"
+    text: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.postgresql.sh"
     description: "ubuntu.server.24.postgresql.sh"
     waitPattern: "FETCHED AND EXECUTED:"
     timeoutSeconds: 900
@@ -63,7 +64,7 @@ steps:
     description: "Breakpoint after Postgres in text-to-sql workload"
 
   - action: fetchAndExecute
-    text: "/automation/fetch-and-execute.sh project/example/text-to-sql/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.text-to-sql.sh"
+    text: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/text-to-sql/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.text-to-sql.sh"
     description: "ubuntu.server.24.workload.k8s.text-to-sql.sh"
     waitPattern: "FETCHED AND EXECUTED:"
     timeoutSeconds: 900
@@ -73,7 +74,7 @@ steps:
     description: "Breakpoint after workload.k8s.text-to-sql.sh"
 
   - action: fetchAndExecute
-    text: "kubectl wait --for=condition=available deployment/text-to-sql-ui -n text-to-sql --timeout=240s; kubectl wait --for=condition=available deployment/nginx-ingress-ingress-nginx-controller -n ingress-ns --timeout=240s; clear; /automation/fetch-and-execute.sh test/test-localhost.sh"
+    text: "kubectl wait --for=condition=available deployment/text-to-sql-ui -n text-to-sql --timeout=240s; kubectl wait --for=condition=available deployment/nginx-ingress-ingress-nginx-controller -n ingress-ns --timeout=240s; clear; /usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"
     description: "test-localhost.sh"
     waitPattern: "200 OK"
 

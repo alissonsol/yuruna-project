@@ -23,7 +23,7 @@ shared independently.
 - Connectivity & setup: [FAQ](https://github.com/alissonsol/yuruna/blob/main/docs/faq.md)
 - Contributing: [contributing.md](https://github.com/alissonsol/yuruna/blob/main/CONTRIBUTING.md)
 
-Back to [Yuruna](https://github.com/alissonsol/yuruna)
+Back to [Yuruna](https://yuruna.com)
 
 ---
 

@@ -1,3 +1,4 @@
+// Copyright (c) 2019-2026 by Alisson Sol et al.
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();

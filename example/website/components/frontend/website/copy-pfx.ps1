@@ -1,10 +1,10 @@
 ﻿<#PSScriptInfo
-.VERSION 2026.05.22
+.VERSION 2026.05.29
 .GUID 42bb2c3d-4e5f-4067-b890-1c2d3e4f5168
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
 .TAGS
-.LICENSEURI https://yuruna.com
+.LICENSEURI https://yuruna.link/license
 .PROJECTURI https://yuruna.com
 .ICONURI
 .EXTERNALMODULEDEPENDENCIES

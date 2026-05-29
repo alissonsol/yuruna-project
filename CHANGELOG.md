@@ -5,7 +5,7 @@
 [github.com/alissonsol/yuruna](https://github.com/alissonsol/yuruna);
 this repo tracks user-facing project templates and end-to-end examples.
 
-## 2026.05.22
+## 2026.05.29
 
 First publicly tracked release.
 
@@ -22,7 +22,7 @@ First publicly tracked release.
   'As Is'" restatement plus an explicit "Administrator Risk Warning"
   section covering scripts that require elevated/root privileges.
 
-Back to [yuruna-project](README.md) · [Yuruna](https://github.com/alissonsol/yuruna)
+Back to [yuruna-project](README.md) · [Yuruna](https://yuruna.com)
 
 ---
 

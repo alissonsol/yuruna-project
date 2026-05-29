@@ -5,16 +5,23 @@
 :root {
   --bg:        #2e3e58;
   --bg-deep:   #1f2c42;
+  --ink:       #0b1220;
   --panel:     #ffffff;
   --panel-2:   #f5f7fb;
   --fg:        #111827;
   --fg-muted:  #6b7280;
+  --fg-on-dark:#aab8ce;
   --accent:    #3eb1e8;
   --accent2:   #5fd7a4;
   --warn:      #f5a524;
+  --warn-text: #92400e;
+  --warn-soft: #fff7ed;
   --bad:       #ef4444;
+  --bad-text:  #991b1b;
+  --bad-soft:  #fef2f2;
   --good:      #22c55e;
   --border:    #e5e7eb;
+  --font-mono: "JetBrains Mono", Menlo, Consolas, monospace;
 }
 
 * { box-sizing: border-box; }
@@ -33,10 +40,10 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #0b1220;
+  border-bottom: 1px solid var(--ink);
 }
 .brand-title  { font-weight: 700; font-size: 18px; }
-.brand-sub    { color: #aab8ce; font-size: 13px; margin-left: 10px; }
+.brand-sub    { color: var(--fg-on-dark); font-size: 13px; margin-left: 10px; }
 .top-nav a {
   color: var(--accent); text-decoration: none;
   margin-left: 18px; font-size: 14px; font-weight: 600;
@@ -52,8 +59,8 @@ html, body {
 
 .page-footer {
   text-align: center; padding: 12px;
-  font-size: 12px; color: #aab8ce;
-  border-top: 1px solid #0b1220; background: var(--bg);
+  font-size: 12px; color: var(--fg-on-dark);
+  border-top: 1px solid var(--ink); background: var(--bg);
 }
 .page-footer a { color: var(--accent); }
 
@@ -78,7 +85,7 @@ button {
   border-radius: 6px; font-weight: 700;
   cursor: pointer; font-size: 15px;
 }
-button:hover { background: #1f2c42; }
+button:hover { background: var(--bg-deep); }
 .ask-controls {
   display: flex; align-items: center; gap: 14px;
   margin-top: 12px; flex-wrap: wrap;
@@ -101,24 +108,24 @@ button:hover { background: #1f2c42; }
   color: var(--fg);
 }
 .run-summary.ok       { border-left: 6px solid var(--good); }
-.run-summary.refused  { border-left: 6px solid var(--warn); background: #fff7ed; }
-.run-summary.fail     { border-left: 6px solid var(--bad);  background: #fef2f2; }
+.run-summary.refused  { border-left: 6px solid var(--warn); background: var(--warn-soft); }
+.run-summary.fail     { border-left: 6px solid var(--bad);  background: var(--bad-soft); }
 .run-summary-head     { display: flex; gap: 12px; align-items: center; }
 
 .pill {
-  background: var(--accent); color: #0b1220;
+  background: var(--accent); color: var(--ink);
   padding: 3px 11px; border-radius: 999px;
   font-size: 12px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 .run-summary.refused .pill { background: var(--warn); }
 .run-summary.fail    .pill { background: var(--bad); color: #fff; }
-.run-summary.ok      .pill { background: var(--good); color: #0b1220; }
+.run-summary.ok      .pill { background: var(--good); color: var(--ink); }
 
 .refusal {
-  margin-top: 10px; font-size: 15px; color: #92400e;
+  margin-top: 10px; font-size: 15px; color: var(--warn-text);
 }
-.run-summary.fail .refusal { color: #991b1b; }
+.run-summary.fail .refusal { color: var(--bad-text); }
 
 /* ── Timeline ─────────────────────────────────────────────────────────── */
 .timeline { margin-top: 18px; }
@@ -136,8 +143,8 @@ button:hover { background: #1f2c42; }
   font-size: 14px;
 }
 .step-ok      { border-left-color: var(--good); }
-.step-refused { border-left-color: var(--warn); background: #fff7ed; }
-.step-fail    { border-left-color: var(--bad);  background: #fef2f2; }
+.step-refused { border-left-color: var(--warn); background: var(--warn-soft); }
+.step-fail    { border-left-color: var(--bad);  background: var(--bad-soft); }
 .step-stage   { font-weight: 700; }
 .step-status  { text-transform: uppercase; font-weight: 700; font-size: 12px; color: var(--fg-muted); }
 .step-ms      { color: var(--fg-muted); font-variant-numeric: tabular-nums; }
@@ -160,7 +167,7 @@ pre {
   border-left: 3px solid var(--accent);
   padding: 12px 14px;
   border-radius: 6px;
-  font-family: "JetBrains Mono", Menlo, Consolas, monospace;
+  font-family: var(--font-mono);
   font-size: 13px;
   white-space: pre-wrap;
   word-break: break-word;
@@ -195,5 +202,5 @@ pre {
   background: var(--panel-2); border: 1px solid var(--border);
   color: var(--fg);
   padding: 1px 9px; border-radius: 999px;
-  margin-right: 6px; font-family: Menlo, Consolas, monospace; font-size: 12px;
+  margin-right: 6px; font-family: var(--font-mono); font-size: 12px;
 }

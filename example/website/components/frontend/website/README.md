@@ -2,6 +2,20 @@
 
 Frontend website for user authentication and human-computer interface.
 
+## Client-side libraries (libman)
+
+`wwwroot/lib/*` is gitignored; the client-side libraries declared in
+`libman.json` are restored at build time. Docker handles this
+automatically (`Dockerfile` installs
+`Microsoft.Web.LibraryManager.Cli` and runs `libman restore` before
+`dotnet build`). For a local `dotnet run` outside Docker, restore
+once with:
+
+```powershell
+dotnet tool install -g Microsoft.Web.LibraryManager.Cli
+libman restore
+```
+
 ## Development certificates
 
 ```powershell

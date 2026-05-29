@@ -1,3 +1,4 @@
+# Copyright (c) 2019-2026 by Alisson Sol et al.
 # Per-cycle test sequence definition. Lives at project/test/test.sequence.yml
 # under the cloned YURUNA_PROJECT_REPO. The runner reads this at cycle start
 # to know which top-level sequences drive the cycle.

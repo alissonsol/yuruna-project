@@ -370,7 +370,7 @@ project/
 #   test/status/runtime/    pids, status.json, control flags,
 #                           ipaddresses.txt, caching-proxy.txt, server.err,
 #                           yuruna-caching-proxy.yml, host.uuid,
-#                           .status-server.ps1, etc. See Test.RuntimeDir.psm1
+#                           .status-service.ps1, etc. See Test.RuntimeDir.psm1
 #                           in the yuruna repo -- $env:YURUNA_RUNTIME_DIR
 #                           defaults here so the status server can serve
 #                           /runtime/<name>.

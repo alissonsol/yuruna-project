@@ -9,7 +9,9 @@ before deploying.
 ## Deploy
 
 Search for `TO-SET` in `config/<cloud>/*.yml` and fill required values,
-then from the `automation/` folder:
+then from the framework's `automation/` folder (in your local clone of
+[yuruna](https://github.com/alissonsol/yuruna), not this project repo
+— the deploy scripts ship with the framework):
 
 ```shell
 Set-Resource.ps1  TO-SET localhost
@@ -24,7 +26,7 @@ Set-Workload.ps1  TO-SET localhost
 - **Workloads** — project workloads description.
 - **Validation** — how to validate the system functionality.
 
-Back to [Yuruna](https://github.com/alissonsol/yuruna).
+Back to [Yuruna](https://yuruna.com).
 
 ---
 

@@ -45,4 +45,4 @@ you acknowledge this risk and accept full responsibility for the outcome.
 Review the code, take backups, and test in an isolated environment before
 running anything privileged against systems you cannot afford to lose.
 
-Back to [yuruna-project](README.md) · [Yuruna](https://github.com/alissonsol/yuruna)
+Back to [yuruna-project](README.md) · [Yuruna](https://yuruna.com)

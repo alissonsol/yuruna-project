@@ -4,7 +4,7 @@
 # mirror in CI. Default is mcr.microsoft.com/ so a bare `docker build` on
 # a developer laptop still works direct. The test workload overrides this
 # with --build-arg REGISTRY=<cache>:5000/ so a transient MCR TLS handshake
-# blip no longer fails the whole cycle (see cycle 125 post-mortem).
+# blip no longer fails the whole cycle.
 ARG REGISTRY=mcr.microsoft.com/
 
 FROM ${REGISTRY}dotnet/aspnet:10.0 AS base

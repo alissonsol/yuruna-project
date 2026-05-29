@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: 2026.05.22
+# Version: 2026.05.29
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 set -euo pipefail
 
@@ -52,7 +52,6 @@ if ! docker start registry 2>/dev/null; then
     fi
 fi
 
-# Run Set-Resource
 echo "==== Set-Resource ===="
 cd "$REAL_HOME/yuruna/project/example"
 pwsh ../../automation/Set-Resource.ps1 website localhost
@@ -66,7 +65,7 @@ kubectl config rename-context docker-desktop "localhost-${CONTEXT}" 2>/dev/null 
 # Registry selection: probe candidates in priority order, pick the first
 # that can serve every base-image manifest the Dockerfile needs.
 #   1. ${CACHE_HOST}:5000/   -- zot pull-through cache (fastest, also
-#                               absorbs MCR TLS jitter; cycle 125)
+#                               absorbs MCR TLS jitter)
 #   2. mcr.microsoft.com/    -- direct upstream; the survival path when
 #                               the cache VM is absent, unreachable, has
 #                               an old config that doesn't know mcr, or
@@ -89,10 +88,10 @@ probe_registry() {
     #
     # --max-time 60 (not 30): zot's onDemand sync for a cold multi-arch
     # manifest can take 14-30s end-to-end (skopeo walks the index, fetches
-    # per-arch manifests + config blobs, writes to disk). Cycle 256 timed
-    # out at exactly 30s on dotnet/sdk:10.0 -- zot returned 200 right
-    # afterwards but the probe had already declared the cache "not usable"
-    # and fallen back to direct upstream MCR (which itself TLS-jittered).
+    # per-arch manifests + config blobs, writes to disk). A 30s cap can
+    # time out on dotnet/sdk:10.0 -- zot returns 200 immediately after,
+    # but the probe has already declared the cache "not usable" and
+    # fallen back to direct upstream MCR (which itself can TLS-jitter).
     # 60s accommodates zot's worst-case cold sync while still bounding
     # the probe.
     local base="$1" ref repo ver
@@ -153,13 +152,12 @@ docker push localhost:5000/website/website:latest
 # ~0.5 GiB of dangling intermediate images. On a 14 GiB node disk that
 # was enough to trip kubelet's 85% ephemeral-storage watermark, get
 # the website + nginx-ingress pods Evicted, and leave their
-# replacements stuck on the disk-pressure taint (cycle 152 root cause).
+# replacements stuck on the disk-pressure taint.
 # Failure here is non-fatal: we only care about the side effect.
 docker buildx prune --all --force >/dev/null 2>&1 || true
 docker builder prune --all --force >/dev/null 2>&1 || true
 docker image prune --force >/dev/null 2>&1 || true
 
-# Run Set-Component and Set-Workload
 cd "$REAL_HOME/yuruna/project/example"
 echo "==== Set-Component ===="
 pwsh ../../automation/Set-Component.ps1 website localhost

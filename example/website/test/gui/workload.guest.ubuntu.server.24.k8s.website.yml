@@ -1,5 +1,6 @@
 # yaml-language-server: $schema=../../../../../yuruna/test/schemas/sequence.schema.yml
 
+# Copyright (c) 2019-2026 by Alisson Sol et al.
 # Interaction sequence for driving VM workload testing.
 # See possible actions in the actions.yml file.
 # ${vmName}, ${hostType}, ${guestKey} are built-in. ${ext:area.Method(args)}
@@ -38,7 +39,7 @@ steps:
     description: "${username}@${vmName}"
 
   - action: fetchAndExecute
-    text: "/automation/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.k8s.sh"
+    text: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.k8s.sh"
     description: "ubuntu.server.24.k8s.sh"
     waitPattern: "FETCHED AND EXECUTED:"
     timeoutSeconds: 1800
@@ -57,7 +58,7 @@ steps:
     description: "Activate docker group"
 
   - action: fetchAndExecute
-    text: "/automation/fetch-and-execute.sh project/example/website/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.website.sh"
+    text: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/website/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.website.sh"
     description: "ubuntu.server.24.workload.k8s.website.sh"
     waitPattern: "FETCHED AND EXECUTED:"
     timeoutSeconds: 900
@@ -70,11 +71,11 @@ steps:
   # in-cluster) -- and (b) reported "NotFound" instantly when the
   # Deployment was 0/1 ready, masking the real fault (pod Evicted by
   # ephemeral-storage pressure, replacement stuck on the disk-pressure
-  # taint -- cycle 152). condition=available blocks on the actual
+  # taint). condition=available blocks on the actual
   # Deployment.status.conditions readiness signal, so the test waits
   # the full 240s and the diagnostic captures a useful pod state.
   - action: fetchAndExecute
-    text: "kubectl wait --for=condition=available deployment/website -n website --timeout=240s; kubectl wait --for=condition=available deployment/nginx-ingress-ingress-nginx-controller -n ingress-ns --timeout=240s; clear; /automation/fetch-and-execute.sh test/test-localhost.sh"
+    text: "kubectl wait --for=condition=available deployment/website -n website --timeout=240s; kubectl wait --for=condition=available deployment/nginx-ingress-ingress-nginx-controller -n ingress-ns --timeout=240s; clear; /usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"
     description: "test-localhost.sh"
     waitPattern: "200 OK"
 

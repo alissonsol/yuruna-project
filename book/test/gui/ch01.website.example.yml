@@ -7,15 +7,16 @@
 # invokes the active extension under test/extension/<area>/.
 
 # Perf-log identity (see https://yuruna.link/test/perf). Bump revision on step add/remove.
-sequenceGuid: 426ca572-7dda-4e43-be71-93462c7ef6e7
+sequenceGuid: 42001283-d9e8-4f12-a78e-5c5f2206926c
 sequenceRevision: 1
 
-description: "Ubuntu Server: log in, install Kubernetes, prepare for text-to-sql deployment."
+description: "Amazon Linux 2023 used for simple access to a website"
+
 baseline:
-  ubuntu.server.24:
-    - workload.guest.ubuntu.server.24
+  amazon.linux.2023:
+    - start.guest.amazon.linux.2023
 variables:
-  username: yt2sqluser
+  username: ch01user1
 
 steps:
   - action: retry
@@ -39,24 +40,14 @@ steps:
     description: "${username}@${vmName}"
 
   - action: fetchAndExecute
-    text: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.k8s.sh"
-    description: "ubuntu.server.24.k8s.sh"
-    waitPattern: "FETCHED AND EXECUTED:"
-    timeoutSeconds: 1800
+    text: "curl -so /dev/null -w '\\nReturn code: %{http_code}\\n\\n' example.com"
+    description: "Check example.com"
+    waitPattern: "200"
+
+  - action: break
+    id: amazon.linux.2023.website
+    description: "Breakpoint"
 
   - action: inputTextAndEnter
-    text: "kubectl wait --for=condition=Ready nodes --all --timeout=300s; clear; kubectl get nodes"
-    description: "Check node status"
-
-  - action: waitForText
-    pattern: "Ready"
-    timeoutSeconds: 90
-    description: "Ready"
-
-  - action: inputTextAndEnter
-    text: "clear; newgrp docker"
-    description: "Activate docker group"
-
-  - action: saveDiskSnapshot
-    id: "k8s.text-to-sql"
-    description: "Snapshot before Postgres in text-to-sql workload"
+    text: "sudo shutdown now"
+    description: "Shutdown the VM"

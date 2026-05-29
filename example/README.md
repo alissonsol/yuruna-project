@@ -23,7 +23,7 @@ Connectivity section of the
   - Copy and paste folder structure to new folder.
   - Make needed changes and add component code (search for `TO-SET`).
 
-Back to [Yuruna](https://github.com/alissonsol/yuruna)
+Back to [Yuruna](https://yuruna.com)
 
 ---
 

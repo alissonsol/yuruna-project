@@ -120,7 +120,7 @@ example/text-to-sql/
             └── wwwroot/css/site.css
 ```
 
-Back to [Yuruna](https://github.com/alissonsol/yuruna) or [Examples](../README.md).
+Back to [Yuruna](https://yuruna.com) or [Examples](../README.md).
 
 ---
 
