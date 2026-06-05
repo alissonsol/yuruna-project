@@ -14,8 +14,9 @@ Connectivity section of the
 
 - [text-to-sql](text-to-sql/README.md) — **Early release.** Agentic
   read-only text-to-SQL on ASP.NET Core + PostgreSQL. Runs locally
-  against PostgreSQL today; full Yuruna three-phase deployment is not
-  yet wired up.
+  against PostgreSQL and deploys through the full Yuruna three-phase
+  model (`Set-Resource` / `Set-Component` / `Set-Workload`); Claude
+  activates when `ANTHROPIC_API_KEY` is set.
 
 ## Template
 

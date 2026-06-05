@@ -14,14 +14,17 @@ shared independently.
   - [example/website/](example/website/) — .NET C# website container
     deployed to Kubernetes on localhost, Azure, or AWS.
   - [example/text-to-sql/](example/text-to-sql/) — **Early release.**
-    Agentic read-only text-to-SQL on ASP.NET Core + PostgreSQL
-    (runs locally; full Yuruna deployment pending).
+    Agentic read-only text-to-SQL on ASP.NET Core + PostgreSQL. Runs
+    locally and deploys through the full Yuruna three-phase model
+    (resources / components / workloads); Claude activates when
+    `ANTHROPIC_API_KEY` is set.
 
 ## Read more
 
 - Framework [architecture](https://github.com/alissonsol/yuruna/blob/main/docs/architecture.md)
 - Connectivity & setup: [FAQ](https://github.com/alissonsol/yuruna/blob/main/docs/faq.md)
 - Contributing: [contributing.md](https://github.com/alissonsol/yuruna/blob/main/CONTRIBUTING.md)
+- Security: [SECURITY.md](https://github.com/alissonsol/yuruna/blob/main/SECURITY.md)
 
 Back to [Yuruna](https://yuruna.com)
 

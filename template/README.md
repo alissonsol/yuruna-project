@@ -23,7 +23,12 @@ Set-Workload.ps1  TO-SET localhost
 
 - **Resources** — project resources description and OpenTofu outputs.
 - **Components** — project components description.
-- **Workloads** — project workloads description.
+- **Workloads** — project workloads description. The shipped
+  `config/localhost/workloads.yml` is a minimal scaffold (namespace +
+  registry pull secret + a `TO-SET` placeholder). For a full localhost
+  pipeline with TLS (mkcert), an nginx ingress, and a cert-manager
+  issuer, copy and adapt
+  [example/website](../example/website/config/localhost/workloads.yml).
 - **Validation** — how to validate the system functionality.
 
 Back to [Yuruna](https://yuruna.com).

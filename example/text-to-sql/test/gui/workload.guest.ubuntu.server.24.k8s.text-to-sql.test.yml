@@ -1,5 +1,6 @@
 # yaml-language-server: $schema=../../../../../yuruna/test/schemas/sequence.schema.yml
 
+# LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 # Interaction sequence for driving VM workload testing.
 # See possible actions in the actions.yml file.
@@ -31,23 +32,23 @@ steps:
 
   - action: retry
     maxAttempts: 2
-    description: "Login (restart on timeout)"
+    description: "Login + retry"
     steps:
       - action: passwdPrompt
         pattern: "login:"
         timeoutSeconds: 600
         text: "${username}"
-        description: "login: ${username}"
+        description: "OCR: login:"
 
       - action: passwdPrompt
         pattern: "Password:"
         text: "${ext:authentication.GetPassword(${username})}"
-        description: "Password: ${username}"
+        description: "OCR: Password:"
 
   - action: waitForText
     pattern: "${username}@"
     timeoutSeconds: 90
-    description: "${username}@"
+    description: "OCR: ${username}@"
 
   - action: break
     id: k8s.text-to-sql

@@ -1,18 +1,21 @@
+# LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
-# Per-cycle test sequence definition. Lives at project/test/test.sequence.yml
+# Per-cycle runner definition. Lives at project/test/test.runner.yml
 # under the cloned YURUNA_PROJECT_REPO. The runner reads this at cycle start
-# to know which top-level sequences drive the cycle.
+# to know which top-level sequences to run continuously, one cycle after
+# another.
 #
-# Each baseline entry resolves to <name>.yml under either
+# Each entry under `sequences` resolves to <name>.yml under either
 #   project/<...>/test/<mode>/   (project-specific)
 # or
 #   test/sequences/<mode>/       (framework-generic).
 # Per-sequence baselines (keyed by guest OS) chain backwards from each
 # entry to derive the full execution order across all required guests.
 
-baseline:
-  - workload.guest.amazon.linux.2023
+sequences:
+  - ch01.website.example.no-break
   - workload.guest.windows.11
   - workload.guest.ubuntu.server.24.k8s.website
+#  - workload.guest.amazon.linux.2023
 #  - workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline
 #  - workload.guest.ubuntu.server.24.k8s.text-to-sql.test

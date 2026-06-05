@@ -1,3 +1,4 @@
+@* LICENSEURI https://yuruna.link/license *@
 @* Copyright (c) 2019-2026 by Alisson Sol et al. *@
 @page
 @{
@@ -13,12 +14,13 @@
 <p>
   The default LLM client is a deterministic rule-based stand-in so the
   example runs offline; setting <code>ANTHROPIC_API_KEY</code> in the
-  environment will (in a future iteration) swap in a real Claude
-  tool-use loop without changing the rest of the pipeline — the value
-  of the <code>ILlmClient</code> seam.
+  environment swaps in a real Claude tool-use loop
+  (<code>Services/ClaudeLlmClient.cs</code>) at runtime without changing
+  the rest of the pipeline — the value of the <code>ILlmClient</code>
+  seam.
 </p>
 <ul>
-  <li><strong>Planner / SQL Generator</strong> — <code>Services/RuleBasedLlmClient.cs</code></li>
+  <li><strong>Planner / SQL Generator</strong> — <code>Services/ClaudeLlmClient.cs</code> (Anthropic tool-use, active when <code>ANTHROPIC_API_KEY</code> is set) or <code>Services/RuleBasedLlmClient.cs</code> (offline default)</li>
   <li><strong>Schema Retriever</strong> — <code>Services/SchemaCatalog.cs</code> (introspects <code>information_schema</code> + FK graph)</li>
   <li><strong>Validator / Guardrail</strong> — <code>Services/SqlValidator.cs</code> (static checks + EXPLAIN cost gate)</li>
   <li><strong>Executor</strong> — <code>Services/AgentOrchestrator.cs</code> (statement timeout, LIMIT enforced)</li>

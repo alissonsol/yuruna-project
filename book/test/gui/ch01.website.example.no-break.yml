@@ -45,9 +45,5 @@ steps:
     description: "curl example.com"
     waitPattern: "200"
 
-  - action: break
-    id: amazon.linux.2023.website
-    description: "Breakpoint"
-
   - action: networkRelease
     description: "Release network resources"

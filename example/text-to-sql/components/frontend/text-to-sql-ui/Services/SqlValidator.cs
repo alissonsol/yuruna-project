@@ -1,3 +1,4 @@
+// LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ---------------------------------------------------------------------------
 // SqlValidator — the "④ Validator (Guardrail)" stage of the agent pipeline.

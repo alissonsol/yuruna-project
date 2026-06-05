@@ -1,3 +1,4 @@
+// LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ---------------------------------------------------------------------------
 // AgentOrchestrator — the "①  Planner" + retry loop for the agent pipeline.
@@ -36,6 +37,7 @@ public sealed class AgentOrchestrator
     private readonly NpgsqlDataSource _ds;
     private readonly ILogger<AgentOrchestrator> _log;
     private readonly int _timeoutMs;
+    private readonly bool _enableExplainGate;
 
     public AgentOrchestrator(
         SchemaCatalog catalog,
@@ -51,6 +53,10 @@ public sealed class AgentOrchestrator
         _ds        = ds;
         _log       = log;
         _timeoutMs = cfg.GetValue("Agent:StatementTimeoutMs", 5000);
+        // Defense-in-depth EXPLAIN cost gate is on by default; an operator can
+        // opt out via config, in which case the pipeline records that the gate
+        // was bypassed so the timeline still shows the decision.
+        _enableExplainGate = cfg.GetValue("Agent:EnableExplainGate", true);
     }
 
     public async Task<AgentRun> RunAsync(string question, CancellationToken ct = default)
@@ -104,20 +110,29 @@ public sealed class AgentOrchestrator
 
         // ─── ④ EXPLAIN cost gate ───────────────────────────────────────────
         var swExp = Stopwatch.StartNew();
-        var gate = await _validator.ExplainAsync(safeSql, ct);
-        if (gate.ParseFailed)
+        if (!_enableExplainGate)
         {
-            run.Steps.Add(Step.Fail("EXPLAIN", swExp, gate.Reason ?? "parse failed"));
-            run.Finalize(error: $"PostgreSQL rejected the SQL: {gate.Reason}");
-            return run;
+            _log.LogWarning("EXPLAIN cost gate bypassed by Agent:EnableExplainGate=false.");
+            run.Steps.Add(Step.Ok("EXPLAIN", swExp,
+                "Gate bypassed (Agent:EnableExplainGate=false)."));
         }
-        if (!gate.Allowed)
+        else
         {
-            run.Steps.Add(Step.Refused("EXPLAIN", swExp, gate.Reason ?? "cost gate"));
-            run.Finalize(refusal: gate.Reason);
-            return run;
+            var gate = await _validator.ExplainAsync(safeSql, ct);
+            if (gate.ParseFailed)
+            {
+                run.Steps.Add(Step.Fail("EXPLAIN", swExp, gate.Reason ?? "parse failed"));
+                run.Finalize(error: $"PostgreSQL rejected the SQL: {gate.Reason}");
+                return run;
+            }
+            if (!gate.Allowed)
+            {
+                run.Steps.Add(Step.Refused("EXPLAIN", swExp, gate.Reason ?? "cost gate"));
+                run.Finalize(refusal: gate.Reason);
+                return run;
+            }
+            run.Steps.Add(Step.Ok("EXPLAIN", swExp, $"Plan rows ≈ {gate.PlanRows:N0}. Allowed."));
         }
-        run.Steps.Add(Step.Ok("EXPLAIN", swExp, $"Plan rows ≈ {gate.PlanRows:N0}. Allowed."));
 
         // ─── ⑤ Execute ─────────────────────────────────────────────────────
         var swExec = Stopwatch.StartNew();

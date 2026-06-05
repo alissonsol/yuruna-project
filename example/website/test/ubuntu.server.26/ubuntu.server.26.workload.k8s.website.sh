@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: 2026.05.29
+# Version: 2026.06.05
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 set -euo pipefail
 
@@ -60,6 +60,7 @@ pwsh ../../automation/Set-Resource.ps1 website localhost
 CONTEXT=$(grep 'clusterDnsPrefix' "$REAL_HOME/yuruna/project/example/website/config/localhost/resources.output.yml" | awk '{print $2}' | tr -d '"')
 kubectl config rename-context docker-desktop "localhost-${CONTEXT}" 2>/dev/null || true
 
+echo "==== Registry probe ===="
 # Build and push Docker image.
 #
 # Registry selection: probe candidates in priority order, pick the first
@@ -116,6 +117,7 @@ if [ -z "$REGISTRY" ]; then
     exit 1
 fi
 
+echo "==== Build .NET app ===="
 # Retry the build itself for residual TLS jitter even after the probe
 # succeeded; manifests can resolve and a layer pull still stutter.
 build_attempts=3
@@ -135,6 +137,8 @@ for attempt in $(seq 1 "$build_attempts"); do
     sleep "$build_delay"
     build_delay=$((build_delay * 2))
 done
+
+echo "==== Push to docker registry ===="
 docker tag website/website:latest localhost:5000/website/website:latest
 docker push localhost:5000/website/website:latest
 

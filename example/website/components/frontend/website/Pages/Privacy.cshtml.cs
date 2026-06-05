@@ -1,4 +1,5 @@
-﻿// Copyright (c) 2019-2026 by Alisson Sol et al.
+﻿// LICENSEURI https://yuruna.link/license
+// Copyright (c) 2019-2026 by Alisson Sol et al.
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 

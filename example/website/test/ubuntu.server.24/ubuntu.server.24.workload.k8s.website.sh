@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: 2026.05.29
+# Version: 2026.06.05
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 set -euo pipefail
 
@@ -60,6 +60,7 @@ pwsh ../../automation/Set-Resource.ps1 website localhost
 CONTEXT=$(grep 'clusterDnsPrefix' "$REAL_HOME/yuruna/project/example/website/config/localhost/resources.output.yml" | awk '{print $2}' | tr -d '"')
 kubectl config rename-context docker-desktop "localhost-${CONTEXT}" 2>/dev/null || true
 
+echo "==== Registry probe ===="
 # Build and push Docker image.
 #
 # Registry selection: probe candidates in priority order, pick the first
@@ -85,19 +86,10 @@ ACCEPT_HDR='Accept: application/vnd.oci.image.index.v1+json, application/vnd.oci
 probe_registry() {
     # $1 = base URL (no trailing slash). Returns 0 iff every BASE_IMAGES
     # manifest resolves on that registry within the timeout.
-    #
-    # --max-time 60 (not 30): zot's onDemand sync for a cold multi-arch
-    # manifest can take 14-30s end-to-end (skopeo walks the index, fetches
-    # per-arch manifests + config blobs, writes to disk). A 30s cap can
-    # time out on dotnet/sdk:10.0 -- zot returns 200 immediately after,
-    # but the probe has already declared the cache "not usable" and
-    # fallen back to direct upstream MCR (which itself can TLS-jitter).
-    # 60s accommodates zot's worst-case cold sync while still bounding
-    # the probe.
     local base="$1" ref repo ver
     for ref in "${BASE_IMAGES[@]}"; do
         repo="${ref%:*}"; ver="${ref#*:}"
-        if ! curl -sf -o /dev/null --max-time 60 -H "$ACCEPT_HDR" \
+        if ! curl -sf -o /dev/null --max-time 30 -H "$ACCEPT_HDR" \
                 "${base}/v2/${repo}/manifests/${ver}"; then
             return 1
         fi
@@ -125,6 +117,7 @@ if [ -z "$REGISTRY" ]; then
     exit 1
 fi
 
+echo "==== Build .NET app ===="
 # Retry the build itself for residual TLS jitter even after the probe
 # succeeded; manifests can resolve and a layer pull still stutter.
 build_attempts=3
@@ -144,6 +137,8 @@ for attempt in $(seq 1 "$build_attempts"); do
     sleep "$build_delay"
     build_delay=$((build_delay * 2))
 done
+
+echo "==== Push to docker registry ===="
 docker tag website/website:latest localhost:5000/website/website:latest
 docker push localhost:5000/website/website:latest
 
