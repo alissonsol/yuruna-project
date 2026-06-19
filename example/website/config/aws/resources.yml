@@ -1,6 +1,6 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
-# Resources information - azure
+# Resources information - aws
 ---
 globalVariables:
   namespace:             "yrn42website-ns"

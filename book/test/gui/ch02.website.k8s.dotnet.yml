@@ -1,0 +1,79 @@
+# LICENSEURI https://yuruna.link/license
+# Copyright (c) 2019-2026 by Alisson Sol et al.
+# Interaction sequence for driving VM workload testing.
+# See possible actions in the actions.yml file.
+# ${vmName}, ${hostType}, ${guestKey} are built-in. ${ext:area.Method(args)}
+# invokes the active extension under test/extension/<area>/.
+
+# Perf-log identity (see https://yuruna.link/test/perf). Bump revision on step add/remove.
+sequenceGuid: 42001283-d9e8-4f11-a78e-5c5f2206926d
+sequenceRevision: 1
+
+description: "Ubuntu Server: log in, install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
+baseline:
+  ubuntu.server.24:
+    - workload.guest.ubuntu.server.24
+variables:
+  username: ch02user2
+
+steps:
+  - action: retry
+    maxAttempts: 2
+    description: "Login + retry"
+    steps:
+      - action: passwdPrompt
+        pattern: "login:"
+        timeoutSeconds: 600
+        text: "${username}"
+        description: "OCR: login:"
+
+      - action: passwdPrompt
+        pattern: "Password:"
+        text: "${ext:authentication.GetPassword(${username})}"
+        description: "OCR: Password:"
+
+  - action: waitForText
+    pattern: "${username}@${vmName}"
+    timeoutSeconds: 90
+    description: "OCR: ${username}@${vmName}"
+
+  - action: fetchAndExecute
+    text: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.k8s.sh"
+    description: "ubuntu.server.24.k8s.sh"
+    waitPattern: "FETCHED AND EXECUTED:"
+    timeoutSeconds: 1800
+
+  - action: inputTextAndEnter
+    text: "kubectl wait --for=condition=Ready nodes --all --timeout=300s; clear; kubectl get nodes"
+    description: "Check node status"
+
+  - action: waitForText
+    pattern: "Ready"
+    timeoutSeconds: 90
+    description: "OCR: Ready"
+
+  - action: inputTextAndEnter
+    text: "clear; newgrp docker"
+    description: "Activate docker group"
+
+  - action: fetchAndExecute
+    text: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/website/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.website.sh"
+    description: "ubuntu.server.24.workload.k8s.website.sh"
+    waitPattern: "FETCHED AND EXECUTED:"
+    timeoutSeconds: 900
+
+  - action: fetchAndExecute
+    text: "kubectl wait --for=condition=available deployment/website -n website --timeout=240s; kubectl wait --for=condition=available deployment/nginx-ingress-ingress-nginx-controller -n ingress-ns --timeout=240s; clear; /usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"
+    description: "test-localhost.sh"
+    waitPattern: "200 OK"
+
+  - action: saveSystemDiagnostic
+    id: k8s.website
+    description: "Capture diagnostics"
+
+  - action: break
+    id: ch02.website.k8s.dotnet
+    description: "Breakpoint"
+
+  - action: networkRelease
+    description: "Release network resources"

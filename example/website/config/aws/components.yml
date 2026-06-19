@@ -1,6 +1,6 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
-# Components information - azure
+# Components information - aws
 ---
 globalVariables:
   DOCKER_SCAN_SUGGEST:   "false"

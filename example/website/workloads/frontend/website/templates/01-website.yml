@@ -19,9 +19,9 @@ spec:
       - name: website
         # Notice that the 'registryName' variable is used to find the name of another variable, 
         # requiring the dual indirection.
-        # `required` is a deliberate guardrail: prior bug had this rendering as
+        # `required` is a deliberate guardrail against rendering
         # "/website/website:latest" (leading slash, empty registry) when the
-        # resources.output.yml componentsRegistry block was missing or did not
+        # resources.output.yml componentsRegistry block is missing or does not
         # propagate to values.yaml, producing an InvalidImageName pod.
         {{- $regKey := printf "%s.registryLocation" (required "Helm values is missing 'registryName'. Check that resources.yml globalVariables sets registryName and that yuruna resources / components / workloads all ran in the same project_root." .Values.registryName) }}
         {{- $reg := required (printf "Helm values is missing key %q. The registry's tofu output did not reach values.yaml. Check that config/<env>/resources.output.yml has a %s block with a registryLocation.value (run 'yuruna resources <project> <env>' to (re)create it) before running 'yuruna workloads'." $regKey .Values.registryName) (index .Values $regKey) }}

@@ -23,8 +23,7 @@ the three-phase model and CLI entry points.
 
 - **Resources** — a Kubernetes cluster, a container registry, a public
   IP. OpenTofu outputs `${env:registryName}.registryLocation`,
-  `${context.name}.clusterIp`, `${context.name}.frontendIp`,
-  `${context.name}.hostname`.
+  `${env:contextName}.frontendIp`, `${env:contextName}.hostname`.
 - **Components** — a .NET C# website Docker image and the NGINX Ingress
   Controller ([Helm chart](https://kubernetes.github.io/ingress-nginx/deploy/#using-helm)).
 - **Workloads** — frontend/website and NGINX ingress routing traffic to

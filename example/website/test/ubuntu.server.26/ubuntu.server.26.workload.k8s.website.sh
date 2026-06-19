@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: 2026.06.12
+# Version: 2026.06.19
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 set -euo pipefail
@@ -24,34 +24,60 @@ mkcert -install 2>/dev/null || true
 # ubuntu.server.26.k8s.sh at provision time) routes this through the
 # yuruna-caching-proxy's zot pull-through cache -- zot serves the
 # manifest from cache with stale-on-error semantics, so upstream rate-
-# limit blips no longer break the test. A prior workaround pinned
+# limit blips don't break the test. Pinning
 # `public.ecr.aws/docker/library/registry:2` to dodge Docker Hub's
-# anonymous limit, but that mirror has itself returned 400 across
+# anonymous limit is unreliable -- that mirror has itself returned 400 across
 # multiple test hosts simultaneously; the zot pull-through is the
 # durable fix.
+#
+# Transient egress blips surface here as `network is unreachable`,
+# connection resets, or DNS hiccups while pulling registry:2 -- e.g. a
+# host-side DHCP re-lease that momentarily blackholes the guest's NAT
+# route, or TLS jitter to the cache. These are not rate limits and clear
+# within seconds, so retry with backoff (mirroring the `docker build`
+# retry below) instead of aborting the whole run under `set -euo pipefail`.
 REGISTRY_IMAGE="registry:2"
-if ! docker start registry 2>/dev/null; then
-    if ! docker_out=$(docker run -d -p 5000:5000 --restart=always --name registry "$REGISTRY_IMAGE" 2>&1); then
-        echo "docker run registry failed:" >&2
-        echo "$docker_out" >&2
-        # AWS ECR Public returns 400 (not 429) when its anonymous-pull
-        # quota is exhausted, so match both shapes. Match Docker Hub's
-        # documented strings AND the upstream-host substrings that
-        # indicate a rate-limit response masquerading as 400.
-        if echo "$docker_out" | grep -qiE 'pull rate limit|toomanyrequests|429 Too Many Requests|400 Bad Request.*public\.ecr\.aws|public\.ecr\.aws.*400 Bad Request'; then
-            echo "" >&2
-            echo "ERROR: Registry image pull hit a rate limit (or upstream throttle disguised as 400)." >&2
-            echo "       Image: $REGISTRY_IMAGE" >&2
-            echo "       The upstream is throttling pulls from the cache VM's egress IP." >&2
-            echo "       Options: (1) wait and retry, (2) authenticate the zot proxy to upstream," >&2
-            echo "                (3) bake the registry image into the guest base via cloud-init," >&2
-            echo "                (4) check that the caching proxy's zot is up:" >&2
-            echo "                    curl -fsS http://yuruna-caching-proxy:5000/v2/" >&2
-            echo "" >&2
-        fi
+registry_attempts=3
+registry_delay=10
+for attempt in $(seq 1 "$registry_attempts"); do
+    # Fast path / idempotent restart of an already-created container.
+    if docker start registry 2>/dev/null; then
+        break
+    fi
+    # A failed prior `docker run` can leave a created/exited container
+    # holding the name; clear it so `docker run --name registry` is clean.
+    docker rm -f registry >/dev/null 2>&1 || true
+    if docker_out=$(docker run -d -p 5000:5000 --restart=always --name registry "$REGISTRY_IMAGE" 2>&1); then
+        break
+    fi
+    echo "docker run registry failed (attempt ${attempt}/${registry_attempts}):" >&2
+    echo "$docker_out" >&2
+    # AWS ECR Public returns 400 (not 429) when its anonymous-pull
+    # quota is exhausted, so match both shapes. Match Docker Hub's
+    # documented strings AND the upstream-host substrings that
+    # indicate a rate-limit response masquerading as 400. A throttle
+    # won't clear on a 10-30s retry, so surface guidance and stop now
+    # rather than burning the remaining attempts.
+    if echo "$docker_out" | grep -qiE 'pull rate limit|toomanyrequests|429 Too Many Requests|400 Bad Request.*public\.ecr\.aws|public\.ecr\.aws.*400 Bad Request'; then
+        echo "" >&2
+        echo "ERROR: Registry image pull hit a rate limit (or upstream throttle disguised as 400)." >&2
+        echo "       Image: $REGISTRY_IMAGE" >&2
+        echo "       The upstream is throttling pulls from the cache VM's egress IP." >&2
+        echo "       Options: (1) wait and retry, (2) authenticate the zot proxy to upstream," >&2
+        echo "                (3) bake the registry image into the guest base via cloud-init," >&2
+        echo "                (4) check that the caching proxy's zot is up:" >&2
+        echo "                    curl -fsS http://yuruna-caching-proxy:5000/v2/" >&2
+        echo "" >&2
         exit 1
     fi
-fi
+    if [ "$attempt" -ge "$registry_attempts" ]; then
+        echo "ERROR: could not start the registry container after ${registry_attempts} attempts" >&2
+        exit 1
+    fi
+    echo "retrying registry start in ${registry_delay}s" >&2
+    sleep "$registry_delay"
+    registry_delay=$((registry_delay * 2))
+done
 
 echo "==== Set-Resource ===="
 cd "$REAL_HOME/yuruna/project/example"

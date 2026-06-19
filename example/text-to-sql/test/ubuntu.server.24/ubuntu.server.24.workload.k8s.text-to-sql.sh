@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: 2026.06.12
+# Version: 2026.06.19
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 set -euo pipefail
@@ -24,9 +24,9 @@ mkcert -install 2>/dev/null || true
 # ubuntu.server.24.k8s.sh at provision time) routes this through the
 # yuruna-caching-proxy's zot pull-through cache -- zot serves the
 # manifest from cache with stale-on-error semantics, so upstream rate-
-# limit blips no longer break the test. A prior workaround pinned
+# limit blips don't break the test. Pinning
 # `public.ecr.aws/docker/library/registry:2` to dodge Docker Hub's
-# anonymous limit, but that mirror has itself returned 400 across
+# anonymous limit is unreliable -- that mirror has itself returned 400 across
 # multiple test hosts simultaneously; the zot pull-through is the
 # durable fix.
 REGISTRY_IMAGE="registry:2"
