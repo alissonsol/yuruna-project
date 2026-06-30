@@ -3,7 +3,7 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 # SSH-driven equivalent of gui/workload.guest.ubuntu.server.26.k8s.website.yml.
-# Selected automatically when test-config.json has keystrokeMechanism='SSH'.
+# Selected automatically when test.config.yml has vmCommunication.keystrokeMechanism='SSH'.
 # See possible actions in the actions.yml file.
 
 # Perf-log identity (see https://yuruna.link/test/perf). Bump revision on step add/remove.

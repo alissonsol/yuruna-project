@@ -42,7 +42,7 @@ workloads:
     # so rootCA.pem lands in that user's $HOME/.local/share/mkcert.
     - shell: 'if ("$IsLinux" -eq "True") { sudo -u (`$(if (`$env:SUDO_USER) { `$env:SUDO_USER } else { `$env:USER })) -H mkcert -install } else { mkcert -install }'
     - shell: "mkcert -key-file \"${env:tls-key}\" -cert-file \"${env:tls-crt}\" ${env:websiteDomain} \"*.${env:websiteDomain}\" localhost \"*.localhost\" 127.0.0.1 ::1 ${env:_hostname} ${env:_frontendIp}"
-    - kubectl: "delete secret ${env:websiteTlsSecret} --namespace=${env:namespace} --ignore-not-found=true"  
+    - kubectl: "delete secret ${env:websiteTlsSecret} --namespace=${env:namespace} --ignore-not-found=true"
     - kubectl: "create secret tls ${env:websiteTlsSecret} --key \"${env:tls-key}\" --cert \"${env:tls-crt}\" --namespace=${env:namespace}"
     # Ingress
     - helm: "repo add ingress-nginx https://kubernetes.github.io/ingress-nginx"

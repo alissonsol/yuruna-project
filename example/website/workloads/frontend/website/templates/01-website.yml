@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: website
-        # Notice that the 'registryName' variable is used to find the name of another variable, 
+        # Notice that the 'registryName' variable is used to find the name of another variable,
         # requiring the dual indirection.
         # `required` is a deliberate guardrail against rendering
         # "/website/website:latest" (leading slash, empty registry) when the

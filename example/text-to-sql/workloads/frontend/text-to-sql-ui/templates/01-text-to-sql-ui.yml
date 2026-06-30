@@ -17,6 +17,12 @@ spec:
     spec:
       containers:
       - name: text-to-sql-ui
+        # Notice that the 'registryName' variable is used to find the name of another variable,
+        # requiring the dual indirection.
+        # `required` is a deliberate guardrail against rendering
+        # "/text-to-sql-ui/text-to-sql-ui:latest" (leading slash, empty registry) when the
+        # resources.output.yml componentsRegistry block is missing or does not
+        # propagate to values.yaml, producing an InvalidImageName pod.
         {{- $regKey := printf "%s.registryLocation" (required "Helm values is missing 'registryName'. Check that resources.yml globalVariables sets registryName and that yuruna resources / components / workloads all ran in the same project_root." .Values.registryName) }}
         {{- $reg := required (printf "Helm values is missing key %q. The registry's tofu output did not reach values.yaml. Check that config/<env>/resources.output.yml has a %s block with a registryLocation.value (run 'yuruna resources <project> <env>' to (re)create it) before running 'yuruna workloads'." $regKey .Values.registryName) (index .Values $regKey) }}
         image: {{ $reg }}/{{ required "Helm values is missing 'containerPrefix'." .Values.containerPrefix }}/text-to-sql-ui:latest
@@ -27,6 +33,13 @@ spec:
         - name: port443
           containerPort: 443
         resources:
+          # ephemeral-storage requests make kubelet account for this pod
+          # in its 85% nodefs eviction budget at schedule time, so a
+          # disk-greedy neighbour can no longer cause an Evicted/
+          # FailedScheduling cascade on the test node. The limit caps a
+          # single misbehaving build/log loop. Memory + cpu requests are
+          # paired with their existing limits to keep QoS=Guaranteed
+          # instead of BestEffort.
           requests:
             ephemeral-storage: "256Mi"
             memory: "128Mi"
