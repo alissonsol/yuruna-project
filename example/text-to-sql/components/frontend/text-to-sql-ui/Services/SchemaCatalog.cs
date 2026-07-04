@@ -39,6 +39,15 @@ public sealed class SchemaCatalog
 
     public Task<IReadOnlyList<TableInfo>> GetAllAsync() => _cache.Value;
 
+    // A column is PII if it is a known sensitive field ('email' / 'phone') or its name ends in
+    // the '_pii' marker suffix. SqlValidator enforces the same rule deterministically on the
+    // generated SQL; keep the two definitions aligned.
+    internal static bool IsPiiColumn(string columnName) =>
+        !string.IsNullOrEmpty(columnName)
+        && (columnName.Equals("email", StringComparison.OrdinalIgnoreCase)
+            || columnName.Equals("phone", StringComparison.OrdinalIgnoreCase)
+            || columnName.EndsWith("_pii", StringComparison.OrdinalIgnoreCase));
+
     // ── Public retriever ───────────────────────────────────────────────────
     // Returns the k most relevant tables (by hybrid score) plus their direct
     // FK neighbours. The string form is what the SQL generator sees.
@@ -182,7 +191,7 @@ public sealed class SchemaCatalog
                     Name: rdr.GetString(1),
                     DataType: rdr.GetString(2),
                     Nullable: rdr.GetString(3) == "YES",
-                    IsPii: rdr.GetString(1).Equals("email", StringComparison.OrdinalIgnoreCase)
+                    IsPii: IsPiiColumn(rdr.GetString(1))
                 );
                 ti.Columns.Add(col);
             }

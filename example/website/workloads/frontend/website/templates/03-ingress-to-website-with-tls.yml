@@ -11,16 +11,19 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/use-regex: "true"
+    # ssl-redirect stays "false": the example smoke test (test/test-localhost.sh) probes
+    # http://localhost and accepts only 200. "true" answers plaintext HTTP with a 308 redirect
+    # to HTTPS, and the probe does not follow redirects, so it would never see 200.
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
-  ingressClassName: {{ .Values.ingressClass }}
+  ingressClassName: {{ required "ingressClass is required for the TLS ingress" .Values.ingressClass }}
   tls:
   - hosts:
-    - {{ .Values.websiteHost }}
-    secretName: {{ .Values.websiteTlsSecret }}
+    - {{ required "websiteHost is required for the TLS ingress" .Values.websiteHost }}
+    secretName: {{ required "websiteTlsSecret is required for the TLS ingress" .Values.websiteTlsSecret }}
   rules:
-  - host: {{ .Values.websiteHost }}
+  - host: {{ required "websiteHost is required for the TLS ingress" .Values.websiteHost }}
     http:
       paths:
       - pathType: Prefix

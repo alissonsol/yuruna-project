@@ -83,7 +83,21 @@ public sealed class AgentOrchestrator
 
         // ─── ③ SQL generation ──────────────────────────────────────────────
         var swGen = Stopwatch.StartNew();
-        var decision = await _llm.GenerateSqlAsync(question, retrieval.FormattedPrompt, ct);
+        LlmDecision decision;
+        try
+        {
+            decision = await _llm.GenerateSqlAsync(question, retrieval.FormattedPrompt, ct);
+        }
+        catch (LlmClientException ex)
+        {
+            // A transport / HTTP / parse failure is an infrastructure ERROR, not
+            // a model refusal -- render it as a failed step + run error so it is
+            // distinguishable (and monitorable), and the client's own bounded
+            // retry has already been exhausted.
+            run.Steps.Add(Step.Fail("SQL generation", swGen, ex.Message));
+            run.Finalize(error: "SQL generation failed (LLM/API error).");
+            return run;
+        }
         if (decision.Refused)
         {
             run.Steps.Add(Step.Refused("SQL generation", swGen, decision.RefusalReason ?? "unknown"));

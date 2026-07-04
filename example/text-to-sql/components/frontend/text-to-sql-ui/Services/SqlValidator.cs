@@ -43,6 +43,14 @@ public sealed class SqlValidator
     // ── Static (offline) checks ───────────────────────────────────────────
     private static readonly Regex CommentRx = new(@"(--|/\*|\*/)", RegexOptions.Compiled);
 
+    // PII column identifiers the validator refuses outright. Kept aligned with
+    // SchemaCatalog.IsPiiColumn: exact 'email' / 'phone', or any identifier ending in '_pii'.
+    // The lookarounds isolate whole SQL identifiers so 'phone_number' / 'email_templates' do
+    // not match (they are not the flagged PII columns).
+    private static readonly Regex PiiColumnRx = new(
+        @"(?<![A-Za-z0-9_])(email|phone|[A-Za-z0-9_]*_pii)(?![A-Za-z0-9_])",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
     private static readonly string[] ForbiddenLeadingKeywords =
     {
         "INSERT","UPDATE","DELETE","DROP","ALTER","TRUNCATE","GRANT","REVOKE",
@@ -85,12 +93,49 @@ public sealed class SqlValidator
             if (upper.Contains(bad))
                 return StaticCheckResult.Fail("CTE-disguised write statement detected.");
 
-        // Inject a LIMIT if missing.
-        var withLimit = upper.Contains(" LIMIT ")
+        // Deterministic PII guardrail. The LLM system prompt also forbids selecting PII, but a
+        // prompt is advisory (prompt-injection / hallucination can violate it); the validator is
+        // the real defense in depth, so refuse any reference to a PII column here rather than
+        // trusting the model. Kept aligned with SchemaCatalog.IsPiiColumn.
+        var piiMatch = PiiColumnRx.Match(noTrailing);
+        if (piiMatch.Success)
+            return StaticCheckResult.Fail($"Query references a PII column ('{piiMatch.Value}'); selecting PII is not permitted.");
+
+        // Enforce the row cap on a TOP-LEVEL LIMIT only. The old
+        // upper.Contains(" LIMIT ") was satisfied by a LIMIT inside a
+        // subquery/CTE while the OUTER result stayed uncapped; a paren-depth
+        // scan distinguishes the real top-level cap. When the query already has
+        // a top-level LIMIT it is kept as-is (the EXPLAIN cost gate backstops an
+        // over-large one); otherwise LIMIT N is appended at the TOP level so any
+        // existing ORDER BY stays outermost -- wrapping the query in a derived
+        // table would drop that ordering for the common "top N by X" shape.
+        var withLimit = HasTopLevelLimit(noTrailing)
             ? noTrailing
             : noTrailing + $"\nLIMIT {_maxLimit}";
 
         return StaticCheckResult.Ok(withLimit);
+    }
+
+    // True iff a LIMIT clause exists at the TOP level (paren depth 0) -- one that
+    // actually caps the final result, versus a LIMIT buried in a subquery/CTE
+    // (which a naive substring check wrongly accepts while the outer result stays
+    // uncapped). String literals are not stripped, which is acceptable for the
+    // read-only SELECTs this validator gates (comment/PII/keyword checks ran first).
+    private static bool HasTopLevelLimit(string sql)
+    {
+        var depth = 0;
+        foreach (Match match in Regex.Matches(sql, @"\(|\)|\bLIMIT\b", RegexOptions.IgnoreCase))
+        {
+            switch (match.Value)
+            {
+                case "(": depth++; break;
+                case ")": if (depth > 0) depth--; break;
+                default:                       // a LIMIT keyword (any case)
+                    if (depth == 0) return true;
+                    break;
+            }
+        }
+        return false;
     }
 
     // ── Online cost gate: EXPLAIN (FORMAT JSON) ───────────────────────────
