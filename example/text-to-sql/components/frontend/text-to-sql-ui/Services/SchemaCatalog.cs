@@ -2,21 +2,9 @@
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ---------------------------------------------------------------------------
 // SchemaCatalog — the "②  Schema Retriever" stage of the agent pipeline.
-//
-// Build-time: introspect information_schema + pg_constraint to materialize
-//   - per-column metadata (name, type, nullable, sample values)
-//   - per-table prose (from pg_description / COMMENT ON)
-//   - the foreign-key graph as a sidecar { table -> [neighbour, fk-edge-label] }
-//
-// Query-time: get_relevant_schema(question, k)
-//   - hybrid scoring: keyword (token overlap) + lightweight semantic-ish
-//     similarity-by-substring on table/column docstrings.
-//   - one-hop FK expansion so the LLM never has to invent JOIN partners.
-//   - returns a compact string suitable for prompting (target: < 2 KB).
-//
-// In a production system the embedding side is a real vector index (pgvector,
-// or a hosted store). Keeping it deterministic here means the example runs
-// offline and is reproducible.
+// Build-time catalog introspection, query-time hybrid scoring with one-hop
+// FK expansion, compact (< 2 KB) prompt slices: see the README service
+// notes — https://yuruna.link/text-to-sql#service-notes
 // ---------------------------------------------------------------------------
 
 using System.Data;

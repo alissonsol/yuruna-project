@@ -6,34 +6,55 @@
 # See possible actions in the actions.yml file.
 # ${vmName}, ${hostType}, ${guestKey} are built-in. ${ext:area.Method(args)}
 # invokes the active extension under test/extension/<area>/.
+#
+# Warm-paths off the "k8s.text-to-sql" checkpoint produced by
+# workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline (Ubuntu + Kubernetes),
+# then stands the text-to-sql example up entirely inside the VM and verifies it:
+#   1. loadDiskSnapshot -> revert to the Kubernetes baseline,
+#   2. log in,
+#   3. ubuntu.server.24.postgresql.sh          -> install PostgreSQL 18,
+#   4. ubuntu.server.24.workload.k8s.text-to-sql.db.sh -> ssl off, create the
+#      yuruna_demo database, load db/schema.sql (+ yuruna_agent_ro role), open
+#      listen_addresses/pg_hba so in-cluster pods can reach the DB,
+#   5. ubuntu.server.24.workload.k8s.text-to-sql.sh -> build the .NET image,
+#      push it, and deploy the pod + TLS ingress through Set-Resource/Component/
+#      Workload,
+#   6. wait for the deployments, then test-localhost.sh -> expect HTTP 200.
+#
+# Unattended by design (mirrors the syzor scanner sequences): no `break` steps,
+# so no operator Continue is required. For a first interactive run you can add a
+# `break` step anywhere; YURUNA_BREAK_DISABLED=1 turns any break into a no-op.
 
 # Perf-log identity (see https://yuruna.link/test/perf). Bump revision on step add/remove.
 sequenceGuid: 42ed7613-c319-4d8f-9391-66001c258b2d
-sequenceRevision: 1
+sequenceRevision: 2
 
-description: "Ubuntu Server: restore snapshot, install PostgreSQL, deploy text-to-sql, verify HTTP 200."
+description: "Ubuntu Server: restore snapshot, install + set up PostgreSQL, deploy text-to-sql, verify HTTP 200."
 baseline:
   ubuntu.server.24:
     - workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline
-# requiresSnapshot: warm-path skip + persisted VM-name override.
-# See https://yuruna.link/test/requires-snapshot for the contract,
-# including the on-disk-state bake-in warning that applies when this
-# sequence redefines a variable also used by .baseline.
+# requiresSnapshot warm-path: on a snapshot hit the baseline chain is SKIPPED,
+# so variables.username here MUST match the value baked into the checkpoint by
+# .baseline (yt2sqluser). saveDiskSnapshot renamed the VM to the snapshot id
+# (k8s.text-to-sql) and the sequence engine tracks that rename, so the warm-path
+# targets the persisted VM by name -- no separate vm-name variable is needed.
+# See https://yuruna.link/test/requires-snapshot for the contract.
 requiresSnapshot:
   id: "k8s.text-to-sql"
 variables:
   username: yt2sqluser
 
-# TODO: Need a variable for the vmname in the snapshot
 steps:
   - action: loadDiskSnapshot
     id: "k8s.text-to-sql"
-    description: "Snapshot before Postgres in text-to-sql workload"
+    description: "Restore the Kubernetes baseline checkpoint"
 
   - action: retry
     maxAttempts: 2
     description: "Login + retry"
     steps:
+      - snippet: firstLoginPrime
+
       - action: passwdPrompt
         pattern: "login:"
         timeoutSeconds: 600
@@ -48,42 +69,32 @@ steps:
   - action: waitForText
     pattern: "${username}@"
     timeoutSeconds: 90
-    description: "OCR: ${username}@"
-
-  - action: break
-    id: k8s.text-to-sql
-    description: "Breakpoint before Postgres in text-to-sql workload"
+    description: "OCR: ${username}@ (shell prompt)"
 
   - action: fetchAndExecute
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.postgresql.sh"
-    description: "ubuntu.server.24.postgresql.sh"
+    description: "ubuntu.server.24.postgresql.sh (install PostgreSQL 18)"
     waitPattern: "FETCHED AND EXECUTED:"
     timeoutSeconds: 900
 
-  - action: break
-    id: k8s.text-to-sql
-    description: "Breakpoint after Postgres in text-to-sql workload"
+  - action: fetchAndExecute
+    text: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/text-to-sql/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.text-to-sql.db.sh"
+    description: "text-to-sql DB bring-up (ssl off, create yuruna_demo, load schema, open pg_hba)"
+    waitPattern: "FETCHED AND EXECUTED:"
+    timeoutSeconds: 600
 
   - action: fetchAndExecute
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/text-to-sql/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.text-to-sql.sh"
-    description: "ubuntu.server.24.workload.k8s.text-to-sql.sh"
+    description: "ubuntu.server.24.workload.k8s.text-to-sql.sh (build image, deploy pod + ingress)"
     waitPattern: "FETCHED AND EXECUTED:"
     timeoutSeconds: 900
 
-  - action: break
-    id: k8s.text-to-sql
-    description: "Breakpoint after workload.k8s.text-to-sql.sh"
-
   - action: fetchAndExecute
     text: "kubectl wait --for=condition=available deployment/text-to-sql-ui -n text-to-sql --timeout=240s; kubectl wait --for=condition=available deployment/nginx-ingress-ingress-nginx-controller -n ingress-ns --timeout=240s; clear; /usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"
-    description: "test-localhost.sh"
+    description: "wait for deployments, then test-localhost.sh (expect HTTP 200)"
     waitPattern: "200 OK"
+    timeoutSeconds: 900
 
   - action: saveSystemDiagnostic
     id: k8s.text-to-sql
-    description: "Capture diagnostics"
-
-  - action: break
-    id: k8s.text-to-sql
-    description: "Breakpoint after workload.k8s.text-to-sql.sh"
-
+    description: "Capture diagnostics after the deploy comes up"

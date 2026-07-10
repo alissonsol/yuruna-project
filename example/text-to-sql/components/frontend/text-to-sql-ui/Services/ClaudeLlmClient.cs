@@ -2,17 +2,10 @@
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ---------------------------------------------------------------------------
 // ClaudeLlmClient — production ILlmClient implementation backed by the
-// Anthropic Messages API with tool-use for structured output.
-//
-// Activated when ANTHROPIC_API_KEY is set in the environment.
-// Falls back to RuleBasedLlmClient when the key is absent.
-//
-// Pipeline role: "③ SQL Generator (LLM)" in the AgentOrchestrator.
-// Returns LlmDecision with:
-//   • Sql        — raw SELECT statement (no markdown fences)
-//   • PlanText   — Claude's chain-of-thought shown in the UI observer
-//   • Refused    — true when Claude cannot map the question to safe SQL
-//   • RefusalReason — human-readable reason shown in the timeline
+// Anthropic Messages API with tool-use for structured output. Activated
+// when ANTHROPIC_API_KEY is set; RuleBasedLlmClient is used otherwise.
+// Pipeline role and the LlmDecision contract: see the README service
+// notes — https://yuruna.link/text-to-sql#service-notes
 // ---------------------------------------------------------------------------
 
 using System.Net.Http.Headers;
@@ -30,7 +23,7 @@ public sealed class ClaudeLlmClient : ILlmClient
 
     private const string AnthropicApiUrl = "https://api.anthropic.com/v1/messages";
     private const string AnthropicVersion = "2023-06-01";
-    private const string DefaultModel = "claude-opus-4-5";
+    private const string DefaultModel = "claude-opus-4-8";
 
     // Per-request HTTP timeout + total retry window. The default HttpClient 100s
     // timeout would otherwise be the only bound, so a hung connection could
@@ -110,7 +103,7 @@ In the plan field, show your step-by-step reasoning before arriving at the SQL.
         var requestBody = new
         {
             model = _model,
-            max_tokens = 1024,
+            max_tokens = 2048,
             system = SystemPrompt,
             tools = new[] { ToolDefinition },
             tool_choice = new { type = "any" },

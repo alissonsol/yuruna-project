@@ -17,7 +17,7 @@ globalVariables:
   dockerUsername:        "placeholder"
   dockerPassword:        "placeholder"
   ingressClass:          "nginx"
-  certManagerLatest:     "v1.20.0"
+  certManagerLatest:     "v1.21.0"
 
 workloads:
 - context: "${env:runTag}-${env:project}-${env:runId}"

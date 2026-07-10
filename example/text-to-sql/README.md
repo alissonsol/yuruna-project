@@ -94,6 +94,68 @@ the rest of the pipeline: `Services/ClaudeLlmClient.cs` is that
 implementation, and `Program.cs` selects it at runtime whenever
 `ANTHROPIC_API_KEY` is present.
 
+### Service notes
+
+Per-service design notes referenced from the file-top comments
+(`https://yuruna.link/text-to-sql#service-notes`).
+
+**`Program.cs`** — minimal Razor Pages host. Three things are wired up:
+Razor Pages for the chat UI, an Npgsql `DataSource` for the read-only
+Postgres connection, and the agent services
+(SchemaCatalog → SqlValidator → AgentOrchestrator). The orchestrator
+uses the deterministic rule-based "LLM" by default so the example runs
+offline; when `ANTHROPIC_API_KEY` is set the ClaudeLlmClient path is
+swapped in through the same `ILlmClient` seam.
+
+**`Services/ILlmClient.cs`** — the seam shape: `GenerateSqlAsync` takes
+the question plus the FK-expanded schema slice and returns either a SQL
+string or a refusal with a reason. Two implementations exist so the
+example runs reproducibly with or without an LLM dependency:
+`RuleBasedLlmClient` (deterministic, offline, no API key) and
+`ClaudeLlmClient` (Anthropic Messages API with tool-use).
+
+**`Services/RuleBasedLlmClient.cs`** — deterministic stand-in for the
+"③ SQL Generator (LLM)" box. Pattern coverage matches the seed data:
+churn rate by plan tier / region / channel / quarter, MRR / ARR by
+tier, active subscriptions / new signups, top customers by invoice
+amount, and a no-answer path for out-of-domain prompts. Every match
+returns a confidence score and the same prose a real LLM would produce
+in a "plan" channel, so the UI shows realistic agent reasoning.
+
+**`Services/SchemaCatalog.cs`** — the "② Schema Retriever" stage.
+Build-time: introspects `information_schema` + `pg_constraint` to
+materialize per-column metadata (name, type, nullable, sample values),
+per-table prose (from `COMMENT ON`), and the foreign-key graph as a
+sidecar. Query-time: `get_relevant_schema(question, k)` uses hybrid
+scoring (keyword overlap plus substring similarity on docstrings) with
+one-hop FK expansion so the LLM never has to invent JOIN partners, and
+returns a compact prompt slice (target < 2 KB). A production system
+would use a real vector index (pgvector or a hosted store); keeping it
+deterministic means the example runs offline and is reproducible.
+
+**`Services/SqlValidator.cs`** — the "④ Validator (Guardrail)" stage.
+It enforces: (1) exactly one statement, and that statement a SELECT
+(or `WITH ... SELECT`) — DDL/DML verbs are rejected; (2) no mid-query
+semicolons (stacked statements); (3) no comments that could hide a
+payload; (4) a top-level LIMIT, appended when missing; (5) an
+EXPLAIN-based cost gate that refuses plans whose top-node "Plan Rows"
+exceeds a configurable threshold. In production the regex pre-check
+would be an AST parser like libpg_query; here the regex layer is a
+deliberate, named trade-off, and the EXPLAIN gate is the real defense
+in depth.
+
+**`Services/ClaudeLlmClient.cs`** — production `ILlmClient` backed by
+the Anthropic Messages API with tool-use for structured output; the
+"③ SQL Generator (LLM)" role in the orchestrator. Returns an
+`LlmDecision` with `Sql` (raw SELECT, no markdown fences), `PlanText`
+(reasoning shown in the UI observer), `Refused`, and `RefusalReason`.
+
+**`Services/AgentOrchestrator.cs`** — the "① Planner" plus retry loop.
+Runs the stages in order (schema retriever → SQL generator → static
+validator → EXPLAIN cost gate → executor) and emits a `Step` per stage
+with elapsed-ms, status, and notes; the UI renders one run as a single
+timeline — the "Observer" layer in miniature.
+
 ## Yuruna integration
 
 This example follows the same folder pattern as
@@ -107,9 +169,18 @@ and deploys through the Yuruna three-phase model (`Set-Resource` /
   image during `Set-Component`.
 - The helm chart under
   [`workloads/frontend/text-to-sql-ui/`](workloads/frontend/text-to-sql-ui/)
-  deploys it to Kubernetes (pod + TLS ingress) during `Set-Workload`.
+  deploys it to Kubernetes (pod + TLS ingress) during `Set-Workload`. The
+  deployment injects `TEXT2SQL_PG_CONN` pointing at `status.hostIP` (the node),
+  so the pod reaches the host's PostgreSQL over the pod network.
+- `test/ubuntu.server.24/ubuntu.server.24.workload.k8s.text-to-sql.db.sh`
+  brings up the host database: it forces `ssl = off`, opens
+  `listen_addresses`/`pg_hba` for the pod CIDR, creates `yuruna_demo`, and
+  loads [`db/schema.sql`](db/schema.sql) (which also creates the read-only
+  `yuruna_agent_ro` role the app connects as).
 - The [`test/`](test/) workload exercises the whole cycle on a guest
-  Kubernetes node.
+  Kubernetes node — the `.baseline` sequence installs Kubernetes and
+  checkpoints it; the `.test` sequence restores that checkpoint, sets up
+  PostgreSQL, deploys, and asserts `HTTP 200`. Both run unattended.
 
 The same `ILlmClient` selection applies in the deployed container:
 set `ANTHROPIC_API_KEY` to run against Claude, leave it unset to run

@@ -1,16 +1,11 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ---------------------------------------------------------------------------
-// Agentic Text-to-SQL UI — minimal ASP.NET Core Razor Pages host.
-//
-// Three things wired up here:
-//   1. Razor Pages for the chat UI.
-//   2. Npgsql DataSource for the read-only Postgres connection.
-//   3. The agent services (SchemaCatalog → SqlValidator → AgentOrchestrator).
-//
-// The orchestrator uses a deterministic rule-based "LLM" by default so the
-// example runs offline. When env var ANTHROPIC_API_KEY is set, swap in the
-// ClaudeLlmClient path — same ILlmClient seam, real model call.
+// Agentic Text-to-SQL UI — minimal ASP.NET Core Razor Pages host wiring
+// Razor Pages, the read-only Npgsql DataSource, and the agent services;
+// offline rule-based LLM by default, ClaudeLlmClient when
+// ANTHROPIC_API_KEY is set. See the README service notes —
+// https://yuruna.link/text-to-sql#service-notes
 // ---------------------------------------------------------------------------
 using Npgsql;
 using TextToSqlUi.Services;

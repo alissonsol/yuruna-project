@@ -11,7 +11,7 @@ globalVariables:
   resourceTags:          "yrn42website-tags"
   registryName:          "componentsRegistry"
   # https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html
-  clusterVersion:        "1.21"
+  clusterVersion:        "1.36"
   nodeType:              "Standard_D2_v2"
   nodeCount:             3
 

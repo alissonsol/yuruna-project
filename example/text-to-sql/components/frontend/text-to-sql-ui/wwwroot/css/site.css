@@ -150,6 +150,11 @@ button:hover { background: var(--bg-deep); }
 .step-status  { text-transform: uppercase; font-weight: 700; font-size: 12px; color: var(--fg-muted); }
 .step-ms      { color: var(--fg-muted); font-variant-numeric: tabular-nums; }
 .step-note    { color: var(--fg); }
+/* Narrow phones: the fixed 180/90/80px tracks overflow a ~375px viewport,
+   so collapse each step to a single stacked column. */
+@media (max-width: 520px) {
+  .timeline .step { grid-template-columns: 1fr; gap: 2px 0; }
+}
 
 /* ── Plan / SQL / results blocks ──────────────────────────────────────── */
 .plan-block, .sql-block, .results {

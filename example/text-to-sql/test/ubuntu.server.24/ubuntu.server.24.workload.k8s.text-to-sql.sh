@@ -1,10 +1,9 @@
 #!/bin/bash
-# Version: 2026.07.07
+# Version: 2026.07.10
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 set -euo pipefail
 
-# Non-interactive mode for all installations
 export DEBIAN_FRONTEND=noninteractive
 export NONINTERACTIVE=1
 
@@ -18,40 +17,50 @@ sudo chown -R "$REAL_USER:$REAL_USER" "$REAL_HOME/.kube"
 # Install mkcert CA
 mkcert -install 2>/dev/null || true
 
-# Start Docker registry if not running. Pulls `registry:2` (Docker Hub
-# canonical, i.e. docker.io/library/registry:2). Dockerd's registry-
-# mirrors in /etc/docker/daemon.json (set by guest/ubuntu.server.24/
-# ubuntu.server.24.k8s.sh at provision time) routes this through the
-# yuruna-caching-proxy's zot pull-through cache -- zot serves the
-# manifest from cache with stale-on-error semantics, so upstream rate-
-# limit blips don't break the test. Pinning
-# `public.ecr.aws/docker/library/registry:2` to dodge Docker Hub's
-# anonymous limit is unreliable -- that mirror has itself returned 400 across
-# multiple test hosts simultaneously; the zot pull-through is the
-# durable fix.
+# Start Docker registry if not running.
+# --- REGION: https://yuruna.link/caching#workload-registry-pull-through
+# The pull routes through the zot pull-through cache (stale-on-error);
+# transient egress blips are retried with backoff (mirroring the
+# `docker build` retry below) instead of aborting under `set -euo pipefail`.
 REGISTRY_IMAGE="registry:2"
-if ! docker start registry 2>/dev/null; then
-    if ! docker_out=$(docker run -d -p 5000:5000 --restart=always --name registry "$REGISTRY_IMAGE" 2>&1); then
-        echo "docker run registry failed:" >&2
-        echo "$docker_out" >&2
-        # AWS ECR Public returns 400 (not 429) when its anonymous-pull
-        # quota is exhausted, so match both shapes. Match Docker Hub's
-        # documented strings AND the upstream-host substrings that
-        # indicate a rate-limit response masquerading as 400.
-        if echo "$docker_out" | grep -qiE 'pull rate limit|toomanyrequests|429 Too Many Requests|400 Bad Request.*public\.ecr\.aws|public\.ecr\.aws.*400 Bad Request'; then
-            echo "" >&2
-            echo "ERROR: Registry image pull hit a rate limit (or upstream throttle disguised as 400)." >&2
-            echo "       Image: $REGISTRY_IMAGE" >&2
-            echo "       The upstream is throttling pulls from the cache VM's egress IP." >&2
-            echo "       Options: (1) wait and retry, (2) authenticate the zot proxy to upstream," >&2
-            echo "                (3) bake the registry image into the guest base via cloud-init," >&2
-            echo "                (4) check that the caching proxy's zot is up:" >&2
-            echo "                    curl -fsS http://yuruna-caching-proxy:5000/v2/" >&2
-            echo "" >&2
-        fi
+registry_attempts=3
+registry_delay=10
+for attempt in $(seq 1 "$registry_attempts"); do
+    # Fast path / idempotent restart of an already-created container.
+    if docker start registry 2>/dev/null; then
+        break
+    fi
+    # A failed prior `docker run` can leave a created/exited container
+    # holding the name; clear it so `docker run --name registry` is clean.
+    docker rm -f registry >/dev/null 2>&1 || true
+    if docker_out=$(docker run -d -p 5000:5000 --restart=always --name registry "$REGISTRY_IMAGE" 2>&1); then
+        break
+    fi
+    echo "docker run registry failed (attempt ${attempt}/${registry_attempts}):" >&2
+    echo "$docker_out" >&2
+    # ECR Public reports an exhausted anonymous-pull quota as 400 (not 429);
+    # a throttle will not clear on a quick retry, so stop with guidance now.
+    # --- REGION: https://yuruna.link/network#defining-registry-rate-limit-400
+    if echo "$docker_out" | grep -qiE 'pull rate limit|toomanyrequests|429 Too Many Requests|400 Bad Request.*public\.ecr\.aws|public\.ecr\.aws.*400 Bad Request'; then
+        echo "" >&2
+        echo "ERROR: Registry image pull hit a rate limit (or upstream throttle disguised as 400)." >&2
+        echo "       Image: $REGISTRY_IMAGE" >&2
+        echo "       The upstream is throttling pulls from the cache VM's egress IP." >&2
+        echo "       Options: (1) wait and retry, (2) authenticate the zot proxy to upstream," >&2
+        echo "                (3) bake the registry image into the guest base via cloud-init," >&2
+        echo "                (4) check that the caching proxy's zot is up:" >&2
+        echo "                    curl -fsS http://yuruna-caching-proxy:5000/v2/" >&2
+        echo "" >&2
         exit 1
     fi
-fi
+    if [ "$attempt" -ge "$registry_attempts" ]; then
+        echo "ERROR: could not start the registry container after ${registry_attempts} attempts" >&2
+        exit 1
+    fi
+    echo "retrying registry start in ${registry_delay}s" >&2
+    sleep "$registry_delay"
+    registry_delay=$((registry_delay * 2))
+done
 
 echo "==== Set-Resource ===="
 cd "$REAL_HOME/yuruna/project/example"
@@ -63,19 +72,9 @@ kubectl config rename-context docker-desktop "localhost-${CONTEXT}" 2>/dev/null 
 
 echo "==== Registry probe ===="
 # Build and push Docker image.
-#
-# Registry selection: probe candidates in priority order, pick the first
-# that can serve every base-image manifest the Dockerfile needs.
-#   1. ${CACHE_HOST}:5000/   -- zot pull-through cache (fastest, also
-#                               absorbs MCR TLS jitter)
-#   2. mcr.microsoft.com/    -- direct upstream; the survival path when
-#                               the cache VM is absent, unreachable, has
-#                               an old config that doesn't know mcr, or
-#                               is otherwise unable to serve the tag
-# The probe is a Docker Registry v2 manifest GET. On zot it also triggers
-# the onDemand sync, so a cache that simply hasn't pulled the image yet
-# warms up here -- not mid-`docker build` where a failure is harder to
-# diagnose.
+# --- REGION: https://yuruna.link/caching#workload-registry-probe
+# Probe candidates in priority order (zot cache first, mcr.microsoft.com
+# as the survival path); on zot the probe also triggers the onDemand sync.
 CACHE_HOST=$(echo "${http_proxy:-}" | sed -E 's|^https?://([^:/]+).*|\1|')
 [ -z "$CACHE_HOST" ] && CACHE_HOST="yuruna-caching-proxy"
 cd "$REAL_HOME/yuruna/project/example/text-to-sql/components/frontend/text-to-sql-ui"
@@ -143,12 +142,9 @@ echo "==== Push to docker registry ===="
 docker tag text-to-sql/text-to-sql-ui:latest localhost:5000/text-to-sql/text-to-sql-ui:latest
 docker push localhost:5000/text-to-sql/text-to-sql-ui:latest
 
-# Reclaim build-cache disk before the cluster deploys. The dotnet SDK
-# build leaves ~1.3 GiB in `docker buildx prune` territory and another
-# ~0.5 GiB of dangling intermediate images. On a 14 GiB node disk that
-# was enough to trip kubelet's 85% ephemeral-storage watermark, get
-# the text-to-sql-ui + nginx-ingress pods Evicted, and leave their
-# replacements stuck on the disk-pressure taint.
+# --- REGION: https://yuruna.link/kubernetes#reclaim-build-cache-disk-before-deploy
+# Prune build caches before the cluster deploys so kubelet's ephemeral-
+# storage watermark is not tripped.
 # Failure here is non-fatal: we only care about the side effect.
 docker buildx prune --all --force >/dev/null 2>&1 || true
 docker builder prune --all --force >/dev/null 2>&1 || true

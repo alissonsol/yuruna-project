@@ -2,17 +2,9 @@
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ---------------------------------------------------------------------------
 // RuleBasedLlmClient — a deterministic stand-in for the "③ SQL Generator
-// (LLM)" box. Lets the example run offline, with no API key.
-//
-// Pattern coverage matches the seed data:
-//   • churn rate by plan tier, by region, by channel, by quarter
-//   • MRR / ARR by tier
-//   • active subscriptions / new signups
-//   • top customers by invoice amount
-//   • a no-answer ("I don't know") path for clearly out-of-domain prompts
-//
-// Every match returns a confidence score AND the same prose a real LLM would
-// produce in a "plan" channel, so the UI shows realistic agent reasoning.
+// (LLM)" box. Lets the example run offline, with no API key. Pattern
+// coverage and the plan-prose contract: see the README service notes —
+// https://yuruna.link/text-to-sql#service-notes
 // ---------------------------------------------------------------------------
 
 using System.Text.RegularExpressions;

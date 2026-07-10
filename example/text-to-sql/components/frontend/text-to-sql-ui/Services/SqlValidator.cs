@@ -2,20 +2,10 @@
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ---------------------------------------------------------------------------
 // SqlValidator — the "④ Validator (Guardrail)" stage of the agent pipeline.
-//
-// What it enforces:
-//   1. Statement must be exactly ONE statement, and that statement must be
-//      a SELECT (or WITH ... SELECT). Rejects DROP/DELETE/UPDATE/INSERT/
-//      ALTER/GRANT/TRUNCATE/CREATE/COMMENT/COPY/CALL/EXECUTE/VACUUM/etc.
-//   2. No semicolons in the middle (stacked statements).
-//   3. No comments that could hide a payload (-- or /* */).
-//   4. A LIMIT clause is enforced; if missing, we append one.
-//   5. EXPLAIN-based cost gate: runs `EXPLAIN (FORMAT JSON)` and refuses
-//      plans whose top-node "Plan Rows" exceeds a configurable threshold.
-//
-// In production swap the regex pre-check for an AST parser like libpg_query.
-// In this example the regex layer is a deliberate, named trade-off — and
-// the EXPLAIN gate is the real defense in depth.
+// Five checks (single SELECT-only statement, no stacked statements, no
+// comment payloads, enforced top-level LIMIT, EXPLAIN cost gate); the
+// regex pre-check vs AST-parser trade-off: see the README service notes —
+// https://yuruna.link/text-to-sql#service-notes
 // ---------------------------------------------------------------------------
 
 using System.Text.RegularExpressions;
@@ -101,9 +91,9 @@ public sealed class SqlValidator
         if (piiMatch.Success)
             return StaticCheckResult.Fail($"Query references a PII column ('{piiMatch.Value}'); selecting PII is not permitted.");
 
-        // Enforce the row cap on a TOP-LEVEL LIMIT only. The old
-        // upper.Contains(" LIMIT ") was satisfied by a LIMIT inside a
-        // subquery/CTE while the OUTER result stayed uncapped; a paren-depth
+        // Enforce the row cap on a TOP-LEVEL LIMIT only. A naive substring
+        // check for " LIMIT " is satisfied by a LIMIT inside a subquery/CTE
+        // while the OUTER result stays uncapped; a paren-depth
         // scan distinguishes the real top-level cap. When the query already has
         // a top-level LIMIT it is kept as-is (the EXPLAIN cost gate backstops an
         // over-large one); otherwise LIMIT N is appended at the TOP level so any

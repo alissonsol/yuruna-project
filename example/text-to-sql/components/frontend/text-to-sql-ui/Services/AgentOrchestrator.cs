@@ -1,26 +1,11 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ---------------------------------------------------------------------------
-// AgentOrchestrator — the "①  Planner" + retry loop for the agent pipeline.
-//
-// Pipeline (with observability per stage):
-//     question
-//        ↓
-//     [② schema retriever]   → schema slice
-//        ↓
-//     [③ SQL generator]      → SQL or refusal
-//        ↓
-//     [④ static validator]   → safe SQL or refusal
-//        ↓
-//     [④ EXPLAIN cost gate]  → allow or refuse
-//        ↓
-//     [⑤ executor]           → rows  (read replica, statement_timeout, LIMIT)
-//        ↓
-//     AgentRun (UI renders all of the above as a single timeline)
-//
-// Every stage emits a Step with elapsed-ms, status, and notes. The UI shows
-// the timeline — that's the "Observer" layer in miniature, the kind of
-// production awareness you'd want on a real agent.
+// AgentOrchestrator — the "①  Planner" + retry loop for the agent pipeline
+// (schema retriever → SQL generator → static validator → EXPLAIN cost gate
+// → executor). Every stage emits a Step with elapsed-ms, status, and notes,
+// rendered by the UI as one timeline. Stage map: see the README service
+// notes — https://yuruna.link/text-to-sql#service-notes
 // ---------------------------------------------------------------------------
 
 using System.Data;

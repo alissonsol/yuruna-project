@@ -16,7 +16,7 @@ globalVariables:
   # regions: az account list-locations -o table
   resourceRegion:        "westus2"
   # az aks get-versions --location {resourceRegion} -o table
-  clusterVersion:        "1.22.4"
+  clusterVersion:        "1.36"
   nodeType:              "Standard_D2_v2"
   nodeCount:             3
 
