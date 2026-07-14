@@ -5,7 +5,7 @@
 [github.com/alissonsol/yuruna](https://github.com/alissonsol/yuruna);
 this repo tracks user-facing project templates and end-to-end examples.
 
-## 2026.07.10
+## 2026.07.14
 
 - Minor fixes to enable the automated release.
 
@@ -42,5 +42,7 @@ First publicly tracked release.
 Back to [yuruna-project](README.md) · [Yuruna](https://yuruna.com)
 
 ---
+
+LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.

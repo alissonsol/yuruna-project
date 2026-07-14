@@ -88,9 +88,11 @@ button {
 }
 button:hover { background: var(--bg-deep); }
 .ask-controls {
-  display: flex; align-items: center; gap: 14px;
+  display: flex; align-items: center;
   margin-top: 12px; flex-wrap: wrap;
 }
+/* Margin idiom, not flex `gap` (iOS 14.5+), for the older-iOS baseline. */
+.ask-controls > * + * { margin-left: 14px; }
 .examples { flex: 1; font-size: 13px; }
 .examples a {
   display: inline-block; margin-right: 12px; margin-top: 4px;
@@ -111,7 +113,8 @@ button:hover { background: var(--bg-deep); }
 .run-summary.ok       { border-left: 6px solid var(--good); }
 .run-summary.refused  { border-left: 6px solid var(--warn); background: var(--warn-soft); }
 .run-summary.fail     { border-left: 6px solid var(--bad);  background: var(--bad-soft); }
-.run-summary-head     { display: flex; gap: 12px; align-items: center; }
+.run-summary-head     { display: flex; align-items: center; }
+.run-summary-head > * + * { margin-left: 12px; }
 
 .pill {
   background: var(--accent); color: var(--ink);

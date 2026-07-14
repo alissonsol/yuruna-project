@@ -70,4 +70,10 @@ Back to [Website example](../../../README.md) · [Yuruna](https://github.com/ali
 
 ---
 
+LICENSEURI https://yuruna.link/license
+
 Copyright (c) 2019-2026 by Alisson Sol et al.
+
+Last review: 2026.07.14
+
+Back to [yuruna-project](../../../../../README.md) · [Yuruna](https://yuruna.com)

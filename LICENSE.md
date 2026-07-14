@@ -2,6 +2,8 @@
 
 This is the **Yuruna License**, based on the [MIT License](https://opensource.org/license/mit/).
 
+LICENSEURI https://yuruna.link/license
+
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

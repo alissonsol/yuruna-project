@@ -31,8 +31,13 @@ Set-Workload.ps1  TO-SET localhost
   [example/website](../example/website/config/localhost/workloads.yml).
 - **Validation** — how to validate the system functionality.
 
-Back to [Yuruna](https://yuruna.com).
 
 ---
 
+LICENSEURI https://yuruna.link/license
+
 Copyright (c) 2019-2026 by Alisson Sol et al.
+
+Last review: 2026.07.14
+
+Back to [yuruna-project](../README.md) · [Yuruna](https://yuruna.com)

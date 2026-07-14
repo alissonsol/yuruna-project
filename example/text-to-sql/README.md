@@ -231,8 +231,12 @@ example/text-to-sql/
             └── wwwroot/css/site.css
 ```
 
-Back to [Yuruna](https://yuruna.com) or [Examples](../README.md).
-
 ---
 
+LICENSEURI https://yuruna.link/license
+
 Copyright (c) 2019-2026 by Alisson Sol et al.
+
+Last review: 2026.07.14
+
+Back to [yuruna-project](README.md) · [Yuruna](https://yuruna.com)

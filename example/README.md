@@ -24,8 +24,13 @@ Connectivity section of the
   - Copy and paste folder structure to new folder.
   - Make needed changes and add component code (search for `TO-SET`).
 
-Back to [Yuruna](https://yuruna.com)
 
 ---
 
+LICENSEURI https://yuruna.link/license
+
 Copyright (c) 2019-2026 by Alisson Sol et al.
+
+Last review: 2026.07.14
+
+Back to [yuruna-project](README.md) · [Yuruna](https://yuruna.com)
