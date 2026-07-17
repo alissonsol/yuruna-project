@@ -138,6 +138,7 @@ button:hover { background: var(--bg-deep); }
 .timeline .step {
   display: grid;
   grid-template-columns: 180px 90px 80px 1fr;
+  grid-gap: 10px;
   gap: 10px;
   background: var(--panel); color: var(--fg);
   padding: 10px 14px;
@@ -156,7 +157,7 @@ button:hover { background: var(--bg-deep); }
 /* Narrow phones: the fixed 180/90/80px tracks overflow a ~375px viewport,
    so collapse each step to a single stacked column. */
 @media (max-width: 520px) {
-  .timeline .step { grid-template-columns: 1fr; gap: 2px 0; }
+  .timeline .step { grid-template-columns: 1fr; grid-gap: 2px 0; gap: 2px 0; }
 }
 
 /* ── Plan / SQL / results blocks ──────────────────────────────────────── */

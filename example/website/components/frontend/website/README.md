@@ -33,7 +33,7 @@ If "A valid HTTPS certificate is already present" → `dotnet dev-certs https --
   - In `components/frontend`: `dotnet new webapp -o website`
   - Add `**/wwwroot/lib/*` to `.gitignore`.
 - Containerize per [Running pre-built container images with HTTPS](https://learn.microsoft.com/en-us/aspnet/core/security/docker-https?view=aspnetcore-10.0):
-  - If `Microsoft.VisualStudio.Azure.Containers.Tools.Targets` is missing: `dotnet add package Microsoft.VisualStudio.Azure.Containers.Tools.Targets --version 1.21.2`.
+  - If `Microsoft.VisualStudio.Azure.Containers.Tools.Targets` is missing: `dotnet add package Microsoft.VisualStudio.Azure.Containers.Tools.Targets --version 1.23.0`.
   - Right-click the project → `Add → Docker Support…` (needs [Visual Studio](https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/docker/visual-studio-tools-for-docker?view=aspnetcore-10.0)).
 - Test with `IIS Express`, then the `Docker` version:
   - "Volume sharing is not enabled" → Docker Desktop → Settings → Resources → File Sharing → add `C:\` → Apply & Restart.
@@ -74,6 +74,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.07.14
+Last review: 2026.07.17
 
 Back to [yuruna-project](../../../../../README.md) · [Yuruna](https://yuruna.com)
