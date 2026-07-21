@@ -5,6 +5,6 @@ name: yrn42text-to-sql-ui-uxname
 description: ASP.NET Core text-to-SQL UI container deployed to a Kubernetes cluster.
 
 type: application
-version: 2026.07.17
-appVersion: 2026.07.17
+version: 2026.07.21
+appVersion: 2026.07.21
 icon: https://github.com/cncf/artwork/blob/master/projects/helm/icon/color/helm-icon-color.svg

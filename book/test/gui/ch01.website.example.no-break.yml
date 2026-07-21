@@ -18,6 +18,7 @@ baseline:
     - start.guest.amazon.linux.2023
 variables:
   username: ch01user1
+  hostname: ch01host1
 
 steps:
   - action: retry
@@ -38,9 +39,9 @@ steps:
         description: "OCR: Password:"
 
   - action: waitForText
-    pattern: "${username}@${vmName}"
+    pattern: "${username}@${hostname}"
     timeoutSeconds: 90
-    description: "OCR: ${username}@${vmName}"
+    description: "OCR: ${username}@${hostname}"
 
   - action: fetchAndExecute
     text: "curl -so /dev/null -w '\\nReturn code: %{http_code}\\n\\n' example.com"

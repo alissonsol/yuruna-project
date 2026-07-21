@@ -34,15 +34,21 @@ baseline:
   ubuntu.server.24:
     - workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline
 # requiresSnapshot warm-path: on a snapshot hit the baseline chain is SKIPPED,
-# so variables.username here MUST match the value baked into the checkpoint by
-# .baseline (yt2sqluser). saveDiskSnapshot renamed the VM to the snapshot id
+# so every variable baked into the guest at build time MUST match what .baseline
+# put in the checkpoint -- username (yt2sqluser) for the account, and hostname
+# (yt2sqlhost) for the guest's cloud-init local-hostname. A snapshot taken
+# before either value was pinned still carries the old one, so re-take it after
+# changing them. saveDiskSnapshot renamed the VM to the snapshot id
 # (k8s.text-to-sql) and the sequence engine tracks that rename, so the warm-path
 # targets the persisted VM by name -- no separate vm-name variable is needed.
+# The hostname is what the shell prompt shows, and it survives that rename,
+# which the VM name does not.
 # See https://yuruna.link/test/requires-snapshot for the contract.
 requiresSnapshot:
   id: "k8s.text-to-sql"
 variables:
   username: yt2sqluser
+  hostname: yt2sqlhost
 
 steps:
   - action: loadDiskSnapshot

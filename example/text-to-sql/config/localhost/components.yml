@@ -5,7 +5,11 @@
 globalVariables:
   DOCKER_SCAN_SUGGEST:   "false"
   # Notice that the 'registryName' variable is used to find the name of another variable, requiring the dual indirection
-  buildCommand: docker build --progress=plain --rm --build-arg DEV=1 --no-cache -f ${env:dockerfile} -t "${env:containerPrefix}/${env:project}:latest" "${env:buildPath}"
+  # REGISTRY points the Dockerfile's FROM lines at the project's local
+  # distribution registry (registryLocation), seeded with the base images
+  # by the seed-base-images.ps1 pre-processor, so the build resolves FROM
+  # metadata over loopback instead of a remote registry.
+  buildCommand: docker build --progress=plain --rm --build-arg DEV=1 --no-cache --build-arg "REGISTRY=$([Environment]::GetEnvironmentVariable("${env:registryName}.registryLocation"))/" -f ${env:dockerfile} -t "${env:containerPrefix}/${env:project}:latest" "${env:buildPath}"
   # buildCommand: docker build --progress=plain --rm -f ${env:dockerfile} -t "${env:containerPrefix}/${env:project}:latest" "${env:buildPath}"
   tagCommand: docker tag "${env:containerPrefix}/${env:project}:latest" "$([Environment]::GetEnvironmentVariable("${env:registryName}.registryLocation"))/${env:containerPrefix}/${env:project}:latest"
   pushCommand: docker push "$([Environment]::GetEnvironmentVariable("${env:registryName}.registryLocation"))/${env:containerPrefix}/${env:project}:latest"
@@ -16,4 +20,5 @@ components:
   variables:
     preProcessor:   "Push-Location ${env:buildPath};
                      ./copy-pfx.ps1;
+                     ./seed-base-images.ps1;
                      Pop-Location"

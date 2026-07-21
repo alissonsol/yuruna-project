@@ -17,6 +17,7 @@ baseline:
     - workload.guest.ubuntu.server.26
 variables:
   username: yuuser26
+  hostname: yuhost26
 
 steps:
   - action: retry
@@ -35,9 +36,9 @@ steps:
         description: "OCR: Password:"
 
   - action: waitForText
-    pattern: "${username}@${vmName}"
+    pattern: "${username}@${hostname}"
     timeoutSeconds: 90
-    description: "OCR: ${username}@${vmName}"
+    description: "OCR: ${username}@${hostname}"
 
   - action: fetchAndExecute
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.26/ubuntu.server.26.k8s.sh"

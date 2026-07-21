@@ -3,23 +3,10 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 #
-# Host PostgreSQL bring-up for the text-to-sql example. Runs inside the Ubuntu
-# Server 24.04 guest AFTER guest/ubuntu.server.24/ubuntu.server.24.postgresql.sh
-# (PostgreSQL 18 installed) and BEFORE the k8s deploy. Mirrors the syzor
-# scanner's "ensure PostgreSQL cluster" bring-up so the example runs against a
-# reachable, seeded database instead of an unreachable localhost default:
-#   1. force ssl = off  -- the Debian 18-main cluster ships ssl = on pointing at
-#      the ssl-cert snakeoil pair, which is 0 bytes on this guest image, so the
-#      cluster refuses to start ("could not load server certificate ... no start
-#      line") yet the postgresql.service meta-wrapper masks the failure;
-#   2. open listen_addresses + pg_hba so in-cluster pods can dial the node IP
-#      over the Flannel pod network (10.244.0.0/16);
-#   3. start the cluster explicitly and wait until it accepts connections;
-#   4. create the yuruna_demo database and load db/schema.sql (which also
-#      creates the read-only yuruna_agent_ro role the app connects as);
-#   5. verify the seed data is queryable and that yuruna_agent_ro can log in
-#      over TCP the same way the deployed pod will.
-#
+# Host PostgreSQL bring-up for the text-to-sql example -- runs in the Ubuntu
+# Server 24.04 guest after ubuntu.server.24.postgresql.sh and before the k8s
+# deploy. Design + step rationale: example/text-to-sql/README.md (Yuruna
+# integration); each step's "why" is inline next to the edit it guards below.
 # The deployed text-to-sql-ui pod connects as yuruna_agent_ro to
 # Host=$(status.hostIP):5432 -- see
 # workloads/frontend/text-to-sql-ui/templates/01-text-to-sql-ui.yml.

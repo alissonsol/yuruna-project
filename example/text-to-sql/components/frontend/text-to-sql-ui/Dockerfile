@@ -3,11 +3,13 @@
 
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-# REGISTRY swaps the upstream registry prefix for a local pull-through
-# mirror in CI. Default is mcr.microsoft.com/ so a bare `docker build` on
-# a developer laptop still works direct. The test workload overrides this
-# with --build-arg REGISTRY=<cache>:5000/ so a transient MCR TLS handshake
-# blip does not fail the whole cycle.
+# REGISTRY is the registry prefix for the base images (must end in `/`).
+# The yuruna flows pass the project's local distribution registry
+# (localhost:5000/), seeded with these images beforehand (workload test
+# scripts and the seed-base-images.ps1 pre-processor), so FROM resolves
+# over loopback with no remote registry on the path. The default stays
+# mcr.microsoft.com/ so a bare `docker build` on a machine without that
+# registry still works direct.
 ARG REGISTRY=mcr.microsoft.com/
 
 FROM ${REGISTRY}dotnet/aspnet:10.0 AS base

@@ -22,6 +22,7 @@ baseline:
     - start.guest.ubuntu.server.24
 variables:
   username: yt2sqluser
+  hostname: yt2sqlhost
 
 steps:
   - action: retry
@@ -42,9 +43,9 @@ steps:
         description: "OCR: Password:"
 
   - action: waitForText
-    pattern: "${username}@${vmName}"
+    pattern: "${username}@${hostname}"
     timeoutSeconds: 90
-    description: "OCR: ${username}@${vmName}"
+    description: "OCR: ${username}@${hostname}"
 
   - action: fetchAndExecute
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.k8s.sh"

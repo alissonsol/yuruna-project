@@ -143,7 +143,6 @@ public sealed class SqlValidator
 
             // Top-level plan-rows is enough for the gate; we don't need the
             // whole plan tree here.
-            // Look for the first occurrence of "Plan Rows":<number>.
             long planRows = 0;
             var m = Regex.Match(raw, @"""Plan Rows""\s*:\s*(\d+)");
             if (m.Success) planRows = long.Parse(m.Groups[1].Value);

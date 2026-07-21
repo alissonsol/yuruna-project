@@ -16,6 +16,7 @@ baseline:
     - workload.guest.ubuntu.server.26
 variables:
   username: yuuser26
+  hostname: yuhost26
 
 steps:
   - action: sshWaitReady
