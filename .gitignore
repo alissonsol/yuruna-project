@@ -425,3 +425,4 @@ Fido.ps1
 .bazel-cache
 .bazelrc.user
 MODULE.bazel.lock
+out.txt

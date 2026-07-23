@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=../../../../../yuruna/test/schemas/sequence.schema.yml
+# yaml-language-server: $schema=../../../../yuruna/test/schemas/sequence.schema.yml
 
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
@@ -30,10 +30,11 @@ sequenceGuid: 42ed7613-c319-4d8f-9391-66001c258b2d
 sequenceRevision: 2
 
 description: "Ubuntu Server: restore snapshot, install + set up PostgreSQL, deploy text-to-sql, verify HTTP 200."
-baseline:
+keystrokeMechanism: gui
+resource:
   ubuntu.server.24:
     - workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline
-# requiresSnapshot warm-path: on a snapshot hit the baseline chain is SKIPPED,
+# requiresSnapshot warm-path: on a snapshot hit the resource chain is SKIPPED,
 # so every variable baked into the guest at build time MUST match what .baseline
 # put in the checkpoint -- username (yt2sqluser) for the account, and hostname
 # (yt2sqlhost) for the guest's cloud-init local-hostname. A snapshot taken
@@ -50,7 +51,8 @@ variables:
   username: yt2sqluser
   hostname: yt2sqlhost
 
-steps:
+# component -- restore the checkpoint and reach a logged-in shell.
+component:
   - action: loadDiskSnapshot
     id: "k8s.text-to-sql"
     description: "Restore the Kubernetes baseline checkpoint"
@@ -77,6 +79,8 @@ steps:
     timeoutSeconds: 90
     description: "OCR: ${username}@ (shell prompt)"
 
+# workload -- install PostgreSQL, deploy text-to-sql, verify HTTP 200.
+workload:
   - action: fetchAndExecute
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.postgresql.sh"
     description: "ubuntu.server.24.postgresql.sh (install PostgreSQL 18)"

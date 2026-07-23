@@ -1,24 +1,25 @@
-# yaml-language-server: $schema=../../../../../yuruna/test/schemas/sequence.schema.yml
+# yaml-language-server: $schema=../../../../yuruna/test/schemas/sequence.schema.yml
 
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
-# SSH-driven equivalent of gui/workload.guest.ubuntu.server.26.k8s.website.yml.
-# Selected automatically when test.config.yml has vmCommunication.keystrokeMechanism='SSH'.
+# SSH variant of workload.guest.ubuntu.server.26.k8s.website (keystrokeMechanism: ssh).
 # See possible actions in the actions.yml file.
 
 # Perf-log identity (see https://yuruna.link/test/perf). Bump revision on step add/remove.
-sequenceGuid: 423775c5-e5e9-4ab5-b07b-b38a91bb9fda
+sequenceGuid: 42272942-dcd0-48fc-ba88-814462c89f5a
 sequenceRevision: 1
 
-description: "Ubuntu Server: install Kubernetes, deploy website to localhost cluster, verify HTTP 200 - parallel path to the keystroke sequence."
-baseline:
+description: "Ubuntu Server (SSH): install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
+keystrokeMechanism: ssh
+resource:
   ubuntu.server.26:
-    - workload.guest.ubuntu.server.26
+    - workload.guest.ubuntu.server.26.ssh
 variables:
   username: yuuser26
   hostname: yuhost26
 
-steps:
+# component -- wait for sshd, smoke-test the session.
+component:
   - action: sshWaitReady
     timeoutSeconds: 300
     description: "Wait for sshd + authorized_keys"
@@ -27,6 +28,8 @@ steps:
     command: "whoami && hostname"
     description: "Smoke test: whoami/hostname"
 
+# workload -- install Kubernetes, deploy the website, verify HTTP 200.
+workload:
   - action: sshFetchAndExecute
     command: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.26/ubuntu.server.26.k8s.sh"
     timeoutSeconds: 1800

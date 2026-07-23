@@ -38,7 +38,7 @@ workloads:
   - kubectl: "config set-context --current --namespace=${env:namespace} --v=1"
   - helm: "repo add ingress-nginx https://kubernetes.github.io/ingress-nginx"
   - helm: "repo update"
-  # For Azure: create certificate
+  # Create certificate
   - shell: "mkcert -install"
   - shell: "mkcert -key-file \"${env:workFolder}/website-tls.key\" -cert-file \"${env:workFolder}/website-tls.crt\" ${env:websiteDomain} \"*.${env:websiteDomain}\" localhost \"*.localhost\" 127.0.0.1 ::1 ${env:_hostname}"
   - kubectl: "delete secret ${env:websiteTlsSecret} --namespace=${env:namespace} --ignore-not-found=true"

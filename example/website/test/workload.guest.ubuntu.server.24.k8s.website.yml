@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=../../../../../yuruna/test/schemas/sequence.schema.yml
+# yaml-language-server: $schema=../../../../yuruna/test/schemas/sequence.schema.yml
 
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
@@ -8,29 +8,24 @@
 # invokes the active extension under test/extension/<area>/.
 
 # Perf-log identity (see https://yuruna.link/test/perf). Bump revision on step add/remove.
-sequenceGuid: 426ca572-7dda-4e43-be71-93462c7ef6e7
-sequenceRevision: 2
+sequenceGuid: 42001283-d9e8-4f11-a78e-5c5f2206926c
+sequenceRevision: 1
 
-description: "Ubuntu Server: log in, install Kubernetes, prepare for text-to-sql deployment."
-# Chain start.guest directly (autoinstall -> first-login password rotation ->
-# ubuntu.server.24.update.sh -> reboot). The workload.guest chain
-# additionally installs VS Code (ubuntu.server.24.code.sh), which text-to-sql
-# does not use and only adds install time + failure surface to an unattended
-# cycle. update.sh already leaves pwsh + the framework/project repos in place.
-baseline:
+description: "Ubuntu Server: log in, install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
+keystrokeMechanism: gui
+resource:
   ubuntu.server.24:
-    - start.guest.ubuntu.server.24
+    - workload.guest.ubuntu.server.24
 variables:
-  username: yt2sqluser
-  hostname: yt2sqlhost
+  username: yuuser24
+  hostname: yuhost24
 
-steps:
+# component -- reach a logged-in shell.
+component:
   - action: retry
     maxAttempts: 2
     description: "Login + retry"
     steps:
-      - snippet: firstLoginPrime
-
       - action: passwdPrompt
         pattern: "login:"
         timeoutSeconds: 600
@@ -47,6 +42,8 @@ steps:
     timeoutSeconds: 90
     description: "OCR: ${username}@${hostname}"
 
+# workload -- install Kubernetes, deploy the website, verify HTTP 200.
+workload:
   - action: fetchAndExecute
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.k8s.sh"
     description: "ubuntu.server.24.k8s.sh"
@@ -66,6 +63,21 @@ steps:
     text: "clear; newgrp docker"
     description: "Activate docker group"
 
-  - action: saveDiskSnapshot
-    id: "k8s.text-to-sql"
-    description: "Snapshot before Postgres in text-to-sql workload"
+  - action: fetchAndExecute
+    text: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/website/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.website.sh"
+    description: "ubuntu.server.24.workload.k8s.website.sh"
+    waitPattern: "FETCHED AND EXECUTED:"
+    timeoutSeconds: 900
+
+  # --- REGION: https://yuruna.link/kubernetes#why-the-website-readiness-check-waits-on-deployment-availability-not-endpoints
+  - action: fetchAndExecute
+    text: "kubectl wait --for=condition=available deployment/website -n website --timeout=240s; kubectl wait --for=condition=available deployment/nginx-ingress-ingress-nginx-controller -n ingress-ns --timeout=240s; clear; /usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"
+    description: "test-localhost.sh"
+    waitPattern: "200 OK"
+
+  - action: saveSystemDiagnostic
+    id: k8s.website
+    description: "Capture diagnostics"
+
+  - action: networkRelease
+    description: "Release network resources"

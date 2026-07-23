@@ -8,7 +8,7 @@ globalVariables:
   websiteDomain:         "yrn42.com"
   # TO-SET: set site address below, like www.yrn42.com
   # websiteHost:           "www.yrn42website-domain"
-  # see: # https://learn.microsoft.com/en-us/azure/aks/ingress-own-tls
+  # see: https://learn.microsoft.com/en-us/azure/aks/ingress-own-tls
   websiteHost:           "www.yrn42.com"
   websiteTlsSecret:      "website-tls-secret"
   certManagerIssuerEmail: "certificates@yrn42.com"

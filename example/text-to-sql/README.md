@@ -25,8 +25,8 @@ so the example runs offline against a local PostgreSQL; setting
 
 ### 1 · Prepare PostgreSQL
 
-Any local PostgreSQL ≥ 14 works (Docker image, the Yuruna `guest.postgres`
-component, or a native install). With a superuser, create the database
+Any local PostgreSQL ≥ 14 works (Docker image, the Yuruna guest
+`postgresql.sh` setup script, or a native install). With a superuser, create the database
 and load the schema:
 
 ```powershell
@@ -237,6 +237,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.07.21
+Last review: 2026.07.22
 
-Back to [yuruna-project](README.md) · [Yuruna](https://yuruna.com)
+Back to [yuruna-project](../../README.md) · [Yuruna](https://yuruna.com)

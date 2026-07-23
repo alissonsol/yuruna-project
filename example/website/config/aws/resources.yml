@@ -6,13 +6,13 @@ globalVariables:
   namespace:             "yrn42website-ns"
   clusterDnsPrefix:      "yrn42website-dns"
   resourceGroup:         "yrn42website-rg"
-  # regions: az account list-locations -o table
+  # regions: aws ec2 describe-regions --query 'Regions[].RegionName' --output text
   resourceRegion:        "us-east-1"
   resourceTags:          "yrn42website-tags"
   registryName:          "componentsRegistry"
   # https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html
   clusterVersion:        "1.36"
-  nodeType:              "Standard_D2_v2"
+  nodeType:              "m5.large"
   nodeCount:             3
 
 resources:
