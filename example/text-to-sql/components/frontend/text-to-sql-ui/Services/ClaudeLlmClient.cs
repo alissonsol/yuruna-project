@@ -143,7 +143,7 @@ In the plan field, show your step-by-step reasoning before arriving at the SQL.
             }
             catch (OperationCanceledException) when (ct.IsCancellationRequested)
             {
-                throw; // the caller cancelled -- propagate, never retry or relabel
+                throw; // the caller canceled -- propagate, never retry or relabel
             }
             catch (Exception ex)
             {

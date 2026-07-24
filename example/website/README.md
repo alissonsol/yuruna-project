@@ -6,7 +6,7 @@ A simple .NET C# website container deployed to Kubernetes.
 
 Before deploying, search for `TO-SET` in `config/<cloud>/*.yml` and fill
 the required values (see [Cloud](#cloud) below). Read the Connectivity
-section of [FAQ](https://github.com/alissonsol/yuruna/blob/main/docs/faq.md) first.
+section of [Workarounds and FAQ](https://github.com/alissonsol/yuruna/blob/main/docs/workarounds.md) first.
 
 From the `automation/` folder (in `pwsh`):
 
@@ -62,6 +62,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.07.22
+Last review: 2026.07.24
 
 Back to [yuruna-project](../../README.md) · [Yuruna](https://yuruna.com)

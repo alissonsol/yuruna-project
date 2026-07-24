@@ -2,30 +2,10 @@
 
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
-# Interaction sequence for driving VM workload testing.
-# See possible actions in the actions.yml file.
-# ${vmName}, ${hostType}, ${guestKey} are built-in. ${ext:area.Method(args)}
-# invokes the active extension under test/extension/<area>/.
-#
-# Warm-paths off the "k8s.text-to-sql" checkpoint produced by
-# workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline (Ubuntu + Kubernetes),
-# then stands the text-to-sql example up entirely inside the VM and verifies it:
-#   1. loadDiskSnapshot -> revert to the Kubernetes baseline,
-#   2. log in,
-#   3. ubuntu.server.24.postgresql.sh          -> install PostgreSQL 18,
-#   4. ubuntu.server.24.workload.k8s.text-to-sql.db.sh -> ssl off, create the
-#      yuruna_demo database, load db/schema.sql (+ yuruna_agent_ro role), open
-#      listen_addresses/pg_hba so in-cluster pods can reach the DB,
-#   5. ubuntu.server.24.workload.k8s.text-to-sql.sh -> build the .NET image,
-#      push it, and deploy the pod + TLS ingress through Set-Resource/Component/
-#      Workload,
-#   6. wait for the deployments, then test-localhost.sh -> expect HTTP 200.
 #
 # Unattended by design (mirrors the syzor scanner sequences): no `break` steps,
-# so no operator Continue is required. For a first interactive run you can add a
-# `break` step anywhere; YURUNA_BREAK_DISABLED=1 turns any break into a no-op.
+# so no operator Continue is required.
 
-# Perf-log identity (see https://yuruna.link/test/perf). Bump revision on step add/remove.
 sequenceGuid: 42ed7613-c319-4d8f-9391-66001c258b2d
 sequenceRevision: 2
 
@@ -34,16 +14,6 @@ keystrokeMechanism: gui
 resource:
   ubuntu.server.24:
     - workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline
-# requiresSnapshot warm-path: on a snapshot hit the resource chain is SKIPPED,
-# so every variable baked into the guest at build time MUST match what .baseline
-# put in the checkpoint -- username (yt2sqluser) for the account, and hostname
-# (yt2sqlhost) for the guest's cloud-init local-hostname. A snapshot taken
-# before either value was pinned still carries the old one, so re-take it after
-# changing them. saveDiskSnapshot renamed the VM to the snapshot id
-# (k8s.text-to-sql) and the sequence engine tracks that rename, so the warm-path
-# targets the persisted VM by name -- no separate vm-name variable is needed.
-# The hostname is what the shell prompt shows, and it survives that rename,
-# which the VM name does not.
 # See https://yuruna.link/test/requires-snapshot for the contract.
 requiresSnapshot:
   id: "k8s.text-to-sql"
@@ -51,7 +21,6 @@ variables:
   username: yt2sqluser
   hostname: yt2sqlhost
 
-# component -- restore the checkpoint and reach a logged-in shell.
 component:
   - action: loadDiskSnapshot
     id: "k8s.text-to-sql"
@@ -79,7 +48,6 @@ component:
     timeoutSeconds: 90
     description: "OCR: ${username}@ (shell prompt)"
 
-# workload -- install PostgreSQL, deploy text-to-sql, verify HTTP 200.
 workload:
   - action: fetchAndExecute
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.postgresql.sh"

@@ -173,7 +173,7 @@ JOIN plan_tier p ON p.tier_id = s.tier_id
 CROSS JOIN generate_series(0, 5) m
 WHERE s.cancelled_at IS NULL OR s.started_at + (m * INTERVAL '1 month') <= s.cancelled_at;
 
--- One churn_event per cancelled subscription, reason cycled.
+-- One churn_event per canceled subscription, reason cycled.
 INSERT INTO churn_event (subscription_id, happened_at, reason_code)
 SELECT
     s.subscription_id,

@@ -2,10 +2,7 @@
 
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
-# SSH variant of workload.guest.ubuntu.server.26.k8s.website (keystrokeMechanism: ssh).
-# See possible actions in the actions.yml file.
 
-# Perf-log identity (see https://yuruna.link/test/perf). Bump revision on step add/remove.
 sequenceGuid: 42272942-dcd0-48fc-ba88-814462c89f5a
 sequenceRevision: 1
 
@@ -18,7 +15,6 @@ variables:
   username: yuuser26
   hostname: yuhost26
 
-# component -- wait for sshd, smoke-test the session.
 component:
   - action: sshWaitReady
     timeoutSeconds: 300
@@ -28,7 +24,6 @@ component:
     command: "whoami && hostname"
     description: "Smoke test: whoami/hostname"
 
-# workload -- install Kubernetes, deploy the website, verify HTTP 200.
 workload:
   - action: sshFetchAndExecute
     command: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.26/ubuntu.server.26.k8s.sh"

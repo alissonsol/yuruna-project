@@ -3,7 +3,7 @@
 Folder scaffold for a new project. See
 [architecture.md](https://github.com/alissonsol/yuruna/blob/main/docs/architecture.md) for
 the three-phase model and CLI entry points, and the Connectivity
-section of [FAQ](https://github.com/alissonsol/yuruna/blob/main/docs/faq.md)
+section of [Workarounds and FAQ](https://github.com/alissonsol/yuruna/blob/main/docs/workarounds.md)
 before deploying.
 
 ## Deploy
@@ -38,6 +38,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.07.22
+Last review: 2026.07.24
 
 Back to [yuruna-project](../README.md) · [Yuruna](https://yuruna.com)

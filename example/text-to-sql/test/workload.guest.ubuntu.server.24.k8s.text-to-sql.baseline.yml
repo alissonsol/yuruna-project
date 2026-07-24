@@ -2,19 +2,13 @@
 
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
-# Interaction sequence for driving VM workload testing.
-# See possible actions in the actions.yml file.
-# ${vmName}, ${hostType}, ${guestKey} are built-in. ${ext:area.Method(args)}
-# invokes the active extension under test/extension/<area>/.
 
-# Perf-log identity (see https://yuruna.link/test/perf). Bump revision on step add/remove.
 sequenceGuid: 426ca572-7dda-4e43-be71-93462c7ef6e7
 sequenceRevision: 2
 
 description: "Ubuntu Server: log in, install Kubernetes, prepare for text-to-sql deployment."
 keystrokeMechanism: gui
-# Chain start.guest directly (autoinstall -> first-login password rotation ->
-# ubuntu.server.24.update.sh -> reboot). The workload.guest chain
+# Chain start.guest directly. The workload.guest chain
 # additionally installs VS Code (ubuntu.server.24.code.sh), which text-to-sql
 # does not use and only adds install time + failure surface to an unattended
 # cycle. update.sh already leaves pwsh + the framework/project repos in place.
@@ -25,7 +19,6 @@ variables:
   username: yt2sqluser
   hostname: yt2sqlhost
 
-# component -- reach a logged-in shell.
 component:
   - action: retry
     maxAttempts: 2
@@ -49,7 +42,6 @@ component:
     timeoutSeconds: 90
     description: "OCR: ${username}@${hostname}"
 
-# workload -- install Kubernetes, ready the node, snapshot the baseline.
 workload:
   - action: fetchAndExecute
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.k8s.sh"

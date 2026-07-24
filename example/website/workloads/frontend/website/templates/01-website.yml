@@ -35,7 +35,7 @@ spec:
         resources:
           # ephemeral-storage requests make kubelet account for this pod
           # in its 85% nodefs eviction budget at schedule time, so a
-          # disk-greedy neighbour can no longer cause an Evicted/
+          # disk-greedy neighbor can no longer cause an Evicted/
           # FailedScheduling cascade on the test node. The limit caps a
           # single misbehaving build/log loop. Memory + cpu requests are
           # paired with their existing limits to keep QoS=Guaranteed

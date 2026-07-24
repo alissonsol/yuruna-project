@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: 2026.07.22
+# Version: 2026.07.24
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 set -euo pipefail
@@ -14,7 +14,6 @@ REAL_HOME=$(eval echo "~$REAL_USER")
 # Fix kube permissions
 sudo chown -R "$REAL_USER:$REAL_USER" "$REAL_HOME/.kube"
 
-# Install mkcert CA
 mkcert -install 2>/dev/null || true
 
 # Bound a command with timeout(1) so a stall surfaces as a retriable

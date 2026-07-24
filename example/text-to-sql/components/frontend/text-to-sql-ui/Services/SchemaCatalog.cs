@@ -38,7 +38,7 @@ public sealed class SchemaCatalog
 
     // ── Public retriever ───────────────────────────────────────────────────
     // Returns the k most relevant tables (by hybrid score) plus their direct
-    // FK neighbours. The string form is what the SQL generator sees.
+    // FK neighbors. The string form is what the SQL generator sees.
     public async Task<RetrievalResult> GetRelevantSchemaAsync(string question, int k = 6)
     {
         var all = await _cache.Value;

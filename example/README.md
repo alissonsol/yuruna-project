@@ -4,7 +4,7 @@
 namespace, deploying one can supersede another. To restore the
 previously working example, redeploy its ingress rules. See the
 Connectivity section of the
-[Frequently Asked Questions](https://github.com/alissonsol/yuruna/blob/main/docs/faq.md).
+[Workarounds and FAQ](https://github.com/alissonsol/yuruna/blob/main/docs/workarounds.md).
 
 ## Basic end-to-end test
 
@@ -31,6 +31,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.07.22
+Last review: 2026.07.24
 
 Back to [yuruna-project](../README.md) · [Yuruna](https://yuruna.com)
