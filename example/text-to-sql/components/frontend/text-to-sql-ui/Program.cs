@@ -3,8 +3,9 @@
 // ---------------------------------------------------------------------------
 // Agentic Text-to-SQL UI — minimal ASP.NET Core Razor Pages host wiring
 // Razor Pages, the read-only Npgsql DataSource, and the agent services;
-// offline rule-based LLM by default, ClaudeLlmClient when
-// ANTHROPIC_API_KEY is set. See the README service notes —
+// offline rule-based LLM by default, OllamaLlmClient when USE_LOCAL_MODEL
+// is set, ClaudeLlmClient when ANTHROPIC_API_KEY is set. See the README
+// service notes —
 // https://yuruna.link/text-to-sql#service-notes
 // ---------------------------------------------------------------------------
 using Npgsql;
@@ -32,10 +33,21 @@ builder.Services.AddSingleton(dsBuilder.Build());
 builder.Services.AddSingleton<SchemaCatalog>();
 builder.Services.AddSingleton<SqlValidator>();
 
-// Use ClaudeLlmClient when ANTHROPIC_API_KEY is set; fall back to the
-// deterministic rule-based client so the example runs offline without a key.
+// Client selection priority:
+//   1. USE_LOCAL_MODEL set  -> OllamaLlmClient (local-first, on-device; keeps
+//      the schema + question off any third-party API). OLLAMA_HOST / OLLAMA_MODEL
+//      override the http://127.0.0.1:11434 + 'localcoder' defaults.
+//   2. ANTHROPIC_API_KEY set -> ClaudeLlmClient (hosted).
+//   3. otherwise             -> RuleBasedLlmClient (deterministic offline).
+var useLocalModel = Environment.GetEnvironmentVariable("USE_LOCAL_MODEL");
 var anthropicApiKey = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY");
-if (!string.IsNullOrEmpty(anthropicApiKey))
+if (!string.IsNullOrEmpty(useLocalModel))
+    builder.Services.AddSingleton<ILlmClient>(sp =>
+        new OllamaLlmClient(
+            sp.GetRequiredService<ILogger<OllamaLlmClient>>(),
+            Environment.GetEnvironmentVariable("OLLAMA_HOST"),
+            Environment.GetEnvironmentVariable("OLLAMA_MODEL")));
+else if (!string.IsNullOrEmpty(anthropicApiKey))
     builder.Services.AddSingleton<ILlmClient>(sp =>
         new ClaudeLlmClient(
             anthropicApiKey,

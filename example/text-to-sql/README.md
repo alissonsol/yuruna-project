@@ -109,10 +109,11 @@ swapped in through the same `ILlmClient` seam.
 
 **`Services/ILlmClient.cs`** — the seam shape: `GenerateSqlAsync` takes
 the question plus the FK-expanded schema slice and returns either a SQL
-string or a refusal with a reason. Two implementations exist so the
+string or a refusal with a reason. Three implementations exist so the
 example runs reproducibly with or without an LLM dependency:
-`RuleBasedLlmClient` (deterministic, offline, no API key) and
-`ClaudeLlmClient` (Anthropic Messages API with tool-use).
+`RuleBasedLlmClient` (deterministic, offline, no API key),
+`ClaudeLlmClient` (Anthropic Messages API with tool-use), and
+`OllamaLlmClient` (local Ollama server, activated by `USE_LOCAL_MODEL`).
 
 **`Services/RuleBasedLlmClient.cs`** — deterministic stand-in for the
 "③ SQL Generator (LLM)" box. Pattern coverage matches the seed data:
@@ -227,7 +228,7 @@ example/text-to-sql/
             ├── Pages/                ← Index · Schema · About · Error · Layout
             ├── Services/             ← ILlmClient · SchemaCatalog · SqlValidator
             │                            · AgentOrchestrator · RuleBasedLlmClient
-            │                            · ClaudeLlmClient
+            │                            · ClaudeLlmClient · OllamaLlmClient
             └── wwwroot/css/site.css
 ```
 
@@ -237,6 +238,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.07.24
+Last review: 2026.07.26
 
 Back to [yuruna-project](../../README.md) · [Yuruna](https://yuruna.com)

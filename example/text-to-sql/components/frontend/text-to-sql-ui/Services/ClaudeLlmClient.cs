@@ -204,7 +204,6 @@ In the plan field, show your step-by-step reasoning before arriving at the SQL.
         using var doc = JsonDocument.Parse(responseJson);
         var root = doc.RootElement;
 
-        // Find the tool_use block in content array
         foreach (var block in root.GetProperty("content").EnumerateArray())
         {
             if (block.GetProperty("type").GetString() != "tool_use") continue;

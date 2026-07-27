@@ -101,8 +101,7 @@ fi
 # The postgres OS user cannot read files under the harness user's 0750 home, so
 # feed the SQL over STDIN. schema.sql's "GRANT CONNECT ON DATABASE
 # CURRENT_DATABASE()" is not valid DDL (a function is not a database-name
-# token), so pre-render it to the literal db name -- the same pre-render
-# technique the syzor migrations use for their dollar-quoted role SQL.
+# token), so pre-render it to the literal db name.
 sed "s/CURRENT_DATABASE()/${DBNAME}/g" "$SCHEMA_SQL" \
   | sudo -u postgres psql -v ON_ERROR_STOP=1 -d "$DBNAME" -f - >/dev/null
 echo "  schema loaded into $DBNAME"

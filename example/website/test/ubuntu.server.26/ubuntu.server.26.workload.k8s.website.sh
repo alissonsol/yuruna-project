@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: 2026.07.24
+# Version: 2026.07.26
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 set -euo pipefail
@@ -102,6 +102,7 @@ CACHE_HOST=$(echo "${http_proxy:-}" | sed -E 's|^https?://([^:/]+).*|\1|')
 cd "$REAL_HOME/yuruna/project/example/website/components/frontend/website"
 cp "$REAL_HOME/.aspnet/https/aspnetapp.pfx" .
 
+# The list mirrors the Dockerfile's FROM lines.
 BASE_IMAGES=("dotnet/sdk:10.0" "dotnet/aspnet:10.0")
 LOCAL_REGISTRY="localhost:5000"
 ACCEPT_HDR='Accept: application/vnd.oci.image.index.v1+json, application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.list.v2+json, application/vnd.docker.distribution.manifest.v2+json'

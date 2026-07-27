@@ -5,9 +5,13 @@
 [github.com/alissonsol/yuruna](https://github.com/alissonsol/yuruna);
 this repo tracks user-facing project templates and end-to-end examples.
 
+## 2026.07.26
+
+- _Unreleased: fill in this cycle's changes._
+
 ## 2026.07.24
 
-- **Schema change**: Scheme change for test sequences and adjustments for projects.
+- **Schema change**: Breaking schema change for test sequences and adjustments for projects.
 
 ## 2026.07.14
 

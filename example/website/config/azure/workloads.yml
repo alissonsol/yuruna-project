@@ -17,6 +17,8 @@ globalVariables:
   dockerUsername:        "$(az acr credential show -n ${env:_registryLocation} --query username)"
   dockerPassword:        "$(az acr credential show -n ${env:_registryLocation} --query passwords[0].value)"
   ingressClass:          "nginx"
+  # cert-manager release pin (https://github.com/cert-manager/cert-manager/releases);
+  # the same pin appears in every example config -- bump them together.
   certManagerLatest:     "v1.21.0"
 
 workloads:
