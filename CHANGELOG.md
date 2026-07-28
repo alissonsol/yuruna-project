@@ -5,7 +5,7 @@
 [github.com/alissonsol/yuruna](https://github.com/alissonsol/yuruna);
 this repo tracks user-facing project templates and end-to-end examples.
 
-## 2026.07.26
+## 2026.07.28
 
 - _Unreleased: fill in this cycle's changes._
 
