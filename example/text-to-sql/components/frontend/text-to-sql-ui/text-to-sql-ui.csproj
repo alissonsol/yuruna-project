@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Npgsql 10.x matches the net10.0 target; bump with the framework .NET line -->
     <PackageReference Include="Npgsql" Version="10.0.3" />
   </ItemGroup>
 

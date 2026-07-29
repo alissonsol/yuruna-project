@@ -64,11 +64,11 @@ workload:
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/text-to-sql/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.text-to-sql.sh"
     description: "ubuntu.server.24.workload.k8s.text-to-sql.sh (build image, deploy pod + ingress)"
     waitPattern: "FETCHED AND EXECUTED:"
-    timeoutSeconds: 900
+    timeoutSeconds: 1200
 
   - action: fetchAndExecute
-    text: "kubectl wait --for=condition=available deployment/text-to-sql-ui -n text-to-sql --timeout=240s; kubectl wait --for=condition=available deployment/nginx-ingress-ingress-nginx-controller -n ingress-ns --timeout=240s; clear; /usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"
-    description: "wait for deployments, then test-localhost.sh (expect HTTP 200)"
+    text: "clear; /usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"
+    description: "test-localhost.sh (expect HTTP 200)"
     waitPattern: "200 OK"
     timeoutSeconds: 900
 

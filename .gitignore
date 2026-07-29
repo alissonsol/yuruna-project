@@ -369,7 +369,7 @@ project/
 # umbrella rule covers every subdirectory the runner creates:
 #   test/status/runtime/    pids, status.json, control flags,
 #                           ipaddresses.txt, caching-proxy.txt, server.err,
-#                           yuruna-caching-proxy.yml, host.uuid,
+#                           yuruna-caching-proxy-service.yml, host.uuid,
 #                           .status-service.ps1, etc. See Test.YurunaDir.psm1
 #                           in the yuruna repo -- $env:YURUNA_RUNTIME_DIR
 #                           defaults here so the status server can serve

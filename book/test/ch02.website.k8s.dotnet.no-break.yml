@@ -60,11 +60,10 @@ workload:
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/website/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.website.sh"
     description: "ubuntu.server.24.workload.k8s.website.sh"
     waitPattern: "FETCHED AND EXECUTED:"
-    timeoutSeconds: 900
+    timeoutSeconds: 1200
 
-  # --- REGION: https://yuruna.link/kubernetes#why-the-website-readiness-check-waits-on-deployment-availability-not-endpoints
   - action: fetchAndExecute
-    text: "kubectl wait --for=condition=available deployment/website -n website --timeout=240s; kubectl wait --for=condition=available deployment/nginx-ingress-ingress-nginx-controller -n ingress-ns --timeout=240s; clear; /usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"
+    text: "clear; /usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"
     description: "test-localhost.sh"
     waitPattern: "200 OK"
 

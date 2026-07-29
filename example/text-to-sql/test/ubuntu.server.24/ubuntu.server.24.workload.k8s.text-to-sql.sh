@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: 2026.07.28
+# Version: 2026.07.29
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 set -euo pipefail
@@ -67,7 +67,7 @@ for attempt in $(seq 1 "$registry_attempts"); do
         echo "       Options: (1) wait and retry, (2) authenticate the zot proxy to upstream," >&2
         echo "                (3) bake the registry image into the guest base via cloud-init," >&2
         echo "                (4) check that the caching proxy's zot is up:" >&2
-        echo "                    curl -fsS http://yuruna-caching-proxy:5000/v2/" >&2
+        echo "                    curl -fsS http://yuruna-caching-proxy-service:5000/v2/" >&2
         echo "" >&2
         exit 1
     fi
@@ -98,7 +98,7 @@ echo "==== Base images ===="
 # registry container started above, and the build then pulls FROM the
 # loopback registry only.
 CACHE_HOST=$(echo "${http_proxy:-}" | sed -E 's|^https?://([^:/]+).*|\1|')
-[ -z "$CACHE_HOST" ] && CACHE_HOST="yuruna-caching-proxy"
+[ -z "$CACHE_HOST" ] && CACHE_HOST="yuruna-caching-proxy-service"
 cd "$REAL_HOME/yuruna/project/example/text-to-sql/components/frontend/text-to-sql-ui"
 cp "$REAL_HOME/.aspnet/https/aspnetapp.pfx" .
 
@@ -270,3 +270,15 @@ echo "==== Set-Component ===="
 pwsh ../../automation/Set-Component.ps1 text-to-sql localhost
 echo "==== Set-Workload ===="
 pwsh ../../automation/Set-Workload.ps1 text-to-sql localhost
+
+echo "==== Wait for readiness ===="
+# --- REGION: https://yuruna.link/kubernetes#why-the-website-readiness-check-waits-on-deployment-availability-not-endpoints
+# These waits run HERE rather than in the sequence step that follows,
+# because that step is TYPED into the guest console one RFB key event
+# per character. Inlining them made the typed line 557 characters, and
+# sends that long have corrupted mid-flight on macos.utm -- dropped
+# characters, then a key left held down auto-repeating into the
+# console. Keeping the typed command short keeps it well inside the
+# length the console path handles reliably.
+kubectl wait --for=condition=available deployment/text-to-sql-ui -n text-to-sql --timeout=240s
+kubectl wait --for=condition=available deployment/nginx-ingress-ingress-nginx-controller -n ingress-ns --timeout=240s

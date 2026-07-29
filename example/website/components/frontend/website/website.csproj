@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- VS Docker-tooling scaffold pin -->
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
   </ItemGroup>
 
