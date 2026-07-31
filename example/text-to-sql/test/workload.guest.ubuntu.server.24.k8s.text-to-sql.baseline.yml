@@ -49,14 +49,23 @@ workload:
     waitPattern: "FETCHED AND EXECUTED:"
     timeoutSeconds: 1800
 
+  # `&&`, not `;`: the node table must be reachable ONLY when the wait
+  # actually succeeded, so that seeing the table is itself proof of readiness.
   - action: inputTextAndEnter
-    text: "kubectl wait --for=condition=Ready nodes --all --timeout=300s; clear; kubectl get nodes"
+    text: "kubectl wait --for=condition=Ready nodes --all --timeout=300s && clear && kubectl get nodes"
     description: "Check node status"
 
+  # Gate on "control-plane" -- it appears only in the ROLES column of the
+  # cleared `kubectl get nodes` table above. Do NOT gate on "Ready":
+  # Test-OCRMatch is fuzzy, so "Ready" matches the echoed
+  # "--for=condition=Ready" of the command itself (passing before the wait has
+  # even run, then letting later steps type into a still-blocked shell) and it
+  # also matches inside the word "NotReady". timeoutSeconds must exceed the
+  # 300s wait being watched, or a healthy but slow cluster times out here.
   - action: waitForText
-    pattern: "Ready"
-    timeoutSeconds: 90
-    description: "OCR: Ready"
+    pattern: "control-plane"
+    timeoutSeconds: 360
+    description: "OCR: control-plane"
 
   - action: inputTextAndEnter
     text: "clear; newgrp docker"

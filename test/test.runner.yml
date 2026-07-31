@@ -8,6 +8,28 @@ sequences:
   - ch01.website.example.no-break
   - workload.guest.windows.11
   - workload.guest.ubuntu.server.24.k8s.website
+
+# Optional named groupings of the sequences above. A pool can be assigned one of
+# these instead of the whole list; the implicit set "all" (everything under
+# `sequences:`) always exists and needs no declaration. displayName/description
+# are what a non-technical operator sees on the pool-control board, so they are
+# written here, next to the sequences they name.
+testSets:
+  - name: smoke
+    displayName: Quick smoke test
+    description: Website only -- the fastest signal that the lab is healthy.
+    sequences:
+      - ch01.website.example.no-break
+  - name: windows
+    displayName: Windows guest
+    description: Windows 11 guest workload on its own.
+    sequences:
+      - workload.guest.windows.11
+  - name: kubernetes
+    displayName: Kubernetes website
+    description: Ubuntu server 24 k8s website workload.
+    sequences:
+      - workload.guest.ubuntu.server.24.k8s.website
 #  - workload.guest.amazon.linux.2023
 #  - workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline
 #  - workload.guest.ubuntu.server.24.k8s.text-to-sql.test
