@@ -5,6 +5,10 @@
 [github.com/alissonsol/yuruna](https://github.com/alissonsol/yuruna);
 this repo tracks user-facing project templates and end-to-end examples.
 
+## 2026.08.02
+
+- **TBD**: To be done.
+
 ## 2026.07.31
 
 - **Schema change**: Non-breaking schema change to add testSets and their name,
