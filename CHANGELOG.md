@@ -5,7 +5,7 @@
 [github.com/alissonsol/yuruna](https://github.com/alissonsol/yuruna);
 this repo tracks user-facing project templates and end-to-end examples.
 
-## 2026.08.02
+## 2026.08.03
 
 - **TBD**: To be done.
 
