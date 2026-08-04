@@ -121,10 +121,8 @@ In the plan field, show your step-by-step reasoning before arriving at the SQL.
         // Deadline-bounded retry: transport failures, HTTP 429, and 5xx are
         // transient and retried with exponential backoff until RetryWindow
         // elapses. A model REFUSAL (a parsed tool_use with refused=true) is a
-        // normal decision and returned; every other failure mode throws an
-        // LlmClientException so the caller surfaces it as an error (and can
-        // retry/monitor) rather than mislabeling infrastructure trouble as the
-        // model declining.
+        // normal decision and returned; every other failure mode throws
+        // LlmClientException (see its declaration below).
         var deadline = DateTime.UtcNow + RetryWindow;
         var attempt = 0;
         while (true)

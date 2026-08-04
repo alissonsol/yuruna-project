@@ -47,4 +47,12 @@ you acknowledge this risk and accept full responsibility for the outcome.
 Review the code, take backups, and test in an isolated environment before
 running anything privileged against systems you cannot afford to lose.
 
+---
+
+LICENSEURI https://yuruna.link/license
+
+Copyright (c) 2019-2026 by Alisson Sol et al.
+
+Last review: 2026.08.04
+
 Back to [yuruna-project](README.md) · [Yuruna](https://yuruna.com)

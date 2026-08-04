@@ -5,11 +5,10 @@
 
 # REGISTRY is the registry prefix for the base images (must end in `/`).
 # The yuruna flows pass the project's local distribution registry
-# (localhost:5000/), seeded with these images beforehand (workload test
-# scripts and the seed-base-images.ps1 pre-processor), so FROM resolves
-# over loopback with no remote registry on the path. The default stays
-# mcr.microsoft.com/ so a bare `docker build` on a machine without that
-# registry still works direct.
+# (localhost:5000/), seeded beforehand by the workload test scripts and
+# seed-base-images.ps1, so FROM resolves over loopback with no remote
+# registry on the path. The default stays mcr.microsoft.com/ so a bare
+# `docker build` outside those flows still works.
 ARG REGISTRY=mcr.microsoft.com/
 
 FROM ${REGISTRY}dotnet/aspnet:10.0 AS base

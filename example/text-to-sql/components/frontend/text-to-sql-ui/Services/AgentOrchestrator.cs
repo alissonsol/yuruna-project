@@ -1,7 +1,7 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ---------------------------------------------------------------------------
-// AgentOrchestrator — the "①  Planner" + retry loop for the agent pipeline
+// AgentOrchestrator — the "① Planner" + retry loop for the agent pipeline
 // (schema retriever → SQL generator → static validator → EXPLAIN cost gate
 // → executor). Every stage emits a Step with elapsed-ms, status, and notes,
 // rendered by the UI as one timeline. Stage map: see the README service

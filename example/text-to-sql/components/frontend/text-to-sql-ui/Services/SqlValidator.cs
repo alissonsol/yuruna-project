@@ -2,9 +2,10 @@
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ---------------------------------------------------------------------------
 // SqlValidator — the "④ Validator (Guardrail)" stage of the agent pipeline.
-// Five checks (single SELECT-only statement, no stacked statements, no
-// comment payloads, enforced top-level LIMIT, EXPLAIN cost gate); the
-// regex pre-check vs AST-parser trade-off: see the README service notes —
+// Static checks (single SELECT-only statement, no stacked statements, no
+// comment payloads, no CTE-disguised writes, no PII columns, enforced
+// top-level LIMIT) plus an online EXPLAIN cost gate; the regex pre-check
+// vs AST-parser trade-off: see the README service notes —
 // https://yuruna.link/text-to-sql#service-notes
 // ---------------------------------------------------------------------------
 
@@ -91,14 +92,12 @@ public sealed class SqlValidator
         if (piiMatch.Success)
             return StaticCheckResult.Fail($"Query references a PII column ('{piiMatch.Value}'); selecting PII is not permitted.");
 
-        // Enforce the row cap on a TOP-LEVEL LIMIT only. A naive substring
-        // check for " LIMIT " is satisfied by a LIMIT inside a subquery/CTE
-        // while the OUTER result stays uncapped; a paren-depth
-        // scan distinguishes the real top-level cap. When the query already has
-        // a top-level LIMIT it is kept as-is (the EXPLAIN cost gate backstops an
-        // over-large one); otherwise LIMIT N is appended at the TOP level so any
-        // existing ORDER BY stays outermost -- wrapping the query in a derived
-        // table would drop that ordering for the common "top N by X" shape.
+        // Enforce the row cap on a TOP-LEVEL LIMIT only (see HasTopLevelLimit).
+        // An existing top-level LIMIT is kept as-is -- the EXPLAIN cost gate
+        // backstops an over-large one. Otherwise LIMIT N is appended at the top
+        // level so any existing ORDER BY stays outermost; wrapping the query in
+        // a derived table would drop that ordering for the common "top N by X"
+        // shape.
         var withLimit = HasTopLevelLimit(noTrailing)
             ? noTrailing
             : noTrailing + $"\nLIMIT {_maxLimit}";

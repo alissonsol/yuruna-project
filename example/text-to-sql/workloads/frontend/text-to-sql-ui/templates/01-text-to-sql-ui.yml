@@ -33,13 +33,12 @@ spec:
         - name: port443
           containerPort: 443
         resources:
-          # ephemeral-storage requests make kubelet account for this pod
+          # The ephemeral-storage request makes kubelet account for this pod
           # in its 85% nodefs eviction budget at schedule time, so a
-          # disk-greedy neighbor can no longer cause an Evicted/
-          # FailedScheduling cascade on the test node. The limit caps a
-          # single misbehaving build/log loop. Memory + cpu requests are
-          # paired with their existing limits to keep QoS=Guaranteed
-          # instead of BestEffort.
+          # disk-greedy neighbor cannot trigger an Evicted/FailedScheduling
+          # cascade on the test node; the limit caps a single misbehaving
+          # build/log loop. Memory + cpu requests mirror their limits to keep
+          # QoS=Guaranteed instead of BestEffort.
           requests:
             ephemeral-storage: "256Mi"
             memory: "128Mi"

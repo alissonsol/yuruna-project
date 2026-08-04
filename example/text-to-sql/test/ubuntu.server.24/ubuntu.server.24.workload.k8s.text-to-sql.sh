@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: 2026.08.03
+# Version: 2026.08.04
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 set -euo pipefail
@@ -140,13 +140,6 @@ probe_registry() {
     return 0
 }
 
-# Acquire images missing from the local store. Candidates in priority
-# order: the zot pull-through cache (LAN, absorbs upstream TLS jitter),
-# then mcr.microsoft.com as the survival path when the cache VM is
-# absent or cannot serve the tag. Each candidate is probe-gated first;
-# the pull itself is stall-bounded as a backstop for mid-stream wedges.
-# The bound is a hard elapsed-time cap, not a progress check -- raise
-# YURUNA_PULL_STALL_TIMEOUT on links slower than ~1 MB/s.
 # All BASE_IMAGES present in the local store?
 all_base_images_local() {
     local ref
@@ -156,6 +149,13 @@ all_base_images_local() {
     return 0
 }
 
+# Acquire images missing from the local store. Candidates in priority
+# order: the zot pull-through cache (LAN, absorbs upstream TLS jitter),
+# then mcr.microsoft.com as the survival path when the cache VM is
+# absent or cannot serve the tag. Each candidate is probe-gated first;
+# the pull itself is stall-bounded as a backstop for mid-stream wedges.
+# The bound is a hard elapsed-time cap, not a progress check -- raise
+# YURUNA_PULL_STALL_TIMEOUT on links slower than ~1 MB/s.
 PULL_STALL="${YURUNA_PULL_STALL_TIMEOUT:-300}"
 acquire_rounds=2
 acquire_delay=10

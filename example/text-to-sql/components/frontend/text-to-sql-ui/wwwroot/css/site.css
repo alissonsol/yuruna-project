@@ -213,4 +213,21 @@ pre {
   color: var(--fg);
   padding: 1px 9px; border-radius: 999px;
   margin-right: 6px; font-family: var(--font-mono); font-size: 12px;
+  /* An FK edge label ("customer_id→customer.customer_id") is one unbroken
+     token wider than a ~375px viewport, and would push the page into
+     horizontal scroll; let it break mid-token instead. break-word, not
+     overflow-wrap: anywhere, for the same older-iOS baseline as above. */
+  max-width: 100%;
+  word-break: break-word;
+}
+
+/* ── Touch targets ────────────────────────────────────────────────────────
+   Below the tablet breakpoint the nav, example-question and submit controls
+   are tapped, not clicked; the type sizes above leave them well under the
+   44px minimum a finger needs, so raise them there. */
+@media (max-width: 767px) {
+  .top-nav a, .examples a {
+    display: inline-flex; align-items: center; min-height: 44px;
+  }
+  button { min-height: 44px; }
 }

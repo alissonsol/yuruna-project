@@ -55,13 +55,12 @@ output. Alternatives:
 - Re-running `workloads` may drop the IP; lock the resource as
   described in [this issue](https://stackoverflow.com/questions/66435282/how-to-make-azure-not-delete-public-ip-when-deleting-service-ingress-controlle).
 
-
 ---
 
 LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.03
+Last review: 2026.08.04
 
 Back to [yuruna-project](../../README.md) · [Yuruna](https://yuruna.com)

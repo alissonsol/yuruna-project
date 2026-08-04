@@ -1,7 +1,7 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ---------------------------------------------------------------------------
-// SchemaCatalog — the "②  Schema Retriever" stage of the agent pipeline.
+// SchemaCatalog — the "② Schema Retriever" stage of the agent pipeline.
 // Build-time catalog introspection, query-time hybrid scoring with one-hop
 // FK expansion, compact (< 2 KB) prompt slices: see the README service
 // notes — https://yuruna.link/text-to-sql#service-notes

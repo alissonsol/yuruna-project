@@ -23,7 +23,7 @@ shared independently.
 
 - Framework [architecture](https://github.com/alissonsol/yuruna/blob/main/docs/architecture.md)
 - Connectivity & setup: [Workarounds and FAQ](https://github.com/alissonsol/yuruna/blob/main/docs/workarounds.md)
-- Contributing: [contributing.md](https://github.com/alissonsol/yuruna/blob/main/CONTRIBUTING.md)
+- Contributing: [CONTRIBUTING.md](https://github.com/alissonsol/yuruna/blob/main/CONTRIBUTING.md)
 - Security: [SECURITY.md](https://github.com/alissonsol/yuruna/blob/main/SECURITY.md)
 
 ---
@@ -32,6 +32,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.03
+Last review: 2026.08.04
 
 Back to [yuruna-project](README.md) · [Yuruna](https://yuruna.com)

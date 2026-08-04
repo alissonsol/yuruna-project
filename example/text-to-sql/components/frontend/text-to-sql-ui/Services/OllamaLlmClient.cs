@@ -94,8 +94,7 @@ after — with EXACTLY these keys:
         // failures and HTTP 5xx are transient and retried with exponential
         // backoff until RetryWindow elapses. A model REFUSAL (parsed
         // refused=true) is a normal decision and returned; every other failure
-        // mode throws LlmClientException so the caller surfaces it as an error
-        // rather than mislabeling infrastructure trouble as the model declining.
+        // mode throws LlmClientException.
         var deadline = DateTime.UtcNow + RetryWindow;
         var attempt = 0;
         while (true)

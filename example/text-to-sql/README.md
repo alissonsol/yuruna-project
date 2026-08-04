@@ -25,9 +25,9 @@ so the example runs offline against a local PostgreSQL; setting
 
 ### 1 · Prepare PostgreSQL
 
-Any local PostgreSQL ≥ 14 works (Docker image, the Yuruna guest
-`postgresql.sh` setup script, or a native install). With a superuser, create the database
-and load the schema:
+Any local PostgreSQL ≥ 14 works (Docker image, a Yuruna guest
+`<guest>.postgresql.sh` setup script, or a native install). With a superuser,
+create the database and load the schema:
 
 ```powershell
 psql -h localhost -U postgres -c "CREATE DATABASE yuruna_demo;"
@@ -88,11 +88,9 @@ same catalog the agent uses, viewable as ground truth.
 | ⑤ Executor | `Services/AgentOrchestrator.cs` |
 | ⑥ Observer | the timeline on `Pages/Index.cshtml` |
 
-The **`ILlmClient`** interface (`Services/ILlmClient.cs`) is the seam
-the real Claude / Anthropic tool-use loop plugs into without touching
-the rest of the pipeline: `Services/ClaudeLlmClient.cs` is that
-implementation, and `Program.cs` selects it at runtime whenever
-`ANTHROPIC_API_KEY` is present.
+The **`ILlmClient`** interface (`Services/ILlmClient.cs`) is the seam an
+Anthropic tool-use loop plugs into without touching the rest of the
+pipeline.
 
 ### Service notes
 
@@ -238,6 +236,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.03
+Last review: 2026.08.04
 
 Back to [yuruna-project](../../README.md) · [Yuruna](https://yuruna.com)

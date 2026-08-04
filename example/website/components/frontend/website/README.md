@@ -66,14 +66,12 @@ kubectl delete svc website-service
 kubectl delete pod website-pod
 ```
 
-Back to [Website example](../../../README.md) · [Yuruna](https://github.com/alissonsol/yuruna)
-
 ---
 
 LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.03
+Last review: 2026.08.04
 
-Back to [yuruna-project](../../../../../README.md) · [Yuruna](https://yuruna.com)
+Back to [Website example](../../../README.md) · [yuruna-project](../../../../../README.md) · [Yuruna](https://yuruna.com)

@@ -5,18 +5,18 @@
 [github.com/alissonsol/yuruna](https://github.com/alissonsol/yuruna);
 this repo tracks user-facing project templates and end-to-end examples.
 
-## 2026.08.03
+## 2026.08.04
 
-- **TBD**: To be done.
+- **Stable**: Waiting for the next schema change.
 
 ## 2026.07.31
 
-- **Schema change**: Non-breaking schema change to add testSets and their name,
-  displayName, and description.
+- **Schema change**: Non-breaking addition of `testSets`, with `name`,
+  `displayName`, and `description`.
 
 ## 2026.07.24
 
-- **Schema change**: Breaking schema change for test sequences and adjustments for projects.
+- **Schema change**: Breaking change to test sequences, plus project adjustments.
 
 ## 2026.07.14
 
@@ -52,10 +52,12 @@ First publicly tracked release.
   'As Is'" restatement plus an explicit "Administrator Risk Warning"
   section covering scripts that require elevated/root privileges.
 
-Back to [yuruna-project](README.md) · [Yuruna](https://yuruna.com)
-
 ---
 
 LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
+
+Last review: 2026.08.04
+
+Back to [yuruna-project](README.md) · [Yuruna](https://yuruna.com)

@@ -5,8 +5,14 @@
 -- warehouse with intentionally diverse table sizes, a deliberate naming
 -- mismatch, and a FK graph that exercises schema retrieval.
 --
--- Load order:
---    psql -h localhost -U yuruna -d yuruna_demo -f schema.sql
+-- Load with (the sed is required -- see below):
+--    sed 's/CURRENT_DATABASE()/yuruna_demo/g' schema.sql \
+--      | psql -h localhost -U yuruna -d yuruna_demo -f -
+--
+-- The closing GRANT names its target database as CURRENT_DATABASE(): a
+-- placeholder for the real name, not valid GRANT grammar (the clause needs a
+-- database-name token, and a function call is not one). Substitute it before
+-- loading or psql stops on a syntax error.
 --
 -- The deep-dive notes are kept inline as COMMENT ON ... so the schema
 -- retriever has real prose to embed (mirrors what a production warehouse
@@ -206,6 +212,7 @@ BEGIN
     END IF;
 END$$;
 
+-- CURRENT_DATABASE() is a placeholder here; substitute it (see the header).
 GRANT CONNECT ON DATABASE CURRENT_DATABASE() TO yuruna_agent_ro;
 GRANT USAGE   ON SCHEMA public TO yuruna_agent_ro;
 GRANT SELECT  ON ALL TABLES   IN SCHEMA public TO yuruna_agent_ro;
