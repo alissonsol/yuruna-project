@@ -149,7 +149,7 @@ the Anthropic Messages API with tool-use for structured output; the
 `LlmDecision` with `Sql` (raw SELECT, no markdown fences), `PlanText`
 (reasoning shown in the UI observer), `Refused`, and `RefusalReason`.
 
-**`Services/AgentOrchestrator.cs`** — the "① Planner" plus retry loop.
+**`Services/AgentOrchestrator.cs`** — the "⑤ Executor" plus retry loop.
 Runs the stages in order (schema retriever → SQL generator → static
 validator → EXPLAIN cost gate → executor) and emits a `Step` per stage
 with elapsed-ms, status, and notes; the UI renders one run as a single
@@ -221,6 +221,7 @@ example/text-to-sql/
             ├── Program.cs
             ├── Dockerfile
             ├── copy-pfx.ps1          ← copies the dev cert into the build context
+            ├── seed-base-images.ps1  ← pushes the Dockerfile's base images to the local registry
             ├── appsettings*.json
             ├── Properties/launchSettings.json
             ├── Pages/                ← Index · Schema · About · Error · Layout
@@ -236,6 +237,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.04
+Last review: 2026.08.05
 
 Back to [yuruna-project](../../README.md) · [Yuruna](https://yuruna.com)

@@ -18,6 +18,10 @@ Connectivity section of the
   model (`Set-Resource` / `Set-Component` / `Set-Workload`); Claude
   activates when `ANTHROPIC_API_KEY` is set.
 
+- [nested.host](nested.host/README.md) — Self-verification: the outer host
+  builds a nested Ubuntu Server VM, installs the framework inside it, and runs
+  one full cycle under nested virtualization. Not yet validated on a live lab.
+
 ## Template
 
 - This is just the [folder structure](../template/) to create a new project.
@@ -30,6 +34,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.04
+Last review: 2026.08.05
 
 Back to [yuruna-project](../README.md) · [Yuruna](https://yuruna.com)
