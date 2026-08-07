@@ -4,9 +4,9 @@ A simple .NET C# website container deployed to Kubernetes.
 
 ## Deploy
 
-Before deploying, search for `TO-SET` in `config/<cloud>/*.yml` and fill
-the required values (see [Cloud](#cloud) below). Read the Connectivity
-section of [Workarounds and FAQ](https://github.com/alissonsol/yuruna/blob/main/docs/workarounds.md) first.
+Before deploying, search for `TO-SET` in `config/<cloud>/*.yml`, fill
+the required values (see [Cloud](#cloud) below), and read the Connectivity
+section of [Workarounds and FAQ](https://github.com/alissonsol/yuruna/blob/main/docs/workarounds.md).
 
 From the `automation/` folder (in `pwsh`):
 
@@ -61,6 +61,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.06
+Last review: 2026.08.07
 
 Back to [yuruna-project](../../README.md) · [Yuruna](https://yuruna.com)

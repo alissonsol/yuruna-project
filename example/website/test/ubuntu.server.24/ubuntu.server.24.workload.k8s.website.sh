@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: 2026.08.06
+# Version: 2026.08.07
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 set -euo pipefail
@@ -33,14 +33,109 @@ run_bounded() {
     fi
 }
 
+CACHE_HOST=$(echo "${http_proxy:-}" | sed -E 's|^https?://([^:/]+).*|\1|')
+[ -z "$CACHE_HOST" ] && CACHE_HOST="yuruna-caching-proxy-service"
+
+# Hard elapsed-time cap on a single pull -- a backstop for mid-stream
+# wedges, not a progress check. It has to out-wait the cache's slowest
+# HONEST answer rather than a typical one: revalidating a mutable tag
+# against a throttled upstream costs tens of seconds routinely and minutes
+# at the tail, and with no upstream to fall back to, a cap set below that
+# tail would only trade one failure mode for another. A capped attempt is
+# still not wasted -- the cache finishes the sync in the background, so the
+# retry behind it usually lands warm. Raise YURUNA_PULL_STALL_TIMEOUT on
+# links slower than ~1 MB/s.
+PULL_STALL="${YURUNA_PULL_STALL_TIMEOUT:-300}"
+
+# Media types accepted from every manifest request below. Spelled out
+# because a registry answers a manifest GET that states no preference with
+# whatever it considers the default -- for a multi-arch tag that is not the
+# index the pull needs.
+ACCEPT_HDR='Accept: application/vnd.oci.image.index.v1+json, application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.list.v2+json, application/vnd.docker.distribution.manifest.v2+json'
+
+# Print a local-docker-store reference whose repo:tag matches $1 under
+# any registry prefix; status 1 when absent.
+find_local_image() {
+    local want="$1" line
+    while IFS= read -r line; do
+        case "$line" in
+            "$want"|*/"$want")
+                printf '%s\n' "$line"
+                return 0
+                ;;
+        esac
+    done < <(docker image ls --format '{{.Repository}}:{{.Tag}}' 2>/dev/null)
+    return 1
+}
+
+# warm_manifest <repo> <tag>: drive the cache's on-demand sync of one tag to
+# completion so the pull that follows resolves a manifest already in hand.
+#
+# A cold tag cannot be pulled straight from the cache however patient the
+# caller is. dockerd abandons a request whose RESPONSE HEADERS have not
+# arrived within its own fixed patience, and the cache emits none until the
+# sync it triggered finishes -- a cold multi-arch tag routinely costs
+# several times that ceiling. The ceiling is dockerd's, not ours: bounding
+# the pull more generously (PULL_STALL below) cannot raise it, so the pull
+# can only ever time out. curl carries no such ceiling, so it can hold the
+# same request open until the sync lands and leave the tag warm.
+#
+# Advisory by design. A cache that never warms fails exactly as it would
+# have without this, through the pull below and with the pull's own message
+# attached -- so this adds a way to succeed, never a new way to fail.
+warm_manifest() {
+    local repo="$1" tag="$2" probe code elapsed
+    echo "Warming ${CACHE_HOST}:5000/${repo}:${tag} (up to ${PULL_STALL}s)"
+    # The status code and the elapsed time are asked for explicitly because a
+    # warm-up that did not land has two meanings, and they send the operator
+    # to different places: a cache that ANSWERED and refused points at the
+    # upstream it proxies, a cache that never answered inside the cap points
+    # at a sync still running. `curl -f` collapses both into one silent
+    # non-zero status, so the write-out carries them instead; the body stays
+    # discarded, since the manifest is wanted in the cache and not here.
+    # curl emits the write-out even when the transfer fails, and `|| true`
+    # keeps that failure from aborting the script under `set -e`.
+    probe=$(curl -s -o /dev/null -w '%{http_code} %{time_total}' \
+            --max-time "$PULL_STALL" -H "$ACCEPT_HDR" \
+            "http://${CACHE_HOST}:5000/v2/${repo}/manifests/${tag}") || true
+    code="${probe%% *}"
+    elapsed="${probe##* }"
+    elapsed="${elapsed%%.*}"
+    case "$code" in
+        200)
+            echo "  -> cache holds ${repo}:${tag} (answered in ${elapsed}s)"
+            ;;
+        ''|000)
+            echo "  -> cache did not answer within ${PULL_STALL}s; pulling anyway" >&2
+            ;;
+        *)
+            echo "  -> cache answered HTTP ${code} after ${elapsed}s; pulling anyway" >&2
+            ;;
+    esac
+    return 0
+}
+
 # Start Docker registry if not running.
 # --- REGION: https://yuruna.link/caching#workload-registry-pull-through
-# The pull routes through the zot pull-through cache (stale-on-error);
-# transient egress blips are retried with backoff (mirroring the
-# `docker build` retry below) instead of aborting under `set -euo
-# pipefail`, and each attempt is stall-bounded so a wedged pull becomes
-# a retry rather than a hang.
+# The image is taken from the local docker store first and otherwise from
+# the zot pull-through cache ADDRESSED BY NAME -- never as a bare
+# `registry:2`. A bare tag is a docker.io reference: dockerd consults its
+# registry-mirrors entry, but abandons the mirror once it is slower than
+# dockerd's own patience and finishes the pull against docker.io directly,
+# where the lab's shared egress IP is rate limited -- so a healthy, fully
+# warm cache still ends in a 429. Revalidating a mutable upstream tag on an
+# anonymous pull-through routinely costs minutes, which makes that fallback
+# the common path rather than a rare one. An explicit <cache>:5000/... pull
+# has no upstream to fall back to, so a slow cache stays a slow pull instead
+# of turning into a hard failure. Acquiring the image as its own step (not
+# as an implicit `docker run` pull) keeps the registry's own message
+# attached to the attempt that failed, and each attempt is stall-bounded so
+# a wedged pull becomes a retry rather than a hang.
 REGISTRY_IMAGE="registry:2"
+# Docker Hub's official images live under the library/ namespace. Only the
+# docker.io mirror protocol lets that prefix be elided, so a pull addressed
+# straight at zot has to spell it out.
+REGISTRY_CACHE_REF="${CACHE_HOST}:5000/library/registry:2"
 registry_attempts=3
 registry_delay=10
 for attempt in $(seq 1 "$registry_attempts"); do
@@ -51,23 +146,75 @@ for attempt in $(seq 1 "$registry_attempts"); do
     # A failed prior `docker run` can leave a created/exited container
     # holding the name; clear it so `docker run --name registry` is clean.
     docker rm -f registry >/dev/null 2>&1 || true
-    if docker_out=$(run_bounded 180 docker run -d -p 5000:5000 --restart=always --name registry "$REGISTRY_IMAGE" 2>&1); then
-        break
+    registry_local=""
+    docker_out=""
+    if ! registry_local=$(find_local_image "$REGISTRY_IMAGE"); then
+        # Every attempt warms before it pulls. The warm-up is what holds the
+        # request open past dockerd's fixed response-header patience while the
+        # cache completes its sync, so an attempt that skips it cannot build
+        # on the progress the sync behind the attempt before it made: it is
+        # bounded by that patience alone, which a cache still syncing cannot
+        # answer inside.
+        warm_manifest "library/registry" "2"
+        if docker_out=$(run_bounded "$PULL_STALL" docker pull "$REGISTRY_CACHE_REF" 2>&1); then
+            registry_local="$REGISTRY_CACHE_REF"
+        fi
     fi
-    echo "docker run registry failed (attempt ${attempt}/${registry_attempts}):" >&2
+    if [ -n "$registry_local" ]; then
+        # `docker run` below names the bare tag, so whatever the store holds
+        # has to answer to it -- and answer FROM the store, resolving
+        # nothing over the network.
+        [ "$registry_local" = "$REGISTRY_IMAGE" ] || docker tag "$registry_local" "$REGISTRY_IMAGE"
+        if docker_out=$(run_bounded 180 docker run -d -p 5000:5000 --restart=always --name registry "$REGISTRY_IMAGE" 2>&1); then
+            break
+        fi
+    fi
+    echo "registry start failed (attempt ${attempt}/${registry_attempts}):" >&2
     echo "$docker_out" >&2
+    # With the cache as the only source, an unreachable zot is terminal
+    # instead of something a silent retry against upstream papers over.
+    if echo "$docker_out" | grep -qiE 'connection refused|no such host|could not resolve|server misbehaving|i/o timeout|dial tcp'; then
+        echo "" >&2
+        echo "ERROR: the caching proxy's registry is unreachable at ${CACHE_HOST}:5000." >&2
+        echo "       This pull has no upstream fallback on purpose: reaching docker.io" >&2
+        echo "       directly from a guest is rate limited and fails anyway." >&2
+        echo "       Check that the caching proxy's zot is up:" >&2
+        echo "           curl -fsS http://${CACHE_HOST}:5000/v2/" >&2
+        echo "" >&2
+        exit 1
+    fi
+    # A cache that ANSWERS but not in time fails with none of the words above:
+    # the connection is established, the request is sent, and the runtime gives
+    # up waiting for response headers. Left unnamed it reads as a generic pull
+    # failure and sends the next reader to the guest's network stack, which is
+    # working perfectly. Not terminal -- unlike an unreachable cache, this one
+    # often lands on a retry, because the sync the timed-out attempt started
+    # keeps running and the tag is warm by the time the next attempt arrives.
+    if echo "$docker_out" | grep -qiE 'timeout awaiting response headers|context deadline exceeded|TLS handshake timeout|Client\.Timeout exceeded'; then
+        echo "" >&2
+        echo "NOTE: the cache at ${CACHE_HOST}:5000 accepted the connection but did not" >&2
+        echo "      return response headers in time. That is a SLOW cache, not a down" >&2
+        echo "      one -- a liveness check against it will pass while pulls fail." >&2
+        echo "      What it is doing while you wait is revalidating this tag against" >&2
+        echo "      its upstream; the runtime's patience is shorter than that can take." >&2
+        echo "      Its own reading of that latency, and of the shared upstream pull" >&2
+        echo "      budget behind it:" >&2
+        echo "           curl -fsS http://${CACHE_HOST}/cache-health" >&2
+        echo "" >&2
+    fi
     # ECR Public reports an exhausted anonymous-pull quota as 400 (not 429);
     # a throttle will not clear on a quick retry, so stop with guidance now.
     # --- REGION: https://yuruna.link/network#defining-registry-rate-limit-400
     if echo "$docker_out" | grep -qiE 'pull rate limit|toomanyrequests|429 Too Many Requests|400 Bad Request.*public\.ecr\.aws|public\.ecr\.aws.*400 Bad Request'; then
         echo "" >&2
         echo "ERROR: Registry image pull hit a rate limit (or upstream throttle disguised as 400)." >&2
-        echo "       Image: $REGISTRY_IMAGE" >&2
-        echo "       The upstream is throttling pulls from the cache VM's egress IP." >&2
+        echo "       Image: $REGISTRY_CACHE_REF" >&2
+        echo "       The cache holds no copy yet and its upstream is throttling the" >&2
+        echo "       lab's shared egress IP." >&2
         echo "       Options: (1) wait and retry, (2) authenticate the zot proxy to upstream," >&2
         echo "                (3) bake the registry image into the guest base via cloud-init," >&2
         echo "                (4) check that the caching proxy's zot is up:" >&2
-        echo "                    curl -fsS http://yuruna-caching-proxy-service:5000/v2/" >&2
+        echo "                    curl -fsS http://${CACHE_HOST}:5000/v2/" >&2
         echo "" >&2
         exit 1
     fi
@@ -97,30 +244,12 @@ echo "==== Base images ===="
 # (pulled into it only when missing), seeded into the localhost:5000
 # registry container started above, and the build then pulls FROM the
 # loopback registry only.
-CACHE_HOST=$(echo "${http_proxy:-}" | sed -E 's|^https?://([^:/]+).*|\1|')
-[ -z "$CACHE_HOST" ] && CACHE_HOST="yuruna-caching-proxy-service"
 cd "$REAL_HOME/yuruna/project/example/website/components/frontend/website"
 cp "$REAL_HOME/.aspnet/https/aspnetapp.pfx" .
 
 # The list mirrors the Dockerfile's FROM lines.
 BASE_IMAGES=("dotnet/sdk:10.0" "dotnet/aspnet:10.0")
 LOCAL_REGISTRY="localhost:5000"
-ACCEPT_HDR='Accept: application/vnd.oci.image.index.v1+json, application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.list.v2+json, application/vnd.docker.distribution.manifest.v2+json'
-
-# Print a local-docker-store reference whose repo:tag matches $1 under
-# any registry prefix; status 1 when absent.
-find_local_image() {
-    local want="$1" line
-    while IFS= read -r line; do
-        case "$line" in
-            "$want"|*/"$want")
-                printf '%s\n' "$line"
-                return 0
-                ;;
-        esac
-    done < <(docker image ls --format '{{.Repository}}:{{.Tag}}' 2>/dev/null)
-    return 1
-}
 
 # probe_registry <base-url>: fast health gate -- 0 iff every base image
 # still missing from the local store resolves a manifest there. A few-KB
@@ -153,10 +282,8 @@ all_base_images_local() {
 # order: the zot pull-through cache (LAN, absorbs upstream TLS jitter),
 # then mcr.microsoft.com as the survival path when the cache VM is
 # absent or cannot serve the tag. Each candidate is probe-gated first;
-# the pull itself is stall-bounded as a backstop for mid-stream wedges.
-# The bound is a hard elapsed-time cap, not a progress check -- raise
-# YURUNA_PULL_STALL_TIMEOUT on links slower than ~1 MB/s.
-PULL_STALL="${YURUNA_PULL_STALL_TIMEOUT:-300}"
+# the pull itself is stall-bounded (PULL_STALL, set above) as a backstop
+# for mid-stream wedges.
 acquire_rounds=2
 acquire_delay=10
 stalled_candidates=""

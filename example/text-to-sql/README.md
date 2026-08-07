@@ -2,8 +2,8 @@
 
 > **Status: Early release.** Runs locally against PostgreSQL and
 > deploys through the full Yuruna three-phase model (`Set-Resource` /
-> `Set-Component` / `Set-Workload`); see the
-> [Yuruna integration](#yuruna-integration) section below. Claude
+> `Set-Component` / `Set-Workload`); see
+> [Yuruna integration](#yuruna-integration) below. Claude
 > activates when `ANTHROPIC_API_KEY` is set.
 
 A read-only agentic text-to-SQL application: ASP.NET Core (.NET 10) Razor
@@ -88,10 +88,6 @@ same catalog the agent uses, viewable as ground truth.
 | ⑤ Executor | `Services/AgentOrchestrator.cs` |
 | ⑥ Observer | the timeline on `Pages/Index.cshtml` |
 
-The **`ILlmClient`** interface (`Services/ILlmClient.cs`) is the seam an
-Anthropic tool-use loop plugs into without touching the rest of the
-pipeline.
-
 ### Service notes
 
 Per-service design notes referenced from the file-top comments
@@ -101,9 +97,9 @@ Per-service design notes referenced from the file-top comments
 Razor Pages for the chat UI, an Npgsql `DataSource` for the read-only
 Postgres connection, and the agent services
 (SchemaCatalog → SqlValidator → AgentOrchestrator). The orchestrator
-uses the deterministic rule-based "LLM" by default so the example runs
-offline; when `ANTHROPIC_API_KEY` is set the ClaudeLlmClient path is
-swapped in through the same `ILlmClient` seam.
+uses the deterministic rule-based "LLM" by default; when
+`ANTHROPIC_API_KEY` is set the ClaudeLlmClient path is swapped in
+through the same `ILlmClient` seam.
 
 **`Services/ILlmClient.cs`** — the seam shape: `GenerateSqlAsync` takes
 the question plus the FK-expanded schema slice and returns either a SQL
@@ -130,7 +126,7 @@ scoring (keyword overlap plus substring similarity on docstrings) with
 one-hop FK expansion so the LLM never has to invent JOIN partners, and
 returns a compact prompt slice (target < 2 KB). A production system
 would use a real vector index (pgvector or a hosted store); keeping it
-deterministic means the example runs offline and is reproducible.
+deterministic keeps the example offline and reproducible.
 
 **`Services/SqlValidator.cs`** — the "④ Validator (Guardrail)" stage.
 It enforces: (1) exactly one statement, and that statement a SELECT
@@ -159,8 +155,7 @@ timeline — the "Observer" layer in miniature.
 
 This example follows the same folder pattern as
 [`example/website`](../website/README.md) — `components/frontend/<app>/` —
-and deploys through the Yuruna three-phase model (`Set-Resource` /
-`Set-Component` / `Set-Workload`). The pieces are in place:
+and deploys through the Yuruna three-phase model. The pieces are in place:
 
 - `config/localhost/{resources,components,workloads}.yml` drive the
   three phases.
@@ -237,6 +232,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.06
+Last review: 2026.08.07
 
 Back to [yuruna-project](../../README.md) · [Yuruna](https://yuruna.com)

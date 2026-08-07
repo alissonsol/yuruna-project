@@ -10,8 +10,7 @@ before deploying.
 
 Search for `TO-SET` in `config/<cloud>/*.yml` and fill required values,
 then from the framework's `automation/` folder (in your local clone of
-[yuruna](https://github.com/alissonsol/yuruna), not this project repo
-— the deploy scripts ship with the framework):
+[yuruna](https://github.com/alissonsol/yuruna), not this project repo):
 
 ```shell
 Set-Resource.ps1  TO-SET localhost
@@ -37,6 +36,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.06
+Last review: 2026.08.07
 
 Back to [yuruna-project](../README.md) · [Yuruna](https://yuruna.com)

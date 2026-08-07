@@ -15,9 +15,8 @@ shared independently.
     deployed to Kubernetes on localhost, Azure, or AWS.
   - [example/text-to-sql/](example/text-to-sql/) — **Early release.**
     Agentic read-only text-to-SQL on ASP.NET Core + PostgreSQL. Runs
-    locally and deploys through the full Yuruna three-phase model
-    (resources / components / workloads); Claude activates when
-    `ANTHROPIC_API_KEY` is set.
+    locally and deploys through the full Yuruna three-phase model;
+    Claude activates when `ANTHROPIC_API_KEY` is set.
 
 ## Read more
 
@@ -32,6 +31,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.06
+Last review: 2026.08.07
 
 Back to [Yuruna](https://yuruna.com)

@@ -14,8 +14,8 @@ Connectivity section of the
 
 - [text-to-sql](text-to-sql/README.md) — **Early release.** Agentic
   read-only text-to-SQL on ASP.NET Core + PostgreSQL. Runs locally
-  against PostgreSQL and deploys through the full Yuruna three-phase
-  model (`Set-Resource` / `Set-Component` / `Set-Workload`); Claude
+  and deploys through the full Yuruna three-phase model
+  (`Set-Resource` / `Set-Component` / `Set-Workload`); Claude
   activates when `ANTHROPIC_API_KEY` is set.
 
 - [nested.host](nested.host/README.md) — Self-verification: the outer host
@@ -24,9 +24,9 @@ Connectivity section of the
 
 ## Template
 
-- This is just the [folder structure](../template/) to create a new project.
-  - Copy and paste folder structure to new folder.
-  - Make needed changes and add component code (search for `TO-SET`).
+- The [folder structure](../template/) for creating a new project: copy it
+  to a new folder, then make needed changes and add component code
+  (search for `TO-SET`).
 
 ---
 
@@ -34,6 +34,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.06
+Last review: 2026.08.07
 
 Back to [yuruna-project](../README.md) · [Yuruna](https://yuruna.com)
