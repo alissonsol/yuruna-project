@@ -5,6 +5,6 @@ name: yrn42website-uxname
 description: A simple .NET C# website container deployed to a Kubernetes cluster.
 
 type: application
-version: 2026.08.07
-appVersion: 2026.08.07
+version: 2026.08.11
+appVersion: 2026.08.11
 icon: https://github.com/cncf/artwork/blob/master/projects/helm/icon/color/helm-icon-color.svg
