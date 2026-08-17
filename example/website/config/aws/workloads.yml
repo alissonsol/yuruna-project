@@ -14,10 +14,17 @@ globalVariables:
   # websiteHost:           "www.yrn42website-domain"
   websiteHost:           "www.yrn42.com"
   websiteTlsSecret:      "website-tls-secret"
-  _registryLocation:     "$($([Environment]::GetEnvironmentVariable(\"${env:registryName}.registryLocation\")) -replace '.azurecr.io','')"
-  dockerServer:          "http://${env:_registryLocation}.azurecr.io"
-  dockerUsername:        "$(az acr credential show -n ${env:_registryLocation} --query username)"
-  dockerPassword:        "$(az acr credential show -n ${env:_registryLocation} --query passwords[0].value)"
+  # The registry provisioned here is ECR, whose repository URL is
+  # <account>.dkr.ecr.<region>.amazonaws.com/<repository>. The pull secret
+  # authenticates against the registry host, so the repository path is dropped,
+  # and the region -- the fourth dotted segment of that host -- has to be
+  # spelled out for the token request. ECR has no static password: the token is
+  # short-lived and always pairs with the fixed 'AWS' user name.
+  _registryLocation:     "$(($([Environment]::GetEnvironmentVariable(\"${env:registryName}.registryLocation\")) -split '/')[0])"
+  _registryRegion:       "$((${env:_registryLocation} -split '[.]')[3])"
+  dockerServer:          "${env:_registryLocation}"
+  dockerUsername:        "AWS"
+  dockerPassword:        "$(aws ecr get-login-password --region ${env:_registryRegion})"
   ingressClass:          "nginx"
 
 workloads:

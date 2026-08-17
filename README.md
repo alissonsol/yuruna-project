@@ -8,7 +8,7 @@ shared independently.
 ## Layout
 
 - [template/](template/) — folder structure for starting a new project
-  (resources / components / workloads / config / test).
+  (resources / components / workloads / config).
 - [example/](example/) — end-to-end examples that exercise the
   framework against real clouds. See [Yuruna Examples ...](example/README.md).
   - [example/website/](example/website/) — .NET C# website container
@@ -31,6 +31,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.14
+Last review: 2026.08.16
 
 Back to [Yuruna](https://yuruna.com)

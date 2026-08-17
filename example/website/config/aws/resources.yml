@@ -3,6 +3,9 @@
 # Resources information - aws
 ---
 globalVariables:
+  runId:                 "$(-join ((97..122) | Get-Random -Count 6 | %{[char]$_}))"
+  runTag:                "aws"
+  project:               "website"
   namespace:             "yrn42website-ns"
   clusterDnsPrefix:      "yrn42website-dns"
   resourceGroup:         "yrn42website-rg"

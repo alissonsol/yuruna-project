@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: 2026.08.14
+# Version: 2026.08.16
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 set -euo pipefail
@@ -11,11 +11,11 @@ export NONINTERACTIVE=1
 REAL_USER="${SUDO_USER:-$USER}"
 REAL_HOME=$(eval echo "~$REAL_USER")
 
-# Fix kube permissions
 sudo chown -R "$REAL_USER:$REAL_USER" "$REAL_HOME/.kube"
 
 mkcert -install 2>/dev/null || true
 
+# --- REGION: Bounded command execution
 # Bound a command with timeout(1) so a stall surfaces as a retriable
 # failure (rc 124) inside this script's own retry loops instead of
 # wedging the script until the console session around it is abandoned.
@@ -53,6 +53,7 @@ PULL_STALL="${YURUNA_PULL_STALL_TIMEOUT:-300}"
 # index the pull needs.
 ACCEPT_HDR='Accept: application/vnd.oci.image.index.v1+json, application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.list.v2+json, application/vnd.docker.distribution.manifest.v2+json'
 
+# --- REGION: Local image lookup
 # Print a local-docker-store reference whose repo:tag matches $1 under
 # any registry prefix; status 1 when absent.
 find_local_image() {
@@ -68,6 +69,7 @@ find_local_image() {
     return 1
 }
 
+# --- REGION: Warm a cold manifest
 # warm_manifest <repo> <tag>: drive the cache's on-demand sync of one tag to
 # completion so the pull that follows resolves a manifest already in hand.
 #
@@ -76,7 +78,7 @@ find_local_image() {
 # arrived within its own fixed patience, and the cache emits none until the
 # sync it triggered finishes -- a cold multi-arch tag routinely costs
 # several times that ceiling. The ceiling is dockerd's, not ours: bounding
-# the pull more generously (PULL_STALL below) cannot raise it, so the pull
+# the pull more generously (PULL_STALL above) cannot raise it, so the pull
 # can only ever time out. curl carries no such ceiling, so it can hold the
 # same request open until the sync lands and leave the tag warm.
 #
@@ -115,8 +117,8 @@ warm_manifest() {
     return 0
 }
 
-# Start Docker registry if not running.
 # --- REGION: https://yuruna.link/caching#workload-registry-pull-through
+# Start Docker registry if not running.
 # The image is taken from the local docker store first and otherwise from
 # the zot pull-through cache ADDRESSED BY NAME -- never as a bare
 # `registry:2`. A bare tag is a docker.io reference: dockerd consults its
@@ -202,9 +204,9 @@ for attempt in $(seq 1 "$registry_attempts"); do
         echo "           curl -fsS http://${CACHE_HOST}/cache-health" >&2
         echo "" >&2
     fi
+    # --- REGION: https://yuruna.link/network#defining-registry-rate-limit-400
     # ECR Public reports an exhausted anonymous-pull quota as 400 (not 429);
     # a throttle will not clear on a quick retry, so stop with guidance now.
-    # --- REGION: https://yuruna.link/network#defining-registry-rate-limit-400
     if echo "$docker_out" | grep -qiE 'pull rate limit|toomanyrequests|429 Too Many Requests|400 Bad Request.*public\.ecr\.aws|public\.ecr\.aws.*400 Bad Request'; then
         echo "" >&2
         echo "ERROR: Registry image pull hit a rate limit (or upstream throttle disguised as 400)." >&2
@@ -227,15 +229,16 @@ for attempt in $(seq 1 "$registry_attempts"); do
     registry_delay=$((registry_delay * 2))
 done
 
-echo "==== Set-Resource ===="
+echo ""
+echo -e "\e[1;36m==== Set-Resource ====\e[0m"
 cd "$REAL_HOME/yuruna/project/example"
 pwsh ../../automation/Set-Resource.ps1 website localhost
 
-# Rename kubectl context to match runId
 CONTEXT=$(grep 'clusterDnsPrefix' "$REAL_HOME/yuruna/project/example/website/config/localhost/resources.output.yml" | awk '{print $2}' | tr -d '"')
 kubectl config rename-context docker-desktop "localhost-${CONTEXT}" 2>/dev/null || true
 
-echo "==== Base images ===="
+echo ""
+echo -e "\e[1;36m==== Base images ====\e[0m"
 # --- REGION: https://yuruna.link/caching#workload-registry-local-first
 # The build must not resolve FROM metadata over the network: buildkit's
 # `load metadata` runs inside a single `docker build` invocation, so a
@@ -249,6 +252,8 @@ cp "$REAL_HOME/.aspnet/https/aspnetapp.pfx" .
 
 # The list mirrors the Dockerfile's FROM lines.
 BASE_IMAGES=("dotnet/sdk:10.0" "dotnet/aspnet:10.0")
+# The upstream that serves them, named to the cache by the probe below.
+BASE_IMAGES_UPSTREAM="mcr.microsoft.com"
 LOCAL_REGISTRY="localhost:5000"
 
 # probe_registry <base-url>: fast health gate -- 0 iff every base image
@@ -257,12 +262,22 @@ LOCAL_REGISTRY="localhost:5000"
 # instead of consuming a full bounded-pull window; on zot the GET also
 # triggers the onDemand sync ahead of the pull.
 probe_registry() {
-    local base="$1" ref repo ver
+    local base="$1" ref repo ver ns=""
+    # ns= names the upstream this repository belongs to -- the same parameter
+    # containerd's hosts.toml form sends on every pull, and how the cache picks
+    # which upstream to sync from. Without it the cache walks its configured
+    # registries in order, where Docker Hub is the catch-all, and spends one of
+    # the metered lookups the whole lab shares on an image Docker Hub never
+    # served. Only the cache reads it, so a probe addressed at the upstream
+    # itself carries none.
+    case "$base" in
+        *"${CACHE_HOST}:5000") ns="?ns=${BASE_IMAGES_UPSTREAM}" ;;
+    esac
     for ref in "${BASE_IMAGES[@]}"; do
         find_local_image "$ref" >/dev/null && continue
         repo="${ref%:*}"; ver="${ref#*:}"
         if ! curl -sf -o /dev/null --max-time 30 -H "$ACCEPT_HDR" \
-                "${base}/v2/${repo}/manifests/${ver}"; then
+                "${base}/v2/${repo}/manifests/${ver}${ns}"; then
             return 1
         fi
     done
@@ -353,7 +368,8 @@ done
 REGISTRY="${LOCAL_REGISTRY}/"
 echo "Using REGISTRY=${REGISTRY}"
 
-echo "==== Build .NET app ===="
+echo ""
+echo -e "\e[1;36m==== Build .NET app ====\e[0m"
 # FROM metadata and base layers resolve from the loopback registry; the
 # retry covers residual local flakes and RUN-step network (package
 # restores), with the stall bound turning a wedge into a retriable
@@ -376,7 +392,8 @@ for attempt in $(seq 1 "$build_attempts"); do
     build_delay=$((build_delay * 2))
 done
 
-echo "==== Push to docker registry ===="
+echo ""
+echo -e "\e[1;36m==== Push to docker registry ====\e[0m"
 docker tag website/website:latest "${LOCAL_REGISTRY}/website/website:latest"
 if ! run_bounded 300 docker push "${LOCAL_REGISTRY}/website/website:latest"; then
     echo "ERROR: pushing website/website into ${LOCAL_REGISTRY} failed -- the local" >&2
@@ -393,12 +410,15 @@ docker builder prune --all --force >/dev/null 2>&1 || true
 docker image prune --force >/dev/null 2>&1 || true
 
 cd "$REAL_HOME/yuruna/project/example"
-echo "==== Set-Component ===="
+echo ""
+echo -e "\e[1;36m==== Set-Component ====\e[0m"
 pwsh ../../automation/Set-Component.ps1 website localhost
-echo "==== Set-Workload ===="
+echo ""
+echo -e "\e[1;36m==== Set-Workload ====\e[0m"
 pwsh ../../automation/Set-Workload.ps1 website localhost
 
-echo "==== Wait for readiness ===="
+echo ""
+echo -e "\e[1;36m==== Wait for readiness ====\e[0m"
 # --- REGION: https://yuruna.link/kubernetes#why-the-website-readiness-check-waits-on-deployment-availability-not-endpoints
 # These waits run HERE rather than in the sequence step that follows,
 # because that step is TYPED into the guest console one RFB key event

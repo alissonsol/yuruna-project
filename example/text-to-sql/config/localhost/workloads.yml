@@ -18,7 +18,8 @@ globalVariables:
   dockerPassword:        "placeholder"
   ingressClass:          "nginx"
   # cert-manager release pin (https://github.com/cert-manager/cert-manager/releases);
-  # the same pin appears in every example config -- bump them together.
+  # every example config that installs cert-manager pins the same release
+  # (aws ships without cert-manager and has no pin) -- bump them together.
   certManagerLatest:     "v1.21.0"
 
 workloads:

@@ -6,7 +6,7 @@
 sequenceGuid: 42001283-d9e8-4f14-a78e-5c5f2206926f
 sequenceRevision: 1
 
-description: "Ubuntu Server: log in, install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
+description: "Ubuntu Server 24.04 (book ch02, unattended): log in, install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
 keystrokeMechanism: gui
 resource:
   ubuntu.server.24:

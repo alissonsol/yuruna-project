@@ -16,7 +16,7 @@ dotnet tool install -g Microsoft.Web.LibraryManager.Cli
 libman restore
 ```
 
-## Development certificates
+## Development certificate
 
 ```powershell
 dotnet dev-certs https --check --trust              # check
@@ -72,6 +72,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.14
+Last review: 2026.08.16
 
 Back to [Website example](../../../README.md) · [yuruna-project](../../../../../README.md) · [Yuruna](https://yuruna.com)

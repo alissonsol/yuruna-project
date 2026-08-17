@@ -6,7 +6,7 @@
 sequenceGuid: 42272942-dcd0-48fc-ba88-814462c89f5a
 sequenceRevision: 1
 
-description: "Ubuntu Server (SSH): install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
+description: "Ubuntu Server 26.04 (SSH): install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
 keystrokeMechanism: ssh
 resource:
   ubuntu.server.26:
@@ -18,7 +18,7 @@ variables:
 component:
   - action: sshWaitReady
     timeoutSeconds: 300
-    description: "Wait for sshd + authorized_keys"
+    description: "Wait for sshd after reboot"
 
   - action: sshExec
     command: "whoami && hostname"

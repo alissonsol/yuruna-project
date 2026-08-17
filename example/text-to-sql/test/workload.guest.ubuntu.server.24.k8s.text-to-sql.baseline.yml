@@ -6,7 +6,7 @@
 sequenceGuid: 426ca572-7dda-4e43-be71-93462c7ef6e7
 sequenceRevision: 2
 
-description: "Ubuntu Server: log in, install Kubernetes, prepare for text-to-sql deployment."
+description: "Ubuntu Server 24.04: log in, install Kubernetes, prepare for text-to-sql deployment."
 keystrokeMechanism: gui
 # Chain start.guest directly. The workload.guest chain
 # additionally installs VS Code (ubuntu.server.24.code.sh), which text-to-sql
