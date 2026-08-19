@@ -1,6 +1,6 @@
 /* LICENSEURI https://yuruna.link/license */
 /* Copyright (c) 2019-2026 by Alisson Sol et al. */
-/* Agentic Text-to-SQL UI — minimal, no framework.                          */
+/* Agentic Text-to-SQL UI -- minimal, no framework.                          */
 /* Color palette: dark blue + light-blue accent.                            */
 
 :root {
@@ -33,7 +33,7 @@ html, body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* ── Page header ──────────────────────────────────────────────────────── */
+/* -- Page header -------------------------------------------------------- */
 .page-header {
   background: var(--bg);
   color: #fff;
@@ -65,7 +65,7 @@ html, body {
 }
 .page-footer a { color: var(--accent); }
 
-/* ── Ask card ─────────────────────────────────────────────────────────── */
+/* -- Ask card ----------------------------------------------------------- */
 .ask-card {
   background: var(--panel); color: var(--fg);
   border-radius: 10px;
@@ -101,7 +101,7 @@ button:hover { background: var(--bg-deep); }
 }
 .muted { color: var(--fg-muted); }
 
-/* ── Run summary banner ───────────────────────────────────────────────── */
+/* -- Run summary banner ------------------------------------------------- */
 .run-summary {
   margin-top: 18px;
   padding: 14px 18px;
@@ -131,7 +131,7 @@ button:hover { background: var(--bg-deep); }
 }
 .run-summary.fail .refusal { color: var(--bad-text); }
 
-/* ── Timeline ─────────────────────────────────────────────────────────── */
+/* -- Timeline ----------------------------------------------------------- */
 .timeline { margin-top: 18px; }
 .timeline h2 { color: #e5e7eb; font-size: 18px; margin-bottom: 8px; }
 .timeline ol { list-style: none; padding: 0; margin: 0; }
@@ -160,7 +160,7 @@ button:hover { background: var(--bg-deep); }
   .timeline .step { grid-template-columns: 1fr; grid-gap: 2px 0; gap: 2px 0; }
 }
 
-/* ── Plan / SQL / results blocks ──────────────────────────────────────── */
+/* -- Plan / SQL / results blocks ---------------------------------------- */
 .plan-block, .sql-block, .results {
   margin-top: 18px;
   background: var(--panel);
@@ -184,7 +184,7 @@ pre {
   margin: 0;
 }
 
-/* ── Results table ────────────────────────────────────────────────────── */
+/* -- Results table ------------------------------------------------------ */
 .results-wrap { overflow-x: auto; }
 .results table {
   width: 100%; border-collapse: collapse; margin-top: 6px;
@@ -196,7 +196,7 @@ pre {
 }
 .results th { background: var(--panel-2); color: var(--bg); font-weight: 700; }
 
-/* ── Schema page ──────────────────────────────────────────────────────── */
+/* -- Schema page -------------------------------------------------------- */
 .schema-table {
   background: var(--panel); color: var(--fg);
   padding: 14px 18px; border-radius: 10px;
@@ -213,7 +213,7 @@ pre {
   color: var(--fg);
   padding: 1px 9px; border-radius: 999px;
   margin-right: 6px; font-family: var(--font-mono); font-size: 12px;
-  /* An FK edge label ("customer_id→customer.customer_id") is one unbroken
+  /* An FK edge label ("customer_id->customer.customer_id") is one unbroken
      token wider than a ~375px viewport, and would push the page into
      horizontal scroll; let it break mid-token instead. break-word, not
      overflow-wrap: anywhere, for the same older-iOS baseline as above. */
@@ -221,7 +221,7 @@ pre {
   word-break: break-word;
 }
 
-/* ── Touch targets ────────────────────────────────────────────────────────
+/* -- Touch targets --------------------------------------------------------
    Below the tablet breakpoint the nav, example-question and submit controls
    are tapped, not clicked; the type sizes above leave them well under the
    44px minimum a finger needs, so raise them there. */

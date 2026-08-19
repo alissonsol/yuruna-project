@@ -1,6 +1,6 @@
 <#PSScriptInfo
-.VERSION 2026.08.16
-.GUID 42c9d8e7-f6a5-4b43-4321-a9c8d7e6f5a4
+.VERSION 2026.08.19
+.GUID 42813fa1-cf84-4809-b9f3-c711fb218e2c
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
 .TAGS yuruna pssa-settings
@@ -24,9 +24,13 @@
     # Auto-discovered by `Invoke-ScriptAnalyzer -Path . -Recurse`.
     # Findings of every severity are reported; Information-severity
     # (low-priority) results are NOT filtered out.
-    # PSUseBOMForUnicodeEncodedFile gates on BOM-less PowerShell files;
-    # PS7 Set-Content / Out-File default to BOM-less UTF-8, so rewrite
-    # with `[System.IO.File]::WriteAllText($path, $text, [System.Text.UTF8Encoding]::new($true))`.
+    # PSUseBOMForUnicodeEncodedFile fires on a PowerShell file that contains
+    # non-ASCII bytes and carries no BOM. Do NOT satisfy it by adding a BOM:
+    # the pre-commit hook in the framework repo rejects a BOM in any file, so
+    # the two rules would deadlock. Keep PowerShell sources ASCII-only, which
+    # is what the framework's tools/Test-AsciiNoBom.ps1 enforces and what makes
+    # this rule silent. When a file must be rewritten, use
+    # `[System.Text.UTF8Encoding]::new($false)` -- the BOM-LESS overload.
 
     IncludeDefaultRules = $true
 

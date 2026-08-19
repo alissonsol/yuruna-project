@@ -12,13 +12,13 @@ Connectivity section of the
 
 ## Early-stage examples
 
-- [text-to-sql](text-to-sql/README.md) — **Early release.** Agentic
+- [text-to-sql](text-to-sql/README.md) -- **Early release.** Agentic
   read-only text-to-SQL on ASP.NET Core + PostgreSQL. Runs locally
   and deploys through the full Yuruna three-phase model
   (`Set-Resource` / `Set-Component` / `Set-Workload`); Claude
   activates when `ANTHROPIC_API_KEY` is set.
 
-- [nested.host](nested.host/README.md) — Self-verification: the outer host
+- [nested.host](nested.host/README.md) -- Self-verification: the outer host
   builds a nested Ubuntu Server VM, installs the framework inside it, and runs
   one full cycle under nested virtualization. Not yet validated on a live lab.
 
@@ -34,6 +34,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.16
+Last review: 2026.08.19
 
-Back to [yuruna-project](../README.md) · [Yuruna](https://yuruna.com)
+Back to [yuruna-project](../README.md) - [Yuruna](https://yuruna.com)

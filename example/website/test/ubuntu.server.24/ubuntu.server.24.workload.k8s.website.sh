@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: 2026.08.16
+# Version: 2026.08.19
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 set -euo pipefail
@@ -97,9 +97,10 @@ warm_manifest() {
     # discarded, since the manifest is wanted in the cache and not here.
     # curl emits the write-out even when the transfer fails, and `|| true`
     # keeps that failure from aborting the script under `set -e`.
+    local probe_rc=0
     probe=$(curl -s -o /dev/null -w '%{http_code} %{time_total}' \
             --max-time "$PULL_STALL" -H "$ACCEPT_HDR" \
-            "http://${CACHE_HOST}:5000/v2/${repo}/manifests/${tag}") || true
+            "http://${CACHE_HOST}:5000/v2/${repo}/manifests/${tag}") || probe_rc=$?
     code="${probe%% *}"
     elapsed="${probe##* }"
     elapsed="${elapsed%%.*}"
@@ -108,7 +109,18 @@ warm_manifest() {
             echo "  -> cache holds ${repo}:${tag} (answered in ${elapsed}s)"
             ;;
         ''|000)
-            echo "  -> cache did not answer within ${PULL_STALL}s; pulling anyway" >&2
+            # No HTTP status at all has several causes that send the operator to
+            # different places, and curl's exit code is the only thing that
+            # separates them. Reporting all of them as the timeout wording sends
+            # every reader after a sync that is still running -- which is the
+            # wrong place to look for a cache that refused the connection in
+            # milliseconds because nothing is listening on the port yet.
+            case "$probe_rc" in
+                7)  echo "  -> cache refused the connection after ${elapsed}s -- nothing is listening on ${CACHE_HOST}:5000; pulling anyway" >&2 ;;
+                6)  echo "  -> cache host ${CACHE_HOST} did not resolve; pulling anyway" >&2 ;;
+                28) echo "  -> cache did not answer within ${PULL_STALL}s; pulling anyway" >&2 ;;
+                *)  echo "  -> cache returned no HTTP status after ${elapsed}s (curl rc=${probe_rc}); pulling anyway" >&2 ;;
+            esac
             ;;
         *)
             echo "  -> cache answered HTTP ${code} after ${elapsed}s; pulling anyway" >&2
@@ -138,7 +150,13 @@ REGISTRY_IMAGE="registry:2"
 # docker.io mirror protocol lets that prefix be elided, so a pull addressed
 # straight at zot has to spell it out.
 REGISTRY_CACHE_REF="${CACHE_HOST}:5000/library/registry:2"
-registry_attempts=3
+# --- REGION: https://yuruna.link/caching#workload-registry-pull-through
+# The ladder is sized to outlast a caching-proxy REBUILD, not just a blip: the
+# replacement VM refuses connections on :5000 for as long as it takes to boot
+# and start zot, which is minutes rather than seconds. 10+20+40+80 spends about
+# two and a half minutes before giving up, so a rebuild that overlaps this step
+# costs a pause instead of the whole run.
+registry_attempts=5
 registry_delay=10
 for attempt in $(seq 1 "$registry_attempts"); do
     # Fast path / idempotent restart of an already-created container.
@@ -173,17 +191,27 @@ for attempt in $(seq 1 "$registry_attempts"); do
     fi
     echo "registry start failed (attempt ${attempt}/${registry_attempts}):" >&2
     echo "$docker_out" >&2
-    # With the cache as the only source, an unreachable zot is terminal
-    # instead of something a silent retry against upstream papers over.
+    # With the cache as the only source, an unreachable zot is terminal instead
+    # of something a silent retry against upstream papers over -- but only once
+    # the ladder above has been spent. An unreachable cache and a cache that is
+    # being replaced are the same bytes on the wire, and the second one comes
+    # back on its own; failing out on the first attempt turns every rebuild that
+    # overlaps a run into a dead run. The wording below is held back to the last
+    # attempt so it still names the right cause when the cache really is down.
     if echo "$docker_out" | grep -qiE 'connection refused|no such host|could not resolve|server misbehaving|i/o timeout|dial tcp'; then
-        echo "" >&2
-        echo "ERROR: the caching proxy's registry is unreachable at ${CACHE_HOST}:5000." >&2
-        echo "       This pull has no upstream fallback on purpose: reaching docker.io" >&2
-        echo "       directly from a guest is rate limited and fails anyway." >&2
-        echo "       Check that the caching proxy's zot is up:" >&2
-        echo "           curl -fsS http://${CACHE_HOST}:5000/v2/" >&2
-        echo "" >&2
-        exit 1
+        if [ "$attempt" -lt "$registry_attempts" ]; then
+            echo "the caching proxy's registry is not answering at ${CACHE_HOST}:5000 yet; it may be restarting" >&2
+        else
+            echo "" >&2
+            echo "ERROR: the caching proxy's registry is unreachable at ${CACHE_HOST}:5000" >&2
+            echo "       and stayed unreachable across ${registry_attempts} attempts." >&2
+            echo "       This pull has no upstream fallback on purpose: reaching docker.io" >&2
+            echo "       directly from a guest is rate limited and fails anyway." >&2
+            echo "       Check that the caching proxy's zot is up:" >&2
+            echo "           curl -fsS http://${CACHE_HOST}:5000/v2/" >&2
+            echo "" >&2
+            exit 1
+        fi
     fi
     # A cache that ANSWERS but not in time fails with none of the words above:
     # the connection is established, the request is sent, and the runtime gives

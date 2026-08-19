@@ -1,11 +1,11 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ---------------------------------------------------------------------------
-// SqlValidator — the "④ Validator (Guardrail)" stage of the agent pipeline.
+// SqlValidator -- the "(4) Validator (Guardrail)" stage of the agent pipeline.
 // Static checks (single SELECT-only statement, no stacked statements, no
 // comment payloads, no CTE-disguised writes, no PII columns, enforced
 // top-level LIMIT) plus an online EXPLAIN cost gate; the regex pre-check
-// vs AST-parser trade-off: see the README service notes —
+// vs AST-parser trade-off: see the README service notes --
 // https://yuruna.link/text-to-sql#service-notes
 // ---------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ public sealed class SqlValidator
         _rowsRefuseThreshold = cfg.GetValue("Agent:ExplainRefuseRows", 1_000_000);
     }
 
-    // ── Static (offline) checks ───────────────────────────────────────────
+    // -- Static (offline) checks -------------------------------------------
     private static readonly Regex CommentRx = new(@"(--|/\*|\*/)", RegexOptions.Compiled);
 
     // PII column identifiers the validator refuses outright. Kept aligned with
@@ -127,7 +127,7 @@ public sealed class SqlValidator
         return false;
     }
 
-    // ── Online cost gate: EXPLAIN (FORMAT JSON) ───────────────────────────
+    // -- Online cost gate: EXPLAIN (FORMAT JSON) ---------------------------
     public async Task<ExplainResult> ExplainAsync(string sql, CancellationToken ct = default)
     {
         await using var conn = await _ds.OpenConnectionAsync(ct);

@@ -1,11 +1,11 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ---------------------------------------------------------------------------
-// ClaudeLlmClient — production ILlmClient implementation backed by the
+// ClaudeLlmClient -- production ILlmClient implementation backed by the
 // Anthropic Messages API with tool-use for structured output. Activated
 // when ANTHROPIC_API_KEY is set; RuleBasedLlmClient is used otherwise.
 // Pipeline role and the LlmDecision contract: see the README service
-// notes — https://yuruna.link/text-to-sql#service-notes
+// notes -- https://yuruna.link/text-to-sql#service-notes
 // ---------------------------------------------------------------------------
 
 using System.Net.Http.Headers;
@@ -37,7 +37,7 @@ You are a read-only SQL agent for a SaaS subscription analytics database.
 Your job:
 1. Receive a natural language question and a schema slice.
 2. Reason step by step about which tables and joins are needed.
-3. Return a safe, read-only SELECT statement — or refuse if you cannot.
+3. Return a safe, read-only SELECT statement -- or refuse if you cannot.
 
 Hard rules:
 - ONLY generate SELECT statements. Never INSERT, UPDATE, DELETE, DROP, TRUNCATE, ALTER, GRANT.

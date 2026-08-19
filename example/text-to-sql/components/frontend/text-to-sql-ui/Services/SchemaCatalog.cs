@@ -1,10 +1,10 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ---------------------------------------------------------------------------
-// SchemaCatalog — the "② Schema Retriever" stage of the agent pipeline.
+// SchemaCatalog -- the "(2) Schema Retriever" stage of the agent pipeline.
 // Build-time catalog introspection, query-time hybrid scoring with one-hop
 // FK expansion, compact (< 2 KB) prompt slices: see the README service
-// notes — https://yuruna.link/text-to-sql#service-notes
+// notes -- https://yuruna.link/text-to-sql#service-notes
 // ---------------------------------------------------------------------------
 
 using System.Data;
@@ -36,7 +36,7 @@ public sealed class SchemaCatalog
             || columnName.Equals("phone", StringComparison.OrdinalIgnoreCase)
             || columnName.EndsWith("_pii", StringComparison.OrdinalIgnoreCase));
 
-    // ── Public retriever ───────────────────────────────────────────────────
+    // -- Public retriever ---------------------------------------------------
     // Returns the k most relevant tables (by hybrid score) plus their direct
     // FK neighbors. The string form is what the SQL generator sees.
     public async Task<RetrievalResult> GetRelevantSchemaAsync(string question, int k = 6)
@@ -107,7 +107,7 @@ public sealed class SchemaCatalog
             .ToHashSet();
     }
 
-    // ── Format for the prompt — compact YAML-ish so the model finds JOINs. ──
+    // -- Format for the prompt -- compact YAML-ish so the model finds JOINs. --
     private static string Format(IEnumerable<TableInfo> tables)
     {
         var sb = new System.Text.StringBuilder();
@@ -133,7 +133,7 @@ public sealed class SchemaCatalog
         return sb.ToString();
     }
 
-    // ── Build the catalog from information_schema + pg_constraint ──────────
+    // -- Build the catalog from information_schema + pg_constraint ----------
     private async Task<IReadOnlyList<TableInfo>> LoadAsync()
     {
         var byName = new Dictionary<string, TableInfo>(StringComparer.OrdinalIgnoreCase);
@@ -185,7 +185,7 @@ public sealed class SchemaCatalog
             }
         }
 
-        // Foreign keys (table_name → referenced_table, edge_label = "fk(col→col)")
+        // Foreign keys (table_name -> referenced_table, edge_label = "fk(col->col)")
         const string sqlFks = @"
             SELECT tc.table_name,
                    kcu.column_name,
@@ -209,7 +209,7 @@ public sealed class SchemaCatalog
                 var tgt = rdr.GetString(2);
                 var tgtCol = rdr.GetString(3);
                 if (byName.TryGetValue(src, out var ti))
-                    ti.FkOut.Add((tgt, $"{srcCol}→{tgt}.{tgtCol}"));
+                    ti.FkOut.Add((tgt, $"{srcCol}->{tgt}.{tgtCol}"));
             }
         }
 
@@ -221,7 +221,7 @@ public sealed class SchemaCatalog
     }
 }
 
-// ── Records ────────────────────────────────────────────────────────────────
+// -- Records ----------------------------------------------------------------
 
 public sealed class TableInfo
 {

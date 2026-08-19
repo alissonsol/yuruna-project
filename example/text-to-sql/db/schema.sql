@@ -27,7 +27,7 @@ DROP TABLE IF EXISTS plan_tier         CASCADE;
 DROP TABLE IF EXISTS acquisition_channel CASCADE;
 DROP TABLE IF EXISTS geography         CASCADE;
 
--- ── Reference tables ────────────────────────────────────────────────────────
+-- -- Reference tables --------------------------------------------------------
 
 CREATE TABLE geography (
     geo_id        SERIAL PRIMARY KEY,
@@ -55,9 +55,9 @@ CREATE TABLE plan_tier (
     monthly_usd   NUMERIC(10,2) NOT NULL
 );
 COMMENT ON TABLE  plan_tier IS 'Pricing tier dimension. tier_code values: Starter, Pro, Enterprise.';
-COMMENT ON COLUMN plan_tier.tier_code IS 'Plan tier code. RENAMED 2026-Q1 from plan_code → tier_code.';
+COMMENT ON COLUMN plan_tier.tier_code IS 'Plan tier code. RENAMED 2026-Q1 from plan_code -> tier_code.';
 
--- ── Core entities ───────────────────────────────────────────────────────────
+-- -- Core entities -----------------------------------------------------------
 
 CREATE TABLE customer (
     customer_id   SERIAL PRIMARY KEY,
@@ -69,7 +69,7 @@ CREATE TABLE customer (
     signed_up_at  TIMESTAMPTZ NOT NULL
 );
 COMMENT ON TABLE  customer IS 'Customer (B2B account). One row per company. PII columns: email.';
-COMMENT ON COLUMN customer.email IS 'PII — must be redacted unless caller has role pii_reader.';
+COMMENT ON COLUMN customer.email IS 'PII -- must be redacted unless caller has role pii_reader.';
 
 CREATE TABLE subscription (
     subscription_id  SERIAL PRIMARY KEY,
@@ -97,7 +97,7 @@ CREATE TABLE churn_event (
 );
 COMMENT ON TABLE  churn_event IS 'One row per cancellation. Use this table to compute churn rate. Join via subscription_id.';
 
--- ── Indexes ─────────────────────────────────────────────────────────────────
+-- -- Indexes -----------------------------------------------------------------
 
 CREATE INDEX idx_subscription_tier        ON subscription(tier_id);
 CREATE INDEX idx_subscription_customer    ON subscription(customer_id);
@@ -108,7 +108,7 @@ CREATE INDEX idx_churn_happened_at        ON churn_event(happened_at);
 CREATE INDEX idx_customer_geo             ON customer(geo_id);
 CREATE INDEX idx_customer_channel         ON customer(channel_id);
 
--- ── Seed data ──────────────────────────────────────────────────────────────
+-- -- Seed data --------------------------------------------------------------
 
 INSERT INTO geography (iso_country, region, country_name) VALUES
   ('DE','EMEA','Germany'),
@@ -188,9 +188,9 @@ SELECT
 FROM subscription s
 WHERE s.cancelled_at IS NOT NULL;
 
--- ── Convenience views (the agent should NOT need these — they exist so an
+-- -- Convenience views (the agent should NOT need these -- they exist so an
 -- answer like "use a materialized view for known shapes" is concretely
--- visible). ──
+-- visible). --
 
 CREATE OR REPLACE VIEW v_active_subscription AS
 SELECT s.*, p.tier_code, c.geo_id, g.region, c.channel_id, ch.channel_name
@@ -201,7 +201,7 @@ JOIN geography             g  ON g.geo_id     = c.geo_id
 JOIN acquisition_channel   ch ON ch.channel_id = c.channel_id
 WHERE s.cancelled_at IS NULL;
 
--- ── Roles for the action-gating layer ──────────────────────────────────────
+-- -- Roles for the action-gating layer --------------------------------------
 -- A read-only role the .NET app connects as. The agent NEVER connects as
 -- the schema owner. This is what action-gating looks like at the DB layer.
 
@@ -220,7 +220,7 @@ GRANT SELECT  ON ALL SEQUENCES IN SCHEMA public TO yuruna_agent_ro;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES   TO yuruna_agent_ro;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON SEQUENCES TO yuruna_agent_ro;
 
--- ── Sanity counts (psql will echo these) ────────────────────────────────────
+-- -- Sanity counts (psql will echo these) ------------------------------------
 SELECT 'geography'           AS table_name, COUNT(*) AS row_count FROM geography
 UNION ALL SELECT 'acquisition_channel', COUNT(*) FROM acquisition_channel
 UNION ALL SELECT 'plan_tier',           COUNT(*) FROM plan_tier

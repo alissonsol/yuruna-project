@@ -5,7 +5,7 @@
 [github.com/alissonsol/yuruna](https://github.com/alissonsol/yuruna);
 this repo tracks user-facing project templates and end-to-end examples.
 
-## 2026.08.16
+## 2026.08.19
 
 - **Stable**: Waiting for the next schema change.
 
@@ -24,7 +24,7 @@ this repo tracks user-facing project templates and end-to-end examples.
 
 ## 2026.06.05
 
-- [example/text-to-sql/](example/text-to-sql/) — the full three-phase
+- [example/text-to-sql/](example/text-to-sql/) -- the full three-phase
   Yuruna deployment is now wired up. `config/localhost/{resources,
   components,workloads}.yml`, the helm chart under
   [`workloads/frontend/text-to-sql-ui/`](example/text-to-sql/workloads/frontend/text-to-sql-ui/),
@@ -39,12 +39,12 @@ this repo tracks user-facing project templates and end-to-end examples.
 
 First publicly tracked release.
 
-- [template/](template/) — empty project scaffold (resources,
+- [template/](template/) -- empty project scaffold (resources,
   components, workloads, config, test).
-- [example/website/](example/website/) — .NET C# website container
+- [example/website/](example/website/) -- .NET C# website container
   deployed to Kubernetes on localhost, Azure, and AWS, demonstrating
   resource + component + workload wiring and TLS via cert-manager.
-- [example/text-to-sql/](example/text-to-sql/) — **Early release.**
+- [example/text-to-sql/](example/text-to-sql/) -- **Early release.**
   Agentic read-only text-to-SQL on ASP.NET Core + PostgreSQL, running
   locally against PostgreSQL.
 - **License**: [LICENSE.md](LICENSE.md) is now titled "Yuruna License"
@@ -58,6 +58,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.16
+Last review: 2026.08.19
 
-Back to [yuruna-project](README.md) · [Yuruna](https://yuruna.com)
+Back to [yuruna-project](README.md) - [Yuruna](https://yuruna.com)

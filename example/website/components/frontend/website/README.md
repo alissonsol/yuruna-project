@@ -25,7 +25,7 @@ dotnet dev-certs https -ep $HOME/.aspnet/https/aspnetapp.pfx -p { password here 
 dotnet dev-certs https --trust
 ```
 
-If "A valid HTTPS certificate is already present" → `dotnet dev-certs https --clean` and retry.
+If "A valid HTTPS certificate is already present" -> `dotnet dev-certs https --clean` and retry.
 
 ## Regenerating and modifying the website project
 
@@ -34,16 +34,16 @@ If "A valid HTTPS certificate is already present" → `dotnet dev-certs https --
   - Add `**/wwwroot/lib/*` to `.gitignore`.
 - Containerize per [Running pre-built container images with HTTPS](https://learn.microsoft.com/en-us/aspnet/core/security/docker-https?view=aspnetcore-10.0):
   - If `Microsoft.VisualStudio.Azure.Containers.Tools.Targets` is missing: `dotnet add package Microsoft.VisualStudio.Azure.Containers.Tools.Targets --version 1.23.0`.
-  - Right-click the project → `Add → Docker Support…` (needs [Visual Studio](https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/docker/visual-studio-tools-for-docker?view=aspnetcore-10.0)).
+  - Right-click the project -> `Add -> Docker Support...` (needs [Visual Studio](https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/docker/visual-studio-tools-for-docker?view=aspnetcore-10.0)).
 - Test with `IIS Express`, then the `Docker` version:
-  - "Volume sharing is not enabled" → Docker Desktop → Settings → Resources → File Sharing → add `C:\` → Apply & Restart.
+  - "Volume sharing is not enabled" -> Docker Desktop -> Settings -> Resources -> File Sharing -> add `C:\` -> Apply & Restart.
   - The Linux build expects lowercase `dockerfile`; the VS debugger expects `Dockerfile`. Keep `Dockerfile` (uppercase) and use the debugger.
 
 ## Running the docker image locally
 
 ### Docker
 
-- Start the Docker build via VS debugger — runs as `website:dev` named `website`. Stopping the debugger may leave it running; clean up.
+- Start the Docker build via VS debugger -- runs as `website:dev` named `website`. Stopping the debugger may leave it running; clean up.
 - Or use `frontend/website/docker-run-dev.ps1`: builds `yrn42website-prefix/website:latest`, runs as `yrn42website-prefix-example-website`. Confirm the password matches the dev cert. Open `http://localhost:8000/`.
 - Or build via `Set-Component.ps1 website localhost` then run interactively:
   ```
@@ -72,6 +72,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.16
+Last review: 2026.08.19
 
-Back to [Website example](../../../README.md) · [yuruna-project](../../../../../README.md) · [Yuruna](https://yuruna.com)
+Back to [Website example](../../../README.md) - [yuruna-project](../../../../../README.md) - [Yuruna](https://yuruna.com)

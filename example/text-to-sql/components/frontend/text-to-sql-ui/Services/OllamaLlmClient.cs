@@ -1,14 +1,14 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ---------------------------------------------------------------------------
-// OllamaLlmClient — local-first ILlmClient implementation backed by an
+// OllamaLlmClient -- local-first ILlmClient implementation backed by an
 // Ollama server (default http://127.0.0.1:11434) running a local coding
 // model (e.g. qwen3-coder). Activated when USE_LOCAL_MODEL / OLLAMA_HOST is
 // set; keeps proprietary schema + questions on-device (no third-party API).
 // Mirrors ClaudeLlmClient's structured-output + refusal-vs-failure contract:
 // a parsed refused=true is a normal LlmDecision; every other failure mode
 // throws LlmClientException. Pipeline role and the LlmDecision contract: see
-// the README service notes — https://yuruna.link/text-to-sql#service-notes
+// the README service notes -- https://yuruna.link/text-to-sql#service-notes
 // ---------------------------------------------------------------------------
 
 using System.Text;
@@ -34,7 +34,7 @@ public sealed class OllamaLlmClient : ILlmClient
 
     // Same operating contract as the Claude system prompt: read-only, no PII,
     // LIMIT 200, refuse honestly. The JSON-shape instruction replaces Claude's
-    // tool-use schema — Ollama's format:"json" mode guarantees valid JSON, and
+    // tool-use schema -- Ollama's format:"json" mode guarantees valid JSON, and
     // the required keys are spelled out here so the parse below is total.
     private static readonly string SystemPrompt = @"
 You are a read-only SQL agent for a SaaS subscription analytics database.
@@ -42,7 +42,7 @@ You are a read-only SQL agent for a SaaS subscription analytics database.
 Your job:
 1. Receive a natural language question and a schema slice.
 2. Reason step by step about which tables and joins are needed.
-3. Return a safe, read-only SELECT statement — or refuse if you cannot.
+3. Return a safe, read-only SELECT statement -- or refuse if you cannot.
 
 Hard rules:
 - ONLY generate SELECT statements. Never INSERT, UPDATE, DELETE, DROP, TRUNCATE, ALTER, GRANT.
@@ -51,8 +51,8 @@ Hard rules:
 - If you are not confident, refuse. Do not hallucinate table or column names.
 - Always add a LIMIT clause (max 200 rows) unless the query is an aggregate.
 
-Respond with ONLY a single JSON object — no markdown fences, no prose before or
-after — with EXACTLY these keys:
+Respond with ONLY a single JSON object -- no markdown fences, no prose before or
+after -- with EXACTLY these keys:
   ""plan"":           string, your step-by-step reasoning (shown in the UI timeline).
   ""sql"":            string, the raw SELECT SQL with no markdown fences. Empty string if refused.
   ""refused"":        boolean, true if the question cannot be safely answered.
@@ -117,7 +117,7 @@ after — with EXACTLY these keys:
             }
             catch (Exception ex)
             {
-                // Transport failure (socket/DNS — e.g. Ollama not running), the
+                // Transport failure (socket/DNS -- e.g. Ollama not running), the
                 // per-request HttpClient timeout (a TaskCanceledException NOT
                 // tied to the caller's ct), or a body-read failure.
                 if (DateTime.UtcNow < deadline)

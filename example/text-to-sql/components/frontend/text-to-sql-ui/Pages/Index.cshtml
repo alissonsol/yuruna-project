@@ -9,9 +9,9 @@
 <section class="ask-card">
   <h1>Ask the warehouse</h1>
   <p class="muted">
-    Natural-language question → six-stage agent → PostgreSQL. The timeline
-    below traces the pipeline stages: Planner → Schema Retriever → SQL Gen
-    → Validator → Executor → Observer.
+    Natural-language question -> six-stage agent -> PostgreSQL. The timeline
+    below traces the pipeline stages: Planner -> Schema Retriever -> SQL Gen
+    -> Validator -> Executor -> Observer.
   </p>
 
   <form method="post" class="ask-form">
@@ -36,7 +36,7 @@
   <section class="run-summary @(run.Succeeded ? "ok" : (run.RefusalReason is not null ? "refused" : "fail"))">
     <div class="run-summary-head">
       <span class="pill">@(run.Succeeded ? "success" : (run.RefusalReason is not null ? "refused" : "error"))</span>
-      <span class="muted">@(run.TotalMs) ms total · @(run.ResultRows.Count) rows · @(run.Steps.Count) stages</span>
+      <span class="muted">@(run.TotalMs) ms total - @(run.ResultRows.Count) rows - @(run.Steps.Count) stages</span>
     </div>
     @if (run.RefusalReason is not null)
     {
@@ -94,7 +94,7 @@
             @foreach (var row in run.ResultRows)
             {
               <tr>
-                @foreach (var v in row) { <td>@(v?.ToString() ?? "—")</td> }
+                @foreach (var v in row) { <td>@(v?.ToString() ?? "--")</td> }
               </tr>
             }
           </tbody>

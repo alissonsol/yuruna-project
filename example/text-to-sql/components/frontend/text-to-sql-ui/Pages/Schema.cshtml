@@ -8,7 +8,7 @@
 
 <h1>Schema catalog</h1>
 <p class="muted">
-  This is what the schema retriever indexes at build time — table comments,
+  This is what the schema retriever indexes at build time -- table comments,
   columns, FK edges. Scaling to 1000+ tables starts here: only the relevant
   slice ever goes into the LLM prompt.
 </p>
@@ -29,7 +29,7 @@
           <tr>
             <td>@c.Name</td>
             <td>@c.DataType</td>
-            <td>@(c.Nullable ? "yes" : "—")</td>
+            <td>@(c.Nullable ? "yes" : "--")</td>
             <td>@(c.IsPii ? "PII (redacted by policy)" : "")</td>
           </tr>
         }

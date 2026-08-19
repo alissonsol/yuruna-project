@@ -73,3 +73,11 @@ placeholder  text eol=lf
 *.tgz        binary
 *.exe        binary
 *.dll        binary
+
+# Visual Studio project and solution files. Built by dotnet on Windows, never
+# served to a Linux guest -- but pinned anyway so a clone with autocrlf=true
+# does not produce a whole-file diff the next time one is touched. VS rewrites
+# line endings on save, so if these are edited in the IDE expect it to fight
+# this rule rather than honor it.
+*.csproj     text eol=lf
+*.sln        text eol=lf

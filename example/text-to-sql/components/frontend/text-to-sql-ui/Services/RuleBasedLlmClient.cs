@@ -1,9 +1,9 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ---------------------------------------------------------------------------
-// RuleBasedLlmClient — a deterministic stand-in for the "③ SQL Generator
+// RuleBasedLlmClient -- a deterministic stand-in for the "(3) SQL Generator
 // (LLM)" box. Lets the example run offline, with no API key. Pattern
-// coverage and the plan-prose contract: see the README service notes —
+// coverage and the plan-prose contract: see the README service notes --
 // https://yuruna.link/text-to-sql#service-notes
 // ---------------------------------------------------------------------------
 
@@ -20,12 +20,12 @@ public sealed class RuleBasedLlmClient : ILlmClient
     {
         var q = question.ToLowerInvariant();
 
-        // Always include the planner's "thinking" so the UI can show it —
+        // Always include the planner's "thinking" so the UI can show it --
         // this is what makes the pipeline look agentic, not just templated.
         string Plan(string s) => "Plan:\n" + s + "\n\nSchema slice (truncated): "
-                                + (schemaSlice.Length > 220 ? schemaSlice[..220] + "…" : schemaSlice);
+                                + (schemaSlice.Length > 220 ? schemaSlice[..220] + "..." : schemaSlice);
 
-        // ── churn by tier × region ────────────────────────────────────────
+        // -- churn by tier x region ----------------------------------------
         if (q.Contains("churn") && (q.Contains("tier") || q.Contains("plan"))
                                 && (q.Contains("emea") || q.Contains("region")))
         {
@@ -43,13 +43,13 @@ SELECT pt.tier_code,
  GROUP BY pt.tier_code, g.region
  ORDER BY churn_rate DESC",
                 Plan(@"
-  1. Map ""plan tier"" → plan_tier.tier_code (FYI: renamed from plan_code in 2026-Q1).
-  2. Map ""EMEA"" → geography.region.
-  3. Need JOIN customer → geography for region; subscription → plan_tier for tier.
+  1. Map ""plan tier"" -> plan_tier.tier_code (FYI: renamed from plan_code in 2026-Q1).
+  2. Map ""EMEA"" -> geography.region.
+  3. Need JOIN customer -> geography for region; subscription -> plan_tier for tier.
   4. Churn rate = churn_events / subscriptions, grouped."));
         }
 
-        // ── churn by channel ──────────────────────────────────────────────
+        // -- churn by channel ----------------------------------------------
         if (q.Contains("churn") && (q.Contains("channel") || q.Contains("acquisition")))
         {
             return Sql(@"
@@ -64,12 +64,12 @@ SELECT ac.channel_name,
  GROUP BY ac.channel_name
  ORDER BY churn_rate DESC",
                 Plan(@"
-  1. ""channel"" → acquisition_channel.channel_name.
-  2. Join customer → acquisition_channel.
+  1. ""channel"" -> acquisition_channel.channel_name.
+  2. Join customer -> acquisition_channel.
   3. Churn rate as before."));
         }
 
-        // ── MRR / ARR by tier ─────────────────────────────────────────────
+        // -- MRR / ARR by tier ---------------------------------------------
         if ((q.Contains("mrr") || q.Contains("arr") || q.Contains("revenue") || q.Contains("monthly"))
             && (q.Contains("tier") || q.Contains("plan")))
         {
@@ -83,12 +83,12 @@ SELECT pt.tier_code,
  GROUP BY pt.tier_code
  ORDER BY mrr_usd DESC",
                 Plan(@"
-  1. MRR = sum of plan_tier.monthly_usd × subscription.seat_count for active subs.
+  1. MRR = sum of plan_tier.monthly_usd x subscription.seat_count for active subs.
   2. Active = cancelled_at IS NULL.
-  3. ARR = MRR × 12."));
+  3. ARR = MRR x 12."));
         }
 
-        // ── active subscriptions by region ────────────────────────────────
+        // -- active subscriptions by region --------------------------------
         if ((q.Contains("active") || q.Contains("current")) && q.Contains("subscription"))
         {
             return Sql(@"
@@ -104,7 +104,7 @@ SELECT g.region, COUNT(*) AS active_subscriptions
   2. Group by macro region."));
         }
 
-        // ── top customers by invoice ──────────────────────────────────────
+        // -- top customers by invoice --------------------------------------
         if (q.Contains("top") && (q.Contains("customer") || q.Contains("client"))
                               && (q.Contains("invoice") || q.Contains("spend") || q.Contains("revenue")))
         {
@@ -119,11 +119,11 @@ SELECT c.company_name,
  LIMIT 10",
                 Plan(@"
   1. Sum invoice.amount_usd per customer.
-  2. Note: customer.email is PII — we do NOT select it.
-  3. Top N → ORDER BY ... LIMIT 10."));
+  2. Note: customer.email is PII -- we do NOT select it.
+  3. Top N -> ORDER BY ... LIMIT 10."));
         }
 
-        // ── signups by month ──────────────────────────────────────────────
+        // -- signups by month ----------------------------------------------
         if ((q.Contains("signup") || q.Contains("new") || q.Contains("acquired")) && q.Contains("month"))
         {
             return Sql(@"
@@ -132,10 +132,10 @@ SELECT date_trunc('month', signed_up_at)::date AS month,
   FROM customer
  GROUP BY 1
  ORDER BY 1",
-                Plan("New customers by month → date_trunc on customer.signed_up_at."));
+                Plan("New customers by month -> date_trunc on customer.signed_up_at."));
         }
 
-        // ── list-tables helper ────────────────────────────────────────────
+        // -- list-tables helper --------------------------------------------
         if (Regex.IsMatch(q, @"\b(list|show|what)\b.*\btables?\b"))
         {
             return Sql(@"
@@ -143,16 +143,16 @@ SELECT table_name
   FROM information_schema.tables
  WHERE table_schema = 'public'
  ORDER BY table_name",
-                Plan("User asked for the table list → query information_schema.tables."));
+                Plan("User asked for the table list -> query information_schema.tables."));
         }
 
-        // ── refusal: clearly out-of-domain or write-intent ────────────────
+        // -- refusal: clearly out-of-domain or write-intent ----------------
         if (Regex.IsMatch(q, @"\b(delete|drop|truncate|update|insert|grant|alter)\b"))
         {
             return Refuse("This system is read-only. Write/DDL operations are not permitted.");
         }
 
-        // ── fallback "I don't know" path ──────────────────────────────────
+        // -- fallback "I don't know" path ----------------------------------
         return Refuse(@"I don't have a confident SQL mapping for that question against the available schema.
 Try one of: ""churn rate by plan tier in EMEA"", ""MRR by tier"",
 ""active subscriptions by region"", ""top customers by invoice"".");

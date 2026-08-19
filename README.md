@@ -7,13 +7,13 @@ shared independently.
 
 ## Layout
 
-- [template/](template/) — folder structure for starting a new project
+- [template/](template/) -- folder structure for starting a new project
   (resources / components / workloads / config).
-- [example/](example/) — end-to-end examples that exercise the
+- [example/](example/) -- end-to-end examples that exercise the
   framework against real clouds. See [Yuruna Examples ...](example/README.md).
-  - [example/website/](example/website/) — .NET C# website container
+  - [example/website/](example/website/) -- .NET C# website container
     deployed to Kubernetes on localhost, Azure, or AWS.
-  - [example/text-to-sql/](example/text-to-sql/) — **Early release.**
+  - [example/text-to-sql/](example/text-to-sql/) -- **Early release.**
     Agentic read-only text-to-SQL on ASP.NET Core + PostgreSQL. Runs
     locally and deploys through the full Yuruna three-phase model;
     Claude activates when `ANTHROPIC_API_KEY` is set.
@@ -31,6 +31,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.16
+Last review: 2026.08.19
 
 Back to [Yuruna](https://yuruna.com)

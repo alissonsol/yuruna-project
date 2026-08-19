@@ -1,11 +1,11 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ---------------------------------------------------------------------------
-// Agentic Text-to-SQL UI — minimal ASP.NET Core Razor Pages host wiring
+// Agentic Text-to-SQL UI -- minimal ASP.NET Core Razor Pages host wiring
 // Razor Pages, the read-only Npgsql DataSource, and the agent services;
 // offline rule-based LLM by default, OllamaLlmClient when USE_LOCAL_MODEL
 // is set, ClaudeLlmClient when ANTHROPIC_API_KEY is set. See the README
-// service notes —
+// service notes --
 // https://yuruna.link/text-to-sql#service-notes
 // ---------------------------------------------------------------------------
 using Npgsql;
@@ -15,9 +15,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 
-// ── Postgres data source ───────────────────────────────────────────────────
+// -- Postgres data source ---------------------------------------------------
 // Connection string priority:
-//   1. env TEXT2SQL_PG_CONN  (preferred — see README)
+//   1. env TEXT2SQL_PG_CONN  (preferred -- see README)
 //   2. appsettings:ConnectionStrings:Postgres
 //   3. localhost default
 
@@ -29,7 +29,7 @@ var pgConn =
 var dsBuilder = new NpgsqlDataSourceBuilder(pgConn);
 builder.Services.AddSingleton(dsBuilder.Build());
 
-// ── Agent stack ────────────────────────────────────────────────────────────
+// -- Agent stack ------------------------------------------------------------
 builder.Services.AddSingleton<SchemaCatalog>();
 builder.Services.AddSingleton<SqlValidator>();
 

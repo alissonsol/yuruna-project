@@ -1,11 +1,11 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ---------------------------------------------------------------------------
-// AgentOrchestrator — the "① Planner" + retry loop for the agent pipeline
-// (schema retriever → SQL generator → static validator → EXPLAIN cost gate
-// → executor). Every stage emits a Step with elapsed-ms, status, and notes,
+// AgentOrchestrator -- the "(1) Planner" + retry loop for the agent pipeline
+// (schema retriever -> SQL generator -> static validator -> EXPLAIN cost gate
+// -> executor). Every stage emits a Step with elapsed-ms, status, and notes,
 // rendered by the UI as one timeline. Stage map: see the README service
-// notes — https://yuruna.link/text-to-sql#service-notes
+// notes -- https://yuruna.link/text-to-sql#service-notes
 // ---------------------------------------------------------------------------
 
 using System.Data;
@@ -48,7 +48,7 @@ public sealed class AgentOrchestrator
     {
         var run = new AgentRun(question);
 
-        // ─── ② Schema retrieval ────────────────────────────────────────────
+        // --- (2) Schema retrieval --------------------------------------------
         var swSchema = Stopwatch.StartNew();
         RetrievalResult retrieval;
         try
@@ -63,10 +63,10 @@ public sealed class AgentOrchestrator
         }
         run.Steps.Add(Step.Ok("Schema retrieval", swSchema,
             $"Picked {retrieval.Tables.Count} tables (FK-expanded). " +
-            $"Prompt slice ≈ {retrieval.FormattedPrompt.Length} chars."));
+            $"Prompt slice ~ {retrieval.FormattedPrompt.Length} chars."));
         run.SchemaSlice = retrieval.FormattedPrompt;
 
-        // ─── ③ SQL generation ──────────────────────────────────────────────
+        // --- (3) SQL generation ----------------------------------------------
         var swGen = Stopwatch.StartNew();
         LlmDecision decision;
         try
@@ -93,7 +93,7 @@ public sealed class AgentOrchestrator
         run.Steps.Add(Step.Ok("SQL generation", swGen, "Draft SQL produced."));
         var draftSql = decision.Sql!.Trim();
 
-        // ─── ④ Static validation ───────────────────────────────────────────
+        // --- (4) Static validation -------------------------------------------
         var swStatic = Stopwatch.StartNew();
         var st = _validator.StaticCheck(draftSql);
         if (!st.Allowed)
@@ -107,7 +107,7 @@ public sealed class AgentOrchestrator
             safeSql.Length > draftSql.Length ? "Allowed. (Auto-injected LIMIT.)" : "Allowed."));
         run.SafeSql = safeSql;
 
-        // ─── ④ EXPLAIN cost gate ───────────────────────────────────────────
+        // --- (4) EXPLAIN cost gate -------------------------------------------
         var swExp = Stopwatch.StartNew();
         if (!_enableExplainGate)
         {
@@ -130,10 +130,10 @@ public sealed class AgentOrchestrator
                 run.Finalize(refusal: gate.Reason);
                 return run;
             }
-            run.Steps.Add(Step.Ok("EXPLAIN", swExp, $"Plan rows ≈ {gate.PlanRows:N0}. Allowed."));
+            run.Steps.Add(Step.Ok("EXPLAIN", swExp, $"Plan rows ~ {gate.PlanRows:N0}. Allowed."));
         }
 
-        // ─── ⑤ Execute ─────────────────────────────────────────────────────
+        // --- (5) Execute -----------------------------------------------------
         var swExec = Stopwatch.StartNew();
         try
         {
@@ -181,7 +181,7 @@ public sealed class AgentOrchestrator
     }
 }
 
-// ── Run + Step records ─────────────────────────────────────────────────────
+// -- Run + Step records -----------------------------------------------------
 
 public sealed class AgentRun
 {
