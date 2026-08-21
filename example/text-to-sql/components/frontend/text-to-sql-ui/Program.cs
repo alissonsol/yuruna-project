@@ -1,13 +1,7 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
-// ---------------------------------------------------------------------------
-// Agentic Text-to-SQL UI -- minimal ASP.NET Core Razor Pages host wiring
-// Razor Pages, the read-only Npgsql DataSource, and the agent services;
-// offline rule-based LLM by default, OllamaLlmClient when USE_LOCAL_MODEL
-// is set, ClaudeLlmClient when ANTHROPIC_API_KEY is set. See the README
-// service notes --
+// ASP.NET Core host wiring for the agent pipeline; see README service notes:
 // https://yuruna.link/text-to-sql#service-notes
-// ---------------------------------------------------------------------------
 using Npgsql;
 using TextToSqlUi.Services;
 

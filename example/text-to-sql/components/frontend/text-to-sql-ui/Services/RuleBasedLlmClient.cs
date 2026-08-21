@@ -1,11 +1,7 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
-// ---------------------------------------------------------------------------
-// RuleBasedLlmClient -- a deterministic stand-in for the "(3) SQL Generator
-// (LLM)" box. Lets the example run offline, with no API key. Pattern
-// coverage and the plan-prose contract: see the README service notes --
+// Deterministic offline ILlmClient stand-in; see README service notes:
 // https://yuruna.link/text-to-sql#service-notes
-// ---------------------------------------------------------------------------
 
 using System.Text.RegularExpressions;
 

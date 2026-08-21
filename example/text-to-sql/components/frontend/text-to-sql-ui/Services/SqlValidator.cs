@@ -1,13 +1,7 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
-// ---------------------------------------------------------------------------
-// SqlValidator -- the "(4) Validator (Guardrail)" stage of the agent pipeline.
-// Static checks (single SELECT-only statement, no stacked statements, no
-// comment payloads, no CTE-disguised writes, no PII columns, enforced
-// top-level LIMIT) plus an online EXPLAIN cost gate; the regex pre-check
-// vs AST-parser trade-off: see the README service notes --
-// https://yuruna.link/text-to-sql#service-notes
-// ---------------------------------------------------------------------------
+// Validator stage: static SQL checks + EXPLAIN cost gate; see README service
+// notes: https://yuruna.link/text-to-sql#service-notes
 
 using System.Text.RegularExpressions;
 using Npgsql;

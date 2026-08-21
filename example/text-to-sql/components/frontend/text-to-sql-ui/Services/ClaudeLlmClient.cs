@@ -1,12 +1,7 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
-// ---------------------------------------------------------------------------
-// ClaudeLlmClient -- production ILlmClient implementation backed by the
-// Anthropic Messages API with tool-use for structured output. Activated
-// when ANTHROPIC_API_KEY is set; RuleBasedLlmClient is used otherwise.
-// Pipeline role and the LlmDecision contract: see the README service
-// notes -- https://yuruna.link/text-to-sql#service-notes
-// ---------------------------------------------------------------------------
+// ILlmClient backed by the Anthropic Messages API; see README service notes:
+// https://yuruna.link/text-to-sql#service-notes
 
 using System.Net.Http.Headers;
 using System.Text;
@@ -141,7 +136,7 @@ In the plan field, show your step-by-step reasoning before arriving at the SQL.
             }
             catch (OperationCanceledException) when (ct.IsCancellationRequested)
             {
-                throw; // the caller canceled -- propagate, never retry or relabel
+                throw; // the caller cancelled -- propagate, never retry or relabel
             }
             catch (Exception ex)
             {

@@ -1,15 +1,7 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
-// ---------------------------------------------------------------------------
-// OllamaLlmClient -- local-first ILlmClient implementation backed by an
-// Ollama server (default http://127.0.0.1:11434) running a local coding
-// model (e.g. qwen3-coder). Activated when USE_LOCAL_MODEL / OLLAMA_HOST is
-// set; keeps proprietary schema + questions on-device (no third-party API).
-// Mirrors ClaudeLlmClient's structured-output + refusal-vs-failure contract:
-// a parsed refused=true is a normal LlmDecision; every other failure mode
-// throws LlmClientException. Pipeline role and the LlmDecision contract: see
-// the README service notes -- https://yuruna.link/text-to-sql#service-notes
-// ---------------------------------------------------------------------------
+// ILlmClient backed by a local Ollama server; see README service notes:
+// https://yuruna.link/text-to-sql#service-notes
 
 using System.Text;
 using System.Text.Json;

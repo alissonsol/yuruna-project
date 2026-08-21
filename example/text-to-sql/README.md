@@ -95,7 +95,7 @@ Per-service design notes referenced from the file-top comments
 
 **`Program.cs`** -- minimal Razor Pages host. Three things are wired up:
 Razor Pages for the chat UI, an Npgsql `DataSource` for the read-only
-Postgres connection, and the agent services
+PostgreSQL connection, and the agent services
 (SchemaCatalog -> SqlValidator -> AgentOrchestrator). The orchestrator
 uses the deterministic rule-based "LLM" by default; when
 `ANTHROPIC_API_KEY` is set the ClaudeLlmClient path is swapped in
@@ -144,6 +144,14 @@ the Anthropic Messages API with tool-use for structured output; the
 "(3) SQL Generator (LLM)" role in the orchestrator. Returns an
 `LlmDecision` with `Sql` (raw SELECT, no markdown fences), `PlanText`
 (reasoning shown in the UI observer), `Refused`, and `RefusalReason`.
+
+**`Services/OllamaLlmClient.cs`** -- local-first `ILlmClient` backed by
+an Ollama server (default `http://127.0.0.1:11434`) running a local
+coding model (e.g. `qwen3-coder`); activated by `USE_LOCAL_MODEL` /
+`OLLAMA_HOST`, keeping the schema and questions on-device instead of
+calling a third-party API. Mirrors `ClaudeLlmClient`'s structured-output
+contract: a parsed `Refused=true` is a normal `LlmDecision`, and every
+other failure mode throws `LlmClientException`.
 
 **`Services/AgentOrchestrator.cs`** -- the "(5) Executor" plus retry loop.
 Runs the stages in order (schema retriever -> SQL generator -> static
@@ -203,7 +211,7 @@ If "A valid HTTPS certificate is already present" -> `dotnet dev-certs https --c
 example/text-to-sql/
 +-- README.md                        <- this file
 +-- db/
-|   +-- schema.sql                   <- Postgres schema + seed data
+|   +-- schema.sql                   <- PostgreSQL schema + seed data
 +-- config/
 |   +-- localhost/                   <- resources - components - workloads (three-phase config)
 +-- workloads/
@@ -232,6 +240,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.20
+Last review: 2026.08.21
 
 Back to [yuruna-project](../../README.md) - [Yuruna](https://yuruna.com)
