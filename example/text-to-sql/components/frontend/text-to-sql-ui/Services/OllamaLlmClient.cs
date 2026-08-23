@@ -105,7 +105,7 @@ after -- with EXACTLY these keys:
             }
             catch (OperationCanceledException) when (ct.IsCancellationRequested)
             {
-                throw; // the caller cancelled -- propagate, never retry or relabel
+                throw; // the caller canceled -- propagate, never retry or relabel
             }
             catch (Exception ex)
             {
