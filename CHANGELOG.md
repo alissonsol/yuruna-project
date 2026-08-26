@@ -5,7 +5,7 @@
 [github.com/alissonsol/yuruna](https://github.com/alissonsol/yuruna);
 this repo tracks user-facing project templates and end-to-end examples.
 
-## 2026.08.23
+## 2026.08.25
 
 - **Stable**: Waiting for the next schema change.
 
@@ -58,6 +58,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.08.23
+Last review: 2026.08.25
 
 Back to [yuruna-project](README.md) - [Yuruna](https://yuruna.com)
