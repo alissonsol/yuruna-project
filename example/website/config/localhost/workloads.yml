@@ -17,10 +17,6 @@ globalVariables:
   dockerUsername:        "placeholder"
   dockerPassword:        "placeholder"
   ingressClass:          "nginx"
-  # cert-manager release pin (https://github.com/cert-manager/cert-manager/releases);
-  # every example config that installs cert-manager pins the same release
-  # (aws ships without cert-manager and has no pin) -- bump them together.
-  certManagerLatest:     "v1.21.0"
 
 workloads:
 - context: "${env:runTag}-${env:project}-${env:runId}"
@@ -33,8 +29,19 @@ workloads:
     # Uninstall previous workloads: idempotent
     - kubectl: "delete namespace ${env:namespace} --ignore-not-found=true --v=1"
     - kubectl: "delete namespace ingress-ns --ignore-not-found=true --v=1"
-    - kubectl: "delete -f https://github.com/jetstack/cert-manager/releases/download/${env:certManagerLatest}/cert-manager.yaml --ignore-not-found=true --v=1"
-    - kubectl: "delete -f https://github.com/cert-manager/cert-manager/releases/download/${env:certManagerLatest}/cert-manager.crds.yaml --ignore-not-found=true --v=1"
+    # Removing cert-manager must not need public egress. Naming a release
+    # manifest by URL makes an idempotent cleanup step reach the internet, and
+    # in a guest whose only outbound path is the lab's caching proxy that turns
+    # a proxy outage into a failed run -- while --ignore-not-found covers a
+    # missing resource, never a manifest that could not be fetched. Every
+    # object a cert-manager release creates carries
+    # app.kubernetes.io/instance=cert-manager: the namespaced ones in its own
+    # namespace, the cluster-scoped ones, and the leader-election Role and
+    # RoleBinding pair it leaves behind in kube-system. Selecting on that label
+    # removes what the manifest would have named, reading only the cluster.
+    - kubectl: "delete namespace cert-manager --ignore-not-found=true --v=1"
+    - kubectl: "delete crd,clusterrole,clusterrolebinding,validatingwebhookconfiguration,mutatingwebhookconfiguration --selector app.kubernetes.io/instance=cert-manager --ignore-not-found=true --v=1"
+    - kubectl: "delete role,rolebinding --namespace kube-system --selector app.kubernetes.io/instance=cert-manager --ignore-not-found=true --v=1"
     - kubectl: "delete clusterrole nginx-ingress-ingress-nginx --ignore-not-found=true"
     - kubectl: "delete clusterrolebinding nginx-ingress-ingress-nginx --ignore-not-found=true"
     # Install dependencies

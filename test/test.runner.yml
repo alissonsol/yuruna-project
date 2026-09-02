@@ -4,10 +4,25 @@
 # to know which top-level sequences to run continuously, one cycle after
 # another.
 
+# ch01.website.example.no-break is declared under testSets below rather than
+# here. It drives guest.amazon.linux.2023, and that guest cannot run on an
+# ARM64 Hyper-V host at all: Amazon publishes the `hyperv` platform for x86-64
+# only, and the ARM64 image it does publish carries no Hyper-V guest drivers,
+# so the guest never enumerates its own root disk. A cycle that lists it there
+# can only fail. Assign the `smoke` set to run it on a host that can --
+# host.macos.utm and host.ubuntu.kvm both present the virtio devices that image
+# drives, and an AMD64 Hyper-V host gets the publisher's native VHDX.
+# The k8s website workload runs on the 26.04 guest rather than 24.04 for the
+# same reason: 24.04's kernel wedges on an ARM64 Hyper-V host. Shortly after
+# its VMBus drivers load, a channel callback monopolizes CPU 0 and the kernel
+# reports `watchdog: BUG: soft lockup` with hv_do_fast_hypercall8 at the PC;
+# the installer never reaches its confirmation prompt. 26.04 negotiates VMBus
+# 6.0 instead of 5.3, reaches the same prompt in a quarter of the time, and
+# installs. Both workloads ship here; `kubernetes-24` keeps the 24.04 one
+# available to a host that runs it today.
 sequences:
-  - ch01.website.example.no-break
   - workload.guest.windows.11
-  - workload.guest.ubuntu.server.24.k8s.website
+  - workload.guest.ubuntu.server.26.k8s.website
 
 # Optional named groupings of the sequences above. A pool can be assigned one of
 # these instead of the whole list; the implicit set "all" (everything under
@@ -27,7 +42,12 @@ testSets:
       - workload.guest.windows.11
   - name: kubernetes
     displayName: Kubernetes website
-    description: Ubuntu server 24 k8s website workload.
+    description: Ubuntu server 26 k8s website workload.
+    sequences:
+      - workload.guest.ubuntu.server.26.k8s.website
+  - name: kubernetes-24
+    displayName: Kubernetes website (24.04)
+    description: The same website workload on the older Ubuntu server guest.
     sequences:
       - workload.guest.ubuntu.server.24.k8s.website
 #  - workload.guest.amazon.linux.2023

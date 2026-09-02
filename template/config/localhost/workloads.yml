@@ -4,10 +4,11 @@
 #
 # Minimal generic scaffold: it creates the namespace and the registry
 # image-pull secret, then leaves a TO-SET placeholder for your own
-# component deployment. For a full localhost pipeline with TLS (mkcert),
-# an nginx ingress, and a cert-manager issuer, copy and adapt
-# example/website/config/localhost/workloads.yml -- it pins the
-# cert-manager version through a single ${env:certManagerLatest} variable
+# component deployment. For a full localhost pipeline with TLS (mkcert)
+# and an nginx ingress, copy and adapt
+# example/website/config/localhost/workloads.yml. For one that issues
+# certificates with cert-manager, see example/website/config/azure/workloads.yml,
+# which pins the release through a single ${env:certManagerLatest} variable
 # instead of hardcoding one here.
 ---
 globalVariables:

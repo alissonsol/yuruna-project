@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: 2026.08.25
+# Version: 2026.09.01
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 set -euo pipefail
@@ -33,8 +33,31 @@ run_bounded() {
     fi
 }
 
+# --- REGION: https://yuruna.link/caching#workload-registry-pull-through
+# A caching proxy is an optimization, not a prerequisite: a lab can run without
+# one, and a lab that had one can lose it between cycles. An empty CACHE_HOST is
+# therefore a supported topology rather than a fault, and every cache-addressed
+# step below is gated on this one variable.
+#
+# The bare service name is adopted only once something answers on it. A lab
+# whose resolver publishes that name and a lab with no cache at all are told
+# apart by nothing else, so taking the name on faith converts "no cache here"
+# into "could not resolve host" -- which reads as a broken proxy VM and sends
+# the reader after a machine that was never meant to exist, after the step has
+# spent its whole retry budget first.
 CACHE_HOST=$(echo "${http_proxy:-}" | sed -E 's|^https?://([^:/]+).*|\1|')
-[ -z "$CACHE_HOST" ] && CACHE_HOST="yuruna-caching-proxy-service"
+if [ -z "$CACHE_HOST" ] && [ -r /etc/yuruna/host.env ]; then
+    CACHE_HOST=$(sed -nE 's/^YURUNA_CACHING_PROXY_SERVICE_IP=([^[:space:]]+).*/\1/p' /etc/yuruna/host.env | head -n1)
+fi
+if [ -z "$CACHE_HOST" ] \
+   && curl -fsS --max-time 10 -o /dev/null "http://yuruna-caching-proxy-service:5000/v2/" 2>/dev/null; then
+    CACHE_HOST="yuruna-caching-proxy-service"
+fi
+if [ -n "$CACHE_HOST" ]; then
+    echo "Caching proxy: ${CACHE_HOST} -- image pulls are mirrored through it."
+else
+    echo "Caching proxy: none in this lab -- image pulls go to the upstreams directly."
+fi
 
 # Hard elapsed-time cap on a single pull -- a backstop for mid-stream
 # wedges, not a progress check. It has to out-wait the cache's slowest
@@ -71,6 +94,11 @@ ACCEPT_HDR='Accept: application/vnd.oci.image.index.v1+json, application/vnd.oci
 # attached -- so this adds a way to succeed, never a new way to fail.
 warm_manifest() {
     local repo="$1" tag="$2" probe code elapsed
+    # The warm-up exists to hold a request open against a cache that is still
+    # syncing. With no cache in this lab there is nothing to warm and no
+    # address to address it by, and the pull behind this goes straight to the
+    # upstream.
+    [ -n "$CACHE_HOST" ] || return 0
     echo "Warming ${CACHE_HOST}:5000/${repo}:${tag} (up to ${PULL_STALL}s)"
     # The status code and the elapsed time are asked for explicitly because a
     # warm-up that did not land has two meanings, and they send the operator
@@ -144,11 +172,19 @@ for attempt in $(seq 1 "$registry_attempts"); do
         echo "" >&2
         echo "ERROR: Registry image pull hit a rate limit (or upstream throttle disguised as 400)." >&2
         echo "       Image: $REGISTRY_IMAGE" >&2
-        echo "       The upstream is throttling pulls from the cache VM's egress IP." >&2
-        echo "       Options: (1) wait and retry, (2) authenticate the zot proxy to upstream," >&2
-        echo "                (3) bake the registry image into the guest base via cloud-init," >&2
-        echo "                (4) check that the caching proxy's zot is up:" >&2
-        echo "                    curl -fsS http://${CACHE_HOST}:5000/v2/" >&2
+        if [ -n "$CACHE_HOST" ]; then
+            echo "       The upstream is throttling pulls from the cache VM's egress IP." >&2
+            echo "       Options: (1) wait and retry, (2) authenticate the zot proxy to upstream," >&2
+            echo "                (3) bake the registry image into the guest base via cloud-init," >&2
+            echo "                (4) check that the caching proxy's zot is up:" >&2
+            echo "                    curl -fsS http://${CACHE_HOST}:5000/v2/" >&2
+        else
+            echo "       This lab has no caching proxy, so every guest pulls on its own" >&2
+            echo "       and the upstream is throttling this host's egress IP directly." >&2
+            echo "       Options: (1) wait and retry, (2) bring a caching proxy up so the" >&2
+            echo "                lab shares one warmed copy, (3) bake the registry image" >&2
+            echo "                into the guest base via cloud-init." >&2
+        fi
         echo "" >&2
         exit 1
     fi
@@ -218,9 +254,11 @@ probe_registry() {
     # the metered lookups the whole lab shares on an image Docker Hub never
     # served. Only the cache reads it, so a probe addressed at the upstream
     # itself carries none.
-    case "$base" in
-        *"${CACHE_HOST}:5000") ns="?ns=${BASE_IMAGES_UPSTREAM}" ;;
-    esac
+    if [ -n "$CACHE_HOST" ]; then
+        case "$base" in
+            *"${CACHE_HOST}:5000") ns="?ns=${BASE_IMAGES_UPSTREAM}" ;;
+        esac
+    fi
     for ref in "${BASE_IMAGES[@]}"; do
         find_local_image "$ref" >/dev/null && continue
         repo="${ref%:*}"; ver="${ref#*:}"
@@ -250,12 +288,20 @@ all_base_images_local() {
 acquire_rounds=2
 acquire_delay=10
 stalled_candidates=""
+# The cache joins the candidate list only when this lab has one. Left in
+# unconditionally it expands to http://:5000, an address that belongs to no
+# host: every round would spend a probe on it and report it as unusable, which
+# reads as a cache that is down rather than a lab that never had one.
+base_image_candidates=()
+if [ -n "$CACHE_HOST" ]; then
+    base_image_candidates+=("http://${CACHE_HOST}:5000|${CACHE_HOST}:5000/")
+fi
+base_image_candidates+=("https://${BASE_IMAGES_UPSTREAM}|${BASE_IMAGES_UPSTREAM}/")
 for round in $(seq 1 "$acquire_rounds"); do
     if all_base_images_local; then
         break
     fi
-    for candidate in "http://${CACHE_HOST}:5000|${CACHE_HOST}:5000/" \
-                     "https://mcr.microsoft.com|mcr.microsoft.com/"; do
+    for candidate in "${base_image_candidates[@]}"; do
         base="${candidate%|*}"
         prefix="${candidate#*|}"
         # A candidate that already ate a full pull bound is wedged
@@ -300,9 +346,15 @@ done
 for ref in "${BASE_IMAGES[@]}"; do
     if ! local_ref=$(find_local_image "$ref"); then
         echo "ERROR: base image ${ref} is neither in the local docker store" >&2
-        echo "       nor acquirable from the cache (${CACHE_HOST}:5000) or" >&2
-        echo "       mcr.microsoft.com. Check network egress and the cache" >&2
-        echo "       VM's /etc/zot/config.json." >&2
+        if [ -n "$CACHE_HOST" ]; then
+            echo "       nor acquirable from the cache (${CACHE_HOST}:5000) or" >&2
+            echo "       ${BASE_IMAGES_UPSTREAM}. Check network egress and the cache" >&2
+            echo "       VM's /etc/zot/config.json." >&2
+        else
+            echo "       nor acquirable from ${BASE_IMAGES_UPSTREAM}, which is the only" >&2
+            echo "       source in a lab with no caching proxy. Check the guest's" >&2
+            echo "       network egress." >&2
+        fi
         exit 1
     fi
     echo "Base image ${ref} available as ${local_ref}"
