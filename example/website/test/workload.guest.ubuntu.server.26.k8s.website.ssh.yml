@@ -4,13 +4,16 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 
 sequenceGuid: 42272942-dcd0-48fc-ba88-814462c89f5a
-sequenceRevision: 1
+sequenceRevision: 2
 
 description: "Ubuntu Server 26.04 (SSH): install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
 keystrokeMechanism: ssh
 resource:
   ubuntu.server.26:
-    - workload.guest.ubuntu.server.26.ssh
+    # The website builds its .NET application inside Docker. Chaining the
+    # Code workload would install a JDK, .NET SDK, and VS Code on the guest,
+    # none of which this scenario uses.
+    - start.guest.ubuntu.server.26.ssh
 variables:
   username: yuuser26
   hostname: yuhost26

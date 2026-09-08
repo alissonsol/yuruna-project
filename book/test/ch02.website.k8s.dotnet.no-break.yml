@@ -4,13 +4,16 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 
 sequenceGuid: 42001283-d9e8-4f14-a78e-5c5f2206926f
-sequenceRevision: 1
+sequenceRevision: 2
 
 description: "Ubuntu Server 24.04 (book ch02, unattended): log in, install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
 keystrokeMechanism: gui
 resource:
   ubuntu.server.24:
-    - workload.guest.ubuntu.server.24
+    # The chapter's .NET application is built inside Docker. Chaining the
+    # Code workload would install a JDK, .NET SDK, and VS Code on the guest,
+    # none of which this scenario uses.
+    - start.guest.ubuntu.server.24
 variables:
   username: ch02user2
   hostname: ch02host2
@@ -20,6 +23,10 @@ component:
     maxAttempts: 2
     description: "Login + retry"
     steps:
+      # start.guest reboots at the end; retain only the lightweight login
+      # priming that the removed Code workload used to provide.
+      - snippet: firstLoginPrime
+
       - action: passwdPrompt
         pattern: "login:"
         timeoutSeconds: 600

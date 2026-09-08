@@ -1,6 +1,10 @@
+<a id="42916cfc-0001"></a>
+
 # Yuruna Website Example
 
 A simple .NET C# website container deployed to Kubernetes.
+
+<a id="42916cfc-0002"></a>
 
 ## Deploy
 
@@ -19,6 +23,8 @@ Set-Workload.ps1  website localhost
 See [architecture.md](https://github.com/alissonsol/yuruna/blob/main/docs/architecture.md) for
 the three-phase model and CLI entry points.
 
+<a id="42916cfc-0003"></a>
+
 ## What this project contains
 
 - **Resources** -- a Kubernetes cluster, a container registry, a public
@@ -29,11 +35,15 @@ the three-phase model and CLI entry points.
 - **Workloads** -- frontend/website and NGINX ingress routing traffic to
   the website.
 
+<a id="42916cfc-0004"></a>
+
 ## Validation
 
 - Open the endpoint printed after publishing workloads.
 - `kubectl get services --all-namespaces`
 - `kubectl get events --all-namespaces`
+
+<a id="42916cfc-0005"></a>
 
 ## Cloud
 
@@ -43,6 +53,8 @@ output. Alternatives:
 
 - `curl -v http://{frontendIp} -H 'Host: {yrn42website-domain}'`
 - A temporary entry in `/etc/hosts`.
+
+<a id="42916cfc-0006"></a>
 
 ### Azure
 
@@ -61,6 +73,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.09.01
+Last review: 2026.09.08
 
 Back to [yuruna-project](../../README.md) - [Yuruna](https://yuruna.com)

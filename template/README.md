@@ -1,3 +1,5 @@
+<a id="42ae9029-0001"></a>
+
 # Yuruna Template Project
 
 Folder scaffold for a new project. See
@@ -5,6 +7,8 @@ Folder scaffold for a new project. See
 the three-phase model and CLI entry points, and the Connectivity
 section of [Workarounds and FAQ](https://github.com/alissonsol/yuruna/blob/main/docs/workarounds.md)
 before deploying.
+
+<a id="42ae9029-0002"></a>
 
 ## Deploy
 
@@ -17,6 +21,8 @@ Set-Resource.ps1  TO-SET localhost
 Set-Component.ps1 TO-SET localhost
 Set-Workload.ps1  TO-SET localhost
 ```
+
+<a id="42ae9029-0003"></a>
 
 ## Fill in
 
@@ -36,6 +42,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.09.01
+Last review: 2026.09.08
 
 Back to [yuruna-project](../README.md) - [Yuruna](https://yuruna.com)

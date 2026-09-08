@@ -1,3 +1,5 @@
+<a id="4286c679-0001"></a>
+
 # Yuruna Text-to-SQL Example
 
 > **Status: Early release.** Runs locally against PostgreSQL and
@@ -21,7 +23,11 @@ so the example runs offline against a local PostgreSQL; setting
 | [db/schema.sql](db/schema.sql) | PostgreSQL schema + seed data (subscriptions / churn / invoices) |
 | [components/frontend/text-to-sql-ui/](components/frontend/text-to-sql-ui/) | ASP.NET Core (.NET 10) Razor Pages app implementing the six-stage architecture |
 
+<a id="4286c679-0002"></a>
+
 ## Quick start
+
+<a id="4286c679-0003"></a>
 
 ### 1 · Prepare PostgreSQL
 
@@ -38,6 +44,8 @@ psql -h localhost -U postgres -d yuruna_demo -f db/schema.sql
 that is the action-gating layer at the database level. The .NET app
 connects as that role.
 
+<a id="4286c679-0004"></a>
+
 ### 2 · Run the .NET app
 
 ```powershell
@@ -53,6 +61,8 @@ Override the connection string if needed:
 $env:TEXT2SQL_PG_CONN = "Host=localhost;Username=yuruna_agent_ro;Password=agent_demo_password;Database=yuruna_demo"
 dotnet run
 ```
+
+<a id="4286c679-0005"></a>
 
 ## What the app demonstrates
 
@@ -77,6 +87,8 @@ Try these prompts:
 The **`/Schema`** page renders what the schema retriever indexes -- the
 same catalog the agent uses, viewable as ground truth.
 
+<a id="4286c679-0006"></a>
+
 ## Architecture map
 
 | Stage | Implementation |
@@ -87,6 +99,8 @@ same catalog the agent uses, viewable as ground truth.
 | (4) Validator / Guardrail | `Services/SqlValidator.cs` (static + EXPLAIN gate) |
 | (5) Executor | `Services/AgentOrchestrator.cs` |
 | (6) Observer | the timeline on `Pages/Index.cshtml` |
+
+<a id="4286c679-0007"></a>
 
 ### Service notes
 
@@ -159,6 +173,8 @@ validator -> EXPLAIN cost gate -> executor) and emits a `Step` per stage
 with elapsed-ms, status, and notes; the UI renders one run as a single
 timeline -- the "Observer" layer in miniature.
 
+<a id="4286c679-0008"></a>
+
 ## Yuruna integration
 
 This example follows the same folder pattern as
@@ -188,6 +204,8 @@ The same `ILlmClient` selection applies in the deployed container:
 set `ANTHROPIC_API_KEY` to run against Claude, leave it unset to run
 the offline rule-based client.
 
+<a id="4286c679-0009"></a>
+
 ### Development certificate
 
 Generate the dev HTTPS certificate **before** the Docker / Yuruna
@@ -204,6 +222,8 @@ dotnet dev-certs https --trust
 ```
 
 If "A valid HTTPS certificate is already present" -> `dotnet dev-certs https --clean` and retry.
+
+<a id="4286c679-000a"></a>
 
 ## Files
 
@@ -240,6 +260,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.09.01
+Last review: 2026.09.08
 
 Back to [yuruna-project](../../README.md) - [Yuruna](https://yuruna.com)

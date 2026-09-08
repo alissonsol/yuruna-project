@@ -4,13 +4,16 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 
 sequenceGuid: 423775c5-e5e9-4ab5-b07b-b38a91bb9fda
-sequenceRevision: 1
+sequenceRevision: 2
 
 description: "Ubuntu Server 26.04: log in, install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
 keystrokeMechanism: gui
 resource:
   ubuntu.server.26:
-    - workload.guest.ubuntu.server.26
+    # The website builds its .NET application inside Docker. Chaining the
+    # Code workload would install a JDK, .NET SDK, and VS Code on the guest,
+    # none of which this scenario uses.
+    - start.guest.ubuntu.server.26
 variables:
   username: yuuser26
   hostname: yuhost26
@@ -20,6 +23,10 @@ component:
     maxAttempts: 2
     description: "Login + retry"
     steps:
+      # start.guest reboots at the end; retain only the lightweight login
+      # priming that the removed Code workload used to provide.
+      - snippet: firstLoginPrime
+
       - action: passwdPrompt
         pattern: "login:"
         timeoutSeconds: 600

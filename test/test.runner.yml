@@ -29,10 +29,24 @@ sequences:
 # `sequences:`) always exists and needs no declaration. displayName/description
 # are what a non-technical operator sees on the pool-control board, so they are
 # written here, next to the sequences they name.
+#
+# displayName and description may each carry an optional sibling map keyed by
+# locale tag -- displayNameLocalized / descriptionLocalized. The scalar stays
+# what it always was and is what any framework reads when it knows nothing
+# about the map or has no translation for a reader's language, so adding one
+# cannot change what an existing lab shows. Tags are canonical BCP 47 spellings
+# and every translated field is paired with its English scalar hash in
+# globalization/project-locale-source-hashes.json. The publisher rejects a
+# stale or malformed map; a live reader still ignores it and uses the scalar,
+# so optional display metadata can never stop a cycle.
 testSets:
   - name: smoke
     displayName: Quick smoke test
+    displayNameLocalized:
+      pt-BR: Teste rapido
     description: Website only -- the fastest signal that the lab is healthy.
+    descriptionLocalized:
+      pt-BR: Apenas o site -- o sinal mais rapido de que o laboratorio esta saudavel.
     sequences:
       - ch01.website.example.no-break
   - name: windows

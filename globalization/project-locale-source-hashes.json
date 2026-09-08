@@ -1,0 +1,20 @@
+{
+  "schema": "yuruna.project-locale-source-hashes/v1",
+  "hashAlgorithm": "sha256-utf8-nfc-scalar-v1",
+  "entries": [
+    {
+      "path": "test/test.runner.yml",
+      "fieldPath": "/testSets/name=smoke/description",
+      "locale": "pt-BR",
+      "sourceHash": "44dc1da5ce10ad2cdb65992884e02517cf14945ad3df80f2a04ebfd158e13e34",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "path": "test/test.runner.yml",
+      "fieldPath": "/testSets/name=smoke/displayName",
+      "locale": "pt-BR",
+      "sourceHash": "15d4f9813b53a54c2eb373f6d9a9ac73a46829762330a782c00569a643908284",
+      "reviewStatus": "unreviewed"
+    }
+  ]
+}

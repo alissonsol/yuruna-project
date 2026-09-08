@@ -1,9 +1,13 @@
+<a id="4255e584-0001"></a>
+
 # yuruna-project
 
 Project repository for [Yuruna](https://github.com/alissonsol/yuruna):
 holds the user's resources, components, workloads, and test sequences,
 kept separate from the framework so projects can be versioned and
 shared independently.
+
+<a id="4255e584-0002"></a>
 
 ## Layout
 
@@ -18,6 +22,8 @@ shared independently.
     locally and deploys through the full Yuruna three-phase model;
     Claude activates when `ANTHROPIC_API_KEY` is set.
 
+<a id="4255e584-0003"></a>
+
 ## Read more
 
 - Framework [architecture](https://github.com/alissonsol/yuruna/blob/main/docs/architecture.md)
@@ -31,6 +37,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.09.01
+Last review: 2026.09.08
 
 Back to [Yuruna](https://yuruna.com)

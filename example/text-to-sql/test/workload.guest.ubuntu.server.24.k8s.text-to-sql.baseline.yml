@@ -9,9 +9,10 @@ sequenceRevision: 2
 description: "Ubuntu Server 24.04: log in, install Kubernetes, prepare for text-to-sql deployment."
 keystrokeMechanism: gui
 # Chain start.guest directly. The workload.guest chain
-# additionally installs VS Code (ubuntu.server.24.code.sh), which text-to-sql
-# does not use and only adds install time + failure surface to an unattended
-# cycle. update.sh already leaves pwsh + the framework/project repos in place.
+# additionally installs a JDK, .NET SDK, and VS Code
+# (ubuntu.server.24.code.sh), which text-to-sql does not use and only adds
+# install time + failure surface to an unattended cycle. update.sh already
+# leaves pwsh + the framework/project repos in place.
 resource:
   ubuntu.server.24:
     - start.guest.ubuntu.server.24

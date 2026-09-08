@@ -4,13 +4,16 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 
 sequenceGuid: 42a558c0-d2af-42a3-a8f2-6909dde087c4
-sequenceRevision: 1
+sequenceRevision: 2
 
 description: "Ubuntu Server 24.04 (SSH): install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
 keystrokeMechanism: ssh
 resource:
   ubuntu.server.24:
-    - workload.guest.ubuntu.server.24.ssh
+    # The website builds its .NET application inside Docker. Chaining the
+    # Code workload would install a JDK, .NET SDK, and VS Code on the guest,
+    # none of which this scenario uses.
+    - start.guest.ubuntu.server.24.ssh
 variables:
   username: yuuser24
   hostname: yuhost24

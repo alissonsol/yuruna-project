@@ -1,3 +1,5 @@
+<a id="42b9e3dc-0001"></a>
+
 # Yuruna Examples
 
 **NOTE**: Because some examples share the same ingress component and
@@ -6,9 +8,13 @@ previously working example, redeploy its ingress rules. See the
 Connectivity section of the
 [Workarounds and FAQ](https://github.com/alissonsol/yuruna/blob/main/docs/workarounds.md).
 
+<a id="42b9e3dc-0002"></a>
+
 ## Basic end-to-end test
 
 - [website](website/README.md): A simple .NET C# website container deployed to a Kubernetes cluster.
+
+<a id="42b9e3dc-0003"></a>
 
 ## Early-stage examples
 
@@ -18,9 +24,7 @@ Connectivity section of the
   (`Set-Resource` / `Set-Component` / `Set-Workload`); Claude
   activates when `ANTHROPIC_API_KEY` is set.
 
-- [nested.host](nested.host/README.md) -- Self-verification: the outer host
-  builds a nested Ubuntu Server VM, installs the framework inside it, and runs
-  one full cycle under nested virtualization. Not yet validated on a live lab.
+<a id="42b9e3dc-0004"></a>
 
 ## Template
 
@@ -34,6 +38,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.09.01
+Last review: 2026.09.08
 
 Back to [yuruna-project](../README.md) - [Yuruna](https://yuruna.com)
