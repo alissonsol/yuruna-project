@@ -10,16 +10,18 @@ sequenceRevision: 2
 
 description: "Ubuntu Server 24.04: restore snapshot, install + set up PostgreSQL, deploy text-to-sql, verify HTTP 200."
 keystrokeMechanism: gui
+# --- REGION: resource
 resource:
   ubuntu.server.24:
     - workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline
-# --- REGION: https://yuruna.link/test/requires-snapshot
+# See https://yuruna.link/428e4df6
 requiresSnapshot:
   id: "k8s.text-to-sql"
 variables:
   username: yt2sqluser
   hostname: yt2sqlhost
 
+# --- REGION: component
 component:
   - action: loadDiskSnapshot
     id: "k8s.text-to-sql"
@@ -47,6 +49,7 @@ component:
     timeoutSeconds: 90
     description: "OCR: ${username}@ (shell prompt)"
 
+# --- REGION: workload
 workload:
   - action: fetchAndExecute
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.postgresql.sh"

@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 2026.09.08
+.VERSION 2026.09.12
 .GUID 42ad409a-370e-45f4-980b-e629de1fa2b0
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
@@ -16,17 +16,15 @@
 
 #requires -version 7
 
-Push-Location $PSScriptRoot
+# --- REGION: Locate the development certificate
+$pfxFile = Join-Path -Path $HOME -ChildPath '.aspnet/https/aspnetapp.pfx'
+Write-Information "pfxFile: $pfxFile"
 
-$env:basePath = $HOME
-Write-Information "basePath: ${env:basePath}";
+# --- REGION: Validate the development certificate
+# See https://yuruna.link/42e220c4-0009
+if (-not (Test-Path -LiteralPath $pfxFile -PathType Leaf)) {
+    throw "Development certificate not found at '$pfxFile'. Generate it before building: dotnet dev-certs https -ep '$pfxFile' -p { password here }"
+}
 
-$env:pfxPath = ".aspnet/https/aspnetapp.pfx"
-Write-Information "pfxPath: ${env:pfxPath}";
-
-$env:pfxFile = Join-Path -Path ${env:basePath} -ChildPath ${env:pfxPath}
-Write-Information "pfxFile: $env:pfxFile"
-
-Copy-Item -Path $env:pfxFile -Destination . -Force;
-
-Pop-Location
+# --- REGION: Copy the development certificate
+Copy-Item -LiteralPath $pfxFile -Destination $PSScriptRoot -Force -ErrorAction Stop

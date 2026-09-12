@@ -48,14 +48,7 @@ spec:
             memory: "128Mi"
             cpu: "200m"
         env:
-        # Reach the host's PostgreSQL over the node network. status.hostIP is the
-        # node's primary IP -- the same box that runs the DB, set up by
-        # test/ubuntu.server.24/ubuntu.server.24.workload.k8s.text-to-sql.db.sh
-        # (PostgreSQL listens on all interfaces; pg_hba allows the pod CIDR).
-        # kubelet substitutes $(HOST_IP) from the env var declared just above it.
-        # Program.cs prefers TEXT2SQL_PG_CONN over the localhost appsettings
-        # default. Npgsql connects lazily, so the pod is still Ready (and the
-        # smoke test still 200s) even if the DB is briefly unreachable.
+        # See https://yuruna.link/42e220c4-0009
         - name: HOST_IP
           valueFrom:
             fieldRef:

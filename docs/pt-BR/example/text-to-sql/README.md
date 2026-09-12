@@ -31,7 +31,9 @@ execução o cliente real do Claude com uso de ferramentas
 
 <a id="4286c679-0003"></a>
 
-### 1 · Preparar o PostgreSQL
+<a id="1--preparar-o-postgresql"></a>
+
+### 1 - Preparar o PostgreSQL
 
 Qualquer PostgreSQL local >= 14 funciona (imagem Docker, um script de
 configuração `<guest>.postgresql.sh` de convidado Yuruna ou uma instalação
@@ -48,7 +50,9 @@ dados. A aplicação .NET se conecta com esse papel.
 
 <a id="4286c679-0004"></a>
 
-### 2 · Executar a aplicação .NET
+<a id="2--executar-a-aplicação-net"></a>
+
+### 2 - Executar a aplicação .NET
 
 ```powershell
 cd components/frontend/text-to-sql-ui
@@ -107,7 +111,7 @@ mesmo catálogo que o agente usa, visível como verdade de referência.
 ### Notas dos serviços
 
 Notas de design por serviço, referenciadas a partir dos comentários no
-topo dos arquivos (`https://yuruna.link/text-to-sql#service-notes`).
+topo dos arquivos (`https://yuruna.link/4286c679-0007`).
 
 **`Program.cs`** -- host mínimo de Razor Pages. Três coisas são
 conectadas: Razor Pages para a interface de chat, um `DataSource` do
@@ -115,9 +119,9 @@ Npgsql para a conexão somente leitura com o PostgreSQL e os serviços do
 agente (SchemaCatalog -> SqlValidator -> AgentOrchestrator). O
 orquestrador usa por padrão a "LLM" determinística baseada em regras;
 quando `ANTHROPIC_API_KEY` está definida, o caminho do ClaudeLlmClient
-entra em seu lugar pela mesma costura `ILlmClient`.
+entra em seu lugar pela mesma interface `ILlmClient`.
 
-**`Services/ILlmClient.cs`** -- o formato da costura: `GenerateSqlAsync`
+**`Services/ILlmClient.cs`** -- o contrato da interface: `GenerateSqlAsync`
 recebe a pergunta mais a fatia de esquema expandida por FK e retorna ou
 uma string SQL ou uma recusa com um motivo. Existem três implementações
 para que o exemplo rode de forma reproduzível com ou sem uma dependência
@@ -194,7 +198,7 @@ e é implantado pelo modelo de três fases do Yuruna. As peças estão no lugar:
   três fases.
 - `components/frontend/text-to-sql-ui/Dockerfile` compila a imagem de
   contêiner durante o `Set-Component`.
-- O helm chart em
+- O chart do Helm em
   [`workloads/frontend/text-to-sql-ui/`](../../../../example/text-to-sql/workloads/frontend/text-to-sql-ui/)
   o implanta no Kubernetes (pod + ingress TLS) durante o `Set-Workload`. A
   implantação injeta `TEXT2SQL_PG_CONN` apontando para `status.hostIP` (o nó),
@@ -270,6 +274,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Última revisão: 2026.09.08
+Última revisão: 2026.09.12
 
 Voltar para [yuruna-project](../../../../README.md) - [Yuruna](https://yuruna.com)

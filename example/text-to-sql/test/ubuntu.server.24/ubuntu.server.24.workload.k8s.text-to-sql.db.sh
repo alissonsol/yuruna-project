@@ -2,22 +2,13 @@
 # Version: 2026.07.08
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
-#
-# Host PostgreSQL bring-up for the text-to-sql example -- runs in the Ubuntu
-# Server 24.04 guest after ubuntu.server.24.postgresql.sh and before the k8s
-# deploy. Design + step rationale: example/text-to-sql/README.md (Yuruna
-# integration); each step's "why" is inline next to the edit it guards below.
-# The deployed text-to-sql-ui pod connects as yuruna_agent_ro to
-# Host=$(status.hostIP):5432 -- see
-# workloads/frontend/text-to-sql-ui/templates/01-text-to-sql-ui.yml.
-#
-# Runs as the logged-in harness user with passwordless sudo.
+# --- REGION: https://yuruna.link/42e220c4-0009
 set -euo pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 export NONINTERACTIVE=1
 
-# --- REGION: https://yuruna.link/network#defining-yuruna-retry-lib
+# --- REGION: https://yuruna.link/4220a755-0003
 . /usr/local/lib/yuruna/yuruna-retry.sh
 
 REAL_USER="${SUDO_USER:-$USER}"

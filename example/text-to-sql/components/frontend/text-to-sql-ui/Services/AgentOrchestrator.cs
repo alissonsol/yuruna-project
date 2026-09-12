@@ -1,7 +1,7 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // Planner + retry loop for the agent pipeline; stage map in README service
-// notes: https://yuruna.link/text-to-sql#service-notes
+// notes: https://yuruna.link/4286c679-0007
 
 using System.Data;
 using System.Diagnostics;
@@ -43,7 +43,7 @@ public sealed class AgentOrchestrator
     {
         var run = new AgentRun(question);
 
-        // --- (2) Schema retrieval --------------------------------------------
+        // --- REGION: Schema retrieval
         var swSchema = Stopwatch.StartNew();
         RetrievalResult retrieval;
         try
@@ -61,7 +61,7 @@ public sealed class AgentOrchestrator
             $"Prompt slice ~ {retrieval.FormattedPrompt.Length} chars."));
         run.SchemaSlice = retrieval.FormattedPrompt;
 
-        // --- (3) SQL generation ----------------------------------------------
+        // --- REGION: SQL generation
         var swGen = Stopwatch.StartNew();
         LlmDecision decision;
         try
@@ -88,7 +88,7 @@ public sealed class AgentOrchestrator
         run.Steps.Add(Step.Ok("SQL generation", swGen, "Draft SQL produced."));
         var draftSql = decision.Sql!.Trim();
 
-        // --- (4) Static validation -------------------------------------------
+        // --- REGION: Static validation
         var swStatic = Stopwatch.StartNew();
         var st = _validator.StaticCheck(draftSql);
         if (!st.Allowed)
@@ -102,7 +102,7 @@ public sealed class AgentOrchestrator
             safeSql.Length > draftSql.Length ? "Allowed. (Auto-injected LIMIT.)" : "Allowed."));
         run.SafeSql = safeSql;
 
-        // --- (4) EXPLAIN cost gate -------------------------------------------
+        // --- REGION: EXPLAIN cost gate
         var swExp = Stopwatch.StartNew();
         if (!_enableExplainGate)
         {
@@ -128,7 +128,7 @@ public sealed class AgentOrchestrator
             run.Steps.Add(Step.Ok("EXPLAIN", swExp, $"Plan rows ~ {gate.PlanRows:N0}. Allowed."));
         }
 
-        // --- (5) Execute -----------------------------------------------------
+        // --- REGION: Execute
         var swExec = Stopwatch.StartNew();
         try
         {
@@ -176,8 +176,7 @@ public sealed class AgentOrchestrator
     }
 }
 
-// -- Run + Step records -----------------------------------------------------
-
+// --- REGION: Run and step records
 public sealed class AgentRun
 {
     public string Question  { get; }

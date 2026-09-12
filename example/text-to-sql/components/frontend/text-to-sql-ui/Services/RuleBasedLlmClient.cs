@@ -1,7 +1,7 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // Deterministic offline ILlmClient stand-in; see README service notes:
-// https://yuruna.link/text-to-sql#service-notes
+// https://yuruna.link/4286c679-0007
 
 using System.Text.RegularExpressions;
 
@@ -21,7 +21,7 @@ public sealed class RuleBasedLlmClient : ILlmClient
         string Plan(string s) => "Plan:\n" + s + "\n\nSchema slice (truncated): "
                                 + (schemaSlice.Length > 220 ? schemaSlice[..220] + "..." : schemaSlice);
 
-        // -- churn by tier x region ----------------------------------------
+        // --- REGION: Churn by tier and region
         if (q.Contains("churn") && (q.Contains("tier") || q.Contains("plan"))
                                 && (q.Contains("emea") || q.Contains("region")))
         {
@@ -45,7 +45,7 @@ SELECT pt.tier_code,
   4. Churn rate = churn_events / subscriptions, grouped."));
         }
 
-        // -- churn by channel ----------------------------------------------
+        // --- REGION: Churn by channel
         if (q.Contains("churn") && (q.Contains("channel") || q.Contains("acquisition")))
         {
             return Sql(@"
@@ -65,7 +65,7 @@ SELECT ac.channel_name,
   3. Churn rate as before."));
         }
 
-        // -- MRR / ARR by tier ---------------------------------------------
+        // --- REGION: MRR and ARR by tier
         if ((q.Contains("mrr") || q.Contains("arr") || q.Contains("revenue") || q.Contains("monthly"))
             && (q.Contains("tier") || q.Contains("plan")))
         {
@@ -84,7 +84,7 @@ SELECT pt.tier_code,
   3. ARR = MRR x 12."));
         }
 
-        // -- active subscriptions by region --------------------------------
+        // --- REGION: Active subscriptions by region
         if ((q.Contains("active") || q.Contains("current")) && q.Contains("subscription"))
         {
             return Sql(@"
@@ -100,7 +100,7 @@ SELECT g.region, COUNT(*) AS active_subscriptions
   2. Group by macro region."));
         }
 
-        // -- top customers by invoice --------------------------------------
+        // --- REGION: Top customers by invoice
         if (q.Contains("top") && (q.Contains("customer") || q.Contains("client"))
                               && (q.Contains("invoice") || q.Contains("spend") || q.Contains("revenue")))
         {
@@ -119,7 +119,7 @@ SELECT c.company_name,
   3. Top N -> ORDER BY ... LIMIT 10."));
         }
 
-        // -- signups by month ----------------------------------------------
+        // --- REGION: Signups by month
         if ((q.Contains("signup") || q.Contains("new") || q.Contains("acquired")) && q.Contains("month"))
         {
             return Sql(@"
@@ -131,7 +131,7 @@ SELECT date_trunc('month', signed_up_at)::date AS month,
                 Plan("New customers by month -> date_trunc on customer.signed_up_at."));
         }
 
-        // -- list-tables helper --------------------------------------------
+        // --- REGION: List-tables helper
         if (Regex.IsMatch(q, @"\b(list|show|what)\b.*\btables?\b"))
         {
             return Sql(@"
@@ -142,13 +142,13 @@ SELECT table_name
                 Plan("User asked for the table list -> query information_schema.tables."));
         }
 
-        // -- refusal: clearly out-of-domain or write-intent ----------------
+        // --- REGION: Refuse out-of-domain or write intent
         if (Regex.IsMatch(q, @"\b(delete|drop|truncate|update|insert|grant|alter)\b"))
         {
             return Refuse("This system is read-only. Write/DDL operations are not permitted.");
         }
 
-        // -- fallback "I don't know" path ----------------------------------
+        // --- REGION: Fallback response
         return Refuse(@"I don't have a confident SQL mapping for that question against the available schema.
 Try one of: ""churn rate by plan tier in EMEA"", ""MRR by tier"",
 ""active subscriptions by region"", ""top customers by invoice"".");

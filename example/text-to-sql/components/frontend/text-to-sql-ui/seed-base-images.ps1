@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 2026.09.08
+.VERSION 2026.09.12
 .GUID 428c708f-f1f1-4046-96d1-c612d18dbac8
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
@@ -16,14 +16,8 @@
 
 #requires -version 7
 
-# Ensure the base images this component's Dockerfile FROMs reference are
-# served by the project's local distribution registry (registryLocation,
-# normally localhost:5000), so the build resolves FROM metadata over
-# loopback instead of a remote registry. Idempotent: a manifest already
-# served is a no-op. Acquisition order for a missing image: local docker
-# store, the zot pull-through cache (derived from http_proxy), then
-# mcr.microsoft.com direct.
-# The list mirrors the Dockerfile's FROM lines.
+# --- REGION: Define base images
+# See https://yuruna.link/42e220c4-0009
 $baseImages = @('dotnet/sdk:10.0', 'dotnet/aspnet:10.0')
 
 if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
@@ -35,6 +29,7 @@ if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
 # a failed seed step instead of hanging the component phase until the
 # operator (or the session driving it) gives up. Returns the exit code,
 # 124 on expiry (kills the whole process tree).
+# --- REGION: Bound Docker commands
 function Invoke-BoundedDocker {
     param(
         [Parameter(Mandatory)][int]$StallSeconds,
@@ -69,15 +64,18 @@ function Invoke-BoundedDocker {
     }
 }
 
+# --- REGION: Resolve registry
 $registry = [Environment]::GetEnvironmentVariable("$($env:registryName).registryLocation")
 if ([string]::IsNullOrWhiteSpace($registry)) { $registry = 'localhost:5000' }
 Write-Information "seed-base-images registry: ${registry}"
 
 $acceptHeader = 'application/vnd.oci.image.index.v1+json, application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.list.v2+json, application/vnd.docker.distribution.manifest.v2+json'
 
+# --- REGION: Locate caching proxy
 $cacheHost = ''
 if ($env:http_proxy -match '^https?://([^:/]+)') { $cacheHost = $Matches[1] }
 
+# --- REGION: Seed base images
 foreach ($ref in $baseImages) {
     $repo, $tag = $ref -split ':', 2
 

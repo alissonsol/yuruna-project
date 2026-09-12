@@ -29,7 +29,9 @@ so the example runs offline against a local PostgreSQL; setting
 
 <a id="4286c679-0003"></a>
 
-### 1 · Prepare PostgreSQL
+<a id="1--prepare-postgresql"></a>
+
+### 1 - Prepare PostgreSQL
 
 Any local PostgreSQL >= 14 works (Docker image, a Yuruna guest
 `<guest>.postgresql.sh` setup script, or a native install). With a superuser,
@@ -46,7 +48,9 @@ connects as that role.
 
 <a id="4286c679-0004"></a>
 
-### 2 · Run the .NET app
+<a id="2--run-the-net-app"></a>
+
+### 2 - Run the .NET app
 
 ```powershell
 cd components/frontend/text-to-sql-ui
@@ -105,7 +109,7 @@ same catalog the agent uses, viewable as ground truth.
 ### Service notes
 
 Per-service design notes referenced from the file-top comments
-(`https://yuruna.link/text-to-sql#service-notes`).
+(`https://yuruna.link/4286c679-0007`).
 
 **`Program.cs`** -- minimal Razor Pages host. Three things are wired up:
 Razor Pages for the chat UI, an Npgsql `DataSource` for the read-only
@@ -185,7 +189,7 @@ and deploys through the Yuruna three-phase model. The pieces are in place:
   three phases.
 - `components/frontend/text-to-sql-ui/Dockerfile` builds the container
   image during `Set-Component`.
-- The helm chart under
+- The Helm chart under
   [`workloads/frontend/text-to-sql-ui/`](workloads/frontend/text-to-sql-ui/)
   deploys it to Kubernetes (pod + TLS ingress) during `Set-Workload`. The
   deployment injects `TEXT2SQL_PG_CONN` pointing at `status.hostIP` (the node),
@@ -260,6 +264,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.09.08
+Last review: 2026.09.12
 
 Back to [yuruna-project](../../README.md) - [Yuruna](https://yuruna.com)

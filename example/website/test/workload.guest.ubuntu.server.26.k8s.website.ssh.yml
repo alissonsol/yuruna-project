@@ -4,10 +4,11 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 
 sequenceGuid: 42272942-dcd0-48fc-ba88-814462c89f5a
-sequenceRevision: 2
+sequenceRevision: 3
 
 description: "Ubuntu Server 26.04 (SSH): install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
 keystrokeMechanism: ssh
+# --- REGION: resource
 resource:
   ubuntu.server.26:
     # The website builds its .NET application inside Docker. Chaining the
@@ -18,6 +19,7 @@ variables:
   username: yuuser26
   hostname: yuhost26
 
+# --- REGION: component
 component:
   - action: sshWaitReady
     timeoutSeconds: 300
@@ -27,6 +29,7 @@ component:
     command: "whoami && hostname"
     description: "Smoke test: whoami/hostname"
 
+# --- REGION: workload
 workload:
   - action: sshFetchAndExecute
     command: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.26/ubuntu.server.26.k8s.sh"
@@ -34,9 +37,9 @@ workload:
     description: "ubuntu.server.26.k8s.sh"
 
   - action: sshExec
-    command: "kubectl get nodes | grep -w Ready"
-    timeoutSeconds: 120
-    description: "Verify at least one node Ready"
+    command: "kubectl wait --for=condition=Ready nodes --all --timeout=300s && kubectl get nodes"
+    timeoutSeconds: 360
+    description: "Wait for every node Ready"
 
   - action: sshFetchAndExecute
     command: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/website/test/ubuntu.server.26/ubuntu.server.26.workload.k8s.website.sh"

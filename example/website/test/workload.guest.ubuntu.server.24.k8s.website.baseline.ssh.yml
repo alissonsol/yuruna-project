@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=../../../../yuruna/test/schemas/sequence.schema.yml
+
+# LICENSEURI https://yuruna.link/license
+# Copyright (c) 2019-2026 by Alisson Sol et al.
+
+sequenceGuid: 42da5179-0a82-42cd-829d-dc45be49f808
+sequenceRevision: 1
+
+description: "Ubuntu Server 24.04 (SSH): build a managed Kubernetes baseline for the website."
+keystrokeMechanism: ssh
+# --- REGION: resource
+resource:
+  ubuntu.server.24:
+    - start.guest.ubuntu.server.24.ssh
+snapshotPolicy:
+  maxAgeHours: 24
+  rebuildOnMismatch: true
+  sourceFiles:
+    - guest/ubuntu.server.24/*.sh
+    - host/*/guest.ubuntu.server.24/*.ps1
+    - host/modules/Yuruna.UbuntuImage.psm1
+    - host/vmconfig/ubuntu.server.*
+    - automation/fetch-and-execute.sh
+    - automation/yuruna-retry.sh
+    - automation/yuruna-versions.sh
+    - test/sequences/start.guest.ubuntu.server.24*.yml
+    - project/example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml
+variables:
+  username: yuwebsite24
+  hostname: yuwebsite24
+
+# --- REGION: component
+component:
+  - action: sshWaitReady
+    timeoutSeconds: 300
+    description: "Wait for sshd after reboot"
+
+# --- REGION: workload
+workload:
+  - action: sshFetchAndExecute
+    command: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.k8s.sh"
+    timeoutSeconds: 1800
+    description: "ubuntu.server.24.k8s.sh"
+
+  - action: sshExec
+    command: "kubectl wait --for=condition=Ready nodes --all --timeout=300s && sudo kubeadm certs check-expiration"
+    timeoutSeconds: 360
+    description: "Verify Kubernetes and certificate validity before saving"
+
+  - action: saveDiskSnapshot
+    id: website-ubuntu24-k8s
+    description: "Save the managed Kubernetes baseline"

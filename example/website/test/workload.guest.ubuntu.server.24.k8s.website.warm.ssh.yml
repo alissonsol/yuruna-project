@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=../../../../yuruna/test/schemas/sequence.schema.yml
+
+# LICENSEURI https://yuruna.link/license
+# Copyright (c) 2019-2026 by Alisson Sol et al.
+
+sequenceGuid: 42ecc74f-4fd1-4545-a85a-57ef9d86a3fc
+sequenceRevision: 1
+
+description: "Ubuntu Server 24.04 (SSH): restore the Kubernetes baseline, deploy the website, and verify HTTP 200."
+keystrokeMechanism: ssh
+# --- REGION: resource
+resource:
+  ubuntu.server.24:
+    - workload.guest.ubuntu.server.24.k8s.website.baseline.ssh
+requiresSnapshot:
+  id: website-ubuntu24-k8s
+snapshotPolicy:
+  maxAgeHours: 24
+  rebuildOnMismatch: true
+  sourceFiles:
+    - guest/ubuntu.server.24/*.sh
+    - host/*/guest.ubuntu.server.24/*.ps1
+    - host/modules/Yuruna.UbuntuImage.psm1
+    - host/vmconfig/ubuntu.server.*
+    - automation/fetch-and-execute.sh
+    - automation/yuruna-retry.sh
+    - automation/yuruna-versions.sh
+    - test/sequences/start.guest.ubuntu.server.24*.yml
+    - project/example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml
+variables:
+  username: yuwebsite24
+  hostname: yuwebsite24
+
+# --- REGION: component
+component:
+  - action: loadDiskSnapshot
+    id: website-ubuntu24-k8s
+    description: "Restore the managed Kubernetes baseline"
+
+  - action: sshWaitReady
+    timeoutSeconds: 600
+    description: "Wait for sshd after restoring the baseline"
+
+  - action: sshExec
+    command: 'mkdir -p "$HOME/.kube" && sudo install -m 0600 -o "$(id -u)" -g "$(id -g)" /etc/kubernetes/admin.conf "$HOME/.kube/config" && kubectl wait --for=condition=Ready nodes --all --timeout=300s && sudo kubeadm certs check-expiration'
+    timeoutSeconds: 360
+    description: "Refresh the client configuration and verify the restored cluster"
+
+# --- REGION: workload
+workload:
+  - action: sshFetchAndExecute
+    command: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/website/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.website.sh"
+    timeoutSeconds: 1800
+    description: "ubuntu.server.24.workload.k8s.website.sh"
+
+  - action: sshFetchAndExecute
+    command: "/usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"
+    timeoutSeconds: 240
+    description: "Verify HTTP 200"
+
+  - action: saveSystemDiagnostic
+    id: k8s.website.warm
+    description: "Capture diagnostics"

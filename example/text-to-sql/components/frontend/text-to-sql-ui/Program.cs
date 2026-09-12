@@ -1,7 +1,7 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ASP.NET Core host wiring for the agent pipeline; see README service notes:
-// https://yuruna.link/text-to-sql#service-notes
+// https://yuruna.link/4286c679-0007
 using Npgsql;
 using TextToSqlUi.Services;
 
@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 
-// -- Postgres data source ---------------------------------------------------
+// --- REGION: PostgreSQL data source
 // Connection string priority:
 //   1. env TEXT2SQL_PG_CONN  (preferred -- see README)
 //   2. appsettings:ConnectionStrings:Postgres
@@ -23,7 +23,7 @@ var pgConn =
 var dsBuilder = new NpgsqlDataSourceBuilder(pgConn);
 builder.Services.AddSingleton(dsBuilder.Build());
 
-// -- Agent stack ------------------------------------------------------------
+// --- REGION: Agent stack
 builder.Services.AddSingleton<SchemaCatalog>();
 builder.Services.AddSingleton<SqlValidator>();
 

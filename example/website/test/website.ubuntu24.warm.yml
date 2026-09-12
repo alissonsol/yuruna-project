@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=../../../../yuruna/test/schemas/orchestration-sequence.schema.yml
+
+# LICENSEURI https://yuruna.link/license
+# Copyright (c) 2019-2026 by Alisson Sol et al.
+
+name: website.ubuntu24.warm
+description: "Run the Ubuntu 24 website through managed snapshot planning."
+steps:
+  - action: InvokeTestSequence
+    sequence: workload.guest.ubuntu.server.24.k8s.website.warm.ssh
+    description: "Restore or build Kubernetes, then deploy and verify the website"

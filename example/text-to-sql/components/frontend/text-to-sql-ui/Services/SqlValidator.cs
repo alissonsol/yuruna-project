@@ -1,7 +1,7 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // Validator stage: static SQL checks + EXPLAIN cost gate; see README service
-// notes: https://yuruna.link/text-to-sql#service-notes
+// notes: https://yuruna.link/4286c679-0007
 
 using System.Text.RegularExpressions;
 using Npgsql;
@@ -25,7 +25,7 @@ public sealed class SqlValidator
         _rowsRefuseThreshold = cfg.GetValue("Agent:ExplainRefuseRows", 1_000_000);
     }
 
-    // -- Static (offline) checks -------------------------------------------
+    // --- REGION: Static checks
     private static readonly Regex CommentRx = new(@"(--|/\*|\*/)", RegexOptions.Compiled);
 
     // PII column identifiers the validator refuses outright. Kept aligned with
@@ -121,7 +121,7 @@ public sealed class SqlValidator
         return false;
     }
 
-    // -- Online cost gate: EXPLAIN (FORMAT JSON) ---------------------------
+    // --- REGION: EXPLAIN cost gate
     public async Task<ExplainResult> ExplainAsync(string sql, CancellationToken ct = default)
     {
         await using var conn = await _ds.OpenConnectionAsync(ct);

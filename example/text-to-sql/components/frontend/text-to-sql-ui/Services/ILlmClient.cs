@@ -1,7 +1,7 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // Pluggable seam between the orchestrator and an LLM implementation; see
-// README service notes: https://yuruna.link/text-to-sql#service-notes
+// README service notes: https://yuruna.link/4286c679-0007
 
 namespace TextToSqlUi.Services;
 

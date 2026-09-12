@@ -4,10 +4,11 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 
 sequenceGuid: 423775c5-e5e9-4ab5-b07b-b38a91bb9fda
-sequenceRevision: 2
+sequenceRevision: 4
 
 description: "Ubuntu Server 26.04: log in, install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
 keystrokeMechanism: gui
+# --- REGION: resource
 resource:
   ubuntu.server.26:
     # The website builds its .NET application inside Docker. Chaining the
@@ -18,13 +19,13 @@ variables:
   username: yuuser26
   hostname: yuhost26
 
+# --- REGION: component
 component:
   - action: retry
     maxAttempts: 2
     description: "Login + retry"
     steps:
-      # start.guest reboots at the end; retain only the lightweight login
-      # priming that the removed Code workload used to provide.
+      # start.guest reboots at the end; prime the console before logging in.
       - snippet: firstLoginPrime
 
       - action: passwdPrompt
@@ -43,6 +44,9 @@ component:
     timeoutSeconds: 90
     description: "OCR: ${username}@${hostname}"
 
+  - snippet: shellInputPrime
+
+# --- REGION: workload
 workload:
   - action: fetchAndExecute
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.26/ubuntu.server.26.k8s.sh"
@@ -56,13 +60,7 @@ workload:
     text: "kubectl wait --for=condition=Ready nodes --all --timeout=300s && clear && kubectl get nodes"
     description: "Check node status"
 
-  # Gate on "control-plane" -- it appears only in the ROLES column of the
-  # cleared `kubectl get nodes` table above. Do NOT gate on "Ready":
-  # Test-OCRMatch is fuzzy, so "Ready" matches the echoed
-  # "--for=condition=Ready" of the command itself (passing before the wait has
-  # even run, then letting later steps type into a still-blocked shell) and it
-  # also matches inside the word "NotReady". timeoutSeconds must exceed the
-  # 300s wait being watched, or a healthy but slow cluster times out here.
+  # See https://yuruna.link/42e220c4-0009
   - action: waitForText
     pattern: "control-plane"
     timeoutSeconds: 360
@@ -72,10 +70,12 @@ workload:
     text: "clear; newgrp docker"
     description: "Activate docker group"
 
+  # See https://yuruna.link/42e220c4-0009
   - action: fetchAndExecute
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/website/test/ubuntu.server.26/ubuntu.server.26.workload.k8s.website.sh"
     description: "ubuntu.server.26.workload.k8s.website.sh"
     waitPattern: "FETCHED AND EXECUTED:"
+    freshMatchTailLines: 60
     timeoutSeconds: 1200
 
   - action: fetchAndExecute

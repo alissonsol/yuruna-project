@@ -13,6 +13,7 @@ keystrokeMechanism: gui
 # (ubuntu.server.24.code.sh), which text-to-sql does not use and only adds
 # install time + failure surface to an unattended cycle. update.sh already
 # leaves pwsh + the framework/project repos in place.
+# --- REGION: resource
 resource:
   ubuntu.server.24:
     - start.guest.ubuntu.server.24
@@ -20,6 +21,7 @@ variables:
   username: yt2sqluser
   hostname: yt2sqlhost
 
+# --- REGION: component
 component:
   - action: retry
     maxAttempts: 2
@@ -43,6 +45,7 @@ component:
     timeoutSeconds: 90
     description: "OCR: ${username}@${hostname}"
 
+# --- REGION: workload
 workload:
   - action: fetchAndExecute
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.k8s.sh"
@@ -56,13 +59,7 @@ workload:
     text: "kubectl wait --for=condition=Ready nodes --all --timeout=300s && clear && kubectl get nodes"
     description: "Check node status"
 
-  # Gate on "control-plane" -- it appears only in the ROLES column of the
-  # cleared `kubectl get nodes` table above. Do NOT gate on "Ready":
-  # Test-OCRMatch is fuzzy, so "Ready" matches the echoed
-  # "--for=condition=Ready" of the command itself (passing before the wait has
-  # even run, then letting later steps type into a still-blocked shell) and it
-  # also matches inside the word "NotReady". timeoutSeconds must exceed the
-  # 300s wait being watched, or a healthy but slow cluster times out here.
+  # See https://yuruna.link/42e220c4-0009
   - action: waitForText
     pattern: "control-plane"
     timeoutSeconds: 360

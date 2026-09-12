@@ -1,7 +1,7 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // Schema retriever stage: catalog introspection + hybrid scoring; see README
-// service notes: https://yuruna.link/text-to-sql#service-notes
+// service notes: https://yuruna.link/4286c679-0007
 
 using System.Data;
 using Npgsql;
@@ -32,7 +32,7 @@ public sealed class SchemaCatalog
             || columnName.Equals("phone", StringComparison.OrdinalIgnoreCase)
             || columnName.EndsWith("_pii", StringComparison.OrdinalIgnoreCase));
 
-    // -- Public retriever ---------------------------------------------------
+    // --- REGION: Public retriever
     // Returns the k most relevant tables (by hybrid score) plus their direct
     // FK neighbors. The string form is what the SQL generator sees.
     public async Task<RetrievalResult> GetRelevantSchemaAsync(string question, int k = 6)
@@ -60,12 +60,12 @@ public sealed class SchemaCatalog
         var expanded = new Dictionary<string, TableInfo>(topK.ToDictionary(t => t.Name));
         foreach (var t in topK)
         {
-            foreach (var (neighbour, _) in t.FkOut)
+            foreach (var (neighbor, _) in t.FkOut)
             {
-                if (!expanded.ContainsKey(neighbour))
+                if (!expanded.ContainsKey(neighbor))
                 {
-                    var n = all.FirstOrDefault(x => x.Name == neighbour);
-                    if (n is not null) expanded[neighbour] = n;
+                    var n = all.FirstOrDefault(x => x.Name == neighbor);
+                    if (n is not null) expanded[neighbor] = n;
                 }
             }
         }
@@ -103,7 +103,8 @@ public sealed class SchemaCatalog
             .ToHashSet();
     }
 
-    // -- Format for the prompt -- compact YAML-ish so the model finds JOINs. --
+    // --- REGION: Prompt format
+    // Compact YAML-like text keeps join relationships visible to the model.
     private static string Format(IEnumerable<TableInfo> tables)
     {
         var sb = new System.Text.StringBuilder();
@@ -129,7 +130,7 @@ public sealed class SchemaCatalog
         return sb.ToString();
     }
 
-    // -- Build the catalog from information_schema + pg_constraint ----------
+    // --- REGION: Catalog build
     private async Task<IReadOnlyList<TableInfo>> LoadAsync()
     {
         var byName = new Dictionary<string, TableInfo>(StringComparer.OrdinalIgnoreCase);
@@ -217,14 +218,13 @@ public sealed class SchemaCatalog
     }
 }
 
-// -- Records ----------------------------------------------------------------
-
+// --- REGION: Records
 public sealed class TableInfo
 {
     public string Name { get; }
     public string Comment { get; }
     public List<ColumnInfo> Columns { get; } = new();
-    public List<(string Neighbour, string Edge)> FkOut { get; } = new();
+    public List<(string Neighbor, string Edge)> FkOut { get; } = new();
     public string SearchBlob { get; private set; } = "";
 
     public TableInfo(string name, string comment)

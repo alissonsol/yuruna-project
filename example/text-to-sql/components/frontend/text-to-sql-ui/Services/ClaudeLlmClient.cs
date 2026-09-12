@@ -1,7 +1,7 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
 // ILlmClient backed by the Anthropic Messages API; see README service notes:
-// https://yuruna.link/text-to-sql#service-notes
+// https://yuruna.link/4286c679-0007
 
 using System.Net.Http.Headers;
 using System.Text;

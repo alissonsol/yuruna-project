@@ -37,14 +37,14 @@ If "A valid HTTPS certificate is already present" -> `dotnet dev-certs https --c
   - Right-click the project -> `Add -> Docker Support...` (needs [Visual Studio](https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/docker/visual-studio-tools-for-docker?view=aspnetcore-10.0)).
 - Test with `IIS Express`, then the `Docker` version:
   - "Volume sharing is not enabled" -> Docker Desktop -> Settings -> Resources -> File Sharing -> add `C:\` -> Apply & Restart.
-  - The Linux build expects lowercase `dockerfile`; the VS debugger expects `Dockerfile`. Keep `Dockerfile` (uppercase) and use the debugger.
+  - Both the Linux build and the Visual Studio debugger use `Dockerfile`.
 
 ## Running the docker image locally
 
 ### Docker
 
 - Start the Docker build via VS debugger -- runs as `website:dev` named `website`. Stopping the debugger may leave it running; clean up.
-- Or use `frontend/website/docker-run-dev.ps1`: builds `yrn42website-prefix/website:latest`, runs as `yrn42website-prefix-example-website`. Confirm the password matches the dev cert. Open `http://localhost:8000/`.
+- Or use [docker-run-dev.ps1](docker-run-dev.ps1): builds `yrn42website-prefix/website:latest`, runs as `yrn42website-prefix-example-website`. Confirm the password matches the dev cert. Open `http://localhost:8000/`.
 - Or build via `Set-Component.ps1 website localhost` then run interactively:
   ```
   docker run --rm -it -p 8000:80 -p 8001:443 --name "test-website" \
@@ -72,6 +72,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.09.08
+Last review: 2026.09.12
 
 Back to [Website example](../../../README.md) - [yuruna-project](../../../../../README.md) - [Yuruna](https://yuruna.com)
