@@ -39,13 +39,20 @@ spec:
           # cascade on the test node; the limit caps a single misbehaving
           # build/log loop. Memory + cpu requests mirror their limits to keep
           # QoS=Guaranteed instead of BestEffort.
+          #
+          # memory sits at 256Mi, not the 128Mi the steady state appears to need:
+          # a healthy pod settles at ~127.5 MiB, which is 99.6% of a 128Mi cap.
+          # A container that has to reach the ceiling to become ready has no room
+          # for the allocation spike that finishing startup takes, and the failure
+          # mode is not a clean OOM kill -- the process stalls below the cap with
+          # the port unbound, so readiness never passes and the deploy times out.
           requests:
             ephemeral-storage: "256Mi"
-            memory: "128Mi"
+            memory: "256Mi"
             cpu: "200m"
           limits:
             ephemeral-storage: "1Gi"
-            memory: "128Mi"
+            memory: "256Mi"
             cpu: "200m"
         env:
         - name: ASPNETCORE_URLS
@@ -64,6 +71,17 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 5
           failureThreshold: 12
+        # Readiness alone cannot recover a process that comes up but never binds
+        # the port: the pod stays 0/1 until the deploy's own wait expires, which
+        # surfaces as a chart timeout rather than as the stuck container it is.
+        # Liveness restarts it instead. The delay is generous next to the ~10s a
+        # healthy start takes, so an ordinarily slow boot is never killed.
+        livenessProbe:
+          tcpSocket:
+            port: 443
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 6
       imagePullSecrets:
         - name: registry-credential
 ---
