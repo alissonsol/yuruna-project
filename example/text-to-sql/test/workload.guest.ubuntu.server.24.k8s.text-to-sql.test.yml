@@ -9,6 +9,8 @@ sequenceGuid: 42ed7613-c319-4d8f-9391-66001c258b2d
 sequenceRevision: 2
 
 description: "Ubuntu Server 24.04: restore snapshot, install + set up PostgreSQL, deploy text-to-sql, verify HTTP 200."
+descriptionLocalized:
+  pt-BR: "Ubuntu Server 24.04: restaurar instantâneo, instalar + configurar PostgreSQL, implantar texto para sql, verificar HTTP 200."
 keystrokeMechanism: gui
 # --- REGION: resource
 resource:
@@ -26,10 +28,14 @@ component:
   - action: loadDiskSnapshot
     id: "k8s.text-to-sql"
     description: "Restore the Kubernetes baseline checkpoint"
+    descriptionLocalized:
+      pt-BR: "Restaurar o ponto de verificação de base do Kubernetes"
 
   - action: retry
     maxAttempts: 2
     description: "Login + retry"
+    descriptionLocalized:
+      pt-BR: "Login + tentar novamente"
     steps:
       - snippet: firstLoginPrime
 
@@ -38,43 +44,59 @@ component:
         timeoutSeconds: 600
         text: "${username}"
         description: "OCR: login:"
+        descriptionLocalized:
+          pt-BR: "OCR: login:"
 
       - action: passwdPrompt
         pattern: "Password:"
         text: "${ext:authentication.GetPassword(${username})}"
         description: "OCR: Password:"
+        descriptionLocalized:
+          pt-BR: "OCR: Senha:"
 
   - action: waitForText
     pattern: "${username}@"
     timeoutSeconds: 90
     description: "OCR: ${username}@ (shell prompt)"
+    descriptionLocalized:
+      pt-BR: "OCR: ${username}@ (prompt de shell)"
 
 # --- REGION: workload
 workload:
   - action: fetchAndExecute
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.postgresql.sh"
     description: "ubuntu.server.24.postgresql.sh (install PostgreSQL 18)"
+    descriptionLocalized:
+      pt-BR: "ubuntu.server.24.postgresql.sh (instalar PostgreSQL 18)"
     waitPattern: "FETCHED AND EXECUTED:"
     timeoutSeconds: 900
 
   - action: fetchAndExecute
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/text-to-sql/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.text-to-sql.db.sh"
     description: "text-to-sql DB bring-up (ssl off, create yuruna_demo, load schema, open pg_hba)"
+    descriptionLocalized:
+      pt-BR: "text-to-sql DB track-up (ssl off, create yuruna demo, load schema, open pg hba)"
     waitPattern: "FETCHED AND EXECUTED:"
     timeoutSeconds: 600
 
   - action: fetchAndExecute
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/text-to-sql/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.text-to-sql.sh"
     description: "ubuntu.server.24.workload.k8s.text-to-sql.sh (build image, deploy pod + ingress)"
+    descriptionLocalized:
+      pt-BR: "ubuntu.server.24.workload.k8s.text-to-sql.sh (build image, implante pod + ingress)"
     waitPattern: "FETCHED AND EXECUTED:"
     timeoutSeconds: 1200
 
   - action: fetchAndExecute
     text: "clear; /usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"
     description: "test-localhost.sh (expect HTTP 200)"
+    descriptionLocalized:
+      pt-BR: "test- localhost.sh (espera HTTP 200)"
     waitPattern: "200 OK"
     timeoutSeconds: 900
 
   - action: saveSystemDiagnostic
     id: k8s.text-to-sql
     description: "Capture diagnostics after the deploy comes up"
+    descriptionLocalized:
+      pt-BR: "Capturar diagnósticos após o implante surge"

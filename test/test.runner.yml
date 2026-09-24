@@ -22,37 +22,65 @@ testSets:
       - ch01.website.example.no-break
   - name: windows
     displayName: Windows guest
+    displayNameLocalized:
+      pt-BR: "Convidado para as janelas"
     description: Windows 11 guest workload on its own.
+    descriptionLocalized:
+      pt-BR: "A carga de trabalho dos hóspedes do Windows 11 por conta própria."
     sequences:
       - workload.guest.windows.11
   - name: kubernetes
     displayName: Kubernetes website
+    displayNameLocalized:
+      pt-BR: "Página Web do Kubernetes"
     description: Ubuntu server 26 k8s website workload.
+    descriptionLocalized:
+      pt-BR: "Servidor Ubuntu 26 k8s carga de trabalho do site."
     sequences:
       - workload.guest.ubuntu.server.26.k8s.website
   - name: kubernetes-24
     displayName: Kubernetes website (24.04)
+    displayNameLocalized:
+      pt-BR: "Sítio Web do Kubernetes (24.04)"
     description: The same website workload on the older Ubuntu server guest.
+    descriptionLocalized:
+      pt-BR: "A mesma carga de trabalho do site no antigo hóspede do servidor Ubuntu."
     sequences:
       - workload.guest.ubuntu.server.24.k8s.website
   - name: kubernetes-warm
     displayName: Kubernetes website (warm baseline)
+    displayNameLocalized:
+      pt-BR: "Página Web do Kubernetes (base inicial quente)"
     description: Restore a managed Ubuntu 26 Kubernetes baseline and test the website; rebuild after source changes or 24 hours.
+    descriptionLocalized:
+      pt-BR: "Restaure uma linha de base gerenciada do Ubuntu 26 Kubernetes e teste o site; reconstrua após alterações de fonte ou 24 horas."
     sequences:
       - website.ubuntu26.warm
   - name: kubernetes-24-warm
     displayName: Kubernetes website (24.04 warm baseline)
+    displayNameLocalized:
+      pt-BR: "Kubernetes website (24.04 linha de base quente)"
     description: Restore a managed Ubuntu 24 Kubernetes baseline and test the website; rebuild after source changes or 24 hours.
+    descriptionLocalized:
+      pt-BR: "Restaure uma linha de base gerenciada do Ubuntu 24 Kubernetes e teste o site; reconstrua após alterações de fonte ou 24 horas."
     sequences:
       - website.ubuntu24.warm
   - name: kubernetes-ssh
     displayName: Kubernetes website (SSH full install)
+    displayNameLocalized:
+      pt-BR: "Página Web do Kubernetes (instalação completa do SHS)"
     description: Full Ubuntu 26 installation with the website workload over SSH, for comparison with the console lane.
+    descriptionLocalized:
+      pt-BR: "Instalação completa do Ubuntu 26 com a carga de trabalho do site sobre o SSH, para comparação com a pista de console."
     sequences:
       - workload.guest.ubuntu.server.26.k8s.website.ssh
   - name: kubernetes-24-ssh
     displayName: Kubernetes website (24.04 SSH full install)
+    displayNameLocalized:
+      pt-BR: "Página Web do Kubernetes (24.04 SSH full install)"
     description: Full Ubuntu 24 installation with the website workload over SSH, for comparison with the console lane.
+    descriptionLocalized:
+      pt-BR: "Instalação completa do Ubuntu 24 com a carga de trabalho do site sobre o SSH, para comparação com a pista de console."
     sequences:
       - workload.guest.ubuntu.server.24.k8s.website.ssh
 #  - workload.guest.amazon.linux.2023

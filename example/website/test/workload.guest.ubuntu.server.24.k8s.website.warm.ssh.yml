@@ -7,6 +7,8 @@ sequenceGuid: 42ecc74f-4fd1-4545-a85a-57ef9d86a3fc
 sequenceRevision: 1
 
 description: "Ubuntu Server 24.04 (SSH): restore the Kubernetes baseline, deploy the website, and verify HTTP 200."
+descriptionLocalized:
+  pt-BR: "Ubuntu Server 24.04 (SSH): restaurar a linha de base do Kubernetes, implantar o site e verificar HTTP 200."
 keystrokeMechanism: ssh
 # --- REGION: resource
 resource:
@@ -36,15 +38,21 @@ component:
   - action: loadDiskSnapshot
     id: website-ubuntu24-k8s
     description: "Restore the managed Kubernetes baseline"
+    descriptionLocalized:
+      pt-BR: "Restaurar a linha de base gerenciada do Kubernetes"
 
   - action: sshWaitReady
     timeoutSeconds: 600
     description: "Wait for sshd after restoring the baseline"
+    descriptionLocalized:
+      pt-BR: "Aguarde pelo sshd após restaurar a linha de base"
 
   - action: sshExec
     command: 'mkdir -p "$HOME/.kube" && sudo install -m 0600 -o "$(id -u)" -g "$(id -g)" /etc/kubernetes/admin.conf "$HOME/.kube/config" && kubectl wait --for=condition=Ready nodes --all --timeout=300s && sudo kubeadm certs check-expiration'
     timeoutSeconds: 360
     description: "Refresh the client configuration and verify the restored cluster"
+    descriptionLocalized:
+      pt-BR: "Atualizar a configuração do cliente e verificar o cluster restaurado"
 
 # --- REGION: workload
 workload:
@@ -52,12 +60,18 @@ workload:
     command: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/website/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.website.sh"
     timeoutSeconds: 1800
     description: "ubuntu.server.24.workload.k8s.website.sh"
+    descriptionLocalized:
+      pt-BR: "ubuntu.server.24.workload.k8s.website.sh"
 
   - action: sshFetchAndExecute
     command: "/usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"
     timeoutSeconds: 240
     description: "Verify HTTP 200"
+    descriptionLocalized:
+      pt-BR: "Verificar HTTP 200"
 
   - action: saveSystemDiagnostic
     id: k8s.website.warm
     description: "Capture diagnostics"
+    descriptionLocalized:
+      pt-BR: "Capturar diagnósticos"

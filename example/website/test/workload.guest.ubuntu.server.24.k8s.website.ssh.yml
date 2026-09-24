@@ -7,6 +7,8 @@ sequenceGuid: 42a558c0-d2af-42a3-a8f2-6909dde087c4
 sequenceRevision: 3
 
 description: "Ubuntu Server 24.04 (SSH): install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
+descriptionLocalized:
+  pt-BR: "Servidor Ubuntu 24.04 (SSH): instale o Kubernetes, implante o site no cluster localhost, verifique HTTP 200."
 keystrokeMechanism: ssh
 # --- REGION: resource
 resource:
@@ -24,10 +26,14 @@ component:
   - action: sshWaitReady
     timeoutSeconds: 300
     description: "Wait for sshd after reboot"
+    descriptionLocalized:
+      pt-BR: "Aguarde pelo sshd após reiniciar"
 
   - action: sshExec
     command: "whoami && hostname"
     description: "Smoke test: whoami/hostname"
+    descriptionLocalized:
+      pt-BR: "Teste de fumo: whoami/nome da máquina"
 
 # --- REGION: workload
 workload:
@@ -35,18 +41,26 @@ workload:
     command: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.k8s.sh"
     timeoutSeconds: 1800
     description: "ubuntu.server.24.k8s.sh"
+    descriptionLocalized:
+      pt-BR: "ubuntu.server.24.k8s.sh"
 
   - action: sshExec
     command: "kubectl wait --for=condition=Ready nodes --all --timeout=300s && kubectl get nodes"
     timeoutSeconds: 360
     description: "Wait for every node Ready"
+    descriptionLocalized:
+      pt-BR: "Aguarde por cada nó pronto"
 
   - action: sshFetchAndExecute
     command: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/website/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.website.sh"
     timeoutSeconds: 1800
     description: "ubuntu.server.24.workload.k8s.website.sh"
+    descriptionLocalized:
+      pt-BR: "ubuntu.server.24.workload.k8s.website.sh"
 
   - action: sshExec
     command: "bash /home/${username}/yuruna/test/test-localhost.sh 2>&1 | tee /tmp/test-localhost.out; grep -q 200 /tmp/test-localhost.out"
     timeoutSeconds: 120
     description: "Check HTTP 200 in test output"
+    descriptionLocalized:
+      pt-BR: "Verificar HTTP 200 na saída de teste"

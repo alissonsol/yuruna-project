@@ -7,6 +7,8 @@ sequenceGuid: 426ca572-7dda-4e43-be71-93462c7ef6e7
 sequenceRevision: 2
 
 description: "Ubuntu Server 24.04: log in, install Kubernetes, prepare for text-to-sql deployment."
+descriptionLocalized:
+  pt-BR: "Servidor Ubuntu 24.04: faça login, instale Kubernetes, prepare-se para implantação de texto para sql."
 keystrokeMechanism: gui
 # Chain start.guest directly. The workload.guest chain
 # additionally installs a JDK, .NET SDK, and VS Code
@@ -26,6 +28,8 @@ component:
   - action: retry
     maxAttempts: 2
     description: "Login + retry"
+    descriptionLocalized:
+      pt-BR: "Login + tentar novamente"
     steps:
       - snippet: firstLoginPrime
 
@@ -34,22 +38,30 @@ component:
         timeoutSeconds: 600
         text: "${username}"
         description: "OCR: login:"
+        descriptionLocalized:
+          pt-BR: "OCR: login:"
 
       - action: passwdPrompt
         pattern: "Password:"
         text: "${ext:authentication.GetPassword(${username})}"
         description: "OCR: Password:"
+        descriptionLocalized:
+          pt-BR: "OCR: Senha:"
 
   - action: waitForText
     pattern: "${username}@${hostname}"
     timeoutSeconds: 90
     description: "OCR: ${username}@${hostname}"
+    descriptionLocalized:
+      pt-BR: "OCR: ${username}@${hostname}"
 
 # --- REGION: workload
 workload:
   - action: fetchAndExecute
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.k8s.sh"
     description: "ubuntu.server.24.k8s.sh"
+    descriptionLocalized:
+      pt-BR: "ubuntu.server.24.k8s.sh"
     waitPattern: "FETCHED AND EXECUTED:"
     timeoutSeconds: 1800
 
@@ -58,17 +70,25 @@ workload:
   - action: inputTextAndEnter
     text: "kubectl wait --for=condition=Ready nodes --all --timeout=300s && clear && kubectl get nodes"
     description: "Check node status"
+    descriptionLocalized:
+      pt-BR: "Verificar o estado do nó"
 
   # See https://yuruna.link/42e220c4-0009
   - action: waitForText
     pattern: "control-plane"
     timeoutSeconds: 360
     description: "OCR: control-plane"
+    descriptionLocalized:
+      pt-BR: "OCR: plano de controlo"
 
   - action: inputTextAndEnter
     text: "clear; newgrp docker"
     description: "Activate docker group"
+    descriptionLocalized:
+      pt-BR: "Ativar grupo de docker"
 
   - action: saveDiskSnapshot
     id: "k8s.text-to-sql"
     description: "Snapshot before Postgres in text-to-sql workload"
+    descriptionLocalized:
+      pt-BR: "Imagem antes do Postgres na carga de trabalho texto- para- sql"

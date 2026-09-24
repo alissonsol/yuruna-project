@@ -5,7 +5,11 @@
 
 name: website.ubuntu24.warm
 description: "Run the Ubuntu 24 website through managed snapshot planning."
+descriptionLocalized:
+  pt-BR: "Execute o site do Ubuntu 24 através de planejamento de instantâneo gerenciado."
 steps:
   - action: InvokeTestSequence
     sequence: workload.guest.ubuntu.server.24.k8s.website.warm.ssh
     description: "Restore or build Kubernetes, then deploy and verify the website"
+    descriptionLocalized:
+      pt-BR: "Restaurar ou construir o Kubernetes, depois implantar e verificar o site"

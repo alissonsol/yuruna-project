@@ -7,6 +7,8 @@ sequenceGuid: 42da5179-0a82-42cd-829d-dc45be49f808
 sequenceRevision: 1
 
 description: "Ubuntu Server 24.04 (SSH): build a managed Kubernetes baseline for the website."
+descriptionLocalized:
+  pt-BR: "Ubuntu Server 24.04 (SSH): crie uma linha de base gerenciada do Kubernetes para o site."
 keystrokeMechanism: ssh
 # --- REGION: resource
 resource:
@@ -34,6 +36,8 @@ component:
   - action: sshWaitReady
     timeoutSeconds: 300
     description: "Wait for sshd after reboot"
+    descriptionLocalized:
+      pt-BR: "Aguarde pelo sshd após reiniciar"
 
 # --- REGION: workload
 workload:
@@ -41,12 +45,18 @@ workload:
     command: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.k8s.sh"
     timeoutSeconds: 1800
     description: "ubuntu.server.24.k8s.sh"
+    descriptionLocalized:
+      pt-BR: "ubuntu.server.24.k8s.sh"
 
   - action: sshExec
     command: "kubectl wait --for=condition=Ready nodes --all --timeout=300s && sudo kubeadm certs check-expiration"
     timeoutSeconds: 360
     description: "Verify Kubernetes and certificate validity before saving"
+    descriptionLocalized:
+      pt-BR: "Verificar a validade do Kubernetes e do certificado antes de gravar"
 
   - action: saveDiskSnapshot
     id: website-ubuntu24-k8s
     description: "Save the managed Kubernetes baseline"
+    descriptionLocalized:
+      pt-BR: "Salvar a linha de base gerenciada do Kubernetes"

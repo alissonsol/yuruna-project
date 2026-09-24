@@ -7,6 +7,8 @@ sequenceGuid: 423775c5-e5e9-4ab5-b07b-b38a91bb9fda
 sequenceRevision: 4
 
 description: "Ubuntu Server 26.04: log in, install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
+descriptionLocalized:
+  pt-BR: "Servidor Ubuntu 26.04: faça login, instale o Kubernetes, implante o site no cluster localhost, verifique HTTP 200."
 keystrokeMechanism: gui
 # --- REGION: resource
 resource:
@@ -24,6 +26,8 @@ component:
   - action: retry
     maxAttempts: 2
     description: "Login + retry"
+    descriptionLocalized:
+      pt-BR: "Login + tentar novamente"
     steps:
       # start.guest reboots at the end; prime the console before logging in.
       - snippet: firstLoginPrime
@@ -33,16 +37,22 @@ component:
         timeoutSeconds: 600
         text: "${username}"
         description: "OCR: login:"
+        descriptionLocalized:
+          pt-BR: "OCR: login:"
 
       - action: passwdPrompt
         pattern: "Password:"
         text: "${ext:authentication.GetPassword(${username})}"
         description: "OCR: Password:"
+        descriptionLocalized:
+          pt-BR: "OCR: Senha:"
 
   - action: waitForText
     pattern: "${username}@${hostname}"
     timeoutSeconds: 90
     description: "OCR: ${username}@${hostname}"
+    descriptionLocalized:
+      pt-BR: "OCR: ${username}@${hostname}"
 
   - snippet: shellInputPrime
 
@@ -51,6 +61,8 @@ workload:
   - action: fetchAndExecute
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.26/ubuntu.server.26.k8s.sh"
     description: "ubuntu.server.26.k8s.sh"
+    descriptionLocalized:
+      pt-BR: "ubuntu.server.26.k8s.sh"
     waitPattern: "FETCHED AND EXECUTED:"
     timeoutSeconds: 1800
 
@@ -59,21 +71,29 @@ workload:
   - action: inputTextAndEnter
     text: "kubectl wait --for=condition=Ready nodes --all --timeout=300s && clear && kubectl get nodes"
     description: "Check node status"
+    descriptionLocalized:
+      pt-BR: "Verificar o estado do nó"
 
   # See https://yuruna.link/42e220c4-0009
   - action: waitForText
     pattern: "control-plane"
     timeoutSeconds: 360
     description: "OCR: control-plane"
+    descriptionLocalized:
+      pt-BR: "OCR: plano de controlo"
 
   - action: inputTextAndEnter
     text: "clear; newgrp docker"
     description: "Activate docker group"
+    descriptionLocalized:
+      pt-BR: "Ativar grupo de docker"
 
   # See https://yuruna.link/42e220c4-0009
   - action: fetchAndExecute
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/website/test/ubuntu.server.26/ubuntu.server.26.workload.k8s.website.sh"
     description: "ubuntu.server.26.workload.k8s.website.sh"
+    descriptionLocalized:
+      pt-BR: "ubuntu.server.26.workload.k8s.website.sh"
     waitPattern: "FETCHED AND EXECUTED:"
     freshMatchTailLines: 60
     timeoutSeconds: 1200
@@ -81,11 +101,17 @@ workload:
   - action: fetchAndExecute
     text: "clear; /usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"
     description: "test-localhost.sh"
+    descriptionLocalized:
+      pt-BR: "test- localhost.sh"
     waitPattern: "200 OK"
 
   - action: saveSystemDiagnostic
     id: k8s.website
     description: "Capture diagnostics"
+    descriptionLocalized:
+      pt-BR: "Capturar diagnósticos"
 
   - action: networkRelease
     description: "Release network resources"
+    descriptionLocalized:
+      pt-BR: "Lançar recursos de rede"
