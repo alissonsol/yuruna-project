@@ -44,9 +44,13 @@ psql -h localhost -U postgres -c "CREATE DATABASE yuruna_demo;"
 psql -h localhost -U postgres -d yuruna_demo -f db/schema.sql
 ```
 
-O `schema.sql` cria um papel `yuruna_agent_ro` com permissões apenas de
-`SELECT` -- essa é a camada de controle de ações no nível do banco de
-dados. A aplicação .NET se conecta com esse papel.
+O `schema.sql` cria o papel `yuruna_agent_ro` com permissões de `SELECT` apenas
+sobre colunas explicitamente consideradas seguras. Ele remove as permissões
+irrestritas e seus padrões, de modo que o PostgreSQL recusa o acesso a
+`customer.email`, consultas com curinga que incluam essa coluna e leituras da
+linha inteira de clientes. Colunas futuras não recebem acesso automático.
+A aplicação .NET deve se conectar com esse papel, nunca como proprietária do
+banco de dados.
 
 <a id="4286c679-0004"></a>
 
@@ -152,16 +156,19 @@ verdade (pgvector ou um armazenamento hospedado); mantê-lo determinístico
 mantém o exemplo offline e reproduzível.
 
 **`Services/SqlValidator.cs`** -- o estágio "(4) Validador (Guardrail)".
-Ele impõe: (1) exatamente uma instrução, e que essa instrução seja um
-SELECT (ou `WITH ... SELECT`) -- verbos DDL/DML são rejeitados; (2)
-nenhum ponto e vírgula no meio da consulta (instruções empilhadas); (3)
-nenhum comentário que possa esconder um payload; (4) um LIMIT de nível
-superior, acrescentado quando ausente; (5) uma barreira de custo baseada
-em EXPLAIN que recusa planos cujo "Plan Rows" do nó superior excede um
-limite configurável. Em produção, a pré-verificação por regex seria um
-parser de AST como o libpg_query; aqui a camada de regex é uma escolha
-deliberada e assumida, e a barreira EXPLAIN é a verdadeira defesa em
-profundidade.
+Sua política `SqlQueryPolicy`, sem dependências externas, exige: (1) exatamente
+uma instrução, que deve ser um SELECT (ou `WITH ... SELECT`) -- verbos DDL/DML
+são rejeitados; (2) nenhum ponto e vírgula no meio da consulta (instruções
+empilhadas); (3) nenhum comentário que possa ocultar um payload; (4) projeções
+explícitas sem dados pessoais identificáveis, rejeitando leituras com curinga
+ou de linhas inteiras; (5) um LIMIT no nível superior, acrescentado quando
+ausente ou limitado quando presente, sem mover o ORDER BY escrito pelo autor.
+O `SqlValidator` acrescenta uma barreira de custo EXPLAIN que recusa planos
+cujo "Plan Rows" do nó superior exceda um limite configurável. A política
+reconhece os tokens do texto SQL entre aspas, mas rejeita conservadoramente
+algumas expressões válidas; ela não é um parser completo do PostgreSQL.
+As permissões de coluna do papel do banco de dados controlam o acesso aos
+dados independentemente dessas verificações estáticas.
 
 **`Services/ClaudeLlmClient.cs`** -- `ILlmClient` de produção apoiado na
 Messages API da Anthropic com uso de ferramentas para saída estruturada;
@@ -184,7 +191,10 @@ repetição. Roda os estágios em ordem (recuperador de esquema -> gerador
 de SQL -> validador estático -> barreira de custo EXPLAIN -> executor) e
 emite um `Step` por estágio com tempo decorrido em ms, status e notas; a
 interface renderiza uma execução como uma única linha do tempo -- a
-camada "Observador" em miniatura.
+camada "Observador" em miniatura. O `SqlResultReader` limita, de forma
+independente, as linhas retornadas a `Agent:MaxRowsReturned`, inclusive nos
+casos de FETCH WITH TIES e limites definidos por expressões, preservando a
+ordenação do banco de dados e os resultados menores.
 
 <a id="4286c679-0008"></a>
 
@@ -237,6 +247,36 @@ dotnet dev-certs https --trust
 
 Se aparecer "A valid HTTPS certificate is already present" -> execute `dotnet dev-certs https --clean` e tente novamente.
 
+Os scripts de certificado e de preparação das imagens carregam a cópia de
+`Example.Build.psm1` incluída no próprio contexto de compilação. A fonte
+canônica fica em [`tools/Example.Build.psm1`](../../../../tools/Example.Build.psm1);
+após editá-la, execute `pwsh tools/Sync-ExampleBuildModule.ps1` na raiz do
+repositório. `-Check` verifica as duas cópias sem gravar alterações. Cada
+exemplo continua podendo ser copiado e compilado de forma independente.
+
+**Verificação local**
+
+O executável de testes da política e do leitor de resultados não tem
+dependências externas: ele vincula as fontes reais de produção e roda com o
+SDK .NET 8; a aplicação continua no .NET 10. Na raiz do repositório:
+
+```powershell
+dotnet run --project example/text-to-sql/tests/SqlPolicy.Tests
+pwsh tools/Test-ExampleBuild.ps1
+```
+
+Depois de carregar o esquema em um banco PostgreSQL descartável, verifique as
+permissões do papel e o esquema que ele pode ler, usando o proprietário do banco:
+
+```powershell
+psql -v ON_ERROR_STOP=1 -h localhost -U postgres -d yuruna_demo -f example/text-to-sql/db/test-agent-permissions.sql
+```
+
+O teste de banco verifica tentativas de acesso direto, por curinga, a linhas
+inteiras, por JSON e de escrita, além de agregações seguras, introspecção de
+colunas e chaves estrangeiras. A configuração do banco no convidado executa
+essa verificação automaticamente após carregar o esquema.
+
 <a id="4286c679-000a"></a>
 
 ## Arquivos
@@ -274,6 +314,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Última revisão: 2026.09.24
+Última revisão: 2026.09.27
 
 Voltar para [yuruna-project](../../../../README.md) - [Yuruna](https://yuruna.com)

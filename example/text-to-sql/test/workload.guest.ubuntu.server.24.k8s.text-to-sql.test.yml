@@ -11,6 +11,8 @@ sequenceRevision: 2
 description: "Ubuntu Server 24.04: restore snapshot, install + set up PostgreSQL, deploy text-to-sql, verify HTTP 200."
 descriptionLocalized:
   pt-BR: "Ubuntu Server 24.04: restaurar instantâneo, instalar + configurar PostgreSQL, implantar texto para sql, verificar HTTP 200."
+  zh-CN: "Ubuntu Server 24.04：还原快照，安装并配置PostgreSQL，部署text-to-sql，验证HTTP 200。"
+  he-IL: "Ubuntu Server ⁦24.04⁩: שחזרו תמונת מצב, התקינו + הגדירו PostgreSQL, פרסו text-to-sql וודאו שהתקבל HTTP 200."
 keystrokeMechanism: gui
 # --- REGION: resource
 resource:
@@ -30,12 +32,16 @@ component:
     description: "Restore the Kubernetes baseline checkpoint"
     descriptionLocalized:
       pt-BR: "Restaurar o ponto de verificação de base do Kubernetes"
+      zh-CN: "还原Kubernetes基线检查点"
+      he-IL: "שחזרו את נקודת הביקורת של מצב הבסיס של Kubernetes"
 
   - action: retry
     maxAttempts: 2
     description: "Login + retry"
     descriptionLocalized:
       pt-BR: "Login + tentar novamente"
+      zh-CN: "登录并重试"
+      he-IL: "התחברות + ניסיון חוזר"
     steps:
       - snippet: firstLoginPrime
 
@@ -46,6 +52,8 @@ component:
         description: "OCR: login:"
         descriptionLocalized:
           pt-BR: "OCR: login:"
+          zh-CN: "光学字符识别：login:"
+          he-IL: "זיהוי תווים אופטי: login:"
 
       - action: passwdPrompt
         pattern: "Password:"
@@ -53,6 +61,8 @@ component:
         description: "OCR: Password:"
         descriptionLocalized:
           pt-BR: "OCR: Senha:"
+          zh-CN: "光学字符识别：Password:"
+          he-IL: "זיהוי תווים אופטי: Password:"
 
   - action: waitForText
     pattern: "${username}@"
@@ -60,6 +70,8 @@ component:
     description: "OCR: ${username}@ (shell prompt)"
     descriptionLocalized:
       pt-BR: "OCR: ${username}@ (prompt de shell)"
+      zh-CN: "光学字符识别：${username}@（命令行提示符）"
+      he-IL: "זיהוי תווים אופטי: ${username}@ (הנחיית המעטפת)"
 
 # --- REGION: workload
 workload:
@@ -68,6 +80,8 @@ workload:
     description: "ubuntu.server.24.postgresql.sh (install PostgreSQL 18)"
     descriptionLocalized:
       pt-BR: "ubuntu.server.24.postgresql.sh (instalar PostgreSQL 18)"
+      zh-CN: "ubuntu.server.24.postgresql.sh（安装PostgreSQL 18）"
+      he-IL: "⁦ubuntu.server.24.postgresql.sh⁩ (התקינו PostgreSQL 18)"
     waitPattern: "FETCHED AND EXECUTED:"
     timeoutSeconds: 900
 
@@ -76,6 +90,8 @@ workload:
     description: "text-to-sql DB bring-up (ssl off, create yuruna_demo, load schema, open pg_hba)"
     descriptionLocalized:
       pt-BR: "text-to-sql DB track-up (ssl off, create yuruna demo, load schema, open pg hba)"
+      zh-CN: "初始化text-to-sql数据库（关闭ssl，创建yuruna_demo，加载模式，在pg_hba中放行连接）"
+      he-IL: "הקמת מסד הנתונים של text-to-sql (השביתו ssl, צרו yuruna_demo, טענו סכמה, אפשרו גישה דרך pg_hba)"
     waitPattern: "FETCHED AND EXECUTED:"
     timeoutSeconds: 600
 
@@ -84,6 +100,8 @@ workload:
     description: "ubuntu.server.24.workload.k8s.text-to-sql.sh (build image, deploy pod + ingress)"
     descriptionLocalized:
       pt-BR: "ubuntu.server.24.workload.k8s.text-to-sql.sh (build image, implante pod + ingress)"
+      zh-CN: "ubuntu.server.24.workload.k8s.text-to-sql.sh（构建镜像，部署pod和ingress）"
+      he-IL: "⁦ubuntu.server.24.workload.k8s.text-to-sql.sh⁩ (בנו דמות, פרסו pod + ingress)"
     waitPattern: "FETCHED AND EXECUTED:"
     timeoutSeconds: 1200
 
@@ -92,6 +110,8 @@ workload:
     description: "test-localhost.sh (expect HTTP 200)"
     descriptionLocalized:
       pt-BR: "test- localhost.sh (espera HTTP 200)"
+      zh-CN: "test-localhost.sh（预期返回HTTP 200）"
+      he-IL: "⁦test-localhost.sh⁩ (צפו לקבל HTTP 200)"
     waitPattern: "200 OK"
     timeoutSeconds: 900
 
@@ -100,3 +120,5 @@ workload:
     description: "Capture diagnostics after the deploy comes up"
     descriptionLocalized:
       pt-BR: "Capturar diagnósticos após o implante surge"
+      zh-CN: "部署启动后采集诊断信息"
+      he-IL: "אספו נתוני אבחון לאחר שהפריסה מתחילה לפעול"

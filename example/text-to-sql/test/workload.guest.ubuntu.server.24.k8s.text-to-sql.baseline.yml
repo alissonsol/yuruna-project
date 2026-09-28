@@ -4,11 +4,13 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 
 sequenceGuid: 426ca572-7dda-4e43-be71-93462c7ef6e7
-sequenceRevision: 2
+sequenceRevision: 3
 
 description: "Ubuntu Server 24.04: log in, install Kubernetes, prepare for text-to-sql deployment."
 descriptionLocalized:
   pt-BR: "Servidor Ubuntu 24.04: faça login, instale Kubernetes, prepare-se para implantação de texto para sql."
+  zh-CN: "Ubuntu Server 24.04：登录，安装Kubernetes，为部署text-to-sql做好准备。"
+  he-IL: "Ubuntu Server ⁦24.04⁩: התחברו, התקינו Kubernetes והתכוננו לפריסת text-to-sql."
 keystrokeMechanism: gui
 # Chain start.guest directly. The workload.guest chain
 # additionally installs a JDK, .NET SDK, and VS Code
@@ -30,6 +32,8 @@ component:
     description: "Login + retry"
     descriptionLocalized:
       pt-BR: "Login + tentar novamente"
+      zh-CN: "登录并重试"
+      he-IL: "התחברות + ניסיון חוזר"
     steps:
       - snippet: firstLoginPrime
 
@@ -40,6 +44,8 @@ component:
         description: "OCR: login:"
         descriptionLocalized:
           pt-BR: "OCR: login:"
+          zh-CN: "光学字符识别：login:"
+          he-IL: "זיהוי תווים אופטי: login:"
 
       - action: passwdPrompt
         pattern: "Password:"
@@ -47,6 +53,8 @@ component:
         description: "OCR: Password:"
         descriptionLocalized:
           pt-BR: "OCR: Senha:"
+          zh-CN: "光学字符识别：Password:"
+          he-IL: "זיהוי תווים אופטי: Password:"
 
   - action: waitForText
     pattern: "${username}@${hostname}"
@@ -54,6 +62,8 @@ component:
     description: "OCR: ${username}@${hostname}"
     descriptionLocalized:
       pt-BR: "OCR: ${username}@${hostname}"
+      zh-CN: "光学字符识别：${username}@${hostname}"
+      he-IL: "זיהוי תווים אופטי: ${username}@${hostname}"
 
 # --- REGION: workload
 workload:
@@ -62,8 +72,10 @@ workload:
     description: "ubuntu.server.24.k8s.sh"
     descriptionLocalized:
       pt-BR: "ubuntu.server.24.k8s.sh"
+      zh-CN: "ubuntu.server.24.k8s.sh"
+      he-IL: "⁦ubuntu.server.24.k8s.sh⁩"
     waitPattern: "FETCHED AND EXECUTED:"
-    timeoutSeconds: 1800
+    timeoutSeconds: 3000
 
   # `&&`, not `;`: the node table must be reachable ONLY when the wait
   # actually succeeded, so that seeing the table is itself proof of readiness.
@@ -72,6 +84,8 @@ workload:
     description: "Check node status"
     descriptionLocalized:
       pt-BR: "Verificar o estado do nó"
+      zh-CN: "检查节点状态"
+      he-IL: "בדקו את מצב הצומת"
 
   # See https://yuruna.link/42e220c4-0009
   - action: waitForText
@@ -80,15 +94,21 @@ workload:
     description: "OCR: control-plane"
     descriptionLocalized:
       pt-BR: "OCR: plano de controlo"
+      zh-CN: "光学字符识别：control-plane"
+      he-IL: "זיהוי תווים אופטי: control-plane"
 
   - action: inputTextAndEnter
     text: "clear; newgrp docker"
     description: "Activate docker group"
     descriptionLocalized:
       pt-BR: "Ativar grupo de docker"
+      zh-CN: "激活docker组"
+      he-IL: "הפעילו את קבוצת docker"
 
   - action: saveDiskSnapshot
     id: "k8s.text-to-sql"
     description: "Snapshot before Postgres in text-to-sql workload"
     descriptionLocalized:
       pt-BR: "Imagem antes do Postgres na carga de trabalho texto- para- sql"
+      zh-CN: "在text-to-sql工作负载的Postgres步骤之前创建快照"
+      he-IL: "צרו תמונת מצב לפני Postgres בעומס העבודה text-to-sql"

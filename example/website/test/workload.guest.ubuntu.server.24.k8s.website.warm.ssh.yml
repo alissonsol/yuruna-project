@@ -9,6 +9,8 @@ sequenceRevision: 1
 description: "Ubuntu Server 24.04 (SSH): restore the Kubernetes baseline, deploy the website, and verify HTTP 200."
 descriptionLocalized:
   pt-BR: "Ubuntu Server 24.04 (SSH): restaurar a linha de base do Kubernetes, implantar o site e verificar HTTP 200."
+  zh-CN: "Ubuntu Server 24.04（SSH）：还原Kubernetes基线，部署网站，并验证HTTP 200。"
+  he-IL: "Ubuntu Server ⁦24.04⁩ (SSH): שחזרו את מצב הבסיס של Kubernetes, פרסו את אתר האינטרנט וודאו שהתקבל HTTP 200."
 keystrokeMechanism: ssh
 # --- REGION: resource
 resource:
@@ -40,12 +42,16 @@ component:
     description: "Restore the managed Kubernetes baseline"
     descriptionLocalized:
       pt-BR: "Restaurar a linha de base gerenciada do Kubernetes"
+      zh-CN: "还原托管Kubernetes基线"
+      he-IL: "שחזרו את מצב הבסיס המנוהל של Kubernetes"
 
   - action: sshWaitReady
     timeoutSeconds: 600
     description: "Wait for sshd after restoring the baseline"
     descriptionLocalized:
       pt-BR: "Aguarde pelo sshd após restaurar a linha de base"
+      zh-CN: "还原基线后等待sshd就绪"
+      he-IL: "המתינו ל-sshd לאחר שחזור מצב הבסיס"
 
   - action: sshExec
     command: 'mkdir -p "$HOME/.kube" && sudo install -m 0600 -o "$(id -u)" -g "$(id -g)" /etc/kubernetes/admin.conf "$HOME/.kube/config" && kubectl wait --for=condition=Ready nodes --all --timeout=300s && sudo kubeadm certs check-expiration'
@@ -53,6 +59,8 @@ component:
     description: "Refresh the client configuration and verify the restored cluster"
     descriptionLocalized:
       pt-BR: "Atualizar a configuração do cliente e verificar o cluster restaurado"
+      zh-CN: "刷新客户端配置并验证还原后的集群"
+      he-IL: "רעננו את תצורת הלקוח ובדקו את תקינות האשכול המשוחזר"
 
 # --- REGION: workload
 workload:
@@ -62,6 +70,8 @@ workload:
     description: "ubuntu.server.24.workload.k8s.website.sh"
     descriptionLocalized:
       pt-BR: "ubuntu.server.24.workload.k8s.website.sh"
+      zh-CN: "ubuntu.server.24.workload.k8s.website.sh"
+      he-IL: "⁦ubuntu.server.24.workload.k8s.website.sh⁩"
 
   - action: sshFetchAndExecute
     command: "/usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"
@@ -69,9 +79,13 @@ workload:
     description: "Verify HTTP 200"
     descriptionLocalized:
       pt-BR: "Verificar HTTP 200"
+      zh-CN: "验证HTTP 200"
+      he-IL: "ודאו שהתקבל HTTP 200"
 
   - action: saveSystemDiagnostic
     id: k8s.website.warm
     description: "Capture diagnostics"
     descriptionLocalized:
       pt-BR: "Capturar diagnósticos"
+      zh-CN: "采集诊断信息"
+      he-IL: "אספו נתוני אבחון"

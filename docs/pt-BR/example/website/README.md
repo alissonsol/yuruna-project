@@ -43,6 +43,13 @@ para o modelo de três fases e os pontos de entrada da CLI.
 - `kubectl get services --all-namespaces`
 - `kubectl get events --all-namespaces`
 
+Os scripts de certificado e de preparação das imagens usam `Example.Build.psm1`,
+incluído ao lado do Dockerfile para manter este contexto de compilação independente.
+Edite a fonte canônica em [`tools/Example.Build.psm1`](../../../../tools/Example.Build.psm1)
+e execute `pwsh tools/Sync-ExampleBuildModule.ps1` na raiz do repositório.
+Use `-Check` para detectar divergências e `pwsh tools/Test-ExampleBuild.ps1` para
+executar testes isolados dos auxiliares, sem acessar o Docker nem um registro.
+
 <a id="42916cfc-0005"></a>
 
 ## Nuvem
@@ -74,6 +81,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Última revisão: 2026.09.24
+Última revisão: 2026.09.27
 
 Voltar para [yuruna-project](../../../../README.md) - [Yuruna](https://yuruna.com)

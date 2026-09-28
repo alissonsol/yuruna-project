@@ -5,14 +5,8 @@
 -- warehouse with intentionally diverse table sizes, a deliberate naming
 -- mismatch, and a FK graph that exercises schema retrieval.
 --
--- Load with (the sed is required -- see below):
---    sed 's/CURRENT_DATABASE()/yuruna_demo/g' schema.sql \
---      | psql -h localhost -U yuruna -d yuruna_demo -f -
---
--- The closing GRANT names its target database as CURRENT_DATABASE(): a
--- placeholder for the real name, not valid GRANT grammar (the clause needs a
--- database-name token, and a function call is not one). Substitute it before
--- loading or psql stops on a syntax error.
+-- Load into a disposable demo database as its owner:
+--    psql -v ON_ERROR_STOP=1 -h localhost -U postgres -d yuruna_demo -f schema.sql
 --
 -- The deep-dive notes are kept inline as COMMENT ON ... so the schema
 -- retriever has real prose to embed (mirrors what a production warehouse
@@ -63,13 +57,13 @@ CREATE TABLE customer (
     customer_id   SERIAL PRIMARY KEY,
     customer_uuid UUID      NOT NULL DEFAULT gen_random_uuid() UNIQUE,
     company_name  TEXT      NOT NULL,
-    email         TEXT      NOT NULL,            -- PII: redact in the UI
+    email         TEXT      NOT NULL,            -- PII: never granted to the agent
     geo_id        INT       NOT NULL REFERENCES geography(geo_id),
     channel_id    INT       NOT NULL REFERENCES acquisition_channel(channel_id),
     signed_up_at  TIMESTAMPTZ NOT NULL
 );
 COMMENT ON TABLE  customer IS 'Customer (B2B account). One row per company. PII columns: email.';
-COMMENT ON COLUMN customer.email IS 'PII -- must be redacted unless caller has role pii_reader.';
+COMMENT ON COLUMN customer.email IS 'PII -- the agent role cannot select this column.';
 
 CREATE TABLE subscription (
     subscription_id  SERIAL PRIMARY KEY,
@@ -212,13 +206,35 @@ BEGIN
     END IF;
 END$$;
 
--- CURRENT_DATABASE() is a placeholder here; substitute it (see the header).
-GRANT CONNECT ON DATABASE CURRENT_DATABASE() TO yuruna_agent_ro;
+DO $$
+BEGIN
+    EXECUTE format('GRANT CONNECT ON DATABASE %I TO yuruna_agent_ro', current_database());
+END$$;
 GRANT USAGE   ON SCHEMA public TO yuruna_agent_ro;
-GRANT SELECT  ON ALL TABLES   IN SCHEMA public TO yuruna_agent_ro;
-GRANT SELECT  ON ALL SEQUENCES IN SCHEMA public TO yuruna_agent_ro;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES   TO yuruna_agent_ro;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON SEQUENCES TO yuruna_agent_ro;
+ALTER ROLE yuruna_agent_ro NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS NOINHERIT;
+ALTER ROLE yuruna_agent_ro SET default_transaction_read_only = on;
+
+-- A table-wide SELECT overrides a column restriction. Remove blanket grants
+-- and their defaults before granting only the reviewed columns. Future tables
+-- and columns stay inaccessible until their grants are deliberately extended.
+REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM yuruna_agent_ro;
+REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM yuruna_agent_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE SELECT ON TABLES FROM yuruna_agent_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE SELECT ON SEQUENCES FROM yuruna_agent_ro;
+REVOKE ALL PRIVILEGES ON geography, acquisition_channel, plan_tier, customer,
+    subscription, invoice, churn_event, v_active_subscription FROM PUBLIC;
+
+GRANT SELECT (geo_id, iso_country, region, country_name) ON geography TO yuruna_agent_ro;
+GRANT SELECT (channel_id, channel_name, channel_kind) ON acquisition_channel TO yuruna_agent_ro;
+GRANT SELECT (tier_id, tier_code, monthly_usd) ON plan_tier TO yuruna_agent_ro;
+GRANT SELECT (customer_id, customer_uuid, company_name, geo_id, channel_id, signed_up_at)
+    ON customer TO yuruna_agent_ro;
+GRANT SELECT (subscription_id, customer_id, tier_id, started_at, cancelled_at, seat_count)
+    ON subscription TO yuruna_agent_ro;
+GRANT SELECT (invoice_id, subscription_id, issued_at, amount_usd, paid) ON invoice TO yuruna_agent_ro;
+GRANT SELECT (churn_event_id, subscription_id, happened_at, reason_code) ON churn_event TO yuruna_agent_ro;
+GRANT SELECT (subscription_id, customer_id, tier_id, started_at, cancelled_at, seat_count,
+    tier_code, geo_id, region, channel_id, channel_name) ON v_active_subscription TO yuruna_agent_ro;
 
 -- -- Sanity counts (psql will echo these) ------------------------------------
 SELECT 'geography'           AS table_name, COUNT(*) AS row_count FROM geography

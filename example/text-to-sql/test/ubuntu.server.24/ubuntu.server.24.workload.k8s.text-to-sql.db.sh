@@ -90,11 +90,10 @@ else
   echo "  database $DBNAME already present"
 fi
 # The postgres OS user cannot read files under the harness user's 0750 home, so
-# feed the SQL over STDIN. schema.sql's "GRANT CONNECT ON DATABASE
-# CURRENT_DATABASE()" is not valid DDL (a function is not a database-name
-# token), so pre-render it to the literal db name.
-sed "s/CURRENT_DATABASE()/${DBNAME}/g" "$SCHEMA_SQL" \
-  | sudo -u postgres psql -v ON_ERROR_STOP=1 -d "$DBNAME" -f - >/dev/null
+# feed the SQL over STDIN; the harness user opens the input file.
+sudo -u postgres psql -v ON_ERROR_STOP=1 -d "$DBNAME" -f - < "$SCHEMA_SQL" >/dev/null
+sudo -u postgres psql -v ON_ERROR_STOP=1 -d "$DBNAME" -f - \
+  < "$(dirname "$SCHEMA_SQL")/test-agent-permissions.sql" >/dev/null
 echo "  schema loaded into $DBNAME"
 
 # Force the app role's password to the known demo value even if the role

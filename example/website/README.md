@@ -43,6 +43,13 @@ the three-phase model and CLI entry points.
 - `kubectl get services --all-namespaces`
 - `kubectl get events --all-namespaces`
 
+The certificate and image-seeding wrappers use `Example.Build.psm1`, bundled
+beside the Dockerfile so this build context remains independent. Edit its
+canonical source at [`tools/Example.Build.psm1`](../../tools/Example.Build.psm1),
+then run `pwsh tools/Sync-ExampleBuildModule.ps1` from the repository root.
+Use `-Check` to detect drift and `pwsh tools/Test-ExampleBuild.ps1` for isolated
+helper tests that do not contact Docker or a registry.
+
 <a id="42916cfc-0005"></a>
 
 ## Cloud
@@ -73,6 +80,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.09.24
+Last review: 2026.09.27
 
 Back to [yuruna-project](../../README.md) - [Yuruna](https://yuruna.com)

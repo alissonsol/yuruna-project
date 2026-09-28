@@ -4,11 +4,13 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 
 sequenceGuid: 42da5179-0a82-42cd-829d-dc45be49f808
-sequenceRevision: 1
+sequenceRevision: 2
 
 description: "Ubuntu Server 24.04 (SSH): build a managed Kubernetes baseline for the website."
 descriptionLocalized:
   pt-BR: "Ubuntu Server 24.04 (SSH): crie uma linha de base gerenciada do Kubernetes para o site."
+  zh-CN: "Ubuntu Server 24.04（SSH）：为网站构建托管Kubernetes基线。"
+  he-IL: "Ubuntu Server ⁦24.04⁩ (SSH): בנו מצב בסיס מנוהל של Kubernetes עבור אתר האינטרנט."
 keystrokeMechanism: ssh
 # --- REGION: resource
 resource:
@@ -38,15 +40,19 @@ component:
     description: "Wait for sshd after reboot"
     descriptionLocalized:
       pt-BR: "Aguarde pelo sshd após reiniciar"
+      zh-CN: "重启后等待sshd就绪"
+      he-IL: "המתינו ל-sshd לאחר האתחול מחדש"
 
 # --- REGION: workload
 workload:
   - action: sshFetchAndExecute
     command: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.k8s.sh"
-    timeoutSeconds: 1800
+    timeoutSeconds: 3000
     description: "ubuntu.server.24.k8s.sh"
     descriptionLocalized:
       pt-BR: "ubuntu.server.24.k8s.sh"
+      zh-CN: "ubuntu.server.24.k8s.sh"
+      he-IL: "⁦ubuntu.server.24.k8s.sh⁩"
 
   - action: sshExec
     command: "kubectl wait --for=condition=Ready nodes --all --timeout=300s && sudo kubeadm certs check-expiration"
@@ -54,9 +60,13 @@ workload:
     description: "Verify Kubernetes and certificate validity before saving"
     descriptionLocalized:
       pt-BR: "Verificar a validade do Kubernetes e do certificado antes de gravar"
+      zh-CN: "保存前验证Kubernetes和证书有效性"
+      he-IL: "בדקו את תקינות Kubernetes ואת תוקף התעודה לפני השמירה"
 
   - action: saveDiskSnapshot
     id: website-ubuntu24-k8s
     description: "Save the managed Kubernetes baseline"
     descriptionLocalized:
       pt-BR: "Salvar a linha de base gerenciada do Kubernetes"
+      zh-CN: "保存托管Kubernetes基线"
+      he-IL: "שמרו את מצב הבסיס המנוהל של Kubernetes"

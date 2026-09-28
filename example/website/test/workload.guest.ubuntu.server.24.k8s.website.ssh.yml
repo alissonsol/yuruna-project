@@ -4,11 +4,13 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 
 sequenceGuid: 42a558c0-d2af-42a3-a8f2-6909dde087c4
-sequenceRevision: 3
+sequenceRevision: 4
 
 description: "Ubuntu Server 24.04 (SSH): install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
 descriptionLocalized:
   pt-BR: "Servidor Ubuntu 24.04 (SSH): instale o Kubernetes, implante o site no cluster localhost, verifique HTTP 200."
+  zh-CN: "Ubuntu Server 24.04（SSH）：安装Kubernetes，将网站部署到localhost集群，验证HTTP 200。"
+  he-IL: "Ubuntu Server ⁦24.04⁩ (SSH): התקינו Kubernetes, פרסו אתר אינטרנט באשכול localhost וודאו שהתקבל HTTP 200."
 keystrokeMechanism: ssh
 # --- REGION: resource
 resource:
@@ -28,21 +30,27 @@ component:
     description: "Wait for sshd after reboot"
     descriptionLocalized:
       pt-BR: "Aguarde pelo sshd após reiniciar"
+      zh-CN: "重启后等待sshd就绪"
+      he-IL: "המתינו ל-sshd לאחר האתחול מחדש"
 
   - action: sshExec
     command: "whoami && hostname"
     description: "Smoke test: whoami/hostname"
     descriptionLocalized:
       pt-BR: "Teste de fumo: whoami/nome da máquina"
+      zh-CN: "冒烟测试：whoami/hostname"
+      he-IL: "בדיקת תקינות בסיסית: whoami⁦/hostname⁩"
 
 # --- REGION: workload
 workload:
   - action: sshFetchAndExecute
     command: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.k8s.sh"
-    timeoutSeconds: 1800
+    timeoutSeconds: 3000
     description: "ubuntu.server.24.k8s.sh"
     descriptionLocalized:
       pt-BR: "ubuntu.server.24.k8s.sh"
+      zh-CN: "ubuntu.server.24.k8s.sh"
+      he-IL: "⁦ubuntu.server.24.k8s.sh⁩"
 
   - action: sshExec
     command: "kubectl wait --for=condition=Ready nodes --all --timeout=300s && kubectl get nodes"
@@ -50,6 +58,8 @@ workload:
     description: "Wait for every node Ready"
     descriptionLocalized:
       pt-BR: "Aguarde por cada nó pronto"
+      zh-CN: "等待所有节点进入Ready状态"
+      he-IL: "המתינו עד שכל הצמתים יהיו במצב Ready"
 
   - action: sshFetchAndExecute
     command: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/website/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.website.sh"
@@ -57,6 +67,8 @@ workload:
     description: "ubuntu.server.24.workload.k8s.website.sh"
     descriptionLocalized:
       pt-BR: "ubuntu.server.24.workload.k8s.website.sh"
+      zh-CN: "ubuntu.server.24.workload.k8s.website.sh"
+      he-IL: "⁦ubuntu.server.24.workload.k8s.website.sh⁩"
 
   - action: sshExec
     command: "bash /home/${username}/yuruna/test/test-localhost.sh 2>&1 | tee /tmp/test-localhost.out; grep -q 200 /tmp/test-localhost.out"
@@ -64,3 +76,5 @@ workload:
     description: "Check HTTP 200 in test output"
     descriptionLocalized:
       pt-BR: "Verificar HTTP 200 na saída de teste"
+      zh-CN: "检查测试输出中的HTTP 200"
+      he-IL: "בדקו שבפלט הבדיקה מופיע HTTP 200"

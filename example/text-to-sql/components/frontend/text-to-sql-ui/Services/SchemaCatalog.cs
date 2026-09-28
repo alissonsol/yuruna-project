@@ -3,7 +3,6 @@
 // Schema retriever stage: catalog introspection + hybrid scoring; see README
 // service notes: https://yuruna.link/4286c679-0007
 
-using System.Data;
 using Npgsql;
 
 namespace TextToSqlUi.Services;
@@ -23,14 +22,7 @@ public sealed class SchemaCatalog
 
     public Task<IReadOnlyList<TableInfo>> GetAllAsync() => _cache.Value;
 
-    // A column is PII if it is a known sensitive field ('email' / 'phone') or its name ends in
-    // the '_pii' marker suffix. SqlValidator enforces the same rule deterministically on the
-    // generated SQL; keep the two definitions aligned.
-    internal static bool IsPiiColumn(string columnName) =>
-        !string.IsNullOrEmpty(columnName)
-        && (columnName.Equals("email", StringComparison.OrdinalIgnoreCase)
-            || columnName.Equals("phone", StringComparison.OrdinalIgnoreCase)
-            || columnName.EndsWith("_pii", StringComparison.OrdinalIgnoreCase));
+    internal static bool IsPiiColumn(string columnName) => SqlQueryPolicy.IsPiiColumn(columnName);
 
     // --- REGION: Public retriever
     // Returns the k most relevant tables (by hybrid score) plus their direct
@@ -145,6 +137,7 @@ public sealed class SchemaCatalog
               JOIN pg_namespace n ON n.oid = c.relnamespace
              WHERE c.relkind = 'r'
                AND n.nspname = 'public'
+               AND has_any_column_privilege(c.oid, 'SELECT')
              ORDER BY c.relname;";
 
         await using (var cmd = new NpgsqlCommand(sqlTables, conn))
@@ -172,6 +165,7 @@ public sealed class SchemaCatalog
             {
                 var tbl = rdr.GetString(0);
                 if (!byName.TryGetValue(tbl, out var ti)) continue;
+                if (IsPiiColumn(rdr.GetString(1))) continue;
                 var col = new ColumnInfo(
                     Name: rdr.GetString(1),
                     DataType: rdr.GetString(2),
@@ -182,19 +176,23 @@ public sealed class SchemaCatalog
             }
         }
 
-        // Foreign keys (table_name -> referenced_table, edge_label = "fk(col->col)")
+        // information_schema.table_constraints hides constraints from a role
+        // with only SELECT privileges. Read catalog identities and restrict both
+        // ends to columns the agent can actually select.
         const string sqlFks = @"
-            SELECT tc.table_name,
-                   kcu.column_name,
-                   ccu.table_name  AS foreign_table,
-                   ccu.column_name AS foreign_column
-              FROM information_schema.table_constraints tc
-              JOIN information_schema.key_column_usage     kcu
-                ON tc.constraint_name = kcu.constraint_name
-              JOIN information_schema.constraint_column_usage ccu
-                ON ccu.constraint_name = tc.constraint_name
-             WHERE tc.constraint_type = 'FOREIGN KEY'
-               AND tc.table_schema    = 'public';";
+            SELECT src.relname, sa.attname, dst.relname, da.attname
+              FROM pg_constraint fk
+              JOIN pg_class src ON src.oid = fk.conrelid
+              JOIN pg_namespace sn ON sn.oid = src.relnamespace
+              JOIN pg_class dst ON dst.oid = fk.confrelid
+              JOIN pg_namespace dn ON dn.oid = dst.relnamespace
+              CROSS JOIN LATERAL unnest(fk.conkey, fk.confkey) AS cols(srcnum, dstnum)
+              JOIN pg_attribute sa ON sa.attrelid = src.oid AND sa.attnum = cols.srcnum
+              JOIN pg_attribute da ON da.attrelid = dst.oid AND da.attnum = cols.dstnum
+             WHERE fk.contype = 'f' AND sn.nspname = 'public' AND dn.nspname = 'public'
+               AND has_column_privilege(src.oid, sa.attnum, 'SELECT')
+               AND has_column_privilege(dst.oid, da.attnum, 'SELECT')
+             ORDER BY src.relname, fk.conname, sa.attnum;";
 
         await using (var cmd = new NpgsqlCommand(sqlFks, conn))
         await using (var rdr = await cmd.ExecuteReaderAsync())
@@ -205,7 +203,7 @@ public sealed class SchemaCatalog
                 var srcCol = rdr.GetString(1);
                 var tgt = rdr.GetString(2);
                 var tgtCol = rdr.GetString(3);
-                if (byName.TryGetValue(src, out var ti))
+                if (!IsPiiColumn(srcCol) && !IsPiiColumn(tgtCol) && byName.ContainsKey(tgt) && byName.TryGetValue(src, out var ti))
                     ti.FkOut.Add((tgt, $"{srcCol}->{tgt}.{tgtCol}"));
             }
         }

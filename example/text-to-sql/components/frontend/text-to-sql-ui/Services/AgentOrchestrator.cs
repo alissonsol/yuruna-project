@@ -3,7 +3,6 @@
 // Planner + retry loop for the agent pipeline; stage map in README service
 // notes: https://yuruna.link/4286c679-0007
 
-using System.Data;
 using System.Diagnostics;
 using Npgsql;
 
@@ -99,7 +98,7 @@ public sealed class AgentOrchestrator
         }
         var safeSql = st.SafeSql!;
         run.Steps.Add(Step.Ok("Static validation", swStatic,
-            safeSql.Length > draftSql.Length ? "Allowed. (Auto-injected LIMIT.)" : "Allowed."));
+            safeSql != draftSql ? "Allowed. (Applied result row limit.)" : "Allowed."));
         run.SafeSql = safeSql;
 
         // --- REGION: EXPLAIN cost gate
@@ -145,15 +144,8 @@ public sealed class AgentOrchestrator
             for (int i = 0; i < rdr.FieldCount; i++) columns.Add(rdr.GetName(i));
             run.ResultColumns = columns;
 
-            while (await rdr.ReadAsync(ct))
-            {
-                var row = new object?[rdr.FieldCount];
-                for (int i = 0; i < rdr.FieldCount; i++)
-                    row[i] = rdr.IsDBNull(i) ? null : rdr.GetValue(i);
-                run.ResultRows.Add(row);
-                if (run.ResultRows.Count >= 1000) break; // hard cap
-            }
-
+            run.ResultRows.AddRange(await SqlResultReader.ReadRowsAsync(rdr, _validator.MaxRows, ct));
+            await rdr.DisposeAsync();
             await tx.RollbackAsync(ct);
 
             run.Steps.Add(Step.Ok("Execute", swExec,

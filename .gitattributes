@@ -34,6 +34,10 @@ Dockerfile   text eol=lf
 *.psm1       text eol=lf
 *.psd1       text eol=lf
 
+# The commit hook is a POSIX sh script with no extension; a CRLF checkout
+# breaks its first line.
+tools/githooks/pre-commit text eol=lf
+
 # Windows-only text formats -- must be CRLF.
 *.bat        text eol=crlf
 *.cmd        text eol=crlf

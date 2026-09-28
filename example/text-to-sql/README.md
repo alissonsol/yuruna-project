@@ -42,9 +42,11 @@ psql -h localhost -U postgres -c "CREATE DATABASE yuruna_demo;"
 psql -h localhost -U postgres -d yuruna_demo -f db/schema.sql
 ```
 
-`schema.sql` creates a `yuruna_agent_ro` role with `SELECT`-only grants --
-that is the action-gating layer at the database level. The .NET app
-connects as that role.
+`schema.sql` creates a `yuruna_agent_ro` role with `SELECT` grants on explicit
+safe columns. It removes blanket grants and their defaults, so `customer.email`,
+wildcard reads containing that column, and whole-customer-row reads are denied
+by PostgreSQL. Future columns receive no automatic access. The .NET app must
+connect as this role, never as the database owner.
 
 <a id="4286c679-0004"></a>
 
@@ -147,15 +149,17 @@ would use a real vector index (pgvector or a hosted store); keeping it
 deterministic keeps the example offline and reproducible.
 
 **`Services/SqlValidator.cs`** -- the "(4) Validator (Guardrail)" stage.
-It enforces: (1) exactly one statement, and that statement a SELECT
+Its dependency-free `SqlQueryPolicy` enforces: (1) exactly one statement,
+and that statement a SELECT
 (or `WITH ... SELECT`) -- DDL/DML verbs are rejected; (2) no mid-query
 semicolons (stacked statements); (3) no comments that could hide a
-payload; (4) a top-level LIMIT, appended when missing; (5) an
-EXPLAIN-based cost gate that refuses plans whose top-node "Plan Rows"
-exceeds a configurable threshold. In production the regex pre-check
-would be an AST parser like libpg_query; here the regex layer is a
-deliberate, named trade-off, and the EXPLAIN gate is the real defense
-in depth.
+payload; (4) explicit non-PII projections, rejecting wildcard/whole-row reads;
+(5) a top-level LIMIT, appended when missing or capped when present, without
+moving the authored ORDER BY. `SqlValidator` adds an EXPLAIN cost gate that
+refuses plans whose top-node "Plan Rows" exceeds a configurable threshold.
+The policy tokenizes quoted SQL text but conservatively rejects some valid
+expressions; it is not a complete PostgreSQL parser. The database role's
+column permissions enforce data access independently of these static checks.
 
 **`Services/ClaudeLlmClient.cs`** -- production `ILlmClient` backed by
 the Anthropic Messages API with tool-use for structured output; the
@@ -175,7 +179,9 @@ other failure mode throws `LlmClientException`.
 Runs the stages in order (schema retriever -> SQL generator -> static
 validator -> EXPLAIN cost gate -> executor) and emits a `Step` per stage
 with elapsed-ms, status, and notes; the UI renders one run as a single
-timeline -- the "Observer" layer in miniature.
+timeline -- the "Observer" layer in miniature. `SqlResultReader` independently
+caps returned rows at `Agent:MaxRowsReturned`, including FETCH WITH TIES and
+expression limits, preserving database ordering and smaller query results.
 
 <a id="4286c679-0008"></a>
 
@@ -227,6 +233,35 @@ dotnet dev-certs https --trust
 
 If "A valid HTTPS certificate is already present" -> `dotnet dev-certs https --clean` and retry.
 
+The certificate and image-seeding wrappers load the bundled `Example.Build.psm1`
+from their own build context. Its canonical source is
+[`tools/Example.Build.psm1`](../../tools/Example.Build.psm1); run
+`pwsh tools/Sync-ExampleBuildModule.ps1` from the repository root after editing it.
+`-Check` verifies both bundles without writing. Each example can still be copied
+and built independently.
+
+**Local verification**
+
+The dependency-free policy/result-reader test executable links the actual
+production sources and runs with the .NET 8 SDK; the application remains on
+.NET 10. From the repository root:
+
+```powershell
+dotnet run --project example/text-to-sql/tests/SqlPolicy.Tests
+pwsh tools/Test-ExampleBuild.ps1
+```
+
+After loading the schema in a disposable PostgreSQL database, verify the role's
+permissions and readable schema as the database owner:
+
+```powershell
+psql -v ON_ERROR_STOP=1 -h localhost -U postgres -d yuruna_demo -f example/text-to-sql/db/test-agent-permissions.sql
+```
+
+The database fixture checks direct, wildcard, whole-row, JSON, and write
+attempts, along with safe aggregation, column introspection, and foreign keys.
+The guest database setup runs this check automatically after loading the schema.
+
 <a id="4286c679-000a"></a>
 
 ## Files
@@ -264,6 +299,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.09.24
+Last review: 2026.09.27
 
 Back to [yuruna-project](../../README.md) - [Yuruna](https://yuruna.com)

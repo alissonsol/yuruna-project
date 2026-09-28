@@ -4,11 +4,13 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 
 sequenceGuid: 423775c5-e5e9-4ab5-b07b-b38a91bb9fda
-sequenceRevision: 4
+sequenceRevision: 5
 
 description: "Ubuntu Server 26.04: log in, install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
 descriptionLocalized:
   pt-BR: "Servidor Ubuntu 26.04: faça login, instale o Kubernetes, implante o site no cluster localhost, verifique HTTP 200."
+  zh-CN: "Ubuntu Server 26.04：登录，安装Kubernetes，将网站部署到localhost集群，验证HTTP 200。"
+  he-IL: "Ubuntu Server ⁦26.04⁩: התחברו, התקינו את Kubernetes, פרסו את האתר באשכול localhost וודאו שמתקבל HTTP 200."
 keystrokeMechanism: gui
 # --- REGION: resource
 resource:
@@ -28,6 +30,8 @@ component:
     description: "Login + retry"
     descriptionLocalized:
       pt-BR: "Login + tentar novamente"
+      zh-CN: "登录并重试"
+      he-IL: "התחברות + ניסיון חוזר"
     steps:
       # start.guest reboots at the end; prime the console before logging in.
       - snippet: firstLoginPrime
@@ -39,6 +43,8 @@ component:
         description: "OCR: login:"
         descriptionLocalized:
           pt-BR: "OCR: login:"
+          zh-CN: "光学字符识别：login:"
+          he-IL: "זיהוי תווים אופטי: login:"
 
       - action: passwdPrompt
         pattern: "Password:"
@@ -46,6 +52,8 @@ component:
         description: "OCR: Password:"
         descriptionLocalized:
           pt-BR: "OCR: Senha:"
+          zh-CN: "光学字符识别：Password:"
+          he-IL: "זיהוי תווים אופטי: Password:"
 
   - action: waitForText
     pattern: "${username}@${hostname}"
@@ -53,6 +61,8 @@ component:
     description: "OCR: ${username}@${hostname}"
     descriptionLocalized:
       pt-BR: "OCR: ${username}@${hostname}"
+      zh-CN: "光学字符识别：${username}@${hostname}"
+      he-IL: "זיהוי תווים אופטי: ${username}@${hostname}"
 
   - snippet: shellInputPrime
 
@@ -63,8 +73,10 @@ workload:
     description: "ubuntu.server.26.k8s.sh"
     descriptionLocalized:
       pt-BR: "ubuntu.server.26.k8s.sh"
+      zh-CN: "ubuntu.server.26.k8s.sh"
+      he-IL: "⁦ubuntu.server.26.k8s.sh⁩"
     waitPattern: "FETCHED AND EXECUTED:"
-    timeoutSeconds: 1800
+    timeoutSeconds: 3000
 
   # `&&`, not `;`: the node table must be reachable ONLY when the wait
   # actually succeeded, so that seeing the table is itself proof of readiness.
@@ -73,6 +85,8 @@ workload:
     description: "Check node status"
     descriptionLocalized:
       pt-BR: "Verificar o estado do nó"
+      zh-CN: "检查节点状态"
+      he-IL: "בדקו את מצב הצומת"
 
   # See https://yuruna.link/42e220c4-0009
   - action: waitForText
@@ -81,12 +95,16 @@ workload:
     description: "OCR: control-plane"
     descriptionLocalized:
       pt-BR: "OCR: plano de controlo"
+      zh-CN: "光学字符识别：control-plane"
+      he-IL: "זיהוי תווים אופטי: control-plane"
 
   - action: inputTextAndEnter
     text: "clear; newgrp docker"
     description: "Activate docker group"
     descriptionLocalized:
       pt-BR: "Ativar grupo de docker"
+      zh-CN: "激活docker组"
+      he-IL: "הפעילו את קבוצת docker"
 
   # See https://yuruna.link/42e220c4-0009
   - action: fetchAndExecute
@@ -94,6 +112,8 @@ workload:
     description: "ubuntu.server.26.workload.k8s.website.sh"
     descriptionLocalized:
       pt-BR: "ubuntu.server.26.workload.k8s.website.sh"
+      zh-CN: "ubuntu.server.26.workload.k8s.website.sh"
+      he-IL: "⁦ubuntu.server.26.workload.k8s.website.sh⁩"
     waitPattern: "FETCHED AND EXECUTED:"
     freshMatchTailLines: 60
     timeoutSeconds: 1200
@@ -103,15 +123,23 @@ workload:
     description: "test-localhost.sh"
     descriptionLocalized:
       pt-BR: "test- localhost.sh"
+      zh-CN: "test-localhost.sh"
+      he-IL: "⁦test-localhost.sh⁩"
     waitPattern: "200 OK"
+    # Allow KVM command delivery, the 180-second HTTP readiness wait, and OCR.
+    timeoutSeconds: 420
 
   - action: saveSystemDiagnostic
     id: k8s.website
     description: "Capture diagnostics"
     descriptionLocalized:
       pt-BR: "Capturar diagnósticos"
+      zh-CN: "收集诊断信息"
+      he-IL: "אספו נתוני אבחון"
 
   - action: networkRelease
     description: "Release network resources"
     descriptionLocalized:
       pt-BR: "Lançar recursos de rede"
+      zh-CN: "释放网络资源"
+      he-IL: "שחררו את משאבי הרשת"
