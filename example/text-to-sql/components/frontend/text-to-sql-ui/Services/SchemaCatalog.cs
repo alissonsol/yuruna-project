@@ -11,25 +11,38 @@ public sealed class SchemaCatalog
 {
     private readonly NpgsqlDataSource _ds;
     private readonly ILogger<SchemaCatalog> _log;
-    private readonly Lazy<Task<IReadOnlyList<TableInfo>>> _cache;
+    private readonly object _cacheLock = new();
+    private Task<IReadOnlyList<TableInfo>>? _cache;
+    private readonly System.Runtime.CompilerServices.ConditionalWeakTable<IReadOnlyList<TableInfo>, Dictionary<string, TableInfo>> _indexes = new();
 
     public SchemaCatalog(NpgsqlDataSource ds, ILogger<SchemaCatalog> log)
     {
         _ds = ds;
         _log = log;
-        _cache = new Lazy<Task<IReadOnlyList<TableInfo>>>(LoadAsync);
     }
 
-    public Task<IReadOnlyList<TableInfo>> GetAllAsync() => _cache.Value;
+    public Task<IReadOnlyList<TableInfo>> GetAllAsync(CancellationToken ct = default)
+    {
+        ct.ThrowIfCancellationRequested();
+        Task<IReadOnlyList<TableInfo>> task;
+        lock (_cacheLock)
+        {
+            if (_cache is null || _cache.IsFaulted || _cache.IsCanceled) _cache = LoadAsync();
+            task = _cache;
+        }
+        // One caller canceling must not poison the shared catalog load.
+        return ct.CanBeCanceled ? task.WaitAsync(ct) : task;
+    }
 
     internal static bool IsPiiColumn(string columnName) => SqlQueryPolicy.IsPiiColumn(columnName);
 
     // --- REGION: Public retriever
     // Returns the k most relevant tables (by hybrid score) plus their direct
     // FK neighbors. The string form is what the SQL generator sees.
-    public async Task<RetrievalResult> GetRelevantSchemaAsync(string question, int k = 6)
+    public async Task<RetrievalResult> GetRelevantSchemaAsync(string question, int k = 6, CancellationToken ct = default)
     {
-        var all = await _cache.Value;
+        var all = await GetAllAsync(ct);
+        var byName = _indexes.GetValue(all, tables => tables.ToDictionary(t => t.Name, StringComparer.Ordinal));
         var qTokens = Tokenize(question);
 
         // Score by token-overlap against the table's "search blob"
@@ -56,8 +69,7 @@ public sealed class SchemaCatalog
             {
                 if (!expanded.ContainsKey(neighbor))
                 {
-                    var n = all.FirstOrDefault(x => x.Name == neighbor);
-                    if (n is not null) expanded[neighbor] = n;
+                    if (byName.TryGetValue(neighbor, out var n)) expanded[neighbor] = n;
                 }
             }
         }

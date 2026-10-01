@@ -146,7 +146,9 @@ scoring (keyword overlap plus substring similarity on docstrings) with
 one-hop FK expansion so the LLM never has to invent JOIN partners, and
 returns a compact prompt slice (target < 2 KB). A production system
 would use a real vector index (pgvector or a hosted store); keeping it
-deterministic keeps the example offline and reproducible.
+deterministic keeps the example offline and reproducible. Successful catalog loads
+are shared and cached; a failed load is retried on the next request. Concurrent
+callers share one load, and canceling one caller does not poison the shared cache.
 
 **`Services/SqlValidator.cs`** -- the "(4) Validator (Guardrail)" stage.
 Its dependency-free `SqlQueryPolicy` enforces: (1) exactly one statement,
@@ -156,7 +158,11 @@ semicolons (stacked statements); (3) no comments that could hide a
 payload; (4) explicit non-PII projections, rejecting wildcard/whole-row reads;
 (5) a top-level LIMIT, appended when missing or capped when present, without
 moving the authored ORDER BY. `SqlValidator` adds an EXPLAIN cost gate that
-refuses plans whose top-node "Plan Rows" exceeds a configurable threshold.
+refuses a plan when any node's estimated row count exceeds the configured threshold.
+It parses the JSON plan recursively, so an outer LIMIT cannot hide a large scan,
+sort, or join input. This is a conservative cardinality gate, not an execution-time
+or monetary cost estimate. Connection, transaction, and malformed-plan failures
+produce a failed EXPLAIN timeline step; caller cancellation remains cancellation.
 The policy tokenizes quoted SQL text but conservatively rejects some valid
 expressions; it is not a complete PostgreSQL parser. The database role's
 column permissions enforce data access independently of these static checks.
@@ -173,7 +179,24 @@ coding model (e.g. `qwen3-coder`); activated by `USE_LOCAL_MODEL` /
 `OLLAMA_HOST`, keeping the schema and questions on-device instead of
 calling a third-party API. Mirrors `ClaudeLlmClient`'s structured-output
 contract: a parsed `Refused=true` is a normal `LlmDecision`, and every
-other failure mode throws `LlmClientException`.
+other failure mode throws `LlmClientException`. An accepted decision must contain
+nonblank SQL; a refusal requires a reason and no SQL. The orchestrator validates
+this contract even for alternate client implementations. Both HTTP clients share
+a total retry deadline (Claude 90 seconds, Ollama 240 seconds), including body
+reads and backoff, while retaining their respective transient-status policies.
+Per-attempt messages are disposed, and singleton shutdown disposes the owned client.
+
+New service diagnostics use standard .NET resources for English, Brazilian
+Portuguese, Simplified Chinese, and Hebrew. Request localization selects culture
+from the normal ASP.NET Core providers, including `Accept-Language`; unsupported
+languages fall back to English. Translated resource comments record machine origin
+and source hashes. Existing English UI prose remains unchanged.
+
+From the `example/text-to-sql` directory, run
+`dotnet run --project tests/ServiceContracts.Tests` for parser, deadline,
+cancellation, disposal, localization, and database-unavailability checks. Set
+`SERVICE_CONTRACT_DATABASE` to a disposable PostgreSQL connection string to add
+live EXPLAIN and shared-cache checks. No model API is called by these tests.
 
 **`Services/AgentOrchestrator.cs`** -- the "(5) Executor" plus retry loop.
 Runs the stages in order (schema retriever -> SQL generator -> static
@@ -299,6 +322,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.09.27
+Last review: 2026.09.30
 
 Back to [yuruna-project](../../README.md) - [Yuruna](https://yuruna.com)

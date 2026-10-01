@@ -153,7 +153,10 @@ substring nas docstrings) com expansão de FK de um salto, para que a LLM
 nunca precise inventar parceiros de JOIN, e retorna uma fatia compacta de
 prompt (alvo < 2 KB). Um sistema em produção usaria um índice vetorial de
 verdade (pgvector ou um armazenamento hospedado); mantê-lo determinístico
-mantém o exemplo offline e reproduzível.
+mantém o exemplo offline e reproduzível. Carregamentos bem-sucedidos do catálogo
+são compartilhados e armazenados em cache; uma falha permite nova tentativa na
+próxima solicitação. Chamadores simultâneos compartilham um carregamento, e o
+cancelamento de um deles não invalida o cache compartilhado.
 
 **`Services/SqlValidator.cs`** -- o estágio "(4) Validador (Guardrail)".
 Sua política `SqlQueryPolicy`, sem dependências externas, exige: (1) exatamente
@@ -164,7 +167,13 @@ explícitas sem dados pessoais identificáveis, rejeitando leituras com curinga
 ou de linhas inteiras; (5) um LIMIT no nível superior, acrescentado quando
 ausente ou limitado quando presente, sem mover o ORDER BY escrito pelo autor.
 O `SqlValidator` acrescenta uma barreira de custo EXPLAIN que recusa planos
-cujo "Plan Rows" do nó superior exceda um limite configurável. A política
+quando a estimativa de linhas de qualquer nó excede o limite configurado.
+O plano JSON é percorrido recursivamente, portanto um LIMIT externo não oculta
+uma entrada grande de varredura, ordenação ou junção. Essa é uma barreira
+conservadora de cardinalidade, não uma estimativa de tempo de execução ou custo
+monetário. Falhas de conexão, transação e formato do plano geram uma etapa EXPLAIN
+com falha na linha do tempo; o cancelamento do chamador continua sendo cancelamento.
+A política
 reconhece os tokens do texto SQL entre aspas, mas rejeita conservadoramente
 algumas expressões válidas; ela não é um parser completo do PostgreSQL.
 As permissões de coluna do papel do banco de dados controlam o acesso aos
@@ -184,7 +193,27 @@ de código local (por exemplo, `qwen3-coder`); ativado por
 dispositivo em vez de chamar uma API de terceiros. Espelha o contrato de
 saída estruturada do `ClaudeLlmClient`: um `Refused=true` interpretado é
 um `LlmDecision` normal, e todos os outros modos de falha lançam
-`LlmClientException`.
+`LlmClientException`. Uma decisão aceita deve conter SQL não vazio; uma recusa
+exige um motivo e nenhum SQL. O orquestrador valida esse contrato também para
+implementações alternativas. Ambos os clientes HTTP compartilham um prazo total
+de novas tentativas (Claude: 90 segundos; Ollama: 240 segundos), incluindo a leitura
+do corpo e os intervalos entre tentativas, mantendo as respectivas políticas de
+status transitórios. As mensagens de cada tentativa são descartadas, e o
+encerramento do singleton descarta o cliente HTTP que ele criou.
+
+Os novos diagnósticos de serviço usam recursos padrão do .NET em inglês, português
+brasileiro, chinês simplificado e hebraico. A localização da solicitação seleciona
+a cultura pelos provedores normais do ASP.NET Core, incluindo `Accept-Language`;
+idiomas não suportados usam inglês. Os comentários dos recursos traduzidos registram
+a origem automática e os hashes do texto-fonte. Os textos existentes da interface
+em inglês permanecem inalterados.
+
+No diretório `example/text-to-sql`, execute
+`dotnet run --project tests/ServiceContracts.Tests` para verificar o parser,
+os prazos, o cancelamento, o descarte, a localização e a indisponibilidade do banco.
+Defina `SERVICE_CONTRACT_DATABASE` como a conexão de um PostgreSQL descartável para
+acrescentar verificações reais de EXPLAIN e cache compartilhado. Esses testes não
+chamam APIs de modelos.
 
 **`Services/AgentOrchestrator.cs`** -- o "(5) Executor" mais o laço de
 repetição. Roda os estágios em ordem (recuperador de esquema -> gerador
@@ -314,6 +343,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Última revisão: 2026.09.27
+Última revisão: 2026.09.30
 
 Voltar para [yuruna-project](../../../../README.md) - [Yuruna](https://yuruna.com)

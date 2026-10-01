@@ -1,0 +1,32 @@
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <data xml:space="preserve" name="InvalidDecision">
+    <value>Model response has an invalid SQL/refusal decision.</value>
+    <comment>Source; sourceHash=f2b13142f1fa2f314c3da650cf165c3f6668c4bf6ff2a02e64ecd551d230ad61</comment>
+  </data>
+  <data xml:space="preserve" name="RetryDeadline">
+    <value>Model API retry deadline exceeded.</value>
+    <comment>Source; sourceHash=4374f7154fdfdb421a382f98dad07c420ee258cd3f0fc5525ae2cf9641bfcacc</comment>
+  </data>
+  <data xml:space="preserve" name="ApiError">
+    <value>Model API error {0}: {1}</value>
+    <comment>Source; sourceHash=412a02ce30d3ebc787352748fd318a144f6db483405dfa9d5c0420bc44fed03d</comment>
+  </data>
+  <data xml:space="preserve" name="ParseError">
+    <value>Failed to parse model response: {0}</value>
+    <comment>Source; sourceHash=c8e68a394699fc249a4f5d8f4dbc08ee129da0ae00740c2af3a9869bfd8bee00</comment>
+  </data>
+  <data xml:space="preserve" name="PlanMissing">
+    <value>EXPLAIN response has no plan.</value>
+    <comment>Source; sourceHash=8225e4e5cfbf039fc748acbd4efe8fe9558af84dbf6ae5786d0233e08d16a433</comment>
+  </data>
+  <data xml:space="preserve" name="PlanRowsInvalid">
+    <value>EXPLAIN plan has an invalid row estimate.</value>
+    <comment>Source; sourceHash=6f7a25d41020e62b1e559ae908cbc7ee64eb1b8ee0aa68424d303a5e00cb3f2d</comment>
+  </data>
+</root>

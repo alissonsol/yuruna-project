@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace TextToSqlUi.Services;
 
-public sealed class OllamaLlmClient : ILlmClient
+public sealed class OllamaLlmClient : ILlmClient, IDisposable
 {
     private readonly HttpClient _http;
     private readonly ILogger<OllamaLlmClient> _log;
@@ -59,6 +59,8 @@ after -- with EXACTLY these keys:
         _http = new HttpClient { Timeout = HttpTimeout };
     }
 
+    public void Dispose() => _http.Dispose();
+
     public async Task<LlmDecision> GenerateSqlAsync(
         string question, string schemaSlice, CancellationToken ct = default)
     {
@@ -82,88 +84,18 @@ after -- with EXACTLY these keys:
         var json = JsonSerializer.Serialize(requestBody);
         var url = $"{_baseUrl}/api/chat";
 
-        // Deadline-bounded retry, identical policy to ClaudeLlmClient: transport
-        // failures and HTTP 5xx are transient and retried with exponential
-        // backoff until RetryWindow elapses. A model REFUSAL (parsed
-        // refused=true) is a normal decision and returned; every other failure
-        // mode throws LlmClientException.
-        var deadline = DateTime.UtcNow + RetryWindow;
-        var attempt = 0;
-        while (true)
+        var responseJson = await LlmHttpRetry.PostAsync(_http, url, json, RetryWindow, false, ct);
+        try
         {
-            attempt++;
-            HttpResponseMessage response;
-            string responseJson;
-            try
-            {
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-                response = await _http.PostAsync(url, content, ct);
-                // Read the body inside the SAME try so a mid-body connection drop
-                // is retried/surfaced like any other transport failure instead of
-                // escaping the loop un-wrapped (past the orchestrator's catch).
-                responseJson = await response.Content.ReadAsStringAsync(ct);
-            }
-            catch (OperationCanceledException) when (ct.IsCancellationRequested)
-            {
-                throw; // the caller canceled -- propagate, never retry or relabel
-            }
-            catch (Exception ex)
-            {
-                // Transport failure (socket/DNS -- e.g. Ollama not running), the
-                // per-request HttpClient timeout (a TaskCanceledException NOT
-                // tied to the caller's ct), or a body-read failure.
-                if (DateTime.UtcNow < deadline)
-                {
-                    _log.LogWarning(ex, "Ollama API request failed (attempt {Attempt}); retrying", attempt);
-                    await BackoffAsync(attempt, ct);
-                    continue;
-                }
-                throw new LlmClientException($"Ollama API request failed after {attempt} attempt(s): {ex.Message}", ex);
-            }
-
-            var status = (int)response.StatusCode;
-
-            if (response.IsSuccessStatusCode)
-            {
-                try
-                {
-                    return ParseChatResponse(responseJson);
-                }
-                catch (Exception ex)
-                {
-                    // A 2xx with an unparseable body / missing keys is a format
-                    // failure, not a model refusal.
-                    _log.LogError(ex, "Failed to parse Ollama response: {Body}", responseJson);
-                    throw new LlmClientException($"Failed to parse model response: {ex.Message}", ex);
-                }
-            }
-
-            // Non-2xx. Retry 5xx (server) within the deadline; fail other codes
-            // immediately -- a retry cannot fix a bad request or a missing model.
-            var retryable = status >= 500 && status <= 599;
-            if (retryable && DateTime.UtcNow < deadline)
-            {
-                _log.LogWarning("Ollama API {Status}; retrying (attempt {Attempt}): {Body}", status, attempt, responseJson);
-                await BackoffAsync(attempt, ct);
-                continue;
-            }
-            _log.LogError("Ollama API error {Status}: {Body}", status, responseJson);
-            throw new LlmClientException($"Ollama API error {status}: {response.ReasonPhrase}");
+            return ParseChatResponse(responseJson).Validate();
+        }
+        catch (Exception ex)
+        {
+            _log.LogError(ex, "Failed to parse model response");
+            throw new LlmClientException(ServiceMessages.Get("ParseError", ex.Message), ex);
         }
     }
 
-    // Exponential backoff with jitter, capped at 8s: ~250ms, 500ms, 1s, 2s, ...
-    private static async Task BackoffAsync(int attempt, CancellationToken ct)
-    {
-        var baseMs = Math.Min(8000, 250 * (int)Math.Pow(2, Math.Min(attempt - 1, 6)));
-        var delayMs = baseMs + Random.Shared.Next(0, 250);
-        await Task.Delay(delayMs, ct);
-    }
-
-    // Ollama /api/chat (stream=false) envelope: { ..., "message": { "role":
-    // "assistant", "content": "<json string>" }, "done": true }. With
-    // format="json" the content is itself a JSON document carrying our four
-    // required keys. Two-stage parse: envelope -> message.content -> decision.
     private static LlmDecision ParseChatResponse(string responseJson)
     {
         using var envelope = JsonDocument.Parse(responseJson);
@@ -190,8 +122,8 @@ after -- with EXACTLY these keys:
 
         return new LlmDecision(
             Refused: refused,
-            Sql: refused ? null : (sql.Length > 0 ? sql : null),
-            RefusalReason: refused ? refusalReason : null,
+            Sql: sql,
+            RefusalReason: refusalReason,
             PlanText: plan
         );
     }

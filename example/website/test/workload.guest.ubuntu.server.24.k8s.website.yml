@@ -122,7 +122,7 @@ workload:
     text: "clear; /usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"
     description: "test-localhost.sh"
     descriptionLocalized:
-      pt-BR: "test- localhost.sh"
+      pt-BR: "test-localhost.sh"
       zh-CN: "test-localhost.sh"
       he-IL: "⁦test-localhost.sh⁩"
     waitPattern: "200 OK"

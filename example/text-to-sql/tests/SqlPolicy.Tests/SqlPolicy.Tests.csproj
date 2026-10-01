@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>TextToSqlUi</RootNamespace>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
@@ -12,6 +13,8 @@
     <Compile Include="../../components/frontend/text-to-sql-ui/Services/SqlResultReader.cs" Link="SqlResultReader.cs" />
     <Compile Include="../../components/frontend/text-to-sql-ui/Services/RuleBasedLlmClient.cs" Link="RuleBasedLlmClient.cs" />
     <Compile Include="../../components/frontend/text-to-sql-ui/Services/ILlmClient.cs" Link="ILlmClient.cs" />
+    <Compile Include="../../components/frontend/text-to-sql-ui/Services/ServiceMessages.cs" Link="ServiceMessages.cs" />
+    <EmbeddedResource Include="../../components/frontend/text-to-sql-ui/Services/ServiceMessages*.resx" Link="Services/%(Filename)%(Extension)" />
     <Using Include="Microsoft.Extensions.Logging" />
   </ItemGroup>
 </Project>

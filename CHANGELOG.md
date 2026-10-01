@@ -5,9 +5,18 @@
 [github.com/alissonsol/yuruna](https://github.com/alissonsol/yuruna);
 this repo tracks user-facing project templates and end-to-end examples.
 
-## 2026.09.27
+## 2026.09.30
 
-- **Stable**: Waiting for the next schema change.
+- **Schema change**: `testSets` is removed from `test/test.runner.yml`; the
+  pool-control Pools page assigns a Framework URL and Project URL together,
+  and the project repository supplies its own sequence list.
+- The text-to-SQL example adds column-level grants, bounded query and result
+  handling through `SqlQueryPolicy` and `SqlResultReader`, and database recovery
+  checks.
+- Both examples use the shared `Example.Build.psm1` module. The AWS website
+  workload uses NodePort ingress.
+- Project display text now has machine translation drafts for Simplified
+  Chinese and Hebrew, pending professional review.
 
 ## 2026.07.31
 
@@ -58,6 +67,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.09.27
+Last review: 2026.09.30
 
 Back to [yuruna-project](README.md) - [Yuruna](https://yuruna.com)

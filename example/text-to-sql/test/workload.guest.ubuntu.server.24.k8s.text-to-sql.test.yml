@@ -109,7 +109,7 @@ workload:
     text: "clear; /usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"
     description: "test-localhost.sh (expect HTTP 200)"
     descriptionLocalized:
-      pt-BR: "test- localhost.sh (espera HTTP 200)"
+      pt-BR: "test-localhost.sh (espera HTTP 200)"
       zh-CN: "test-localhost.sh（预期返回HTTP 200）"
       he-IL: "⁦test-localhost.sh⁩ (צפו לקבל HTTP 200)"
     waitPattern: "200 OK"

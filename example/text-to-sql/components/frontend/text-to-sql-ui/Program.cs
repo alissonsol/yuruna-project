@@ -59,6 +59,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseRequestLocalization(new RequestLocalizationOptions()
+    .SetDefaultCulture("en-US")
+    .AddSupportedCultures("en-US", "pt-BR", "zh-CN", "he-IL")
+    .AddSupportedUICultures("en-US", "pt-BR", "zh-CN", "he-IL"));
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();

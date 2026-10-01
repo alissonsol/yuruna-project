@@ -109,6 +109,6 @@ workload:
     id: "k8s.text-to-sql"
     description: "Snapshot before Postgres in text-to-sql workload"
     descriptionLocalized:
-      pt-BR: "Imagem antes do Postgres na carga de trabalho texto- para- sql"
+      pt-BR: "Imagem antes do Postgres na carga de trabalho text-to-sql"
       zh-CN: "在text-to-sql工作负载的Postgres步骤之前创建快照"
       he-IL: "צרו תמונת מצב לפני Postgres בעומס העבודה text-to-sql"

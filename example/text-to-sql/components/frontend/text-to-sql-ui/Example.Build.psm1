@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 2026.09.27
+.VERSION 2026.09.30
 .GUID 42aa6d6d-83ef-4b17-b241-3a1d6bc163d8
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
@@ -13,7 +13,7 @@
 
 function Invoke-BoundedDocker {
     param(
-        [Parameter(Mandatory)][int]$StallSeconds,
+        [Parameter(Mandatory)][Alias("StallSeconds")][int]$TimeoutSeconds,
         [Parameter(Mandatory)][string[]]$DockerArgs
     )
     $outFile = $null
@@ -23,7 +23,7 @@ function Invoke-BoundedDocker {
         $errFile = (New-TemporaryFile).FullName
         $process = Start-Process -FilePath 'docker' -ArgumentList $DockerArgs -NoNewWindow -PassThru `
             -RedirectStandardOutput $outFile -RedirectStandardError $errFile
-        $completed = $process.WaitForExit($StallSeconds * 1000)
+        $completed = $process.WaitForExit($TimeoutSeconds * 1000)
         if (-not $completed) {
             try { $process.Kill($true) } catch { Write-Debug "kill: $($_.Exception.Message)" }
             $process.WaitForExit()
@@ -34,7 +34,7 @@ function Invoke-BoundedDocker {
         Get-Content -Path $outFile, $errFile -ErrorAction SilentlyContinue |
             ForEach-Object { Write-Information $_ -InformationAction Continue }
         if (-not $completed) {
-            Write-Warning "docker $($DockerArgs -join ' ') exceeded ${StallSeconds}s; treated as failed."
+            Write-Warning "docker $($DockerArgs -join ' ') exceeded ${TimeoutSeconds}s; treated as failed."
             return 124
         }
         return $process.ExitCode
@@ -93,7 +93,7 @@ function Invoke-ExampleBaseImageSeed {
             $sources += 'mcr.microsoft.com/'
             foreach ($source in $sources) {
                 Write-Information "Pulling ${source}${ref}"
-                if ((Invoke-BoundedDocker -StallSeconds 300 -DockerArgs @('pull', "${source}${ref}")) -eq 0) {
+                if ((Invoke-BoundedDocker -TimeoutSeconds 300 -DockerArgs @('pull', "${source}${ref}")) -eq 0) {
                     $localRef = "${source}${ref}"
                     break
                 }
@@ -107,7 +107,7 @@ function Invoke-ExampleBaseImageSeed {
 
         docker tag $localRef "${registry}/${ref}"
         if ($LASTEXITCODE -ne 0) { return 1 }
-        if ((Invoke-BoundedDocker -StallSeconds 300 -DockerArgs @('push', "${registry}/${ref}")) -ne 0) {
+        if ((Invoke-BoundedDocker -TimeoutSeconds 300 -DockerArgs @('push', "${registry}/${ref}")) -ne 0) {
             Write-Warning "Pushing ${ref} into ${registry} failed -- is the registry container up?"
             return 1
         }

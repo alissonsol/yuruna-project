@@ -47,12 +47,13 @@ public sealed class AgentOrchestrator
         RetrievalResult retrieval;
         try
         {
-            retrieval = await _catalog.GetRelevantSchemaAsync(question, k: 6);
+            retrieval = await _catalog.GetRelevantSchemaAsync(question, k: 6, ct: ct);
         }
+        catch (OperationCanceledException) when (ct.IsCancellationRequested) { throw; }
         catch (Exception ex)
         {
             run.Steps.Add(Step.Fail("Schema retrieval", swSchema, ex.Message));
-            run.Finalize(error: "Schema retrieval failed.");
+            run.Complete(error: "Schema retrieval failed.");
             return run;
         }
         run.Steps.Add(Step.Ok("Schema retrieval", swSchema,
@@ -65,7 +66,7 @@ public sealed class AgentOrchestrator
         LlmDecision decision;
         try
         {
-            decision = await _llm.GenerateSqlAsync(question, retrieval.FormattedPrompt, ct);
+            decision = (await _llm.GenerateSqlAsync(question, retrieval.FormattedPrompt, ct)).Validate();
         }
         catch (LlmClientException ex)
         {
@@ -74,13 +75,13 @@ public sealed class AgentOrchestrator
             // distinguishable (and monitorable), and the client's own bounded
             // retry has already been exhausted.
             run.Steps.Add(Step.Fail("SQL generation", swGen, ex.Message));
-            run.Finalize(error: "SQL generation failed (LLM/API error).");
+            run.Complete(error: "SQL generation failed (LLM/API error).");
             return run;
         }
         if (decision.Refused)
         {
             run.Steps.Add(Step.Refused("SQL generation", swGen, decision.RefusalReason ?? "unknown"));
-            run.Finalize(refusal: decision.RefusalReason);
+            run.Complete(refusal: decision.RefusalReason);
             return run;
         }
         run.PlanText = decision.PlanText;
@@ -93,7 +94,7 @@ public sealed class AgentOrchestrator
         if (!st.Allowed)
         {
             run.Steps.Add(Step.Refused("Static validation", swStatic, st.Reason ?? "rejected"));
-            run.Finalize(refusal: st.Reason);
+            run.Complete(refusal: st.Reason);
             return run;
         }
         var safeSql = st.SafeSql!;
@@ -115,13 +116,13 @@ public sealed class AgentOrchestrator
             if (gate.ParseFailed)
             {
                 run.Steps.Add(Step.Fail("EXPLAIN", swExp, gate.Reason ?? "parse failed"));
-                run.Finalize(error: $"PostgreSQL rejected the SQL: {gate.Reason}");
+                run.Complete(error: $"PostgreSQL rejected the SQL: {gate.Reason}");
                 return run;
             }
             if (!gate.Allowed)
             {
                 run.Steps.Add(Step.Refused("EXPLAIN", swExp, gate.Reason ?? "cost gate"));
-                run.Finalize(refusal: gate.Reason);
+                run.Complete(refusal: gate.Reason);
                 return run;
             }
             run.Steps.Add(Step.Ok("EXPLAIN", swExp, $"Plan rows ~ {gate.PlanRows:N0}. Allowed."));
@@ -150,19 +151,19 @@ public sealed class AgentOrchestrator
 
             run.Steps.Add(Step.Ok("Execute", swExec,
                 $"{run.ResultRows.Count} rows in {swExec.ElapsedMilliseconds} ms."));
-            run.Finalize();
+            run.Complete();
         }
         catch (PostgresException pex) when (pex.SqlState == "57014")  // statement_timeout
         {
             run.Steps.Add(Step.Refused("Execute", swExec, $"Statement timeout at {_timeoutMs} ms."));
-            run.Finalize(refusal:
+            run.Complete(refusal:
                 "The generated query exceeded the statement timeout. " +
                 "Mitigations: add a date filter, request a smaller LIMIT, or try a materialized view.");
         }
         catch (Exception execEx)
         {
             run.Steps.Add(Step.Fail("Execute", swExec, execEx.Message));
-            run.Finalize(error: execEx.Message);
+            run.Complete(error: execEx.Message);
         }
         return run;
     }
@@ -185,7 +186,7 @@ public sealed class AgentRun
 
     public AgentRun(string q) { Question = q; }
 
-    internal void Finalize(string? refusal = null, string? error = null)
+    internal void Complete(string? refusal = null, string? error = null)
     {
         RefusalReason = refusal;
         Error = error;

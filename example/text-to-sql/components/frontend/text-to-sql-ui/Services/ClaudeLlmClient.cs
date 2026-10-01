@@ -10,7 +10,7 @@ using System.Text.Json.Serialization;
 
 namespace TextToSqlUi.Services;
 
-public sealed class ClaudeLlmClient : ILlmClient
+public sealed class ClaudeLlmClient : ILlmClient, IDisposable
 {
     private readonly HttpClient _http;
     private readonly ILogger<ClaudeLlmClient> _log;
@@ -90,6 +90,8 @@ In the plan field, show your step-by-step reasoning before arriving at the SQL.
             new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
+    public void Dispose() => _http.Dispose();
+
     public async Task<LlmDecision> GenerateSqlAsync(
         string question, string schemaSlice, CancellationToken ct = default)
     {
@@ -113,83 +115,16 @@ In the plan field, show your step-by-step reasoning before arriving at the SQL.
             PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
         });
 
-        // Deadline-bounded retry: transport failures, HTTP 429, and 5xx are
-        // transient and retried with exponential backoff until RetryWindow
-        // elapses. A model REFUSAL (a parsed tool_use with refused=true) is a
-        // normal decision and returned; every other failure mode throws
-        // LlmClientException (see its declaration below).
-        var deadline = DateTime.UtcNow + RetryWindow;
-        var attempt = 0;
-        while (true)
+        var responseJson = await LlmHttpRetry.PostAsync(_http, AnthropicApiUrl, json, RetryWindow, true, ct);
+        try
         {
-            attempt++;
-            HttpResponseMessage response;
-            string responseJson;
-            try
-            {
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-                response = await _http.PostAsync(AnthropicApiUrl, content, ct);
-                // Read the body inside the SAME try so a mid-body connection drop
-                // is retried/surfaced like any other transport failure instead of
-                // escaping the loop un-wrapped (past the orchestrator's catch).
-                responseJson = await response.Content.ReadAsStringAsync(ct);
-            }
-            catch (OperationCanceledException) when (ct.IsCancellationRequested)
-            {
-                throw; // the caller canceled -- propagate, never retry or relabel
-            }
-            catch (Exception ex)
-            {
-                // Transport failure (socket/DNS), the per-request HttpClient
-                // timeout (a TaskCanceledException NOT tied to the caller's ct),
-                // or a body-read failure.
-                if (DateTime.UtcNow < deadline)
-                {
-                    _log.LogWarning(ex, "Anthropic API request failed (attempt {Attempt}); retrying", attempt);
-                    await BackoffAsync(attempt, ct);
-                    continue;
-                }
-                throw new LlmClientException($"Anthropic API request failed after {attempt} attempt(s): {ex.Message}", ex);
-            }
-
-            var status = (int)response.StatusCode;
-
-            if (response.IsSuccessStatusCode)
-            {
-                try
-                {
-                    return ParseToolUseResponse(responseJson);
-                }
-                catch (Exception ex)
-                {
-                    // A 2xx with an unparseable / tool_use-less body is a format
-                    // failure, not a model refusal.
-                    _log.LogError(ex, "Failed to parse Anthropic response: {Body}", responseJson);
-                    throw new LlmClientException($"Failed to parse model response: {ex.Message}", ex);
-                }
-            }
-
-            // Non-2xx. Retry 429 (rate limit) and 5xx (server) within the
-            // deadline; fail other 4xx (bad request / auth) immediately -- a
-            // retry cannot fix those.
-            var retryable = status == 429 || (status >= 500 && status <= 599);
-            if (retryable && DateTime.UtcNow < deadline)
-            {
-                _log.LogWarning("Anthropic API {Status}; retrying (attempt {Attempt}): {Body}", status, attempt, responseJson);
-                await BackoffAsync(attempt, ct);
-                continue;
-            }
-            _log.LogError("Anthropic API error {Status}: {Body}", status, responseJson);
-            throw new LlmClientException($"Anthropic API error {status}: {response.ReasonPhrase}");
+            return ParseToolUseResponse(responseJson).Validate();
         }
-    }
-
-    // Exponential backoff with jitter, capped at 8s: ~250ms, 500ms, 1s, 2s, ...
-    private static async Task BackoffAsync(int attempt, CancellationToken ct)
-    {
-        var baseMs = Math.Min(8000, 250 * (int)Math.Pow(2, Math.Min(attempt - 1, 6)));
-        var delayMs = baseMs + Random.Shared.Next(0, 250);
-        await Task.Delay(delayMs, ct);
+        catch (Exception ex)
+        {
+            _log.LogError(ex, "Failed to parse model response");
+            throw new LlmClientException(ServiceMessages.Get("ParseError", ex.Message), ex);
+        }
     }
 
     private static LlmDecision ParseToolUseResponse(string responseJson)
@@ -199,7 +134,8 @@ In the plan field, show your step-by-step reasoning before arriving at the SQL.
 
         foreach (var block in root.GetProperty("content").EnumerateArray())
         {
-            if (block.GetProperty("type").GetString() != "tool_use") continue;
+            if (block.GetProperty("type").GetString() != "tool_use" ||
+                block.GetProperty("name").GetString() != "generate_sql") continue;
 
             var input = block.GetProperty("input");
 
@@ -210,8 +146,8 @@ In the plan field, show your step-by-step reasoning before arriving at the SQL.
 
             return new LlmDecision(
                 Refused: refused,
-                Sql: refused ? null : (sql.Length > 0 ? sql : null),
-                RefusalReason: refused ? refusalReason : null,
+                Sql: sql,
+                RefusalReason: refusalReason,
                 PlanText: plan
             );
         }
@@ -220,14 +156,4 @@ In the plan field, show your step-by-step reasoning before arriving at the SQL.
         // FAILURE (surfaced as an error by the caller), not a model refusal.
         throw new InvalidOperationException("Model response contained no tool_use block.");
     }
-}
-
-// Thrown by ClaudeLlmClient for transport / HTTP / parse failures -- as opposed
-// to a legitimate model refusal, which is returned as an LlmDecision. Lets the
-// orchestrator render an error step + run error, and enables retry/monitoring,
-// instead of mislabeling infrastructure trouble as the model declining.
-public sealed class LlmClientException : Exception
-{
-    public LlmClientException(string message) : base(message) { }
-    public LlmClientException(string message, Exception inner) : base(message, inner) { }
 }

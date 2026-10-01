@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 2026.09.27
+.VERSION 2026.09.30
 .GUID 4225b001-c90f-4210-ba9a-b5d1da7ee415
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
@@ -30,8 +30,8 @@ $module = Import-Module (Join-Path $PSScriptRoot 'Example.Build.psm1') -Force -P
         if ($args[0] -eq 'image') { $script:LocalImage }
     }
     function Invoke-BoundedDocker {
-        param([int]$StallSeconds, [string[]]$DockerArgs)
-        if ($StallSeconds -ne 300) { throw 'Seed command lost its deadline' }
+        param([int]$TimeoutSeconds, [string[]]$DockerArgs)
+        if ($TimeoutSeconds -ne 300) { throw 'Seed command lost its deadline' }
         $script:Calls.Add(($DockerArgs -join ' '))
         if ($DockerArgs[0] -eq 'push') { return $script:PushExit }
         return 0
