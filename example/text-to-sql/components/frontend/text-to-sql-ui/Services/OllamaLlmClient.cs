@@ -17,6 +17,7 @@ public sealed class OllamaLlmClient : ILlmClient, IDisposable
 
     private const string DefaultBaseUrl = "http://127.0.0.1:11434";
     private const string DefaultModel = "localcoder";
+    private const string Dependency = "ollama";
 
     // Local generation is slower than a hosted API and the first call also pays
     // a model load. Give each request a generous per-call ceiling and bound the
@@ -84,15 +85,15 @@ after -- with EXACTLY these keys:
         var json = JsonSerializer.Serialize(requestBody);
         var url = $"{_baseUrl}/api/chat";
 
-        var responseJson = await LlmHttpRetry.PostAsync(_http, url, json, RetryWindow, false, ct);
+        var result = await LlmHttpRetry.PostAsync(_http, url, json, RetryWindow, false, ct, Dependency, _log);
         try
         {
-            return ParseChatResponse(responseJson).Validate();
+            return ParseChatResponse(result.Body).Validate();
         }
         catch (Exception ex)
         {
-            _log.LogError(ex, "Failed to parse model response");
-            throw new LlmClientException(ServiceMessages.Get("ParseError", ex.Message), ex);
+            // The caller logs this once with the full failure; the exception keeps the parse error.
+            throw result.ParseFailure(ex);
         }
     }
 

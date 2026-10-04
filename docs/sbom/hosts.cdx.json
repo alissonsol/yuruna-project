@@ -1,0 +1,39 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "serialNumber": "urn:uuid:21a7680e-112e-5151-837c-034493973c57",
+  "version": 1,
+  "metadata": {
+    "component": {
+      "type": "application",
+      "bom-ref": "repository-hosts",
+      "name": "yuruna-project-hosts",
+      "properties": [
+        {
+          "name": "yuruna:source-inputs-sha256",
+          "value": "6c5446e9bca0bbeba8b04a5e47afdd54a445e356dfd0779fc775a60dc89dfd98"
+        },
+        {
+          "name": "yuruna:inventory-kind",
+          "value": "declared-source"
+        }
+      ],
+      "version": "2026.10.04"
+    }
+  },
+  "components": [],
+  "dependencies": [
+    {
+      "ref": "repository-hosts",
+      "dependsOn": []
+    }
+  ],
+  "compositions": [
+    {
+      "aggregate": "incomplete",
+      "assemblies": [
+        "repository-hosts"
+      ]
+    }
+  ]
+}

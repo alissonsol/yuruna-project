@@ -17,14 +17,10 @@ spec:
     spec:
       containers:
       - name: website
-        # Notice that the 'registryName' variable is used to find the name of another variable,
-        # requiring the dual indirection.
-        # `required` is a deliberate guardrail against rendering
-        # "/website/website:latest" (leading slash, empty registry) when the
-        # resources.output.yml componentsRegistry block is missing or does not
-        # propagate to values.yaml, producing an InvalidImageName pod.
+        # See https://yuruna.link/42010605-0005
         {{- $regKey := printf "%s.registryLocation" (required "Helm values is missing 'registryName'. Check that resources.yml globalVariables sets registryName and that yuruna resources / components / workloads all ran in the same project_root." .Values.registryName) }}
         {{- $reg := required (printf "Helm values is missing key %q. The registry's tofu output did not reach values.yaml. Check that config/<env>/resources.output.yml has a %s block with a registryLocation.value (run 'yuruna resources <project> <env>' to (re)create it) before running 'yuruna workloads'." $regKey .Values.registryName) (index .Values $regKey) }}
+        {{- $certSecret := required "Helm values is missing 'websitePodCertSecret'. Check that config/<env>/workloads.yml globalVariables names the Secret that components/frontend/website/create-cert-secret.ps1 creates before the chart is installed." .Values.websitePodCertSecret }}
         image: {{ $reg }}/{{ required "Helm values is missing 'containerPrefix'." .Values.containerPrefix }}/website:latest
         imagePullPolicy: Always
         ports:
@@ -48,10 +44,19 @@ spec:
           value: "https://+;http://+"
         - name: ASPNETCORE_HTTPS_PORT
           value: "443"
+        # The certificate and its password live only in the Secret, which is created for
+        # each deployment with a generated password (see the website component README).
         - name: ASPNETCORE_Kestrel__Certificates__Default__Password
-          value: "password"
+          valueFrom:
+            secretKeyRef:
+              name: {{ $certSecret }}
+              key: password
         - name: ASPNETCORE_Kestrel__Certificates__Default__Path
-          value: "/app/aspnetapp.pfx"
+          value: "/https/aspnetapp.pfx"
+        volumeMounts:
+        - name: pod-certificate
+          mountPath: /https
+          readOnly: true
         readinessProbe:
           httpGet:
             path: /
@@ -73,6 +78,19 @@ spec:
           failureThreshold: 6
       imagePullSecrets:
         - name: registry-credential
+      # The key is readable by its owner and group only. The .NET base images give their
+      # non-root user and group the ID 1654, so the group lets that user read the key if the
+      # image ever drops root; the process runs as root today and reads it either way.
+      securityContext:
+        fsGroup: 1654
+      volumes:
+      - name: pod-certificate
+        secret:
+          secretName: {{ $certSecret }}
+          defaultMode: 0440
+          items:
+          - key: aspnetapp.pfx
+            path: aspnetapp.pfx
 ---
 apiVersion: v1
 kind: Service

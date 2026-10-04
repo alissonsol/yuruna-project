@@ -231,3 +231,9 @@ pre {
   }
   button { min-height: 44px; }
 }
+
+/* A touch pointer can coexist with a mouse on a wide viewport. */
+@media (any-pointer: coarse) {
+  button, .top-nav a, .examples a { min-height: 44px; min-width: 44px; }
+  .top-nav a, .examples a { display: inline-flex; align-items: center; }
+}

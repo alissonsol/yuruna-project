@@ -73,9 +73,12 @@ public sealed class AgentOrchestrator
             // A transport / HTTP / parse failure is an infrastructure ERROR, not
             // a model refusal -- render it as a failed step + run error so it is
             // distinguishable (and monitorable), and the client's own bounded
-            // retry has already been exhausted.
+            // retry has already been exhausted. Everything the call learned (dependency,
+            // last error, attempts, elapsed time, the last inner exception) goes to the log
+            // and stays on the run, so a flaky dependency is told apart from a broken one.
+            LogLlmFailure(ex);
             run.Steps.Add(Step.Fail("SQL generation", swGen, ex.Message));
-            run.Complete(error: "SQL generation failed (LLM/API error).");
+            run.Complete(error: "SQL generation failed (LLM/API error).", failure: ex.Failure);
             return run;
         }
         if (decision.Refused)
@@ -167,6 +170,16 @@ public sealed class AgentOrchestrator
         }
         return run;
     }
+
+    private void LogLlmFailure(LlmClientException ex)
+    {
+        if (ex.Failure is { } f)
+            _log.LogError(ex,
+                "SQL generation failed: dependency {Dependency} ({Host}), last error {LastError}, {Attempts} attempt(s) in {ElapsedMs} ms, budget expired {BudgetExpired}.",
+                f.Dependency, f.Host, f.LastErrorText, f.Attempts, (long)f.Elapsed.TotalMilliseconds, f.BudgetExpired);
+        else
+            _log.LogError(ex, "SQL generation failed before any model call completed.");
+    }
 }
 
 // --- REGION: Run and step records
@@ -182,14 +195,17 @@ public sealed class AgentRun
     public bool   Succeeded { get; private set; }
     public string? RefusalReason { get; private set; }
     public string? Error    { get; private set; }
+    // Set when the run failed in a model call: the structured cause behind Error.
+    public LlmFailure? Failure { get; private set; }
     public long TotalMs     { get; private set; }
 
     public AgentRun(string q) { Question = q; }
 
-    internal void Complete(string? refusal = null, string? error = null)
+    internal void Complete(string? refusal = null, string? error = null, LlmFailure? failure = null)
     {
         RefusalReason = refusal;
         Error = error;
+        Failure = failure;
         Succeeded = refusal is null && error is null;
         TotalMs = Steps.Sum(s => s.ElapsedMs);
     }

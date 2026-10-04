@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<SoftwareIdentity xmlns="http://standards.iso.org/iso/19770/-2/2015/schema.xsd" xmlns:sbom="urn:yuruna:sbom:1" name="SqlPolicy.Tests" tagId="urn:uuid:476cac34-9ce0-59aa-a5f6-9564b5e312f1" version="unspecified" versionScheme="alphanumeric" tagVersion="0" corpus="true">
+  <Entity name="Alisson Sol et al." regid="yuruna.com" role="tagCreator" />
+  <Meta sbom:generator="tools/Sync-Sbom.py" sbom:scope="repository" sbom:inventory-kind="declared-source" sbom:declaration="{&quot;completeness&quot;: &quot;declared&quot;, &quot;ecosystem&quot;: &quot;dotnet&quot;, &quot;evidence&quot;: [{&quot;detail&quot;: &quot;MSBuild project&quot;, &quot;line&quot;: 3, &quot;path&quot;: &quot;example/text-to-sql/tests/SqlPolicy.Tests/SqlPolicy.Tests.csproj&quot;}], &quot;notes&quot;: [&quot;NuGet transitive dependencies are unresolved without tracked restore locks/assets.&quot;, &quot;Target framework declaration: net8.0.&quot;], &quot;scope&quot;: &quot;test&quot;}" />
+</SoftwareIdentity>

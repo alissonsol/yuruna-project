@@ -119,6 +119,6 @@ workload:
     id: k8s.text-to-sql
     description: "Capture diagnostics after the deploy comes up"
     descriptionLocalized:
-      pt-BR: "Capturar diagnósticos após o implante surge"
+      pt-BR: "Capturar diagnósticos após a implantação estar pronta"
       zh-CN: "部署启动后采集诊断信息"
       he-IL: "אספו נתוני אבחון לאחר שהפריסה מתחילה לפעול"

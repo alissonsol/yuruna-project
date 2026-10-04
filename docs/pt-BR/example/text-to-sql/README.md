@@ -52,6 +52,20 @@ linha inteira de clientes. Colunas futuras não recebem acesso automático.
 A aplicação .NET deve se conectar com esse papel, nunca como proprietária do
 banco de dados.
 
+O papel é criado sem senha, portanto nenhum arquivo do repositório contém uma
+credencial. Um papel com permissão de login e sem senha não consegue se autenticar
+por `scram-sha-256` nem por `md5` (uma regra `trust` no `pg_hba.conf` ainda o
+admitiria, então mantenha uma regra assim longe desse papel). Defina uma senha
+antes de a aplicação se conectar; o prompt a mantém fora do histórico do shell:
+
+```powershell
+psql -h localhost -U postgres -d yuruna_demo -c "\password yuruna_agent_ro"
+```
+
+Em um convidado Yuruna, o script de configuração do banco de dados faz isso por
+você: ele gera uma senha aleatória a cada execução (veja
+[Integração com o Yuruna](#integração-com-o-yuruna)).
+
 <a id="4286c679-0004"></a>
 
 <a id="2--executar-a-aplicação-net"></a>
@@ -65,10 +79,28 @@ dotnet run
 
 Depois abra <http://localhost:5080>.
 
-Substitua a string de conexão, se necessário:
+A aplicação não tem senha padrão. Ela usa a conexão da primeira destas opções que
+estiver definida e, se nenhuma estiver, interrompe a inicialização com uma
+mensagem que cita as três:
+
+1. `TEXT2SQL_PG_CONN`: uma string de conexão completa.
+2. A chave de configuração `ConnectionStrings:Postgres`, por exemplo a partir de
+   `dotnet user-secrets` ou da variável de ambiente `ConnectionStrings__Postgres`.
+   O `appsettings.json` deliberadamente não traz string de conexão, para que a
+   próxima opção continue acessível e nenhuma senha possa ser versionada ali.
+3. `TEXT2SQL_PG_PASSWORD`: apenas a senha de `yuruna_agent_ro`. A aplicação então
+   se conecta a `localhost` com esse papel, no banco `yuruna_demo`, e coloca a
+   senha entre aspas quando necessário, quaisquer que sejam os caracteres dela.
 
 ```powershell
-$env:TEXT2SQL_PG_CONN = "Host=localhost;Username=yuruna_agent_ro;Password=agent_demo_password;Database=yuruna_demo"
+$env:TEXT2SQL_PG_PASSWORD = Read-Host -MaskInput "yuruna_agent_ro password"
+dotnet run
+```
+
+Ou informe a string inteira, trocando o marcador pela senha que você definiu:
+
+```powershell
+$env:TEXT2SQL_PG_CONN = "Host=localhost;Username=yuruna_agent_ro;Password=<password>;Database=yuruna_demo"
 dotnet run
 ```
 
@@ -124,6 +156,9 @@ agente (SchemaCatalog -> SqlValidator -> AgentOrchestrator). O
 orquestrador usa por padrão a "LLM" determinística baseada em regras;
 quando `ANTHROPIC_API_KEY` está definida, o caminho do ClaudeLlmClient
 entra em seu lugar pela mesma interface `ILlmClient`.
+`Services/PostgresConnectionString.cs` escolhe a string de conexão (veja
+[Executar a aplicação .NET](#2--executar-a-aplicação-net)) e interrompe a
+inicialização em vez de recorrer a uma senha embutida.
 
 **`Services/ILlmClient.cs`** -- o contrato da interface: `GenerateSqlAsync`
 recebe a pergunta mais a fatia de esquema expandida por FK e retorna ou
@@ -200,6 +235,16 @@ de novas tentativas (Claude: 90 segundos; Ollama: 240 segundos), incluindo a lei
 do corpo e os intervalos entre tentativas, mantendo as respectivas políticas de
 status transitórios. As mensagens de cada tentativa são descartadas, e o
 encerramento do singleton descarta o cliente HTTP que ele criou.
+Uma chamada que falha nunca se reduz a um prazo: `LlmClientException.Failure`
+registra a dependência (`anthropic` ou `ollama`) e seu host, o tipo do último erro
+(tempo esgotado, transporte, status HTTP, limite de taxa, cancelada pelo orçamento
+ou interpretação) com o último status HTTP, o número de tentativas, o tempo
+decorrido e se o orçamento acabou, e a última exceção permanece como
+`InnerException`. Cada nova tentativa é registrada como aviso; o orquestrador
+registra a falha final uma vez e a mantém na execução como `AgentRun.Failure`. O
+cancelamento feito pelo próprio chamador nunca é convertido: ele se propaga como
+`OperationCanceledException`. Os nomes de host não incluem credenciais nem a query
+de uma URL configurada.
 
 Os novos diagnósticos de serviço usam recursos padrão do .NET em inglês, português
 brasileiro, chinês simplificado e hebraico. A localização da solicitação seleciona
@@ -210,7 +255,10 @@ em inglês permanecem inalterados.
 
 No diretório `example/text-to-sql`, execute
 `dotnet run --project tests/ServiceContracts.Tests` para verificar o parser,
-os prazos, o cancelamento, o descarte, a localização e a indisponibilidade do banco.
+os prazos, os detalhes de falha, o cancelamento, o descarte, a localização, a
+resolução da string de conexão e a indisponibilidade do banco. O mesmo programa
+falha quando qualquer arquivo do exemplo contém uma senha de banco de dados
+literal.
 Defina `SERVICE_CONTRACT_DATABASE` como a conexão de um PostgreSQL descartável para
 acrescentar verificações reais de EXPLAIN e cache compartilhado. Esses testes não
 chamam APIs de modelos.
@@ -239,14 +287,32 @@ e é implantado pelo modelo de três fases do Yuruna. As peças estão no lugar:
   contêiner durante o `Set-Component`.
 - O chart do Helm em
   [`workloads/frontend/text-to-sql-ui/`](../../../../example/text-to-sql/workloads/frontend/text-to-sql-ui/)
-  o implanta no Kubernetes (pod + ingress TLS) durante o `Set-Workload`. A
-  implantação injeta `TEXT2SQL_PG_CONN` apontando para `status.hostIP` (o nó),
-  para que o pod alcance o PostgreSQL do nó pela rede de pods.
+  o implanta no Kubernetes (pod + ingress TLS) durante o `Set-Workload`, depois
+  que `create-cert-secret.ps1` cria o Secret do certificado do pod (veja
+  [Certificado de desenvolvimento](#certificado-de-desenvolvimento)) e
+  `create-db-secret.ps1` cria o Secret `text-to-sql-db`, que guarda a senha do
+  banco de dados. O pod lê essa senha por `secretKeyRef` para
+  `TEXT2SQL_PG_PASSWORD`, e a implantação monta `TEXT2SQL_PG_CONN` a partir dela,
+  apontando para `status.hostIP` (o nó), para que o pod alcance o PostgreSQL do
+  nó pela rede de pods.
 - `test/ubuntu.server.24/ubuntu.server.24.workload.k8s.text-to-sql.db.sh`
   sobe o banco de dados do nó: força `ssl = off`, abre
   `listen_addresses`/`pg_hba` para o CIDR dos pods, cria `yuruna_demo` e
-  carrega [`db/schema.sql`](../../../../example/text-to-sql/db/schema.sql) (que também cria o papel somente
-  leitura `yuruna_agent_ro` com o qual a aplicação se conecta).
+  carrega [`db/schema.sql`](../../../../example/text-to-sql/db/schema.sql) (que também cria, sem senha, o papel somente
+  leitura `yuruna_agent_ro` com o qual a aplicação se conecta). A cada execução,
+  o script gera uma nova senha aleatória (`openssl rand -hex 24`) para esse
+  papel. A senha chega ao `psql` pela entrada padrão quando é definida, e por
+  `PGPASSWORD` na única verificação de login, portanto não aparece em nenhuma
+  lista de argumentos, linha de saída nem rastreamento de `set -x`. Uma cópia
+  fica em `~/.text-to-sql/agent_ro.password` do usuário do convidado (diretório
+  com modo 700, arquivo com modo 600, uma linha). O
+  `create-db-secret.ps1` lê esse arquivo, ou o arquivo indicado pelo parâmetro
+  `-SidecarFile`, e para com uma mensagem que cita o arquivo e esta etapa de
+  configuração quando ele não existe ou está vazio. Para implantar a partir de
+  outra máquina, escreva antes a senha do papel em uma única linha nesse arquivo,
+  usando apenas letras, dígitos e `. _ ~ + / -`: o Kubernetes a substitui na
+  string de conexão, onde outros caracteres acrescentariam ou alterariam
+  palavras-chave da conexão.
 - A carga de trabalho [`test/`](../../../../example/text-to-sql/test/) exercita o ciclo inteiro em um nó
   Kubernetes convidado -- a sequência `.baseline` instala o Kubernetes e faz
   um checkpoint dele; a sequência `.test` restaura esse checkpoint, configura
@@ -260,21 +326,33 @@ rodar o cliente offline baseado em regras.
 
 ### Certificado de desenvolvimento
 
-Gere o certificado HTTPS de desenvolvimento **antes** da compilação
-Docker / Yuruna. O `Set-Component` executa `copy-pfx.ps1`, que copia
-`$HOME/.aspnet/https/aspnetapp.pfx` para o contexto de compilação, e o
-`Dockerfile` então faz `COPY` desse pfx para a imagem. Se o pfx ainda não
-existir, `copy-pfx.ps1` falha de forma explícita, com o comando exato a
-ser executado.
+A imagem não contém certificado nem senha. Gere o certificado HTTPS de
+desenvolvimento **antes** da compilação Docker / Yuruna. O `Set-Component`
+executa `copy-pfx.ps1`, que apenas verifica se `$HOME/.aspnet/https/aspnetapp.pfx`
+abre com a senha de `ASPNETCORE_Kestrel__Certificates__Default__Password` e
+falha de forma explícita, com o comando exato a ser executado, quando isso não
+acontece. Em seguida o `Set-Workload` executa `create-cert-secret.ps1`, que
+exporta esse certificado novamente, com uma senha recém-gerada, para o Secret
+`text-to-sql-ui-pod-cert`; o chart monta o certificado em `/https` e lê a senha
+por `secretKeyRef`. Os convidados (VMs) guardam a senha do certificado de
+desenvolvimento em `~/.aspnet/https/aspnetapp.pfx.password` (legível somente pelo
+proprietário), e o exemplo lê esse arquivo quando
+`ASPNETCORE_Kestrel__Certificates__Default__Password` não está definida.
 
 ```powershell
 dotnet dev-certs https --check --trust              # check
 mkdir $HOME/.aspnet/https
-dotnet dev-certs https -ep $HOME/.aspnet/https/aspnetapp.pfx -p { password here }
+$env:ASPNETCORE_Kestrel__Certificates__Default__Password = [Convert]::ToHexString([Security.Cryptography.RandomNumberGenerator]::GetBytes(16))
+dotnet dev-certs https -ep $HOME/.aspnet/https/aspnetapp.pfx -p $env:ASPNETCORE_Kestrel__Certificates__Default__Password
 dotnet dev-certs https --trust
 ```
 
 Se aparecer "A valid HTTPS certificate is already present" -> execute `dotnet dev-certs https --clean` e tente novamente.
+
+O projeto, o certificado descartável que a automação usa quando não existe
+certificado de desenvolvimento e os comandos que provam que uma imagem não leva
+nenhuma chave estão no
+[README do componente website](../../../../example/website/components/frontend/website/README.md#development-certificate).
 
 Os scripts de certificado e de preparação das imagens carregam a cópia de
 `Example.Build.psm1` incluída no próprio contexto de compilação. A fonte
@@ -292,7 +370,19 @@ SDK .NET 8; a aplicação continua no .NET 10. Na raiz do repositório:
 ```powershell
 dotnet run --project example/text-to-sql/tests/SqlPolicy.Tests
 pwsh tools/Test-ExampleBuild.ps1
+pwsh example/text-to-sql/tests/Test-DatabaseSecret.ps1
+python example/text-to-sql/tests/db_script_contracts.py
 ```
+
+Os dois últimos verificam o fluxo da senha do banco de dados com substitutos para
+`kubectl`, `sudo` e `psql`: a senha deve ser diferente a cada execução e ficar
+fora de toda lista de argumentos, fluxo de saída e rastreamento de `set -x`,
+chegar ao `psql` apenas pela entrada padrão (ou por `PGPASSWORD` na verificação
+de login) e ser guardada em um arquivo acessível só ao proprietário, que o
+script do Secret lê de volta. Eles precisam
+de `pwsh` e `python` (no Windows, do `usr\bin\bash.exe` do Git for Windows) e
+acrescentam as verificações do chart quando o `helm` e o módulo `powershell-yaml`
+estão instalados. Não é preciso cluster nem PostgreSQL.
 
 Depois de carregar o esquema em um banco PostgreSQL descartável, verifique as
 permissões do papel e o esquema que ele pode ler, usando o proprietário do banco:
@@ -320,13 +410,17 @@ example/text-to-sql/
 +-- workloads/
 |   +-- frontend/text-to-sql-ui/     <- helm chart (pod + TLS ingress)
 +-- test/                            <- guest-Kubernetes deployment test
++-- tests/                           <- contract tests (C#, Python, PowerShell)
 +-- components/
     +-- frontend/
         +-- text-to-sql-ui/
             +-- text-to-sql-ui.csproj
             +-- Program.cs
             +-- Dockerfile
-            +-- copy-pfx.ps1          <- copies the dev cert into the build context
+            +-- .dockerignore         <- keeps *.pfx and other key files out of every build stage
+            +-- copy-pfx.ps1          <- checks that the dev cert opens (nothing is copied)
+            +-- create-cert-secret.ps1 <- creates the pod certificate Secret with a generated password
+            +-- create-db-secret.ps1  <- creates the database password Secret from the file the DB setup step writes
             +-- seed-base-images.ps1  <- pushes the Dockerfile's base images to the local registry
             +-- appsettings*.json
             +-- Properties/launchSettings.json
@@ -343,6 +437,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Última revisão: 2026.09.30
+Última revisão: 2026.10.04
 
 Voltar para [yuruna-project](../../../../README.md) - [Yuruna](https://yuruna.com)

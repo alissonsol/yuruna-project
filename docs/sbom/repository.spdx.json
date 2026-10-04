@@ -1,0 +1,319 @@
+{
+  "spdxVersion": "SPDX-2.2",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "yuruna-project-repository",
+  "documentNamespace": "https://github.com/alissonsol/yuruna-project/sbom/repository/6c5446e9bca0bbeba8b04a5e47afdd54a445e356dfd0779fc775a60dc89dfd98",
+  "creationInfo": {
+    "created": "2026-10-03T16:48:41Z",
+    "creators": [
+      "Tool: Sync-Sbom.py-1",
+      "Organization: Alisson Sol et al."
+    ],
+    "comment": "Created date is the initial inventory creation date. Source digest identifies each regenerated inventory. Unrecorded licenses and transitive dependencies remain unasserted."
+  },
+  "documentDescribes": [
+    "SPDXRef-Repository"
+  ],
+  "packages": [
+    {
+      "name": "yuruna-project-repository",
+      "SPDXID": "SPDXRef-Repository",
+      "downloadLocation": "https://github.com/alissonsol/yuruna-project",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "LicenseRef-Yuruna",
+      "copyrightText": "NOASSERTION",
+      "supplier": "Organization: Alisson Sol et al.",
+      "comment": "Declared repository inventory; source-inputs SHA256 6c5446e9bca0bbeba8b04a5e47afdd54a445e356dfd0779fc775a60dc89dfd98. Not an installed-system scan.",
+      "versionInfo": "2026.10.04"
+    },
+    {
+      "name": "jquery-validate",
+      "SPDXID": "SPDXRef-ea2f91e9bbca1611793d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"cdnjs\", \"evidence\": [{\"detail\": \"LibMan browser library\", \"line\": 19, \"path\": \"example/website/components/frontend/website/libman.json\"}], \"notes\": [\"Provider declaration only; restored browser files are not inventoried.\"], \"scope\": \"runtime\"}",
+      "versionInfo": "1.22.1"
+    },
+    {
+      "name": "jquery-validation-unobtrusive",
+      "SPDXID": "SPDXRef-4b6b54d1176af290a839",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"cdnjs\", \"evidence\": [{\"detail\": \"LibMan browser library\", \"line\": 29, \"path\": \"example/website/components/frontend/website/libman.json\"}], \"notes\": [\"Provider declaration only; restored browser files are not inventoried.\"], \"scope\": \"runtime\"}",
+      "versionInfo": "4.0.0"
+    },
+    {
+      "name": "jquery",
+      "SPDXID": "SPDXRef-c7b717f34133afa62fd4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"cdnjs\", \"evidence\": [{\"detail\": \"LibMan browser library\", \"line\": 10, \"path\": \"example/website/components/frontend/website/libman.json\"}], \"notes\": [\"Provider declaration only; restored browser files are not inventoried.\"], \"scope\": \"runtime\"}",
+      "versionInfo": "3.7.1"
+    },
+    {
+      "name": "twitter-bootstrap",
+      "SPDXID": "SPDXRef-739ea0052fe6aa426364",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"cdnjs\", \"evidence\": [{\"detail\": \"LibMan browser library\", \"line\": 6, \"path\": \"example/website/components/frontend/website/libman.json\"}], \"notes\": [\"Provider declaration only; restored browser files are not inventoried.\"], \"scope\": \"runtime\"}",
+      "versionInfo": "5.3.8"
+    },
+    {
+      "name": "mcr.microsoft.com/dotnet/aspnet",
+      "SPDXID": "SPDXRef-4a0487878343df7140c0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"docker\", \"evidence\": [{\"detail\": \"Dockerfile FROM declaration\", \"line\": 15, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile\"}, {\"detail\": \"Dockerfile FROM declaration\", \"line\": 15, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"notes\": [\"Container OS/package contents were not scanned; tag-only images are mutable.\", \"FROM expression ${REGISTRY}dotnet/aspnet:10.0 uses declared ARG defaults; builds can override them.\"], \"scope\": \"runtime\", \"versionConstraint\": \"10.0\"}"
+    },
+    {
+      "name": "mcr.microsoft.com/dotnet/sdk",
+      "SPDXID": "SPDXRef-649c4fdc6abb56b17f9b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"docker\", \"evidence\": [{\"detail\": \"Dockerfile FROM declaration\", \"line\": 21, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile\"}, {\"detail\": \"Dockerfile FROM declaration\", \"line\": 21, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"notes\": [\"Container OS/package contents were not scanned; tag-only images are mutable.\", \"FROM expression ${REGISTRY}dotnet/sdk:10.0 uses declared ARG defaults; builds can override them.\"], \"scope\": \"build\", \"versionConstraint\": \"10.0\"}"
+    },
+    {
+      "name": "Microsoft.AspNetCore.App",
+      "SPDXID": "SPDXRef-1d5f2e1193d2c470daf8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"Declared dependency\", \"line\": 13, \"path\": \"example/text-to-sql/tests/ServiceContracts.Tests/ServiceContracts.Tests.csproj\"}, {\"detail\": \"Declared dependency\", \"line\": 13, \"path\": \"example/text-to-sql/tests/SqlPolicy.Tests/SqlPolicy.Tests.csproj\"}], \"notes\": [\"No transitive NuGet graph was resolved.\"], \"scope\": \"test\"}"
+    },
+    {
+      "name": "ServiceContracts.Tests",
+      "SPDXID": "SPDXRef-01aba535650faccb8327",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"MSBuild project\", \"line\": 3, \"path\": \"example/text-to-sql/tests/ServiceContracts.Tests/ServiceContracts.Tests.csproj\"}], \"notes\": [\"NuGet transitive dependencies are unresolved without tracked restore locks/assets.\", \"Target framework declaration: net10.0.\"], \"scope\": \"test\"}"
+    },
+    {
+      "name": "SqlPolicy.Tests",
+      "SPDXID": "SPDXRef-dd27130b577f4b0f8be2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"MSBuild project\", \"line\": 3, \"path\": \"example/text-to-sql/tests/SqlPolicy.Tests/SqlPolicy.Tests.csproj\"}], \"notes\": [\"NuGet transitive dependencies are unresolved without tracked restore locks/assets.\", \"Target framework declaration: net8.0.\"], \"scope\": \"test\"}"
+    },
+    {
+      "name": "text-to-sql-ui",
+      "SPDXID": "SPDXRef-01ae833cee785734351c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"MSBuild project\", \"line\": 3, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/text-to-sql-ui.csproj\"}], \"notes\": [\"NuGet transitive dependencies are unresolved without tracked restore locks/assets.\", \"Target framework declaration: net10.0.\"], \"scope\": \"runtime\"}"
+    },
+    {
+      "name": "website",
+      "SPDXID": "SPDXRef-5b5a4e8f30316aeebb48",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"MSBuild project\", \"line\": 3, \"path\": \"example/website/components/frontend/website/website.csproj\"}], \"notes\": [\"NuGet transitive dependencies are unresolved without tracked restore locks/assets.\", \"Target framework declaration: net10.0.\"], \"scope\": \"runtime\"}"
+    },
+    {
+      "name": "Git",
+      "SPDXID": "SPDXRef-a918c6f303ac3cfdd0e8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"unresolved\", \"ecosystem\": \"git\", \"evidence\": [{\"detail\": \"Index snapshot and generated-file staging use the installed Git CLI\", \"line\": 38, \"path\": \"tools/Sync-Sbom.py\"}], \"notes\": [\"The repository does not pin the installed Git version.\"], \"scope\": \"build\"}"
+    },
+    {
+      "name": "Microsoft.VisualStudio.Azure.Containers.Tools.Targets",
+      "SPDXID": "SPDXRef-af977196b447243ff8e3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"nuget\", \"evidence\": [{\"detail\": \"Declared dependency\", \"line\": 15, \"path\": \"example/website/components/frontend/website/website.csproj\"}], \"notes\": [\"No transitive NuGet graph was resolved.\"], \"scope\": \"build\"}",
+      "versionInfo": "1.23.0",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:nuget/Microsoft.VisualStudio.Azure.Containers.Tools.Targets@1.23.0"
+        }
+      ]
+    },
+    {
+      "name": "Npgsql",
+      "SPDXID": "SPDXRef-e511d5bdbceb38a571f5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"nuget\", \"evidence\": [{\"detail\": \"Declared dependency\", \"line\": 14, \"path\": \"example/text-to-sql/tests/ServiceContracts.Tests/ServiceContracts.Tests.csproj\"}, {\"detail\": \"Declared dependency\", \"line\": 16, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/text-to-sql-ui.csproj\"}], \"notes\": [\"No transitive NuGet graph was resolved.\"], \"scope\": \"runtime\"}",
+      "versionInfo": "10.0.3",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:nuget/Npgsql@10.0.3"
+        }
+      ]
+    },
+    {
+      "name": "Python",
+      "SPDXID": "SPDXRef-d4da385fc11f7e9f7d15",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"python\", \"evidence\": [{\"detail\": \"SBOM collector uses Python 3.11 tomllib and the standard library\", \"line\": 11, \"path\": \"tools/sbom_dependencies.py\"}], \"notes\": [\"No Python package installation is required.\"], \"scope\": \"build\", \"versionConstraint\": \">=3.11\"}"
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-Repository"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-ea2f91e9bbca1611793d"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-4b6b54d1176af290a839"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-c7b717f34133afa62fd4"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-739ea0052fe6aa426364"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-4a0487878343df7140c0"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-649c4fdc6abb56b17f9b"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-1d5f2e1193d2c470daf8"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-01aba535650faccb8327"
+    },
+    {
+      "spdxElementId": "SPDXRef-01aba535650faccb8327",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-1d5f2e1193d2c470daf8"
+    },
+    {
+      "spdxElementId": "SPDXRef-01aba535650faccb8327",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-e511d5bdbceb38a571f5"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-dd27130b577f4b0f8be2"
+    },
+    {
+      "spdxElementId": "SPDXRef-dd27130b577f4b0f8be2",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-1d5f2e1193d2c470daf8"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-01ae833cee785734351c"
+    },
+    {
+      "spdxElementId": "SPDXRef-01ae833cee785734351c",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-e511d5bdbceb38a571f5"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-5b5a4e8f30316aeebb48"
+    },
+    {
+      "spdxElementId": "SPDXRef-5b5a4e8f30316aeebb48",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-af977196b447243ff8e3"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-a918c6f303ac3cfdd0e8"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-af977196b447243ff8e3"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-e511d5bdbceb38a571f5"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-d4da385fc11f7e9f7d15"
+    }
+  ],
+  "hasExtractedLicensingInfos": [
+    {
+      "licenseId": "LicenseRef-Yuruna",
+      "name": "LicenseRef-Yuruna",
+      "extractedText": "# Yuruna License\n\nThis is the **Yuruna License**, based on the [MIT License](https://opensource.org/license/mit/).\n\nLICENSEURI https://yuruna.link/license\n\nCopyright (c) 2019-2026 by Alisson Sol et al.\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\n## No Warranty / \"As Is\"\n\n**There is no warranty of any kind.** The Software is provided **\"as is\"**,\nwithout any guarantees -- express or implied -- including but not limited to\ncorrectness, completeness, fitness for a particular purpose, merchantability,\nor non-infringement. You assume the entire risk of using it.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n\n## Administrator Risk Warning\n\nPortions of this Software are designed to run with **elevated / administrator\nprivileges** (e.g., as Administrator on Windows, or via `sudo` / root on\nLinux and macOS). Running code at this privilege level is **inherently\nrisky**: it can modify system configuration, create or destroy virtual\nmachines, alter networking, install or remove packages, and read or write\narbitrary files. Mistakes -- whether in the Software, in the operator's\ninput, or in the surrounding environment -- **may lead to data loss, system\ninstability, or unrecoverable changes**.\n\nBy executing any part of the Software with administrator or root permissions,\nyou acknowledge this risk and accept full responsibility for the outcome.\nReview the code, take backups, and test in an isolated environment before\nrunning anything privileged against systems you cannot afford to lose.\n\n---\n\nLICENSEURI https://yuruna.link/license\n\nCopyright (c) 2019-2026 by Alisson Sol et al.\n\nLast review: 2026.10.04\n\nBack to [yuruna-project](README.md) - [Yuruna](https://yuruna.com)\n",
+      "seeAlsos": [
+        "https://github.com/alissonsol/yuruna-project/blob/main/LICENSE.md"
+      ]
+    }
+  ]
+}

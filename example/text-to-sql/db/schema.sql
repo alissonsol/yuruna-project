@@ -198,11 +198,17 @@ WHERE s.cancelled_at IS NULL;
 -- -- Roles for the action-gating layer --------------------------------------
 -- A read-only role the .NET app connects as. The agent NEVER connects as
 -- the schema owner. This is what action-gating looks like at the DB layer.
+--
+-- The role is created without a password, so this file carries no credential.
+-- A LOGIN role that has none cannot authenticate over scram-sha-256 or md5 and
+-- stays unusable until the operator sets one: the guest database setup script
+-- generates a random password for each deployment, and local development runs
+-- \password yuruna_agent_ro in psql.
 
 DO $$
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'yuruna_agent_ro') THEN
-        CREATE ROLE yuruna_agent_ro LOGIN PASSWORD 'agent_demo_password';
+        CREATE ROLE yuruna_agent_ro LOGIN;
     END IF;
 END$$;
 

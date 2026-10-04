@@ -1,5 +1,7 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# Requires the Secret website-pod-cert in the pod's namespace; create it with
+# create-cert-secret.ps1 (see README.md).
 apiVersion: v1
 kind: Pod
 metadata:
@@ -7,6 +9,10 @@ metadata:
   labels:
     app: website-pod
 spec:
+  # The key is readable by its owner and group only; the .NET base images give their
+  # non-root user and group the ID 1654.
+  securityContext:
+    fsGroup: 1654
   containers:
     - name: website-app
       image: "localhost:5000/website/website:latest"
@@ -19,6 +25,21 @@ spec:
       - name: ASPNETCORE_HTTPS_PORT
         value: "8001"
       - name: ASPNETCORE_Kestrel__Certificates__Default__Password
-        value: "password"
+        valueFrom:
+          secretKeyRef:
+            name: website-pod-cert
+            key: password
       - name: ASPNETCORE_Kestrel__Certificates__Default__Path
-        value: "/app/aspnetapp.pfx"
+        value: "/https/aspnetapp.pfx"
+      volumeMounts:
+        - name: pod-certificate
+          mountPath: /https
+          readOnly: true
+  volumes:
+    - name: pod-certificate
+      secret:
+        secretName: website-pod-cert
+        defaultMode: 0440
+        items:
+          - key: aspnetapp.pfx
+            path: aspnetapp.pfx

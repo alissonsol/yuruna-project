@@ -93,7 +93,7 @@ workload:
     timeoutSeconds: 360
     description: "OCR: control-plane"
     descriptionLocalized:
-      pt-BR: "OCR: plano de controlo"
+      pt-BR: "OCR: control-plane"
       zh-CN: "光学字符识别：control-plane"
       he-IL: "זיהוי תווים אופטי: control-plane"
 

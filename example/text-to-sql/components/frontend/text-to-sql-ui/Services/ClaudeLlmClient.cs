@@ -17,6 +17,7 @@ public sealed class ClaudeLlmClient : ILlmClient, IDisposable
     private readonly string _model;
 
     private const string AnthropicApiUrl = "https://api.anthropic.com/v1/messages";
+    private const string Dependency = "anthropic";
     private const string AnthropicVersion = "2023-06-01";
     private const string DefaultModel = "claude-opus-4-8";
 
@@ -115,15 +116,15 @@ In the plan field, show your step-by-step reasoning before arriving at the SQL.
             PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
         });
 
-        var responseJson = await LlmHttpRetry.PostAsync(_http, AnthropicApiUrl, json, RetryWindow, true, ct);
+        var result = await LlmHttpRetry.PostAsync(_http, AnthropicApiUrl, json, RetryWindow, true, ct, Dependency, _log);
         try
         {
-            return ParseToolUseResponse(responseJson).Validate();
+            return ParseToolUseResponse(result.Body).Validate();
         }
         catch (Exception ex)
         {
-            _log.LogError(ex, "Failed to parse model response");
-            throw new LlmClientException(ServiceMessages.Get("ParseError", ex.Message), ex);
+            // The caller logs this once with the full failure; the exception keeps the parse error.
+            throw result.ParseFailure(ex);
         }
     }
 

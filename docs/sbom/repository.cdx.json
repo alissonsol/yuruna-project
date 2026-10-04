@@ -1,0 +1,254 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "serialNumber": "urn:uuid:2185048d-d209-5065-91f8-e4ce1a637bac",
+  "version": 1,
+  "metadata": {
+    "component": {
+      "type": "application",
+      "bom-ref": "repository-repository",
+      "name": "yuruna-project-repository",
+      "properties": [
+        {
+          "name": "yuruna:source-inputs-sha256",
+          "value": "6c5446e9bca0bbeba8b04a5e47afdd54a445e356dfd0779fc775a60dc89dfd98"
+        },
+        {
+          "name": "yuruna:inventory-kind",
+          "value": "declared-source"
+        }
+      ],
+      "version": "2026.10.04"
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "component-ea2f91e9bbca1611793d",
+      "name": "jquery-validate",
+      "properties": [
+        {
+          "name": "yuruna:declaration",
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"cdnjs\", \"evidence\": [{\"detail\": \"LibMan browser library\", \"line\": 19, \"path\": \"example/website/components/frontend/website/libman.json\"}], \"notes\": [\"Provider declaration only; restored browser files are not inventoried.\"], \"scope\": \"runtime\"}"
+        }
+      ],
+      "version": "1.22.1"
+    },
+    {
+      "type": "library",
+      "bom-ref": "component-4b6b54d1176af290a839",
+      "name": "jquery-validation-unobtrusive",
+      "properties": [
+        {
+          "name": "yuruna:declaration",
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"cdnjs\", \"evidence\": [{\"detail\": \"LibMan browser library\", \"line\": 29, \"path\": \"example/website/components/frontend/website/libman.json\"}], \"notes\": [\"Provider declaration only; restored browser files are not inventoried.\"], \"scope\": \"runtime\"}"
+        }
+      ],
+      "version": "4.0.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "component-c7b717f34133afa62fd4",
+      "name": "jquery",
+      "properties": [
+        {
+          "name": "yuruna:declaration",
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"cdnjs\", \"evidence\": [{\"detail\": \"LibMan browser library\", \"line\": 10, \"path\": \"example/website/components/frontend/website/libman.json\"}], \"notes\": [\"Provider declaration only; restored browser files are not inventoried.\"], \"scope\": \"runtime\"}"
+        }
+      ],
+      "version": "3.7.1"
+    },
+    {
+      "type": "library",
+      "bom-ref": "component-739ea0052fe6aa426364",
+      "name": "twitter-bootstrap",
+      "properties": [
+        {
+          "name": "yuruna:declaration",
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"cdnjs\", \"evidence\": [{\"detail\": \"LibMan browser library\", \"line\": 6, \"path\": \"example/website/components/frontend/website/libman.json\"}], \"notes\": [\"Provider declaration only; restored browser files are not inventoried.\"], \"scope\": \"runtime\"}"
+        }
+      ],
+      "version": "5.3.8"
+    },
+    {
+      "type": "container",
+      "bom-ref": "component-4a0487878343df7140c0",
+      "name": "mcr.microsoft.com/dotnet/aspnet",
+      "properties": [
+        {
+          "name": "yuruna:declaration",
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"docker\", \"evidence\": [{\"detail\": \"Dockerfile FROM declaration\", \"line\": 15, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile\"}, {\"detail\": \"Dockerfile FROM declaration\", \"line\": 15, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"notes\": [\"Container OS/package contents were not scanned; tag-only images are mutable.\", \"FROM expression ${REGISTRY}dotnet/aspnet:10.0 uses declared ARG defaults; builds can override them.\"], \"scope\": \"runtime\", \"versionConstraint\": \"10.0\"}"
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "bom-ref": "component-649c4fdc6abb56b17f9b",
+      "name": "mcr.microsoft.com/dotnet/sdk",
+      "properties": [
+        {
+          "name": "yuruna:declaration",
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"docker\", \"evidence\": [{\"detail\": \"Dockerfile FROM declaration\", \"line\": 21, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile\"}, {\"detail\": \"Dockerfile FROM declaration\", \"line\": 21, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"notes\": [\"Container OS/package contents were not scanned; tag-only images are mutable.\", \"FROM expression ${REGISTRY}dotnet/sdk:10.0 uses declared ARG defaults; builds can override them.\"], \"scope\": \"build\", \"versionConstraint\": \"10.0\"}"
+        }
+      ]
+    },
+    {
+      "type": "framework",
+      "bom-ref": "component-1d5f2e1193d2c470daf8",
+      "name": "Microsoft.AspNetCore.App",
+      "properties": [
+        {
+          "name": "yuruna:declaration",
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"Declared dependency\", \"line\": 13, \"path\": \"example/text-to-sql/tests/ServiceContracts.Tests/ServiceContracts.Tests.csproj\"}, {\"detail\": \"Declared dependency\", \"line\": 13, \"path\": \"example/text-to-sql/tests/SqlPolicy.Tests/SqlPolicy.Tests.csproj\"}], \"notes\": [\"No transitive NuGet graph was resolved.\"], \"scope\": \"test\"}"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "component-01aba535650faccb8327",
+      "name": "ServiceContracts.Tests",
+      "properties": [
+        {
+          "name": "yuruna:declaration",
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"MSBuild project\", \"line\": 3, \"path\": \"example/text-to-sql/tests/ServiceContracts.Tests/ServiceContracts.Tests.csproj\"}], \"notes\": [\"NuGet transitive dependencies are unresolved without tracked restore locks/assets.\", \"Target framework declaration: net10.0.\"], \"scope\": \"test\"}"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "component-dd27130b577f4b0f8be2",
+      "name": "SqlPolicy.Tests",
+      "properties": [
+        {
+          "name": "yuruna:declaration",
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"MSBuild project\", \"line\": 3, \"path\": \"example/text-to-sql/tests/SqlPolicy.Tests/SqlPolicy.Tests.csproj\"}], \"notes\": [\"NuGet transitive dependencies are unresolved without tracked restore locks/assets.\", \"Target framework declaration: net8.0.\"], \"scope\": \"test\"}"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "component-01ae833cee785734351c",
+      "name": "text-to-sql-ui",
+      "properties": [
+        {
+          "name": "yuruna:declaration",
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"MSBuild project\", \"line\": 3, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/text-to-sql-ui.csproj\"}], \"notes\": [\"NuGet transitive dependencies are unresolved without tracked restore locks/assets.\", \"Target framework declaration: net10.0.\"], \"scope\": \"runtime\"}"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "component-5b5a4e8f30316aeebb48",
+      "name": "website",
+      "properties": [
+        {
+          "name": "yuruna:declaration",
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"MSBuild project\", \"line\": 3, \"path\": \"example/website/components/frontend/website/website.csproj\"}], \"notes\": [\"NuGet transitive dependencies are unresolved without tracked restore locks/assets.\", \"Target framework declaration: net10.0.\"], \"scope\": \"runtime\"}"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "component-a918c6f303ac3cfdd0e8",
+      "name": "Git",
+      "properties": [
+        {
+          "name": "yuruna:declaration",
+          "value": "{\"completeness\": \"unresolved\", \"ecosystem\": \"git\", \"evidence\": [{\"detail\": \"Index snapshot and generated-file staging use the installed Git CLI\", \"line\": 38, \"path\": \"tools/Sync-Sbom.py\"}], \"notes\": [\"The repository does not pin the installed Git version.\"], \"scope\": \"build\"}"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "component-af977196b447243ff8e3",
+      "name": "Microsoft.VisualStudio.Azure.Containers.Tools.Targets",
+      "properties": [
+        {
+          "name": "yuruna:declaration",
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"nuget\", \"evidence\": [{\"detail\": \"Declared dependency\", \"line\": 15, \"path\": \"example/website/components/frontend/website/website.csproj\"}], \"notes\": [\"No transitive NuGet graph was resolved.\"], \"scope\": \"build\"}"
+        }
+      ],
+      "version": "1.23.0",
+      "purl": "pkg:nuget/Microsoft.VisualStudio.Azure.Containers.Tools.Targets@1.23.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "component-e511d5bdbceb38a571f5",
+      "name": "Npgsql",
+      "properties": [
+        {
+          "name": "yuruna:declaration",
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"nuget\", \"evidence\": [{\"detail\": \"Declared dependency\", \"line\": 14, \"path\": \"example/text-to-sql/tests/ServiceContracts.Tests/ServiceContracts.Tests.csproj\"}, {\"detail\": \"Declared dependency\", \"line\": 16, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/text-to-sql-ui.csproj\"}], \"notes\": [\"No transitive NuGet graph was resolved.\"], \"scope\": \"runtime\"}"
+        }
+      ],
+      "version": "10.0.3",
+      "purl": "pkg:nuget/Npgsql@10.0.3"
+    },
+    {
+      "type": "platform",
+      "bom-ref": "component-d4da385fc11f7e9f7d15",
+      "name": "Python",
+      "properties": [
+        {
+          "name": "yuruna:declaration",
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"python\", \"evidence\": [{\"detail\": \"SBOM collector uses Python 3.11 tomllib and the standard library\", \"line\": 11, \"path\": \"tools/sbom_dependencies.py\"}], \"notes\": [\"No Python package installation is required.\"], \"scope\": \"build\", \"versionConstraint\": \">=3.11\"}"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "repository-repository",
+      "dependsOn": [
+        "component-01aba535650faccb8327",
+        "component-01ae833cee785734351c",
+        "component-1d5f2e1193d2c470daf8",
+        "component-4a0487878343df7140c0",
+        "component-4b6b54d1176af290a839",
+        "component-5b5a4e8f30316aeebb48",
+        "component-649c4fdc6abb56b17f9b",
+        "component-739ea0052fe6aa426364",
+        "component-a918c6f303ac3cfdd0e8",
+        "component-af977196b447243ff8e3",
+        "component-c7b717f34133afa62fd4",
+        "component-d4da385fc11f7e9f7d15",
+        "component-dd27130b577f4b0f8be2",
+        "component-e511d5bdbceb38a571f5",
+        "component-ea2f91e9bbca1611793d"
+      ]
+    },
+    {
+      "ref": "component-01aba535650faccb8327",
+      "dependsOn": [
+        "component-1d5f2e1193d2c470daf8",
+        "component-e511d5bdbceb38a571f5"
+      ]
+    },
+    {
+      "ref": "component-dd27130b577f4b0f8be2",
+      "dependsOn": [
+        "component-1d5f2e1193d2c470daf8"
+      ]
+    },
+    {
+      "ref": "component-01ae833cee785734351c",
+      "dependsOn": [
+        "component-e511d5bdbceb38a571f5"
+      ]
+    },
+    {
+      "ref": "component-5b5a4e8f30316aeebb48",
+      "dependsOn": [
+        "component-af977196b447243ff8e3"
+      ]
+    }
+  ],
+  "compositions": [
+    {
+      "aggregate": "incomplete",
+      "assemblies": [
+        "repository-repository"
+      ]
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 # Workloads information - localhost
 ---
+# --- REGION: globalVariables
 globalVariables:
   # TO-SET: set domain below, like yrn42.com
   # websiteDomain:         "yrn42website-domain"
@@ -11,6 +12,9 @@ globalVariables:
   # see: https://letsencrypt.org/docs/certificates-for-localhost/
   websiteHost:           "localhost"
   websiteTlsSecret:      "website-tls-secret"
+  # Secret holding the pod's HTTPS certificate and its generated password; created
+  # by create-cert-secret.ps1 below and mounted by the chart.
+  websitePodCertSecret:  "website-pod-cert"
   certManagerIssuerEmail: "certificates@yrn42.com"
   _registryLocation:     "$($([Environment]::GetEnvironmentVariable(\"${env:registryName}.registryLocation\")) -replace '.azurecr.io','')"
   dockerServer:          "http://${env:_registryLocation}"
@@ -18,6 +22,7 @@ globalVariables:
   dockerPassword:        "placeholder"
   ingressClass:          "nginx"
 
+# --- REGION: workloads
 workloads:
 - context: "${env:runTag}-${env:project}-${env:runId}"
   variables:
@@ -61,6 +66,9 @@ workloads:
     # Install components
     - kubectl: "config set-context --current --namespace=${env:namespace} --v=1"
     - kubectl: "create secret docker-registry registry-credential --docker-server=${env:dockerServer} --docker-username=${env:dockerUsername} --docker-password=${env:dockerPassword}"
+    # The pod needs this Secret to start, so it precedes the chart. The password is generated
+    # inside the script and never passes through a variable, a command line or a log.
+    - shell: "& '${env:project_root}/components/frontend/website/create-cert-secret.ps1' -Namespace ${env:namespace} -SecretName ${env:websitePodCertSecret}"
     - chart: "frontend/website"
       variables:
         installName: "website-${env:runId}"

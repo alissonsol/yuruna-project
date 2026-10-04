@@ -1,3 +1,5 @@
+<a id="42a0328b-0001"></a>
+
 # Project display text
 
 The framework's [language guide](https://github.com/alissonsol/yuruna/blob/main/docs/globalization.md)

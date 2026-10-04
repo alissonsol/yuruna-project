@@ -2,6 +2,7 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 # Workloads information - localhost
 ---
+# --- REGION: globalVariables
 globalVariables:
   # TO-SET: set domain below, like yrn42.com
   # appDomain:             "yrn42text2sql-domain"
@@ -11,6 +12,13 @@ globalVariables:
   # see: https://letsencrypt.org/docs/certificates-for-localhost/
   appHost:               "localhost"
   appTlsSecret:          "text-to-sql-ui-tls-secret"
+  # Secret holding the pod's HTTPS certificate and its generated password; created
+  # by create-cert-secret.ps1 below and mounted by the chart.
+  appPodCertSecret:      "text-to-sql-ui-pod-cert"
+  # Secret holding the read-only database role's password; created by
+  # create-db-secret.ps1 below from the file the database setup step writes, and
+  # read by the pod through secretKeyRef.
+  appDbSecret:           "text-to-sql-db"
   certManagerIssuerEmail: "certificates@yrn42.com"
   _registryLocation:     "$($([Environment]::GetEnvironmentVariable(\"${env:registryName}.registryLocation\")) -replace '.azurecr.io','')"
   dockerServer:          "http://${env:_registryLocation}"
@@ -18,6 +26,7 @@ globalVariables:
   dockerPassword:        "placeholder"
   ingressClass:          "nginx"
 
+# --- REGION: workloads
 workloads:
 - context: "${env:runTag}-${env:project}-${env:runId}"
   variables:
@@ -61,6 +70,13 @@ workloads:
     # Install components
     - kubectl: "config set-context --current --namespace=${env:namespace} --v=1"
     - kubectl: "create secret docker-registry registry-credential --docker-server=${env:dockerServer} --docker-username=${env:dockerUsername} --docker-password=${env:dockerPassword}"
+    # The pod needs this Secret to start, so it precedes the chart. The password is generated
+    # inside the script and never passes through a variable, a command line or a log.
+    - shell: "& '${env:project_root}/components/frontend/text-to-sql-ui/create-cert-secret.ps1' -Namespace ${env:namespace} -SecretName ${env:appPodCertSecret}"
+    # Same ordering and secrecy rules for the database password: the script reads the
+    # owner-only file that the database setup step wrote and sends the Secret to kubectl
+    # on standard input.
+    - shell: "& '${env:project_root}/components/frontend/text-to-sql-ui/create-db-secret.ps1' -Namespace ${env:namespace} -SecretName ${env:appDbSecret}"
     - chart: "frontend/text-to-sql-ui"
       variables:
         installName: "text-to-sql-ui-${env:runId}"

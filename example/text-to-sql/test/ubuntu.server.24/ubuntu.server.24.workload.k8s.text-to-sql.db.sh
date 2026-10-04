@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: 2026.07.08
+# Version: 2026.10.04
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 # --- REGION: https://yuruna.link/42e220c4-0009
@@ -16,10 +16,85 @@ REAL_HOME=$(getent passwd "$REAL_USER" | cut -d: -f6)
 SCHEMA_SQL="$REAL_HOME/yuruna/project/example/text-to-sql/db/schema.sql"
 DBNAME="yuruna_demo"
 APP_ROLE="yuruna_agent_ro"
-APP_PW="agent_demo_password"
+# Owner-only copy of the role's password, read by create-db-secret.ps1 when the
+# workload step publishes it to the cluster.
+APP_PW_DIR="$REAL_HOME/.text-to-sql"
+APP_PW_FILE="$APP_PW_DIR/agent_ro.password"
 PGCONF="/etc/postgresql/18/main/postgresql.conf"
 PGHBA="/etc/postgresql/18/main/pg_hba.conf"
 POD_CIDR="10.244.0.0/16"
+
+# fetch-and-execute runs this script under `set -x`. Xtrace prints each command
+# and assignment after expansion, so a password held in a variable would land in
+# the trace (a file that EXEC_KEEP_PROFILE=1 keeps). Every region that handles
+# the password switches tracing off and puts it back as it found it.
+XTRACE_WAS_ON=false
+# --- REGION: xtrace_off
+xtrace_off() {
+  case $- in *x*) XTRACE_WAS_ON=true ;; *) XTRACE_WAS_ON=false ;; esac
+  set +x
+}
+# --- REGION: xtrace_restore
+xtrace_restore() {
+  if $XTRACE_WAS_ON; then set -x; fi
+}
+
+# Gives the app role a new random password and keeps a copy for the workload
+# step. The password is hex, so it needs no quoting inside the SQL literal, and
+# it moves only through shell builtins, a pipe and a mode-600 file: never an
+# argument list, never the trace.
+# --- REGION: set_app_role_password
+set_app_role_password() {
+  local pw err
+  xtrace_off
+  pw=$(openssl rand -hex 24)
+  if [[ ! "$pw" =~ ^[0-9a-f]{48}$ ]]; then
+    echo "ERROR: openssl did not return 24 random bytes as 48 hex characters." >&2
+    exit 1
+  fi
+  # The statement text carries the password to the server, and PostgreSQL logs
+  # the text of a failed or (depending on log_statement) any statement. The
+  # session first turns that logging off. psql's own error report can echo the
+  # offending line too, so its stderr is captured and redacted.
+  if ! err=$(printf "SET log_statement = 'none';\nSET log_min_duration_statement = -1;\nSET log_min_error_statement = 'panic';\nALTER ROLE %s LOGIN PASSWORD '%s';\n" "$APP_ROLE" "$pw" \
+      | sudo -u postgres psql -v ON_ERROR_STOP=1 -d "$DBNAME" -f - 2>&1 >/dev/null); then
+    echo "ERROR: could not set the ${APP_ROLE} password:" >&2
+    printf '%s\n' "${err//"$pw"/<redacted>}" >&2
+    exit 1
+  fi
+  # The directory and file are created under umask 077; a file or directory that
+  # pre-existed with looser modes is replaced or tightened. Ownership goes to
+  # the harness user because the workload step runs as that user, and this
+  # script may run as root.
+  (
+    umask 077
+    mkdir -p "$APP_PW_DIR"
+    chmod 700 "$APP_PW_DIR"
+    rm -f "$APP_PW_FILE"
+    printf '%s\n' "$pw" > "$APP_PW_FILE"
+    chmod 600 "$APP_PW_FILE"
+  )
+  chown "$REAL_USER:" "$APP_PW_DIR" "$APP_PW_FILE"
+  xtrace_restore
+  echo "  ${APP_ROLE} password set; a copy is stored in ${APP_PW_FILE}"
+}
+
+# Authenticates over TCP as the app role with the copy the workload step will
+# read, so a stale or unreadable copy fails here instead of inside the pod. -w
+# keeps psql from prompting on the console when the password turns out empty.
+# --- REGION: app_role_tcp_login
+app_role_tcp_login() {
+  local host="$1" pw='' ok=false
+  xtrace_off
+  IFS= read -r pw < "$APP_PW_FILE" || true
+  if PGPASSWORD="$pw" psql -w -h "$host" -U "$APP_ROLE" -d "$DBNAME" \
+       -tAc 'SELECT count(*) FROM customer' >/dev/null 2>&1; then
+    ok=true
+  fi
+  pw=''
+  xtrace_restore
+  $ok
+}
 
 if [ ! -r "$SCHEMA_SQL" ]; then
   echo "ERROR: schema not found at $SCHEMA_SQL" >&2
@@ -96,10 +171,9 @@ sudo -u postgres psql -v ON_ERROR_STOP=1 -d "$DBNAME" -f - \
   < "$(dirname "$SCHEMA_SQL")/test-agent-permissions.sql" >/dev/null
 echo "  schema loaded into $DBNAME"
 
-# Force the app role's password to the known demo value even if the role
-# pre-existed (schema.sql only creates it when absent).
-sudo -u postgres psql -v ON_ERROR_STOP=1 -d "$DBNAME" \
-     -c "ALTER ROLE ${APP_ROLE} LOGIN PASSWORD '${APP_PW}';" >/dev/null
+# schema.sql creates the app role without a password, and only when it is
+# absent. Every run sets a new password, so a role that pre-existed gets one too.
+set_app_role_password
 
 echo ""
 echo -e "\e[1;36m==== verify seed data + role TCP login ====\e[0m"
@@ -117,9 +191,7 @@ NODE_IP=$(ip -4 route get 1.1.1.1 2>/dev/null \
   | awk '{for(i=1;i<=NF;i++) if($i=="src"){print $(i+1); exit}}')
 [ -z "${NODE_IP:-}" ] && NODE_IP=$(hostname -I 2>/dev/null | awk '{print $1}')
 echo "  node IP (pods dial this): ${NODE_IP:-unknown}"
-if [ -n "${NODE_IP:-}" ] \
-   && PGPASSWORD="$APP_PW" psql -h "$NODE_IP" -U "$APP_ROLE" -d "$DBNAME" \
-        -tAc 'SELECT count(*) FROM customer' >/dev/null 2>&1; then
+if [ -n "${NODE_IP:-}" ] && app_role_tcp_login "$NODE_IP"; then
   echo "  ${APP_ROLE} TCP login over ${NODE_IP}:5432 OK (the deployed pod uses this path)"
 else
   echo "  WARNING: TCP login as ${APP_ROLE} to ${NODE_IP:-?}:5432 failed." >&2

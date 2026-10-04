@@ -1,0 +1,161 @@
+{
+  "spdxVersion": "SPDX-2.2",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "yuruna-project-guests",
+  "documentNamespace": "https://github.com/alissonsol/yuruna-project/sbom/guests/6c5446e9bca0bbeba8b04a5e47afdd54a445e356dfd0779fc775a60dc89dfd98",
+  "creationInfo": {
+    "created": "2026-10-03T16:48:41Z",
+    "creators": [
+      "Tool: Sync-Sbom.py-1",
+      "Organization: Alisson Sol et al."
+    ],
+    "comment": "Created date is the initial inventory creation date. Source digest identifies each regenerated inventory. Unrecorded licenses and transitive dependencies remain unasserted."
+  },
+  "documentDescribes": [
+    "SPDXRef-Repository"
+  ],
+  "packages": [
+    {
+      "name": "yuruna-project-guests",
+      "SPDXID": "SPDXRef-Repository",
+      "downloadLocation": "https://github.com/alissonsol/yuruna-project",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "LicenseRef-Yuruna",
+      "copyrightText": "NOASSERTION",
+      "supplier": "Organization: Alisson Sol et al.",
+      "comment": "Declared guests inventory; source-inputs SHA256 6c5446e9bca0bbeba8b04a5e47afdd54a445e356dfd0779fc775a60dc89dfd98. Not an installed-system scan.",
+      "versionInfo": "2026.10.04"
+    },
+    {
+      "name": "Microsoft.Web.LibraryManager.Cli",
+      "SPDXID": "SPDXRef-79fc9e38f05904b67668",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"source-declared\", \"ecosystem\": \"nuget\", \"evidence\": [{\"detail\": \"target=container; action=nuget tool install; requested=Microsoft.Web.LibraryManager.Cli; conditional provisioning input; installed version and transitive dependencies unresolved\", \"line\": 27, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"group\": \"yuruna-project:guests:container\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\"}",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:nuget/Microsoft.Web.LibraryManager.Cli"
+        }
+      ]
+    },
+    {
+      "name": "localhost:5000/website/website",
+      "SPDXID": "SPDXRef-29f2eeba549d9fb47a01",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=shared-or-configured; action=container image declaration; reference=localhost:5000/website/website:latest; tags may move; transitive image contents unresolved\", \"line\": 18, \"path\": \"example/website/components/frontend/website/website-pod.yaml\"}], \"group\": \"yuruna-project:guests:shared-or-configured\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\", \"versionConstraint\": \"latest\"}"
+    },
+    {
+      "name": "mcr.microsoft.com/dotnet/aspnet",
+      "SPDXID": "SPDXRef-32399da3136d2275a337",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=container; action=Dockerfile FROM; reference=mcr.microsoft.com/dotnet/aspnet:10.0; tags may move; transitive image contents unresolved\", \"line\": 15, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile\"}, {\"detail\": \"target=container; action=Dockerfile FROM; reference=mcr.microsoft.com/dotnet/aspnet:10.0; tags may move; transitive image contents unresolved\", \"line\": 15, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"group\": \"yuruna-project:guests:container\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\", \"versionConstraint\": \"10.0\"}"
+    },
+    {
+      "name": "mcr.microsoft.com/dotnet/sdk",
+      "SPDXID": "SPDXRef-9e0c3efcf0c29a640a6e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=container; action=Dockerfile FROM; reference=mcr.microsoft.com/dotnet/sdk:10.0; tags may move; transitive image contents unresolved\", \"line\": 21, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile\"}, {\"detail\": \"target=container; action=Dockerfile FROM; reference=mcr.microsoft.com/dotnet/sdk:10.0; tags may move; transitive image contents unresolved\", \"line\": 21, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"group\": \"yuruna-project:guests:container\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"build\", \"versionConstraint\": \"10.0\"}"
+    },
+    {
+      "name": "registry",
+      "SPDXID": "SPDXRef-caefaced660302525654",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=shared-or-configured; action=container pull; reference=registry:2; tags may move; transitive image contents unresolved\", \"line\": 131, \"path\": \"tools/example-workload.sh\"}, {\"detail\": \"target=shared-or-configured; action=container run; reference=registry:2; tags may move; transitive image contents unresolved\", \"line\": 140, \"path\": \"tools/example-workload.sh\"}], \"group\": \"yuruna-project:guests:shared-or-configured\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\", \"versionConstraint\": \"2\"}"
+    },
+    {
+      "name": "yrn42website-prefix/website",
+      "SPDXID": "SPDXRef-23c33e0a67789f635f6b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=shared-or-configured; action=container run; reference=yrn42website-prefix/website:latest; tags may move; transitive image contents unresolved\", \"line\": 45, \"path\": \"example/website/components/frontend/website/docker-run-dev.ps1\"}], \"group\": \"yuruna-project:guests:shared-or-configured\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\", \"versionConstraint\": \"latest\"}"
+    },
+    {
+      "name": "yuruna-caching-proxy-service:5000/library/registry",
+      "SPDXID": "SPDXRef-5e827bf89594a6ce0014",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=shared-or-configured; action=container pull; reference=yuruna-caching-proxy-service:5000/library/registry:2; tags may move; transitive image contents unresolved\", \"line\": 131, \"path\": \"tools/example-workload.sh\"}], \"group\": \"yuruna-project:guests:shared-or-configured\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\", \"versionConstraint\": \"2\"}"
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-Repository"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-79fc9e38f05904b67668"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-29f2eeba549d9fb47a01"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-32399da3136d2275a337"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-9e0c3efcf0c29a640a6e"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-caefaced660302525654"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-23c33e0a67789f635f6b"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-5e827bf89594a6ce0014"
+    }
+  ],
+  "hasExtractedLicensingInfos": [
+    {
+      "licenseId": "LicenseRef-Yuruna",
+      "name": "LicenseRef-Yuruna",
+      "extractedText": "# Yuruna License\n\nThis is the **Yuruna License**, based on the [MIT License](https://opensource.org/license/mit/).\n\nLICENSEURI https://yuruna.link/license\n\nCopyright (c) 2019-2026 by Alisson Sol et al.\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\n## No Warranty / \"As Is\"\n\n**There is no warranty of any kind.** The Software is provided **\"as is\"**,\nwithout any guarantees -- express or implied -- including but not limited to\ncorrectness, completeness, fitness for a particular purpose, merchantability,\nor non-infringement. You assume the entire risk of using it.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n\n## Administrator Risk Warning\n\nPortions of this Software are designed to run with **elevated / administrator\nprivileges** (e.g., as Administrator on Windows, or via `sudo` / root on\nLinux and macOS). Running code at this privilege level is **inherently\nrisky**: it can modify system configuration, create or destroy virtual\nmachines, alter networking, install or remove packages, and read or write\narbitrary files. Mistakes -- whether in the Software, in the operator's\ninput, or in the surrounding environment -- **may lead to data loss, system\ninstability, or unrecoverable changes**.\n\nBy executing any part of the Software with administrator or root permissions,\nyou acknowledge this risk and accept full responsibility for the outcome.\nReview the code, take backups, and test in an isolated environment before\nrunning anything privileged against systems you cannot afford to lose.\n\n---\n\nLICENSEURI https://yuruna.link/license\n\nCopyright (c) 2019-2026 by Alisson Sol et al.\n\nLast review: 2026.10.04\n\nBack to [yuruna-project](README.md) - [Yuruna](https://yuruna.com)\n",
+      "seeAlsos": [
+        "https://github.com/alissonsol/yuruna-project/blob/main/LICENSE.md"
+      ]
+    }
+  ]
+}

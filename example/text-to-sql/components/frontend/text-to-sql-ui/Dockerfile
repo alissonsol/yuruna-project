@@ -31,8 +31,10 @@ FROM build AS publish
 RUN dotnet publish "text-to-sql-ui.csproj" -c Release -o /app/publish
 
 # --- REGION: Final image
+# The image holds no certificate or password. Kestrel reads the PFX from a Secret
+# volume mounted at /https and its password from the pod environment; the build
+# context excludes *.pfx so no stage can pick up a developer's key either.
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY --from=build /src/aspnetapp.pfx .
 ENTRYPOINT ["dotnet", "text-to-sql-ui.dll"]

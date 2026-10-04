@@ -2,8 +2,9 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 # Shared local registry and image build operations; callers own deployment.
+# --- REGION: example_registry_prepare
 example_registry_prepare() {
-# --- REGION: Bounded command execution
+# --- REGION: run_bounded
 # See https://yuruna.link/42e220c4-0009
 run_bounded() {
     local stall="$1"
@@ -42,7 +43,7 @@ PULL_STALL="${YURUNA_PULL_STALL_TIMEOUT:-300}"
 # index the pull needs.
 ACCEPT_HDR='Accept: application/vnd.oci.image.index.v1+json, application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.list.v2+json, application/vnd.docker.distribution.manifest.v2+json'
 
-# --- REGION: Local image lookup
+# --- REGION: find_local_image
 # Print a local-docker-store reference whose repo:tag matches $1 under
 # any registry prefix; status 1 when absent.
 find_local_image() {
@@ -58,7 +59,7 @@ find_local_image() {
     return 1
 }
 
-# --- REGION: Warm a cold manifest
+# --- REGION: warm_manifest
 # See https://yuruna.link/42e220c4-0009
 warm_manifest() {
     local repo="$1" tag="$2" probe code elapsed
@@ -81,12 +82,7 @@ warm_manifest() {
             echo "  -> cache holds ${repo}:${tag} (answered in ${elapsed}s)"
             ;;
         ''|000)
-            # No HTTP status at all has several causes that send the operator to
-            # different places, and curl's exit code is the only thing that
-            # separates them. Reporting all of them as the timeout wording sends
-            # every reader after a sync that is still running -- which is the
-            # wrong place to look for a cache that refused the connection in
-            # milliseconds because nothing is listening on the port yet.
+            # See https://yuruna.link/42010605-0005
             case "$probe_rc" in
                 7)  echo "  -> cache refused the connection after ${elapsed}s -- nothing is listening on ${CACHE_HOST}:5000; pulling anyway" >&2 ;;
                 6)  echo "  -> cache host ${CACHE_HOST} did not resolve; pulling anyway" >&2 ;;
@@ -130,12 +126,7 @@ for attempt in $(seq 1 "$registry_attempts"); do
     registry_local=""
     docker_out=""
     if ! registry_local=$(find_local_image "$REGISTRY_IMAGE"); then
-        # Every attempt warms before it pulls. The warm-up is what holds the
-        # request open past dockerd's fixed response-header patience while the
-        # cache completes its sync, so an attempt that skips it cannot build
-        # on progress made by the preceding attempt's background sync: it is
-        # bounded by that patience alone, which a cache still syncing cannot
-        # answer inside.
+        # See https://yuruna.link/42010605-0005
         warm_manifest "library/registry" "2"
         if docker_out=$(run_bounded "$PULL_STALL" docker pull "$REGISTRY_PULL_REF" 2>&1); then
             registry_local="$REGISTRY_PULL_REF"
@@ -233,6 +224,7 @@ done
 
 }
 
+# --- REGION: example_build_and_push
 example_build_and_push() {
     local example_name="$1" component_name="$2"
 # --- REGION: Seed base images
@@ -241,7 +233,11 @@ example_build_and_push() {
 echo ""
 echo -e "\e[1;36m==== Base images ====\e[0m"
 cd "$REAL_HOME/yuruna/project/example/${example_name}/components/frontend/${component_name}" || return 1
-cp "$REAL_HOME/.aspnet/https/aspnetapp.pfx" .
+# The image carries no certificate; the deployment step creates the pod's certificate
+# Secret. Ask for a throwaway self-signed certificate that exists only in memory and in
+# the Secret, so a run depends neither on the guest's development certificate nor on the
+# password file beside it.
+export YURUNA_EXAMPLE_SELF_SIGNED_CERT=1
 
 # The list mirrors the Dockerfile's FROM lines.
 BASE_IMAGES=("dotnet/sdk:10.0" "dotnet/aspnet:10.0")
@@ -254,7 +250,7 @@ LOCAL_REGISTRY="localhost:5000"
 # GET with a hard 30s cap, so a wedged endpoint is skipped in seconds
 # instead of consuming a full bounded-pull window; on zot the GET also
 # triggers the onDemand sync ahead of the pull.
-# --- REGION: Probe base image sources
+# --- REGION: probe_registry
 probe_registry() {
     local base="$1" ref repo ver ns=""
     # --- REGION: https://yuruna.link/42e220c4-0009
@@ -274,6 +270,7 @@ probe_registry() {
     return 0
 }
 
+# --- REGION: all_base_images_local
 all_base_images_local() {
     local ref
     for ref in "${BASE_IMAGES[@]}"; do
@@ -282,13 +279,8 @@ all_base_images_local() {
     return 0
 }
 
-# Acquire images missing from the local store. Candidates in priority
-# order: the zot pull-through cache (LAN, absorbs upstream TLS jitter),
-# then mcr.microsoft.com as the survival path when the cache VM is
-# absent or cannot serve the tag. Each candidate is probe-gated first;
-# the pull itself is stall-bounded (PULL_STALL, set above) as a backstop
-# for mid-stream wedges.
 # --- REGION: Acquire base images
+# See https://yuruna.link/42010605-0005
 acquire_rounds=2
 acquire_delay=10
 stalled_candidates=""

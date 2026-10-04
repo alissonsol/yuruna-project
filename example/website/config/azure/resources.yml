@@ -3,6 +3,7 @@
 # Resources information - azure
 ---
 # TO-SET: azure registry name must be globally unique, without dashes
+# --- REGION: globalVariables
 globalVariables:
   runId:                 "$(-join ((97..122) | Get-Random -Count 6 | %{[char]$_}))"
   runTag:                "azure"
@@ -21,6 +22,7 @@ globalVariables:
   nodeCount:             3
 
 # Careful: if the template needs a variable (variables.tf) and it is not defined globally or locally below then the script will be stuck waiting input
+# --- REGION: resources
 resources:
 - name:                  "defaultResourceGroup"
   template:              "azure/resource-group"

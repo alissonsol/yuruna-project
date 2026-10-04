@@ -26,6 +26,7 @@ shared independently.
 
 ## Read more
 
+- Software declarations, inventory formats, and automatic maintenance: [Software bill of materials](docs/sbom/README.md).
 - Languages and translated project fields: [Project display text](docs/globalization.md). Portuguese (Brazil): [translated documents](docs/pt-BR/index.md).
 - Framework [architecture](https://github.com/alissonsol/yuruna/blob/main/docs/architecture.md)
 - Connectivity & setup: [Workarounds and FAQ](https://github.com/alissonsol/yuruna/blob/main/docs/workarounds.md)
@@ -38,6 +39,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.09.30
+Last review: 2026.10.04
 
 Back to [Yuruna](https://yuruna.com)

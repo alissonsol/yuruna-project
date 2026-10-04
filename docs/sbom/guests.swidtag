@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<SoftwareIdentity xmlns="http://standards.iso.org/iso/19770/-2/2015/schema.xsd" xmlns:sbom="urn:yuruna:sbom:1" name="yuruna-project-guests" tagId="urn:uuid:ecd4c16d-1882-5a64-983b-00afa4d34398" version="2026.10.04" versionScheme="alphanumeric" tagVersion="0" corpus="true">
+  <Entity name="Alisson Sol et al." regid="yuruna.com" role="tagCreator" />
+  <Meta sbom:generator="tools/Sync-Sbom.py" sbom:scope="guests" sbom:inventory-kind="declared-source" />
+  <Link rel="requires" href="swid/guests-79fc9e38f05904b67668.swidtag" />
+  <Link rel="requires" href="swid/guests-29f2eeba549d9fb47a01.swidtag" />
+  <Link rel="requires" href="swid/guests-32399da3136d2275a337.swidtag" />
+  <Link rel="requires" href="swid/guests-9e0c3efcf0c29a640a6e.swidtag" />
+  <Link rel="requires" href="swid/guests-caefaced660302525654.swidtag" />
+  <Link rel="requires" href="swid/guests-23c33e0a67789f635f6b.swidtag" />
+  <Link rel="requires" href="swid/guests-5e827bf89594a6ce0014.swidtag" />
+</SoftwareIdentity>

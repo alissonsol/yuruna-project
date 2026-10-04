@@ -2,6 +2,7 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 # See https://yuruna.link/42e220c4-0009
 ---
+# --- REGION: globalVariables
 globalVariables:
   # Registry pull credentials. _registryLocation strips the .azurecr.io
   # suffix so the same value works for a localhost registry and ACR.
@@ -10,6 +11,7 @@ globalVariables:
   dockerUsername:        "placeholder"
   dockerPassword:        "placeholder"
 
+# --- REGION: workloads
 workloads:
 - context: "${env:runTag}-${env:project}-${env:runId}"
   deployments:
@@ -19,12 +21,7 @@ workloads:
     - kubectl: "config set-context --current --namespace=${env:namespace} --v=1"
     # Image-pull secret so the cluster can pull from your registry.
     - kubectl: "create secret docker-registry registry-credential --docker-server=${env:dockerServer} --docker-username=${env:dockerUsername} --docker-password=${env:dockerPassword}"
-    # TO-SET: deploy your component(s). A Helm chart under workloads/, e.g.:
-    #   - chart: "frontend/yourcomponent"
-    #     variables:
-    #       installName: "yourcomponent-${env:runId}"
-    # or a raw manifest / command:
-    #   - kubectl: "apply -f workloads/yourcomponent/manifest.yml"
+    # See https://yuruna.link/42010605-0005
     - shell: 'Write-Information ">> TO-SET: add your component deployment in config/localhost/workloads.yml"'
     - shell: 'Write-Information "-- Check pods:     kubectl get pods --all-namespaces"'
     - shell: 'Write-Information "-- Check services: kubectl get svc --all-namespaces"'

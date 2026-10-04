@@ -2,6 +2,7 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 # Components information - localhost
 ---
+# --- REGION: globalVariables
 globalVariables:
   DOCKER_SCAN_SUGGEST:   "false"
   # Notice that the 'registryName' variable is used to find the name of another variable, requiring the dual indirection
@@ -14,10 +15,13 @@ globalVariables:
   tagCommand: docker tag "${env:containerPrefix}/${env:project}:latest" "$([Environment]::GetEnvironmentVariable("${env:registryName}.registryLocation"))/${env:containerPrefix}/${env:project}:latest"
   pushCommand: docker push "$([Environment]::GetEnvironmentVariable("${env:registryName}.registryLocation"))/${env:containerPrefix}/${env:project}:latest"
 
+# --- REGION: components
 components:
 - project: "text-to-sql-ui"
   buildPath: "frontend/text-to-sql-ui"
   variables:
+    # copy-pfx.ps1 only fails early when the developer certificate cannot be opened: the image
+    # carries no certificate, and the workloads phase creates the pod's certificate Secret.
     preProcessor:   "Push-Location ${env:buildPath};
                      ./copy-pfx.ps1;
                      ./seed-base-images.ps1;

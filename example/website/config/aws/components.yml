@@ -2,6 +2,7 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 # Components information - aws
 ---
+# --- REGION: globalVariables
 globalVariables:
   DOCKER_SCAN_SUGGEST:   "false"
   containerPrefix:       "yrn42website-prefix"
@@ -12,6 +13,7 @@ globalVariables:
   tagCommand: docker tag "${env:containerPrefix}/${env:project}:latest" "$([Environment]::GetEnvironmentVariable("${env:registryName}.registryLocation"))/${env:containerPrefix}/${env:project}:latest"
   pushCommand: docker push "$([Environment]::GetEnvironmentVariable("${env:registryName}.registryLocation"))/${env:containerPrefix}/${env:project}:latest"
 
+# --- REGION: components
 components:
 - project: "website"
   buildPath: "frontend/website"

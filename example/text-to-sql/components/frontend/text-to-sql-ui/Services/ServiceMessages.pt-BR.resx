@@ -10,8 +10,8 @@
     <comment>Machine translation; pending linguistic review; sourceHash=f2b13142f1fa2f314c3da650cf165c3f6668c4bf6ff2a02e64ecd551d230ad61</comment>
   </data>
   <data xml:space="preserve" name="RetryDeadline">
-    <value>O prazo total de tentativas da API do modelo foi excedido.</value>
-    <comment>Machine translation; pending linguistic review; sourceHash=4374f7154fdfdb421a382f98dad07c420ee258cd3f0fc5525ae2cf9641bfcacc</comment>
+    <value>O prazo total de tentativas da API do modelo foi excedido após {0} tentativa(s) em {1} ms (último erro: {2}; dependência: {3}).</value>
+    <comment>Machine translation; pending linguistic review; sourceHash=117e9e0456652c94edf37d9986e48a1ca00f6356ca90521899a82017cbebf6eb</comment>
   </data>
   <data xml:space="preserve" name="ApiError">
     <value>Erro da API do modelo {0}: {1}</value>

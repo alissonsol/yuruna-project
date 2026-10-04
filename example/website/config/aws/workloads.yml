@@ -2,6 +2,7 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 # Workloads information - aws
 ---
+# --- REGION: globalVariables
 globalVariables:
   namespace:             "yrn42website-ns"
   resourceGroup:         "yrn42website-rg"
@@ -14,12 +15,10 @@ globalVariables:
   # websiteHost:           "www.yrn42website-domain"
   websiteHost:           "www.yrn42.com"
   websiteTlsSecret:      "website-tls-secret"
-  # The registry provisioned here is ECR, whose repository URL is
-  # <account>.dkr.ecr.<region>.amazonaws.com/<repository>. The pull secret
-  # authenticates against the registry host, so the repository path is dropped,
-  # and the region -- the fourth dotted segment of that host -- has to be
-  # spelled out for the token request. ECR has no static password: the token is
-  # short-lived and always pairs with the fixed 'AWS' user name.
+  # Secret holding the pod's HTTPS certificate and its generated password; created
+  # by create-cert-secret.ps1 below and mounted by the chart.
+  websitePodCertSecret:  "website-pod-cert"
+  # See https://yuruna.link/42010605-0005
   _registryLocation:     "$(($([Environment]::GetEnvironmentVariable(\"${env:registryName}.registryLocation\")) -split '/')[0])"
   _registryRegion:       "$((${env:_registryLocation} -split '[.]')[3])"
   dockerServer:          "${env:_registryLocation}"
@@ -27,6 +26,7 @@ globalVariables:
   dockerPassword:        "$(aws ecr get-login-password --region ${env:_registryRegion})"
   ingressClass:          "nginx"
 
+# --- REGION: workloads
 workloads:
 # The resource-provisioned NLB forwards to the ingress controller NodePorts.
 - context: "yrn42website-aws"
@@ -65,6 +65,9 @@ workloads:
       # --debug
   # Install components
   - kubectl: "create secret docker-registry registry-credential --docker-server=${env:dockerServer} --docker-username=${env:dockerUsername} --docker-password=${env:dockerPassword}"
+  # The pod needs this Secret to start, so it precedes the chart. The password is generated
+  # inside the script and never passes through a variable, a command line or a log.
+  - shell: "& '${env:project_root}/components/frontend/website/create-cert-secret.ps1' -Namespace ${env:namespace} -SecretName ${env:websitePodCertSecret}"
   - chart: "frontend/website"
     variables:
       installName: "website-${env:runId}"

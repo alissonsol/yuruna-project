@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<SoftwareIdentity xmlns="http://standards.iso.org/iso/19770/-2/2015/schema.xsd" xmlns:sbom="urn:yuruna:sbom:1" name="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" tagId="urn:uuid:d8b74f9b-70d9-59a8-a5d3-58d0ad9eab68" version="1.23.0" versionScheme="alphanumeric" tagVersion="0" corpus="true">
+  <Entity name="Alisson Sol et al." regid="yuruna.com" role="tagCreator" />
+  <Meta sbom:generator="tools/Sync-Sbom.py" sbom:scope="repository" sbom:inventory-kind="declared-source" sbom:declaration="{&quot;completeness&quot;: &quot;declared&quot;, &quot;ecosystem&quot;: &quot;nuget&quot;, &quot;evidence&quot;: [{&quot;detail&quot;: &quot;Declared dependency&quot;, &quot;line&quot;: 15, &quot;path&quot;: &quot;example/website/components/frontend/website/website.csproj&quot;}], &quot;notes&quot;: [&quot;No transitive NuGet graph was resolved.&quot;], &quot;scope&quot;: &quot;build&quot;}" />
+</SoftwareIdentity>

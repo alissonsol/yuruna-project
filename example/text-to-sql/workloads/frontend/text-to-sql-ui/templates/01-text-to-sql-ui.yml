@@ -17,14 +17,11 @@ spec:
     spec:
       containers:
       - name: text-to-sql-ui
-        # Notice that the 'registryName' variable is used to find the name of another variable,
-        # requiring the dual indirection.
-        # `required` is a deliberate guardrail against rendering
-        # "/text-to-sql-ui/text-to-sql-ui:latest" (leading slash, empty registry) when the
-        # resources.output.yml componentsRegistry block is missing or does not
-        # propagate to values.yaml, producing an InvalidImageName pod.
+        # See https://yuruna.link/42010605-0005
         {{- $regKey := printf "%s.registryLocation" (required "Helm values is missing 'registryName'. Check that resources.yml globalVariables sets registryName and that yuruna resources / components / workloads all ran in the same project_root." .Values.registryName) }}
         {{- $reg := required (printf "Helm values is missing key %q. The registry's tofu output did not reach values.yaml. Check that config/<env>/resources.output.yml has a %s block with a registryLocation.value (run 'yuruna resources <project> <env>' to (re)create it) before running 'yuruna workloads'." $regKey .Values.registryName) (index .Values $regKey) }}
+        {{- $certSecret := required "Helm values is missing 'appPodCertSecret'. Check that config/<env>/workloads.yml globalVariables names the Secret that components/frontend/text-to-sql-ui/create-cert-secret.ps1 creates before the chart is installed." .Values.appPodCertSecret }}
+        {{- $dbSecret := required "Helm values is missing 'appDbSecret'. Check that config/<env>/workloads.yml globalVariables names the Secret that components/frontend/text-to-sql-ui/create-db-secret.ps1 creates before the chart is installed." .Values.appDbSecret }}
         image: {{ $reg }}/{{ required "Helm values is missing 'containerPrefix'." .Values.containerPrefix }}/text-to-sql-ui:latest
         imagePullPolicy: Always
         ports:
@@ -49,16 +46,33 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.hostIP
+        # The read-only role's password lives only in the Secret that the guest database
+        # setup generates for each deployment. Kubernetes expands $(NAME) only from
+        # variables defined earlier in this list, so the connection string comes last.
+        - name: TEXT2SQL_PG_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ $dbSecret }}
+              key: password
         - name: TEXT2SQL_PG_CONN
-          value: "Host=$(HOST_IP);Port=5432;Username=yuruna_agent_ro;Password=agent_demo_password;Database=yuruna_demo"
+          value: "Host=$(HOST_IP);Port=5432;Username=yuruna_agent_ro;Password=$(TEXT2SQL_PG_PASSWORD);Database=yuruna_demo"
         - name: ASPNETCORE_URLS
           value: "https://+;http://+"
         - name: ASPNETCORE_HTTPS_PORT
           value: "443"
+        # The certificate and its password live only in the Secret, which is created for
+        # each deployment with a generated password (see the website component README).
         - name: ASPNETCORE_Kestrel__Certificates__Default__Password
-          value: "password"
+          valueFrom:
+            secretKeyRef:
+              name: {{ $certSecret }}
+              key: password
         - name: ASPNETCORE_Kestrel__Certificates__Default__Path
-          value: "/app/aspnetapp.pfx"
+          value: "/https/aspnetapp.pfx"
+        volumeMounts:
+        - name: pod-certificate
+          mountPath: /https
+          readOnly: true
         readinessProbe:
           httpGet:
             path: /
@@ -69,6 +83,19 @@ spec:
           failureThreshold: 12
       imagePullSecrets:
         - name: registry-credential
+      # The key is readable by its owner and group only. The .NET base images give their
+      # non-root user and group the ID 1654, so the group lets that user read the key if the
+      # image ever drops root; the process runs as root today and reads it either way.
+      securityContext:
+        fsGroup: 1654
+      volumes:
+      - name: pod-certificate
+        secret:
+          secretName: {{ $certSecret }}
+          defaultMode: 0440
+          items:
+          - key: aspnetapp.pfx
+            path: aspnetapp.pfx
 ---
 apiVersion: v1
 kind: Service

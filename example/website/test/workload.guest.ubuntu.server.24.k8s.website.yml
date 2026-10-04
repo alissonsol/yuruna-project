@@ -10,7 +10,7 @@ description: "Ubuntu Server 24.04: log in, install Kubernetes, deploy website to
 descriptionLocalized:
   pt-BR: "Servidor Ubuntu 24.04: faça login, instale o Kubernetes, implante o site no cluster localhost, verifique HTTP 200."
   zh-CN: "Ubuntu Server 24.04：登录，安装Kubernetes，将网站部署到localhost集群，验证HTTP 200。"
-  he-IL: "Ubuntu Server ⁦24.04⁩: התחברו, התקינו Kubernetes, פרסו אתר אינטרנט באשכול localhost וודאו שהתקבל HTTP 200."
+  he-IL: "Ubuntu Server ⁦24.04⁩: התחברו, התקינו את Kubernetes, פרסו את האתר באשכול localhost וודאו שמתקבל HTTP 200."
 keystrokeMechanism: gui
 # --- REGION: resource
 resource:
@@ -72,9 +72,9 @@ workload:
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/ubuntu.server.24/ubuntu.server.24.k8s.sh"
     description: "ubuntu.server.24.k8s.sh"
     descriptionLocalized:
-      pt-BR: "ubuntu.server.24.k8s.sh"
-      zh-CN: "ubuntu.server.24.k8s.sh"
-      he-IL: "⁦ubuntu.server.24.k8s.sh⁩"
+      pt-BR: "ubuntu.server.26.k8s.sh"
+      zh-CN: "ubuntu.server.26.k8s.sh"
+      he-IL: "⁦ubuntu.server.26.k8s.sh⁩"
     waitPattern: "FETCHED AND EXECUTED:"
     timeoutSeconds: 3000
 
@@ -94,7 +94,7 @@ workload:
     timeoutSeconds: 360
     description: "OCR: control-plane"
     descriptionLocalized:
-      pt-BR: "OCR: plano de controlo"
+      pt-BR: "OCR: control-plane"
       zh-CN: "光学字符识别：control-plane"
       he-IL: "זיהוי תווים אופטי: control-plane"
 
@@ -111,9 +111,9 @@ workload:
     text: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/website/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.website.sh"
     description: "ubuntu.server.24.workload.k8s.website.sh"
     descriptionLocalized:
-      pt-BR: "ubuntu.server.24.workload.k8s.website.sh"
-      zh-CN: "ubuntu.server.24.workload.k8s.website.sh"
-      he-IL: "⁦ubuntu.server.24.workload.k8s.website.sh⁩"
+      pt-BR: "ubuntu.server.26.workload.k8s.website.sh"
+      zh-CN: "ubuntu.server.26.workload.k8s.website.sh"
+      he-IL: "⁦ubuntu.server.26.workload.k8s.website.sh⁩"
     waitPattern: "FETCHED AND EXECUTED:"
     freshMatchTailLines: 60
     timeoutSeconds: 1200

@@ -2,6 +2,7 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 # Components information - azure
 ---
+# --- REGION: globalVariables
 globalVariables:
   DOCKER_SCAN_SUGGEST:   "false"
   # Notice that the 'registryName' variable is used to find the name of another variable, requiring the dual indirection
@@ -10,6 +11,7 @@ globalVariables:
   tagCommand: docker tag "${env:containerPrefix}/${env:project}:latest" "$([Environment]::GetEnvironmentVariable("${env:registryName}.registryLocation"))/${env:containerPrefix}/${env:project}:latest"
   pushCommand: docker push "$([Environment]::GetEnvironmentVariable("${env:registryName}.registryLocation"))/${env:containerPrefix}/${env:project}:latest"
 
+# --- REGION: components
 components:
 - project: "website"
   buildPath: "frontend/website"

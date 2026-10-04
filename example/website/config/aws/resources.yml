@@ -2,6 +2,7 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 # Resources information - aws
 ---
+# --- REGION: globalVariables
 globalVariables:
   runId:                 "$(-join ((97..122) | Get-Random -Count 6 | %{[char]$_}))"
   runTag:                "aws"
@@ -18,6 +19,7 @@ globalVariables:
   nodeType:              "m5.large"
   nodeCount:             3
 
+# --- REGION: resources
 resources:
 # Careful: if the template needs a variable (variables.tf) and it is not defined globally or locally below then the script will be stuck waiting input
 - name:                  "componentsRegistry"

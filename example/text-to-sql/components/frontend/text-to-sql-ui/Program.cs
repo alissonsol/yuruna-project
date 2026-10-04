@@ -10,15 +10,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 // --- REGION: PostgreSQL data source
-// Connection string priority:
-//   1. env TEXT2SQL_PG_CONN  (preferred -- see README)
-//   2. appsettings:ConnectionStrings:Postgres
-//   3. localhost default
+// No credential is committed; the read-only role's password is created for each
+// deployment (see README). Connection string priority:
+//   1. env TEXT2SQL_PG_CONN  (complete string; the pod's Secret supplies the password)
+//   2. configuration ConnectionStrings:Postgres (user secrets, ConnectionStrings__Postgres)
+//   3. env TEXT2SQL_PG_PASSWORD  (the role's password alone, for PostgreSQL on localhost)
+// Startup fails when none is set.
 
-var pgConn =
-    Environment.GetEnvironmentVariable("TEXT2SQL_PG_CONN")
-    ?? builder.Configuration.GetConnectionString("Postgres")
-    ?? "Host=localhost;Username=yuruna_agent_ro;Password=agent_demo_password;Database=yuruna_demo";
+var pgConn = PostgresConnectionString.Resolve(
+    Environment.GetEnvironmentVariable(PostgresConnectionString.ConnectionVariable),
+    builder.Configuration[PostgresConnectionString.ConfigurationKey],
+    Environment.GetEnvironmentVariable(PostgresConnectionString.PasswordVariable));
 
 var dsBuilder = new NpgsqlDataSourceBuilder(pgConn);
 builder.Services.AddSingleton(dsBuilder.Build());

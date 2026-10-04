@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<SoftwareIdentity xmlns="http://standards.iso.org/iso/19770/-2/2015/schema.xsd" xmlns:sbom="urn:yuruna:sbom:1" name="Microsoft.AspNetCore.App" tagId="urn:uuid:2810a815-1b95-543b-942a-ff0ea869aee3" version="unspecified" versionScheme="alphanumeric" tagVersion="0" corpus="true">
+  <Entity name="Alisson Sol et al." regid="yuruna.com" role="tagCreator" />
+  <Meta sbom:generator="tools/Sync-Sbom.py" sbom:scope="repository" sbom:inventory-kind="declared-source" sbom:declaration="{&quot;completeness&quot;: &quot;declared&quot;, &quot;ecosystem&quot;: &quot;dotnet&quot;, &quot;evidence&quot;: [{&quot;detail&quot;: &quot;Declared dependency&quot;, &quot;line&quot;: 13, &quot;path&quot;: &quot;example/text-to-sql/tests/ServiceContracts.Tests/ServiceContracts.Tests.csproj&quot;}, {&quot;detail&quot;: &quot;Declared dependency&quot;, &quot;line&quot;: 13, &quot;path&quot;: &quot;example/text-to-sql/tests/SqlPolicy.Tests/SqlPolicy.Tests.csproj&quot;}], &quot;notes&quot;: [&quot;No transitive NuGet graph was resolved.&quot;], &quot;scope&quot;: &quot;test&quot;}" />
+</SoftwareIdentity>
