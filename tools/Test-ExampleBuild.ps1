@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 2026.10.11
+.VERSION 2026.10.11.1
 .GUID 4225b001-c90f-4210-ba9a-b5d1da7ee415
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
@@ -15,6 +15,33 @@ $ErrorActionPreference = 'Stop'
 & (Join-Path $PSScriptRoot 'Sync-ExampleBuildModule.ps1') -Check
 $module = Import-Module (Join-Path $PSScriptRoot 'Example.Build.psm1') -Force -PassThru
 $root = Split-Path -Parent $PSScriptRoot
+
+# Helm requires a three-component SemVer core even when the application uses a
+# four-component same-day CalVer patch. This check must run when helm is absent.
+$releaseVersion = [IO.File]::ReadAllText((Join-Path $root 'VERSION')).Trim()
+if ($releaseVersion -cnotmatch '^(\d{4}\.\d{2}\.\d{2})(?:\.(\d+))?$') {
+    throw "VERSION '$releaseVersion' is not bare Yuruna CalVer"
+}
+$expectedChartVersion = $(if ($Matches[2]) { "$($Matches[1])+$($Matches[2])" } else { $Matches[1] })
+foreach ($chartFile in @(
+        'example/website/workloads/frontend/website/Chart.yaml',
+        'example/text-to-sql/workloads/frontend/text-to-sql-ui/Chart.yaml'
+    )) {
+    $chartMetadata = [IO.File]::ReadAllText((Join-Path $root $chartFile))
+    $chartVersionMatch = [regex]::Match($chartMetadata, '(?m)^version:\s*(\S+)\s*$')
+    $appVersionMatch = [regex]::Match($chartMetadata, '(?m)^appVersion:\s*"([^"]+)"\s*$')
+    $semanticVersion = $null
+    if (-not $chartVersionMatch.Success -or
+        -not [Management.Automation.SemanticVersion]::TryParse($chartVersionMatch.Groups[1].Value, [ref]$semanticVersion)) {
+        throw "$chartFile must carry a valid Helm SemVer version"
+    }
+    if ($chartVersionMatch.Groups[1].Value -cne $expectedChartVersion) {
+        throw "$chartFile version '$($chartVersionMatch.Groups[1].Value)' does not represent release '$releaseVersion'"
+    }
+    if (-not $appVersionMatch.Success -or $appVersionMatch.Groups[1].Value -cne $releaseVersion) {
+        throw "$chartFile appVersion must quote the exact release '$releaseVersion'"
+    }
+}
 
 & $module {
     $ambientProxy = [Environment]::GetEnvironmentVariable('http_proxy')
@@ -733,4 +760,4 @@ exit 0
 foreach ($name in $ambient.Keys) {
     if ([Environment]::GetEnvironmentVariable($name) -cne $ambient[$name]) { throw "The test did not restore the original environment value of $name" }
 }
-Write-Output 'Example build module: cache discovery, seed, certificate Secret, pod certificate wiring, and independent-context checks passed.'
+Write-Output 'Example build module: chart metadata, cache discovery, seed, certificate Secret, pod certificate wiring, and independent-context checks passed.'
