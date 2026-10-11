@@ -14,7 +14,7 @@ Frontend do site para autenticação de usuários e interface entre pessoas e co
 `libman.json` são restauradas durante a compilação. O Docker faz isso
 automaticamente (`Dockerfile` instala
 `Microsoft.Web.LibraryManager.Cli` e executa `libman restore` antes de
-`dotnet build`). Para executar `dotnet run` localmente, fora do Docker, faça a restauração
+`dotnet publish --no-restore`). Para executar `dotnet run` localmente, fora do Docker, faça a restauração
 uma vez com:
 
 ```powershell
@@ -38,7 +38,7 @@ O exemplo procura a senha do seu PFX em dois lugares, nesta ordem:
 1. A variável de ambiente `ASPNETCORE_Kestrel__Certificates__Default__Password`,
    quando não está vazia.
 2. O arquivo de senha ao lado do PFX, `~/.aspnet/https/aspnetapp.pfx.password`, quando
-   a variável não está definida: uma linha de texto simples (uma quebra de linha final é ignorada).
+   a variável não está definida ou está vazia: uma linha de texto simples (os caracteres CR e LF no final são ignorados).
    Um arquivo vazio é considerado ausente.
 
 Sem nenhuma das duas opções, o PFX é aberto sem senha, o que funciona apenas para um arquivo
@@ -84,7 +84,7 @@ também funciona, inclusive com senha vazia (deixe a variável e o arquivo de se
 
 | Execução | Certificado | Senha |
 | --- | --- | --- |
-| `docker-run-dev.ps1`, `docker-run-dev.cmd` | `~/.aspnet/https` montado somente para leitura em `/https` | a variável acima, passada ao Docker pelo nome; obtida de `aspnetapp.pfx.password` quando a variável não está definida |
+| `docker-run-dev.ps1`, `docker-run-dev.cmd` | `~/.aspnet/https` montado somente para leitura em `/https` | a variável acima, passada ao Docker pelo nome; obtida de `aspnetapp.pfx.password` quando a variável não está definida ou está vazia |
 | Cluster, `Set-Workload.ps1` | Secret do Kubernetes `website-pod-cert`, montado em `/https` | aleatória a cada implantação, lida por `secretKeyRef` |
 | Automação sem certificado de desenvolvimento (`YURUNA_EXAMPLE_SELF_SIGNED_CERT=1`) | o mesmo Secret, contendo um certificado autoassinado descartável | a mesma |
 
@@ -92,7 +92,7 @@ Em um cluster, cada `config/<cloud>/workloads.yml` executa
 [create-cert-secret.ps1](../../../../../../../example/website/components/frontend/website/create-cert-secret.ps1) imediatamente antes de instalar o
 chart. O chart não pode ser instalado primeiro: `helm upgrade --install --atomic` espera pelo
 pod, e o pod não pode iniciar sem seu Secret. O script abre seu PFX com
-a senha do ambiente ou, quando ela não está definida, do arquivo de senha ao lado do PFX
+a senha do ambiente ou, quando ela não está definida ou está vazia, do arquivo de senha ao lado do PFX
 (ou emite o certificado descartável), gera uma
 senha com 256 bits aleatórios, exporta o certificado com essa senha e envia
 o Secret para `kubectl create`.
@@ -156,6 +156,18 @@ curl -ksS -o /dev/null -w '%{http_code}\n' http://localhost/             # 200 t
 A espera pela disponibilidade é a verificação mais forte: a sonda de prontidão faz uma requisição HTTPS à porta 443,
 portanto ela só passa quando o Kestrel carregou o PFX com a senha do Secret.
 
+As implantações do Helm do site e do text-to-SQL, além do Pod independente do
+site, compartilham essa sonda de prontidão: ela começa após cinco segundos,
+verifica a cada cinco segundos e permite doze falhas. A sonda TCP de atividade
+começa após sessenta segundos e permite seis falhas com dez segundos de
+intervalo antes de reiniciar um processo que nunca abre a porta ou deixa de
+aceitar conexões. A sonda de atividade não consulta o banco de dados nem um
+serviço externo de modelos. O Pod independente usa os mesmos limites de CPU,
+memória e armazenamento efêmero do site; o text-to-SQL mantém seu limite de
+memória específico. Ambos os ingresses mantêm desativado o redirecionamento de
+HTTP para HTTPS, para que a verificação HTTP receba 200 diretamente enquanto
+o tráfego para o backend usa HTTPS.
+
 <a id="regenerating-and-modifying-the-website-project"></a>
 
 <a id="42f64340-0006"></a>
@@ -183,7 +195,9 @@ portanto ela só passa quando o Kestrel carregou o PFX com a senha do Secret.
 ### Docker
 
 - Inicie a compilação Docker pelo depurador do VS -- executa como `website:dev`, com o nome `website`. Parar o depurador pode deixar o contêiner em execução; faça a limpeza.
-- Ou use [docker-run-dev.ps1](../../../../../../../example/website/components/frontend/website/docker-run-dev.ps1): compila `yrn42website-prefix/website:latest`, executa como `yrn42website-prefix-example-website` e monta `~/.aspnet/https` somente para leitura. Ele para antes da compilação quando o certificado não pode ser aberto com a senha de `ASPNETCORE_Kestrel__Certificates__Default__Password` ou, quando ela não está definida, de `~/.aspnet/https/aspnetapp.pfx.password`; quando a variável não está definida, cada script lê esse arquivo para seu próprio ambiente durante a execução, para que o Docker continue recebendo a senha pelo nome, sem exibir nenhum valor. [docker-run-dev.cmd](../../../../../../../example/website/components/frontend/website/docker-run-dev.cmd) faz o mesmo sem a verificação inicial. Abra `http://localhost:8000/` ou `https://localhost:8001/`.
+- Ou use [docker-run-dev.ps1](../../../../../../../example/website/components/frontend/website/docker-run-dev.ps1): compila `yrn42website-prefix/website:latest`, executa como `yrn42website-prefix-example-website` e monta `~/.aspnet/https` somente para leitura. Ele para antes da compilação quando o certificado não pode ser aberto com a senha de `ASPNETCORE_Kestrel__Certificates__Default__Password` ou, quando ela não está definida ou está vazia, de `~/.aspnet/https/aspnetapp.pfx.password`; quando a variável não está definida ou está vazia, cada script lê esse arquivo para seu próprio ambiente durante a execução, para que o Docker continue recebendo a senha pelo nome, sem exibir nenhum valor. [docker-run-dev.cmd](../../../../../../../example/website/components/frontend/website/docker-run-dev.cmd) faz o mesmo sem a verificação inicial. Abra `http://localhost:8000/` ou `https://localhost:8001/`.
+  Ambos compilam a partir de seu próprio diretório e param quando essa compilação
+  falha; uma falha na execução do contêiner também retorna um erro ao shell chamador.
 - Ou compile com `Set-Component.ps1 website localhost` e depois execute de forma interativa (a variável de senha é passada pelo nome, portanto seu valor não é digitado aqui):
 
   ```
@@ -219,6 +233,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.10.04
+Last review: 2026.10.11
 
 Back to [Website example](../../../../../../../example/website/README.md) - [yuruna-project](../../../../../../../README.md) - [Yuruna](https://yuruna.com)

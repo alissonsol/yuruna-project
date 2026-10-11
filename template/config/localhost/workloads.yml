@@ -6,7 +6,7 @@
 globalVariables:
   # Registry pull credentials. _registryLocation strips the .azurecr.io
   # suffix so the same value works for a localhost registry and ACR.
-  _registryLocation:     "$($([Environment]::GetEnvironmentVariable(\"${env:registryName}.registryLocation\")) -replace '.azurecr.io','')"
+  _registryLocation:     "$($([Environment]::GetEnvironmentVariable(\"${env:registryName}.registryLocation\")) -replace '[.]azurecr[.]io$','')"
   dockerServer:          "http://${env:_registryLocation}"
   dockerUsername:        "placeholder"
   dockerPassword:        "placeholder"

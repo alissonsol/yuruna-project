@@ -1,9 +1,11 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
+// --- REGION: Initialize application
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 
+// --- REGION: Configure HTTP pipeline
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -23,4 +25,5 @@ app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
 
+// --- REGION: Run application
 app.Run();

@@ -20,11 +20,17 @@ shared independently.
   - [example/text-to-sql/](example/text-to-sql/) -- **Early release.**
     Agentic read-only text-to-SQL on ASP.NET Core + PostgreSQL. Runs
     locally and deploys through the full Yuruna three-phase model;
-    Claude activates when `ANTHROPIC_API_KEY` is set.
+    Claude activates when `ANTHROPIC_API_KEY` is set unless `USE_LOCAL_MODEL` selects Ollama.
 
 <a id="4255e584-0003"></a>
 
 ## Read more
+
+PowerShell analyzer settings use the framework's default rule set and report all
+severities. Keep each repository's script metadata when synchronizing the rules.
+PowerShell sources are ASCII without a byte-order mark: the analyzer's Unicode
+BOM rule and the framework's BOM prohibition cannot both be satisfied by adding
+a BOM. Write edited files with `[System.Text.UTF8Encoding]::new($false)`.
 
 - Software declarations, inventory formats, and automatic maintenance: [Software bill of materials](docs/sbom/README.md).
 - Languages and translated project fields: [Project display text](docs/globalization.md). Portuguese (Brazil): [translated documents](docs/pt-BR/index.md).
@@ -39,6 +45,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.10.04
+Last review: 2026.10.11
 
 Back to [Yuruna](https://yuruna.com)

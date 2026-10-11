@@ -1,24 +1,32 @@
 #!/bin/bash
-# Version: 2026.10.04
+# Version: 2026.10.11
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# --- REGION: Initialize environment
 set -euo pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 export NONINTERACTIVE=1
 
-# Determine the real user (even when running with sudo)
 # --- REGION: Resolve guest user
 REAL_USER="${SUDO_USER:-$USER}"
-REAL_HOME=$(eval echo "~$REAL_USER")
+REAL_HOME=$(getent passwd "$REAL_USER" | cut -d: -f6)
+if [ -z "$REAL_HOME" ]; then
+    echo "ERROR: no home directory found for guest user ${REAL_USER}." >&2
+    exit 1
+fi
 
+# --- REGION: Prepare Kubernetes configuration
 sudo chown -R "$REAL_USER:$REAL_USER" "$REAL_HOME/.kube"
 
 mkcert -install 2>/dev/null || true
 
+# --- REGION: Prepare container registry
 # The project archive is extracted here even when this entry point is fetched.
 . "$REAL_HOME/yuruna/project/tools/example-workload.sh"
 example_registry_prepare
+# The component pipeline builds and publishes the image; deployment creates its certificate.
+export YURUNA_EXAMPLE_SELF_SIGNED_CERT=1
 
 # --- REGION: Set resource
 echo ""
@@ -29,13 +37,11 @@ pwsh ../../automation/Set-Resource.ps1 text-to-sql localhost
 CONTEXT=$(grep 'clusterDnsPrefix' "$REAL_HOME/yuruna/project/example/text-to-sql/config/localhost/resources.output.yml" | awk '{print $2}' | tr -d '"')
 kubectl config rename-context docker-desktop "localhost-${CONTEXT}" 2>/dev/null || true
 
-example_build_and_push text-to-sql text-to-sql-ui
-
-cd "$REAL_HOME/yuruna/project/example"
 # --- REGION: Set component
 echo ""
 echo -e "\e[1;36m==== Set-Component ====\e[0m"
 pwsh ../../automation/Set-Component.ps1 text-to-sql localhost
+example_prune_build_cache
 # --- REGION: Set workload
 echo ""
 echo -e "\e[1;36m==== Set-Workload ====\e[0m"

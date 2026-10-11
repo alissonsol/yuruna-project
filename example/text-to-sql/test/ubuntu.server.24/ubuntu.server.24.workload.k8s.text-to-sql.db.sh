@@ -1,18 +1,26 @@
 #!/bin/bash
-# Version: 2026.10.04
+# Version: 2026.10.11
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
-# --- REGION: https://yuruna.link/42e220c4-0009
+# --- REGION: Initialize environment
+# See https://yuruna.link/42e220c4-0009
 set -euo pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 export NONINTERACTIVE=1
 
-# --- REGION: https://yuruna.link/4220a755-0003
+# --- REGION: Load retry helpers
+# See https://yuruna.link/4220a755-0003
 . /usr/local/lib/yuruna/yuruna-retry.sh
 
+# --- REGION: Resolve guest user
 REAL_USER="${SUDO_USER:-$USER}"
 REAL_HOME=$(getent passwd "$REAL_USER" | cut -d: -f6)
+if [ -z "$REAL_HOME" ]; then
+    echo "ERROR: no home directory found for guest user ${REAL_USER}." >&2
+    exit 1
+fi
+# --- REGION: Configuration
 SCHEMA_SQL="$REAL_HOME/yuruna/project/example/text-to-sql/db/schema.sql"
 DBNAME="yuruna_demo"
 APP_ROLE="yuruna_agent_ro"
@@ -24,10 +32,8 @@ PGCONF="/etc/postgresql/18/main/postgresql.conf"
 PGHBA="/etc/postgresql/18/main/pg_hba.conf"
 POD_CIDR="10.244.0.0/16"
 
-# fetch-and-execute runs this script under `set -x`. Xtrace prints each command
-# and assignment after expansion, so a password held in a variable would land in
-# the trace (a file that EXEC_KEEP_PROFILE=1 keeps). Every region that handles
-# the password switches tracing off and puts it back as it found it.
+# Password handling must suspend the fetch-and-execute trace.
+# See https://yuruna.link/4286c679-0008
 XTRACE_WAS_ON=false
 # --- REGION: xtrace_off
 xtrace_off() {
@@ -39,10 +45,8 @@ xtrace_restore() {
   if $XTRACE_WAS_ON; then set -x; fi
 }
 
-# Gives the app role a new random password and keeps a copy for the workload
-# step. The password is hex, so it needs no quoting inside the SQL literal, and
-# it moves only through shell builtins, a pipe and a mode-600 file: never an
-# argument list, never the trace.
+# Keep the role password out of arguments, traces, and database statement logs.
+# See https://yuruna.link/4286c679-0008
 # --- REGION: set_app_role_password
 set_app_role_password() {
   local pw err
@@ -52,20 +56,16 @@ set_app_role_password() {
     echo "ERROR: openssl did not return 24 random bytes as 48 hex characters." >&2
     exit 1
   fi
-  # The statement text carries the password to the server, and PostgreSQL logs
-  # the text of a failed or (depending on log_statement) any statement. The
-  # session first turns that logging off. psql's own error report can echo the
-  # offending line too, so its stderr is captured and redacted.
+  # Suppress statement logging before sending the password; redact psql errors.
+  # See https://yuruna.link/4286c679-0008
   if ! err=$(printf "SET log_statement = 'none';\nSET log_min_duration_statement = -1;\nSET log_min_error_statement = 'panic';\nALTER ROLE %s LOGIN PASSWORD '%s';\n" "$APP_ROLE" "$pw" \
       | sudo -u postgres psql -v ON_ERROR_STOP=1 -d "$DBNAME" -f - 2>&1 >/dev/null); then
     echo "ERROR: could not set the ${APP_ROLE} password:" >&2
     printf '%s\n' "${err//"$pw"/<redacted>}" >&2
     exit 1
   fi
-  # The directory and file are created under umask 077; a file or directory that
-  # pre-existed with looser modes is replaced or tightened. Ownership goes to
-  # the harness user because the workload step runs as that user, and this
-  # script may run as root.
+  # Tighten existing paths too; the harness user must own the password copy.
+  # See https://yuruna.link/4286c679-0008
   (
     umask 077
     mkdir -p "$APP_PW_DIR"
@@ -96,12 +96,14 @@ app_role_tcp_login() {
   $ok
 }
 
+# --- REGION: Validate schema source
 if [ ! -r "$SCHEMA_SQL" ]; then
   echo "ERROR: schema not found at $SCHEMA_SQL" >&2
   echo "       The project repo must be synced to the guest (~/yuruna/project)." >&2
   exit 1
 fi
 
+# --- REGION: Configure PostgreSQL
 echo ""
 echo -e "\e[1;36m==== configure PostgreSQL cluster (ssl off, listen, pg_hba) ====\e[0m"
 # The DataServer/pod reaches PostgreSQL over the node network, so DB-socket TLS
@@ -120,10 +122,8 @@ if ! grep -qE "^[[:space:]]*listen_addresses[[:space:]]*=[[:space:]]*'\*'" "$PGC
   fi
   echo "  listen_addresses = '*'"
 fi
-# Allow the k8s pod network (Flannel 10.244.0.0/16) plus any directly-connected
-# subnet (samenet covers the cni0 bridge + LAN, so it matches whether the pod's
-# traffic reaches PostgreSQL with a pod-IP or a node-IP source). scram-sha-256
-# is the PG18 default and matches how the role's password is stored.
+# Admit the Flannel pod CIDR and directly connected node networks using SCRAM.
+# See https://yuruna.link/4286c679-0008
 HBA_MARK="# yuruna text-to-sql: allow in-cluster pods to reach the DB"
 if ! grep -qF "$HBA_MARK" "$PGHBA"; then
   sudo tee -a "$PGHBA" >/dev/null <<EOF
@@ -135,6 +135,7 @@ EOF
   echo "  pg_hba: host all all ${POD_CIDR} + samenet (scram-sha-256)"
 fi
 
+# --- REGION: Wait for readiness
 echo ""
 echo -e "\e[1;36m==== ensure PostgreSQL is accepting connections ====\e[0m"
 # restart to pick up the conf/hba edits; the meta-wrapper does not reliably
@@ -156,6 +157,7 @@ if [ "$pg_ready" != true ]; then
 fi
 sudo -u postgres psql -tAc "SHOW server_version;" | sed 's/^/  server_version: /'
 
+# --- REGION: Load database schema
 echo ""
 echo -e "\e[1;36m==== create ${DBNAME} + load schema ====\e[0m"
 if ! sudo -u postgres psql -tAc "SELECT 1 FROM pg_database WHERE datname='${DBNAME}'" | grep -q 1; then
@@ -175,6 +177,7 @@ echo "  schema loaded into $DBNAME"
 # absent. Every run sets a new password, so a role that pre-existed gets one too.
 set_app_role_password
 
+# --- REGION: Verify database access
 echo ""
 echo -e "\e[1;36m==== verify seed data + role TCP login ====\e[0m"
 rows=$(sudo -u postgres psql -tA -d "$DBNAME" -c "SELECT count(*) FROM customer" 2>/dev/null | tr -d '[:space:]')
@@ -183,10 +186,8 @@ if [ "${rows:-0}" -lt 1 ]; then
   echo "ERROR: schema/seed did not load (customer table empty)." >&2
   exit 1
 fi
-# Confirm yuruna_agent_ro can authenticate over TCP against the node IP -- this
-# is exactly the path the deployed pod uses ($(status.hostIP):5432). Soft-fail:
-# the UI still serves 200 without the DB, so a networking quirk here is a
-# warning, not a cycle failure.
+# Probe the pod's node-IP path; a failed login warns while HTTP remains usable.
+# See https://yuruna.link/4286c679-0008
 NODE_IP=$(ip -4 route get 1.1.1.1 2>/dev/null \
   | awk '{for(i=1;i<=NF;i++) if($i=="src"){print $(i+1); exit}}')
 [ -z "${NODE_IP:-}" ] && NODE_IP=$(hostname -I 2>/dev/null | awk '{print $1}')
@@ -199,6 +200,7 @@ else
   echo "           Check listen_addresses/pg_hba and that PostgreSQL restarted." >&2
 fi
 
+# --- REGION: Completion
 # Definite end-of-script line keeps the headless Hyper-V console repainting up
 # to the fetch-and-execute handoff.
 echo -e "\e[1;32m==== text-to-sql PostgreSQL ready (${DBNAME} + ${APP_ROLE}). ====\e[0m"

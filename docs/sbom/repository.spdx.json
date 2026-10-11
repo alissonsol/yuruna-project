@@ -3,7 +3,7 @@
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
   "name": "yuruna-project-repository",
-  "documentNamespace": "https://github.com/alissonsol/yuruna-project/sbom/repository/6c5446e9bca0bbeba8b04a5e47afdd54a445e356dfd0779fc775a60dc89dfd98",
+  "documentNamespace": "https://github.com/alissonsol/yuruna-project/sbom/repository/3e3756a133d8a05718120c08e884e2a7ead08f1bba494be5cc0a4eff901ec774",
   "creationInfo": {
     "created": "2026-10-03T16:48:41Z",
     "creators": [
@@ -25,8 +25,8 @@
       "licenseDeclared": "LicenseRef-Yuruna",
       "copyrightText": "NOASSERTION",
       "supplier": "Organization: Alisson Sol et al.",
-      "comment": "Declared repository inventory; source-inputs SHA256 6c5446e9bca0bbeba8b04a5e47afdd54a445e356dfd0779fc775a60dc89dfd98. Not an installed-system scan.",
-      "versionInfo": "2026.10.04"
+      "comment": "Declared repository inventory; source-inputs SHA256 3e3756a133d8a05718120c08e884e2a7ead08f1bba494be5cc0a4eff901ec774. Not an installed-system scan.",
+      "versionInfo": "2026.10.11"
     },
     {
       "name": "jquery-validate",
@@ -80,7 +80,7 @@
       "licenseConcluded": "NOASSERTION",
       "licenseDeclared": "NOASSERTION",
       "copyrightText": "NOASSERTION",
-      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"docker\", \"evidence\": [{\"detail\": \"Dockerfile FROM declaration\", \"line\": 15, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile\"}, {\"detail\": \"Dockerfile FROM declaration\", \"line\": 15, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"notes\": [\"Container OS/package contents were not scanned; tag-only images are mutable.\", \"FROM expression ${REGISTRY}dotnet/aspnet:10.0 uses declared ARG defaults; builds can override them.\"], \"scope\": \"runtime\", \"versionConstraint\": \"10.0\"}"
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"docker\", \"evidence\": [{\"detail\": \"Dockerfile FROM declaration\", \"line\": 10, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile\"}, {\"detail\": \"Dockerfile FROM declaration\", \"line\": 10, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"notes\": [\"Container OS/package contents were not scanned; tag-only images are mutable.\", \"FROM expression ${REGISTRY}dotnet/aspnet:10.0 uses declared ARG defaults; builds can override them.\"], \"scope\": \"runtime\", \"versionConstraint\": \"10.0\"}"
     },
     {
       "name": "mcr.microsoft.com/dotnet/sdk",
@@ -90,7 +90,7 @@
       "licenseConcluded": "NOASSERTION",
       "licenseDeclared": "NOASSERTION",
       "copyrightText": "NOASSERTION",
-      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"docker\", \"evidence\": [{\"detail\": \"Dockerfile FROM declaration\", \"line\": 21, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile\"}, {\"detail\": \"Dockerfile FROM declaration\", \"line\": 21, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"notes\": [\"Container OS/package contents were not scanned; tag-only images are mutable.\", \"FROM expression ${REGISTRY}dotnet/sdk:10.0 uses declared ARG defaults; builds can override them.\"], \"scope\": \"build\", \"versionConstraint\": \"10.0\"}"
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"docker\", \"evidence\": [{\"detail\": \"Dockerfile FROM declaration\", \"line\": 16, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile\"}, {\"detail\": \"Dockerfile FROM declaration\", \"line\": 16, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"notes\": [\"Container OS/package contents were not scanned; tag-only images are mutable.\", \"FROM expression ${REGISTRY}dotnet/sdk:10.0 uses declared ARG defaults; builds can override them.\"], \"scope\": \"build\", \"versionConstraint\": \"10.0\"}"
     },
     {
       "name": "Microsoft.AspNetCore.App",
@@ -120,7 +120,7 @@
       "licenseConcluded": "NOASSERTION",
       "licenseDeclared": "NOASSERTION",
       "copyrightText": "NOASSERTION",
-      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"MSBuild project\", \"line\": 3, \"path\": \"example/text-to-sql/tests/SqlPolicy.Tests/SqlPolicy.Tests.csproj\"}], \"notes\": [\"NuGet transitive dependencies are unresolved without tracked restore locks/assets.\", \"Target framework declaration: net8.0.\"], \"scope\": \"test\"}"
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"MSBuild project\", \"line\": 3, \"path\": \"example/text-to-sql/tests/SqlPolicy.Tests/SqlPolicy.Tests.csproj\"}], \"notes\": [\"NuGet transitive dependencies are unresolved without tracked restore locks/assets.\", \"Target framework declaration: net10.0.\"], \"scope\": \"test\"}"
     },
     {
       "name": "text-to-sql-ui",
@@ -151,6 +151,66 @@
       "licenseDeclared": "NOASSERTION",
       "copyrightText": "NOASSERTION",
       "comment": "{\"completeness\": \"unresolved\", \"ecosystem\": \"git\", \"evidence\": [{\"detail\": \"Index snapshot and generated-file staging use the installed Git CLI\", \"line\": 38, \"path\": \"tools/Sync-Sbom.py\"}], \"notes\": [\"The repository does not pin the installed Git version.\"], \"scope\": \"build\"}"
+    },
+    {
+      "name": "example/text-to-sql/config/localhost/workloads.yml",
+      "SPDXID": "SPDXRef-fe88779c9e0294f0227b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"helm-config\", \"evidence\": [{\"detail\": \"Yuruna Helm action declarations\", \"line\": 1, \"path\": \"example/text-to-sql/config/localhost/workloads.yml\"}], \"notes\": [], \"scope\": \"runtime\"}"
+    },
+    {
+      "name": "example/website/config/aws/workloads.yml",
+      "SPDXID": "SPDXRef-b9e1b0049ec4ddb84035",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"helm-config\", \"evidence\": [{\"detail\": \"Yuruna Helm action declarations\", \"line\": 1, \"path\": \"example/website/config/aws/workloads.yml\"}], \"notes\": [], \"scope\": \"runtime\"}"
+    },
+    {
+      "name": "example/website/config/azure/workloads.yml",
+      "SPDXID": "SPDXRef-e54640d022906dab65ef",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"helm-config\", \"evidence\": [{\"detail\": \"Yuruna Helm action declarations\", \"line\": 1, \"path\": \"example/website/config/azure/workloads.yml\"}], \"notes\": [], \"scope\": \"runtime\"}"
+    },
+    {
+      "name": "example/website/config/localhost/workloads.yml",
+      "SPDXID": "SPDXRef-0468b25886befc09329e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"helm-config\", \"evidence\": [{\"detail\": \"Yuruna Helm action declarations\", \"line\": 1, \"path\": \"example/website/config/localhost/workloads.yml\"}], \"notes\": [], \"scope\": \"runtime\"}"
+    },
+    {
+      "name": "https://charts.jetstack.io#cert-manager",
+      "SPDXID": "SPDXRef-b084746e51300e0932fd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"unresolved\", \"ecosystem\": \"helm\", \"evidence\": [{\"detail\": \"External Helm chart declaration\", \"line\": 55, \"path\": \"example/website/config/azure/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://charts.jetstack.io\", \"line\": 53, \"path\": \"example/website/config/azure/workloads.yml\"}], \"notes\": [\"Chart archives, transitive chart dependencies, and rendered container images were not resolved.\", \"Declared chart reference: jetstack/cert-manager.\", \"Helm repository/source URL: https://charts.jetstack.io.\", \"Version range or expression is retained as declared; no runtime value was inferred.\"], \"scope\": \"runtime\", \"versionConstraint\": \"${env:certManagerLatest}\"}"
+    },
+    {
+      "name": "https://kubernetes.github.io/ingress-nginx#ingress-nginx",
+      "SPDXID": "SPDXRef-982e9d75022f18a3a3e5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "comment": "{\"completeness\": \"unresolved\", \"ecosystem\": \"helm\", \"evidence\": [{\"detail\": \"External Helm chart declaration\", \"line\": 53, \"path\": \"example/website/config/aws/workloads.yml\"}, {\"detail\": \"External Helm chart declaration\", \"line\": 56, \"path\": \"example/website/config/localhost/workloads.yml\"}, {\"detail\": \"External Helm chart declaration\", \"line\": 60, \"path\": \"example/text-to-sql/config/localhost/workloads.yml\"}, {\"detail\": \"External Helm chart declaration\", \"line\": 63, \"path\": \"example/website/config/azure/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 46, \"path\": \"example/website/config/aws/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 50, \"path\": \"example/website/config/azure/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 54, \"path\": \"example/website/config/localhost/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 58, \"path\": \"example/text-to-sql/config/localhost/workloads.yml\"}], \"notes\": [\"Chart archives, transitive chart dependencies, and rendered container images were not resolved.\", \"Declared chart reference: ingress-nginx/ingress-nginx.\", \"Helm repository/source URL: https://kubernetes.github.io/ingress-nginx.\", \"No chart version was declared; repository state selects the version at deployment time.\"], \"scope\": \"runtime\"}"
     },
     {
       "name": "Microsoft.VisualStudio.Azure.Containers.Tools.Targets",
@@ -196,7 +256,7 @@
       "licenseConcluded": "NOASSERTION",
       "licenseDeclared": "NOASSERTION",
       "copyrightText": "NOASSERTION",
-      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"python\", \"evidence\": [{\"detail\": \"SBOM collector uses Python 3.11 tomllib and the standard library\", \"line\": 11, \"path\": \"tools/sbom_dependencies.py\"}], \"notes\": [\"No Python package installation is required.\"], \"scope\": \"build\", \"versionConstraint\": \">=3.11\"}"
+      "comment": "{\"completeness\": \"declared\", \"ecosystem\": \"python\", \"evidence\": [{\"detail\": \"SBOM collector uses Python 3.11 tomllib and the standard library\", \"line\": 12, \"path\": \"tools/sbom_dependencies.py\"}], \"notes\": [\"No Python package installation is required.\"], \"scope\": \"build\", \"versionConstraint\": \">=3.11\"}"
     }
   ],
   "relationships": [
@@ -293,6 +353,61 @@
     {
       "spdxElementId": "SPDXRef-Repository",
       "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-fe88779c9e0294f0227b"
+    },
+    {
+      "spdxElementId": "SPDXRef-fe88779c9e0294f0227b",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-982e9d75022f18a3a3e5"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-b9e1b0049ec4ddb84035"
+    },
+    {
+      "spdxElementId": "SPDXRef-b9e1b0049ec4ddb84035",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-982e9d75022f18a3a3e5"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-e54640d022906dab65ef"
+    },
+    {
+      "spdxElementId": "SPDXRef-e54640d022906dab65ef",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-b084746e51300e0932fd"
+    },
+    {
+      "spdxElementId": "SPDXRef-e54640d022906dab65ef",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-982e9d75022f18a3a3e5"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-0468b25886befc09329e"
+    },
+    {
+      "spdxElementId": "SPDXRef-0468b25886befc09329e",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-982e9d75022f18a3a3e5"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-b084746e51300e0932fd"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-982e9d75022f18a3a3e5"
+    },
+    {
+      "spdxElementId": "SPDXRef-Repository",
+      "relationshipType": "DEPENDS_ON",
       "relatedSpdxElement": "SPDXRef-af977196b447243ff8e3"
     },
     {
@@ -310,7 +425,7 @@
     {
       "licenseId": "LicenseRef-Yuruna",
       "name": "LicenseRef-Yuruna",
-      "extractedText": "# Yuruna License\n\nThis is the **Yuruna License**, based on the [MIT License](https://opensource.org/license/mit/).\n\nLICENSEURI https://yuruna.link/license\n\nCopyright (c) 2019-2026 by Alisson Sol et al.\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\n## No Warranty / \"As Is\"\n\n**There is no warranty of any kind.** The Software is provided **\"as is\"**,\nwithout any guarantees -- express or implied -- including but not limited to\ncorrectness, completeness, fitness for a particular purpose, merchantability,\nor non-infringement. You assume the entire risk of using it.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n\n## Administrator Risk Warning\n\nPortions of this Software are designed to run with **elevated / administrator\nprivileges** (e.g., as Administrator on Windows, or via `sudo` / root on\nLinux and macOS). Running code at this privilege level is **inherently\nrisky**: it can modify system configuration, create or destroy virtual\nmachines, alter networking, install or remove packages, and read or write\narbitrary files. Mistakes -- whether in the Software, in the operator's\ninput, or in the surrounding environment -- **may lead to data loss, system\ninstability, or unrecoverable changes**.\n\nBy executing any part of the Software with administrator or root permissions,\nyou acknowledge this risk and accept full responsibility for the outcome.\nReview the code, take backups, and test in an isolated environment before\nrunning anything privileged against systems you cannot afford to lose.\n\n---\n\nLICENSEURI https://yuruna.link/license\n\nCopyright (c) 2019-2026 by Alisson Sol et al.\n\nLast review: 2026.10.04\n\nBack to [yuruna-project](README.md) - [Yuruna](https://yuruna.com)\n",
+      "extractedText": "# Yuruna License\n\nThis is the **Yuruna License**, based on the [MIT License](https://opensource.org/license/mit/).\n\nLICENSEURI https://yuruna.link/license\n\nCopyright (c) 2019-2026 by Alisson Sol et al.\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\n## No Warranty / \"As Is\"\n\n**There is no warranty of any kind.** The Software is provided **\"as is\"**,\nwithout any guarantees -- express or implied -- including but not limited to\ncorrectness, completeness, fitness for a particular purpose, merchantability,\nor non-infringement. You assume the entire risk of using it.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n\n## Administrator Risk Warning\n\nPortions of this Software are designed to run with **elevated / administrator\nprivileges** (e.g., as Administrator on Windows, or via `sudo` / root on\nLinux and macOS). Running code at this privilege level is **inherently\nrisky**: it can modify system configuration, create or destroy virtual\nmachines, alter networking, install or remove packages, and read or write\narbitrary files. Mistakes -- whether in the Software, in the operator's\ninput, or in the surrounding environment -- **may lead to data loss, system\ninstability, or unrecoverable changes**.\n\nBy executing any part of the Software with administrator or root permissions,\nyou acknowledge this risk and accept full responsibility for the outcome.\nReview the code, take backups, and test in an isolated environment before\nrunning anything privileged against systems you cannot afford to lose.\n\n---\n\nLICENSEURI https://yuruna.link/license\n\nCopyright (c) 2019-2026 by Alisson Sol et al.\n\nLast review: 2026.10.11\n\nBack to [yuruna-project](README.md) - [Yuruna](https://yuruna.com)\n",
       "seeAlsos": [
         "https://github.com/alissonsol/yuruna-project/blob/main/LICENSE.md"
       ]

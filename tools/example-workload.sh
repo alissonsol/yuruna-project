@@ -19,7 +19,7 @@ run_bounded() {
 # --- REGION: Locate caching proxy
 # See https://yuruna.link/42f6b05f-0019
 # See https://yuruna.link/42e220c4-0009
-CACHE_HOST=$(echo "${http_proxy:-}" | sed -E 's|^https?://([^:/]+).*|\1|')
+CACHE_HOST=$(printf '%s\n' "${http_proxy:-}" | sed -nE 's|^[hH][tT][tT][pP][sS]?://([^:/]+).*|\1|p')
 if [ -z "$CACHE_HOST" ] && [ -r /etc/yuruna/host.env ]; then
     CACHE_HOST=$(sed -nE 's/^YURUNA_CACHING_PROXY_SERVICE_IP=([^[:space:]]+).*/\1/p' /etc/yuruna/host.env | head -n1)
 fi
@@ -37,10 +37,7 @@ fi
 # See https://yuruna.link/42e220c4-0009
 PULL_STALL="${YURUNA_PULL_STALL_TIMEOUT:-300}"
 
-# Media types accepted from every manifest request below. Spelled out
-# because a registry answers a manifest GET that states no preference with
-# whatever it considers the default -- for a multi-arch tag that is not the
-# index the pull needs.
+# Request both manifests and indexes so multi-architecture tags resolve correctly.
 ACCEPT_HDR='Accept: application/vnd.oci.image.index.v1+json, application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.list.v2+json, application/vnd.docker.distribution.manifest.v2+json'
 
 # --- REGION: find_local_image
@@ -63,10 +60,7 @@ find_local_image() {
 # See https://yuruna.link/42e220c4-0009
 warm_manifest() {
     local repo="$1" tag="$2" probe code elapsed
-    # The warm-up exists to hold a request open against a cache that is still
-    # syncing. With no cache in this lab there is nothing to warm and no
-    # address to address it by, and the pull behind this goes straight to the
-    # upstream.
+    # Direct labs have no cache to warm; the pull goes straight upstream.
     [ -n "$CACHE_HOST" ] || return 0
     echo "Warming ${CACHE_HOST}:5000/${repo}:${tag} (up to ${PULL_STALL}s)"
     # --- REGION: https://yuruna.link/42e220c4-0009
@@ -108,11 +102,7 @@ else
     REGISTRY_PULL_REF="$REGISTRY_IMAGE"
 fi
 # --- REGION: https://yuruna.link/42f6b05f-0019
-# The ladder is sized to outlast a caching-proxy REBUILD, not just a blip: the
-# replacement VM refuses connections on :5000 for as long as it takes to boot
-# and start zot, which is minutes rather than seconds. 10+20+40+80 spends about
-# two and a half minutes before giving up, so a rebuild that overlaps this step
-# costs a pause instead of the whole run.
+# Wait through a cache VM restart: 10+20+40+80 allows 150 seconds for zot to return.
 registry_attempts=5
 registry_delay=10
 for attempt in $(seq 1 "$registry_attempts"); do
@@ -233,10 +223,8 @@ example_build_and_push() {
 echo ""
 echo -e "\e[1;36m==== Base images ====\e[0m"
 cd "$REAL_HOME/yuruna/project/example/${example_name}/components/frontend/${component_name}" || return 1
-# The image carries no certificate; the deployment step creates the pod's certificate
-# Secret. Ask for a throwaway self-signed certificate that exists only in memory and in
-# the Secret, so a run depends neither on the guest's development certificate nor on the
-# password file beside it.
+# The deployment creates a throwaway certificate Secret without a developer PFX.
+# See https://yuruna.link/42f64340-0004
 export YURUNA_EXAMPLE_SELF_SIGNED_CERT=1
 
 # The list mirrors the Dockerfile's FROM lines.
@@ -245,11 +233,8 @@ BASE_IMAGES=("dotnet/sdk:10.0" "dotnet/aspnet:10.0")
 BASE_IMAGES_UPSTREAM="mcr.microsoft.com"
 LOCAL_REGISTRY="localhost:5000"
 
-# probe_registry <base-url>: fast health gate -- 0 iff every base image
-# still missing from the local store resolves a manifest there. A few-KB
-# GET with a hard 30s cap, so a wedged endpoint is skipped in seconds
-# instead of consuming a full bounded-pull window; on zot the GET also
-# triggers the onDemand sync ahead of the pull.
+# Probe missing manifests with a 30-second cap; on zot, the GET also starts sync.
+# See https://yuruna.link/42e220c4-0010
 # --- REGION: probe_registry
 probe_registry() {
     local base="$1" ref repo ver ns=""
@@ -284,10 +269,7 @@ all_base_images_local() {
 acquire_rounds=2
 acquire_delay=10
 stalled_candidates=""
-# The cache joins the candidate list only when this lab has one. Left in
-# unconditionally it expands to http://:5000, an address that belongs to no
-# host: every round would spend a probe on it and report it as unusable, which
-# reads as a cache that is down rather than a lab that never had one.
+# An unconfigured cache is not a failed endpoint: only probe real candidates.
 base_image_candidates=()
 if [ -n "$CACHE_HOST" ]; then
     base_image_candidates+=("http://${CACHE_HOST}:5000|${CACHE_HOST}:5000/")
@@ -367,10 +349,8 @@ echo "Using REGISTRY=${REGISTRY}"
 # --- REGION: Build application
 echo ""
 echo -e "\e[1;36m==== Build .NET app ====\e[0m"
-# FROM metadata and base layers resolve from the loopback registry; the
-# retry covers residual local flakes and RUN-step network (package
-# restores), with the stall bound turning a wedge into a retriable
-# failure.
+# Local FROM resolution avoids remote metadata stalls; retries cover RUN package restores.
+# See https://yuruna.link/42e220c4-0010
 build_attempts=3
 build_delay=10
 for attempt in $(seq 1 "$build_attempts"); do
@@ -399,12 +379,16 @@ if ! run_bounded 300 docker push "${LOCAL_REGISTRY}/${example_name}/${component_
     exit 1
 fi
 
-# --- REGION: https://yuruna.link/42a76c30-000c
-# Prune build caches before the cluster deploys so kubelet's ephemeral-
-# storage watermark is not tripped.
-# Failure here is non-fatal: we only care about the side effect.
-docker buildx prune --all --force >/dev/null 2>&1 || true
-docker builder prune --all --force >/dev/null 2>&1 || true
-docker image prune --force >/dev/null 2>&1 || true
+example_prune_build_cache
 
+}
+
+# --- REGION: example_prune_build_cache
+# See https://yuruna.link/42a76c30-000c
+# Prune only after the sole image publisher finishes, before kubelet checks its
+# ephemeral-storage watermark. Cleanup is best effort and independently bounded.
+example_prune_build_cache() {
+    run_bounded 60 docker buildx prune --all --force >/dev/null 2>&1 || true
+    run_bounded 60 docker builder prune --all --force >/dev/null 2>&1 || true
+    run_bounded 60 docker image prune --force >/dev/null 2>&1 || true
 }

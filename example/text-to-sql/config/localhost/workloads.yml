@@ -20,7 +20,7 @@ globalVariables:
   # read by the pod through secretKeyRef.
   appDbSecret:           "text-to-sql-db"
   certManagerIssuerEmail: "certificates@yrn42.com"
-  _registryLocation:     "$($([Environment]::GetEnvironmentVariable(\"${env:registryName}.registryLocation\")) -replace '.azurecr.io','')"
+  _registryLocation:     "$($([Environment]::GetEnvironmentVariable(\"${env:registryName}.registryLocation\")) -replace '[.]azurecr[.]io$','')"
   dockerServer:          "http://${env:_registryLocation}"
   dockerUsername:        "placeholder"
   dockerPassword:        "placeholder"
@@ -47,7 +47,7 @@ workloads:
     # Install dependencies
     - kubectl: "create namespace ${env:namespace} --v=1"
     - kubectl: "config set-context --current --namespace=${env:namespace} --v=1"
-    # For localhost: manually create certificate
+    # Configure ingress certificate
     # On Linux, run mkcert -install as the logged-in user (honoring SUDO_USER)
     # so rootCA.pem lands in that user's $HOME/.local/share/mkcert.
     - shell: 'if ("$IsLinux" -eq "True") { sudo -u (`$(if (`$env:SUDO_USER) { `$env:SUDO_USER } else { `$env:USER })) -H mkcert -install } else { mkcert -install }'

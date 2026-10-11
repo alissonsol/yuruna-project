@@ -16,16 +16,16 @@ globalVariables:
   # by create-cert-secret.ps1 below and mounted by the chart.
   websitePodCertSecret:  "website-pod-cert"
   certManagerIssuerEmail: "certificates@yrn42.com"
-  _registryLocation:     '$($([Environment]::GetEnvironmentVariable("${env:registryName}.registryLocation")) -replace ''.azurecr.io'','''')'
+  _registryLocation:     '$($([Environment]::GetEnvironmentVariable("${env:registryName}.registryLocation")) -replace ''[.]azurecr[.]io$'','''')'
   dockerServer:          "${env:_registryLocation}.azurecr.io"
   dockerUsername:        "$(az acr credential show -n ${env:_registryLocation} --query username)"
   dockerPassword:        "$(az acr credential show -n ${env:_registryLocation} --query passwords[0].value)"
   ingressClass:          "nginx"
   # cert-manager release pin (https://github.com/cert-manager/cert-manager/releases).
   # This is the only example config that installs cert-manager; localhost gets
-  # its certificate from mkcert and aws ships without one, so neither carries a
+  # its certificate from mkcert, as does aws, so neither carries a cert-manager
   # pin to keep in step with this.
-  certManagerLatest:     "v1.21.0"
+  certManagerLatest:     "v1.21.2"
 
 # --- REGION: workloads
 workloads:
@@ -49,7 +49,7 @@ workloads:
     - kubectl: "config set-context --current --namespace=${env:namespace} --v=1"
     - helm: "repo add ingress-nginx https://kubernetes.github.io/ingress-nginx"
     - helm: "repo update"
-    # Certificate
+    # Configure ingress certificate
     - helm: "repo add jetstack https://charts.jetstack.io"
     - helm: "repo update"
     - helm: >

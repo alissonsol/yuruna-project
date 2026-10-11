@@ -5,18 +5,13 @@
 using Npgsql;
 using TextToSqlUi.Services;
 
+// --- REGION: Initialize application
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 
 // --- REGION: PostgreSQL data source
-// No credential is committed; the read-only role's password is created for each
-// deployment (see README). Connection string priority:
-//   1. env TEXT2SQL_PG_CONN  (complete string; the pod's Secret supplies the password)
-//   2. configuration ConnectionStrings:Postgres (user secrets, ConnectionStrings__Postgres)
-//   3. env TEXT2SQL_PG_PASSWORD  (the role's password alone, for PostgreSQL on localhost)
-// Startup fails when none is set.
-
+// Credentials and connection-source precedence: https://yuruna.link/4286c679-0004
 var pgConn = PostgresConnectionString.Resolve(
     Environment.GetEnvironmentVariable(PostgresConnectionString.ConnectionVariable),
     builder.Configuration[PostgresConnectionString.ConfigurationKey],
@@ -29,12 +24,10 @@ builder.Services.AddSingleton(dsBuilder.Build());
 builder.Services.AddSingleton<SchemaCatalog>();
 builder.Services.AddSingleton<SqlValidator>();
 
-// Client selection priority:
-//   1. USE_LOCAL_MODEL set  -> OllamaLlmClient (local-first, on-device; keeps
-//      the schema + question off any third-party API). OLLAMA_HOST / OLLAMA_MODEL
-//      override the http://127.0.0.1:11434 + 'localcoder' defaults.
-//   2. ANTHROPIC_API_KEY set -> ClaudeLlmClient (hosted).
-//   3. otherwise             -> RuleBasedLlmClient (deterministic offline).
+// --- REGION: Select language model
+// Local selection keeps the schema and question off third-party APIs.
+// Provider precedence: https://yuruna.link/4286c679-0007
+// OLLAMA_HOST / OLLAMA_MODEL override http://127.0.0.1:11434 / localcoder.
 var useLocalModel = Environment.GetEnvironmentVariable("USE_LOCAL_MODEL");
 var anthropicApiKey = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY");
 if (!string.IsNullOrEmpty(useLocalModel))
@@ -53,6 +46,7 @@ else
 
 builder.Services.AddSingleton<AgentOrchestrator>();
 
+// --- REGION: Configure HTTP pipeline
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -70,4 +64,5 @@ app.UseRouting();
 app.UseAuthorization();
 app.MapRazorPages();
 
+// --- REGION: Run application
 app.Run();

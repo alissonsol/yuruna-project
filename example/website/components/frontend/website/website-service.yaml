@@ -1,13 +1,17 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# --- REGION: apiVersion
 apiVersion: v1
 kind: Service
+# --- REGION: metadata
 metadata:
   name: website-service
+# --- REGION: spec
 spec:
   selector:
     app: website-pod
   type: NodePort
+  # --- REGION: ports
   ports:
     - protocol: TCP
       name: tcp80

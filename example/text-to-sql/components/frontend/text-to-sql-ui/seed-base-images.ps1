@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 2026.10.04
+.VERSION 2026.10.11
 .GUID 428c708f-f1f1-4046-96d1-c612d18dbac8
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
@@ -16,5 +16,7 @@
 
 #requires -version 7
 
+# --- REGION: Import build helpers
 Import-Module (Join-Path $PSScriptRoot 'Example.Build.psm1') -Force
+# --- REGION: Seed base images
 exit (Invoke-ExampleBaseImageSeed)

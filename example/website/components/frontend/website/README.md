@@ -12,7 +12,7 @@ Frontend website for user authentication and human-computer interface.
 `libman.json` are restored at build time. Docker handles this
 automatically (`Dockerfile` installs
 `Microsoft.Web.LibraryManager.Cli` and runs `libman restore` before
-`dotnet build`). For a local `dotnet run` outside Docker, restore
+`dotnet publish --no-restore`). For a local `dotnet run` outside Docker, restore
 once with:
 
 ```powershell
@@ -34,7 +34,7 @@ The example finds the password of your PFX in one of two places, in this order:
 1. The `ASPNETCORE_Kestrel__Certificates__Default__Password` environment variable,
    when it is not empty.
 2. The password file beside the PFX, `~/.aspnet/https/aspnetapp.pfx.password`, when
-   the variable is unset: one line of plain text (a trailing newline is ignored). An
+   the variable is unset or empty: one line of plain text (trailing CR and LF characters are ignored). An
    empty file counts as absent.
 
 With neither, the PFX is opened without a password, which works only for a file
@@ -78,7 +78,7 @@ works too, including one with an empty password (leave the variable and password
 
 | Run | Certificate | Password |
 | --- | --- | --- |
-| `docker-run-dev.ps1`, `docker-run-dev.cmd` | `~/.aspnet/https` mounted read-only at `/https` | the variable above, passed to Docker by name; taken from `aspnetapp.pfx.password` when the variable is unset |
+| `docker-run-dev.ps1`, `docker-run-dev.cmd` | `~/.aspnet/https` mounted read-only at `/https` | the variable above, passed to Docker by name; taken from `aspnetapp.pfx.password` when the variable is unset or empty |
 | Cluster, `Set-Workload.ps1` | Kubernetes Secret `website-pod-cert`, mounted at `/https` | random per deployment, read through `secretKeyRef` |
 | Automation with no developer certificate (`YURUNA_EXAMPLE_SELF_SIGNED_CERT=1`) | the same Secret, holding a throwaway self-signed certificate | the same |
 
@@ -86,7 +86,7 @@ For a cluster, every `config/<cloud>/workloads.yml` runs
 [create-cert-secret.ps1](create-cert-secret.ps1) immediately before it installs the
 chart. The chart cannot install first: `helm upgrade --install --atomic` waits for
 the pod, and the pod cannot start without its Secret. The script opens your PFX with
-the password in the environment or, when that is unset, in the password file beside it
+the password in the environment or, when that is unset or empty, in the password file beside it
 (or issues the throwaway certificate), generates a
 password of 256 random bits, exports the certificate under that password, and sends
 the Secret to `kubectl create`.
@@ -148,6 +148,16 @@ curl -ksS -o /dev/null -w '%{http_code}\n' http://localhost/             # 200 t
 The availability wait is the strongest check: the readiness probe is an HTTPS request to port 443,
 so it passes only when Kestrel loaded the PFX with the Secret's password.
 
+The website and text-to-SQL Helm deployments, and the standalone website Pod,
+share that readiness probe: it starts after five seconds, checks every five
+seconds, and allows twelve failures. Their TCP liveness probe starts after sixty
+seconds and allows six failures ten seconds apart before restarting a process
+that never binds or stops accepting connections. Liveness does not query the
+database or an external model service. The standalone Pod uses the website's
+same CPU, memory, and ephemeral-storage budget; text-to-SQL keeps its separate
+memory budget. Both ingresses keep HTTP-to-HTTPS redirection disabled so the
+HTTP smoke check receives 200 directly while upstream traffic uses HTTPS.
+
 <a id="42f64340-0006"></a>
 
 ## Regenerating and modifying the website project
@@ -171,7 +181,9 @@ so it passes only when Kestrel loaded the PFX with the Secret's password.
 ### Docker
 
 - Start the Docker build via VS debugger -- runs as `website:dev` named `website`. Stopping the debugger may leave it running; clean up.
-- Or use [docker-run-dev.ps1](docker-run-dev.ps1): builds `yrn42website-prefix/website:latest`, runs as `yrn42website-prefix-example-website`, and mounts `~/.aspnet/https` read-only. It stops before building when the certificate cannot be opened with the password in `ASPNETCORE_Kestrel__Certificates__Default__Password` or, when that is unset, in `~/.aspnet/https/aspnetapp.pfx.password`; either script reads that file into its own environment for the run when the variable is unset, so Docker still receives the password by name and nothing is echoed. [docker-run-dev.cmd](docker-run-dev.cmd) does the same without the early check. Open `http://localhost:8000/` or `https://localhost:8001/`.
+- Or use [docker-run-dev.ps1](docker-run-dev.ps1): builds `yrn42website-prefix/website:latest`, runs as `yrn42website-prefix-example-website`, and mounts `~/.aspnet/https` read-only. It stops before building when the certificate cannot be opened with the password in `ASPNETCORE_Kestrel__Certificates__Default__Password` or, when that is unset or empty, in `~/.aspnet/https/aspnetapp.pfx.password`; either script reads that file into its own environment for the run when the variable is unset or empty, so Docker still receives the password by name and nothing is echoed. [docker-run-dev.cmd](docker-run-dev.cmd) does the same without the early check. Open `http://localhost:8000/` or `https://localhost:8001/`.
+  Both launchers build from their own directory and stop when that build fails;
+  a failed container run also returns a failure to the calling shell.
 - Or build via `Set-Component.ps1 website localhost` then run interactively (the password variable is passed by name, so its value is not typed here):
   ```
   docker run --rm -it -p 8000:80 -p 8001:443 --name "test-website" \
@@ -204,6 +216,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.10.04
+Last review: 2026.10.11
 
 Back to [Website example](../../../README.md) - [yuruna-project](../../../../../README.md) - [Yuruna](https://yuruna.com)

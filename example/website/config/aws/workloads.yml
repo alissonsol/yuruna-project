@@ -45,7 +45,7 @@ workloads:
   - kubectl: "config set-context --current --namespace=${env:namespace} --v=1"
   - helm: "repo add ingress-nginx https://kubernetes.github.io/ingress-nginx"
   - helm: "repo update"
-  # Create certificate
+  # Configure ingress certificate
   - shell: "mkcert -install"
   - shell: "mkcert -key-file \"${env:workFolder}/website-tls.key\" -cert-file \"${env:workFolder}/website-tls.crt\" ${env:websiteDomain} \"*.${env:websiteDomain}\" localhost \"*.localhost\" 127.0.0.1 ::1 ${env:_hostname}"
   - kubectl: "delete secret ${env:websiteTlsSecret} --namespace=${env:namespace} --ignore-not-found=true"
@@ -54,15 +54,14 @@ workloads:
       install nginx-ingress ingress-nginx/ingress-nginx
       --namespace ingress-ns
       --set controller.replicaCount=2
-      --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux
-      --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux
+      --set controller.nodeSelector."kubernetes\.io/os"=linux
+      --set defaultBackend.nodeSelector."kubernetes\.io/os"=linux
       --set controller.admissionWebhooks.enabled=false
       --set controller.ingressClass=${env:ingressClass}
       --set controller.service.type=NodePort
       --set controller.service.nodePorts.http=30080
       --set controller.service.nodePorts.https=30443
       --set controller.service.externalTrafficPolicy=Cluster
-      # --debug
   # Install components
   - kubectl: "create secret docker-registry registry-credential --docker-server=${env:dockerServer} --docker-username=${env:dockerUsername} --docker-password=${env:dockerPassword}"
   # The pod needs this Secret to start, so it precedes the chart. The password is generated

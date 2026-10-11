@@ -6,7 +6,7 @@
 > deploys through the full Yuruna three-phase model (`Set-Resource` /
 > `Set-Component` / `Set-Workload`); see
 > [Yuruna integration](#yuruna-integration) below. Claude
-> activates when `ANTHROPIC_API_KEY` is set.
+> activates when `ANTHROPIC_API_KEY` is nonempty and `USE_LOCAL_MODEL` is empty or unset.
 
 A read-only agentic text-to-SQL application: ASP.NET Core (.NET 10) Razor
 Pages on top of PostgreSQL, implementing a six-stage agent pipeline with
@@ -14,9 +14,9 @@ schema retrieval, static validation, and an EXPLAIN-based cost gate.
 
 This example shows what an action-gated, observable agent looks like end
 to end. The default `ILlmClient` is a deterministic rule-based stand-in
-so the example runs offline against a local PostgreSQL; setting
-`ANTHROPIC_API_KEY` activates the real Claude tool-use client
-(`Services/ClaudeLlmClient.cs`) at runtime.
+so the example runs offline against a local PostgreSQL. `USE_LOCAL_MODEL`
+selects Ollama first; otherwise, setting `ANTHROPIC_API_KEY` activates the real
+Claude tool-use client (`Services/ClaudeLlmClient.cs`) at runtime.
 
 | Path | What it is |
 | ---- | ---------- |
@@ -130,7 +130,7 @@ same catalog the agent uses, viewable as ground truth.
 
 | Stage | Implementation |
 | ----- | -------------- |
-| (1) Planner (LLM) | `Services/ClaudeLlmClient.cs` (Anthropic tool-use, active when `ANTHROPIC_API_KEY` is set) or `Services/RuleBasedLlmClient.cs` (deterministic stub, the offline default) |
+| (1) Planner (LLM) | `Services/OllamaLlmClient.cs` when `USE_LOCAL_MODEL` is nonempty; otherwise `Services/ClaudeLlmClient.cs` when `ANTHROPIC_API_KEY` is nonempty, or `Services/RuleBasedLlmClient.cs` (deterministic stub, the offline default) |
 | (2) Schema Retriever | `Services/SchemaCatalog.cs` (FK-aware) |
 | (3) SQL Generator | shared with (1) in this example |
 | (4) Validator / Guardrail | `Services/SqlValidator.cs` (static + EXPLAIN gate) |
@@ -148,8 +148,8 @@ Per-service design notes referenced from the file-top comments
 Razor Pages for the chat UI, an Npgsql `DataSource` for the read-only
 PostgreSQL connection, and the agent services
 (SchemaCatalog -> SqlValidator -> AgentOrchestrator). The orchestrator
-uses the deterministic rule-based "LLM" by default; when
-`ANTHROPIC_API_KEY` is set the ClaudeLlmClient path is swapped in
+uses the deterministic rule-based "LLM" by default. A nonempty `USE_LOCAL_MODEL`
+selects Ollama; otherwise a nonempty `ANTHROPIC_API_KEY` selects Claude
 through the same `ILlmClient` seam. `Services/PostgresConnectionString.cs`
 chooses the connection string (see [Run the .NET app](#2--run-the-net-app)) and
 fails startup rather than fall back to a built-in password.
@@ -171,14 +171,16 @@ returns a confidence score and the same prose a real LLM would produce
 in a "plan" channel, so the UI shows realistic agent reasoning.
 
 **`Services/SchemaCatalog.cs`** -- the "(2) Schema Retriever" stage.
-Build-time: introspects `information_schema` + `pg_constraint` to
-materialize per-column metadata (name, type, nullable, sample values),
-per-table prose (from `COMMENT ON`), and the foreign-key graph as a
-sidecar. Query-time: `get_relevant_schema(question, k)` uses hybrid
-scoring (keyword overlap plus substring similarity on docstrings) with
-one-hop FK expansion so the LLM never has to invent JOIN partners, and
-returns a compact prompt slice (target < 2 KB). A production system
-would use a real vector index (pgvector or a hosted store); keeping it
+On the first runtime request, introspects `pg_class`, `information_schema`
+and `pg_constraint` to build in-memory table comments, column metadata
+(name, type, nullable), and outgoing foreign-key edges. It collects no sample
+values and writes no sidecar. `GetRelevantSchemaAsync(question, k)` scores
+question tokens against table names, column names, and comments, weighting exact
+table and column name matches more heavily. It selects up to `k` matching tables
+(default 6); when none score positively, it starts with `customer`, `subscription`,
+`plan_tier`, and `churn_event` instead. It adds direct outgoing FK neighbors and
+formats the schema slice without a byte-size cap. A production system would use
+a real vector index (pgvector or a hosted store); keeping it
 deterministic keeps the example offline and reproducible. Successful catalog loads
 are shared and cached; a failed load is retried on the next request. Concurrent
 callers share one load, and canceling one caller does not poison the shared cache.
@@ -208,9 +210,10 @@ the Anthropic Messages API with tool-use for structured output; the
 
 **`Services/OllamaLlmClient.cs`** -- local-first `ILlmClient` backed by
 an Ollama server (default `http://127.0.0.1:11434`) running a local
-coding model (e.g. `qwen3-coder`); activated by `USE_LOCAL_MODEL` /
-`OLLAMA_HOST`, keeping the schema and questions on-device instead of
-calling a third-party API. Mirrors `ClaudeLlmClient`'s structured-output
+coding model (e.g. `qwen3-coder`); activated by `USE_LOCAL_MODEL`.
+`OLLAMA_HOST` overrides the endpoint; it does not select the client. Local
+generation keeps the schema and questions on-device instead of calling a
+third-party API. Mirrors `ClaudeLlmClient`'s structured-output
 contract: a parsed `Refused=true` is a normal `LlmDecision`, and every
 other failure mode throws `LlmClientException`. An accepted decision must contain
 nonblank SQL; a refusal requires a reason and no SQL. The orchestrator validates
@@ -293,8 +296,22 @@ and deploys through the Yuruna three-phase model. The pieces are in place:
   checkpoints it; the `.test` sequence restores that checkpoint, sets up
   PostgreSQL, deploys, and asserts `HTTP 200`. Both run unattended.
 
+Database setup disables xtrace while handling passwords and restores the caller's
+trace state afterward. Passwords travel through shell builtins, standard input,
+and owner-only files. Before `ALTER ROLE`, the PostgreSQL session disables
+statement, duration, and error-statement logging; errors from `psql` are captured
+and redacted because they may echo the submitted SQL. Every run replaces the
+password file and tightens an existing directory to mode 700, with ownership
+returned to the harness user even when setup runs as root.
+
+The authentication rules admit the Flannel pod CIDR and directly connected
+networks (`samenet`) using `scram-sha-256`, covering both pod-IP and node-IP source
+addresses. The final TCP probe follows the pod's `status.hostIP:5432` route. A
+failed probe warns because the UI can still serve HTTP without database access.
+
 The same `ILlmClient` selection applies in the deployed container:
-set `ANTHROPIC_API_KEY` to run against Claude, leave it unset to run
+a nonempty `USE_LOCAL_MODEL` selects Ollama first; otherwise set
+`ANTHROPIC_API_KEY` to run against Claude, or leave both unset to run
 the offline rule-based client.
 
 <a id="4286c679-0009"></a>
@@ -304,15 +321,16 @@ the offline rule-based client.
 The image holds no certificate and no password. Generate the dev HTTPS
 certificate **before** the Docker / Yuruna build. `Set-Component` runs
 `copy-pfx.ps1`, which only checks that `$HOME/.aspnet/https/aspnetapp.pfx` opens
-with the password in `ASPNETCORE_Kestrel__Certificates__Default__Password` and
-fails loudly, with the exact command to run, when it does not. `Set-Workload`
+with the password in `ASPNETCORE_Kestrel__Certificates__Default__Password` or,
+when that is unset or empty, in the password file beside the PFX. It fails loudly,
+with the exact command to run, when the certificate cannot be opened. `Set-Workload`
 then runs `create-cert-secret.ps1`, which re-exports that certificate under a
 newly generated password into the Secret `text-to-sql-ui-pod-cert`; the chart
 mounts the certificate at `/https` and reads the password through `secretKeyRef`.
 Guest VMs store the development certificate's password in
 `~/.aspnet/https/aspnetapp.pfx.password` (readable only by its owner), and the
 example reads that file when `ASPNETCORE_Kestrel__Certificates__Default__Password`
-is unset.
+is unset or empty.
 
 ```powershell
 dotnet dev-certs https --check --trust              # check
@@ -338,8 +356,8 @@ and built independently.
 **Local verification**
 
 The dependency-free policy/result-reader test executable links the actual
-production sources and runs with the .NET 8 SDK; the application remains on
-.NET 10. From the repository root:
+production sources and targets .NET 10, like the application. From the
+repository root:
 
 ```powershell
 dotnet run --project example/text-to-sql/tests/SqlPolicy.Tests
@@ -409,6 +427,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.10.04
+Last review: 2026.10.11
 
 Back to [yuruna-project](../../README.md) - [Yuruna](https://yuruna.com)

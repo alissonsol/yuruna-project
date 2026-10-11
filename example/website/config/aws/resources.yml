@@ -19,9 +19,10 @@ globalVariables:
   nodeType:              "m5.large"
   nodeCount:             3
 
+# Define every required Terraform variable globally or in the resource;
+# a missing value leaves provisioning waiting for interactive input.
 # --- REGION: resources
 resources:
-# Careful: if the template needs a variable (variables.tf) and it is not defined globally or locally below then the script will be stuck waiting input
 - name:                  "componentsRegistry"
   template:              "aws/registry"
   variables:

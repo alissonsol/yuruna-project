@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 2026.10.04
+.VERSION 2026.10.11
 .GUID 420cfa6c-c9a1-4a18-bf13-87d3c8b7bd4a
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
@@ -28,11 +28,8 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "Docker build failed (exit code $LASTEXITCODE)." }
 
     # --- REGION: Run application
-    # The image holds no certificate: the developer's certificate folder is mounted read-only.
-    # Passing the password variable by name (-e with no value) takes it from this process's
-    # environment, so it is never written in this file or shown on a command line. When the
-    # variable is unset, the password file beside the PFX (aspnetapp.pfx.password, which the
-    # guest provisioning scripts write) supplies it, for this run only.
+    # Mount the certificate read-only and pass its password by variable name.
+    # See https://yuruna.link/42f64340-0004
     $certificateFolder = [IO.Path]::GetFullPath((Join-Path $HOME '.aspnet/https'))
     $passwordFile = Join-Path $certificateFolder 'aspnetapp.pfx.password'
     if ([string]::IsNullOrEmpty([Environment]::GetEnvironmentVariable($passwordVariable)) -and (Test-Path -LiteralPath $passwordFile -PathType Leaf)) {

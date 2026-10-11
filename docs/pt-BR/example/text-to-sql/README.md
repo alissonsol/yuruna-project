@@ -6,7 +6,7 @@
 > implanta pelo modelo completo de três fases do Yuruna (`Set-Resource` /
 > `Set-Component` / `Set-Workload`); veja
 > [Integração com o Yuruna](#integração-com-o-yuruna) abaixo. O Claude
-> é ativado quando `ANTHROPIC_API_KEY` está definida.
+> é ativado quando `ANTHROPIC_API_KEY` não está vazia e `USE_LOCAL_MODEL` está vazia ou não foi definida.
 
 Uma aplicação agêntica de text-to-SQL somente leitura: ASP.NET Core
 (.NET 10) Razor Pages sobre o PostgreSQL, implementando um pipeline de
@@ -16,9 +16,9 @@ uma barreira de custo baseada em EXPLAIN.
 Este exemplo mostra, de ponta a ponta, como é um agente observável e com
 ações controladas por barreiras. O `ILlmClient` padrão é um substituto
 determinístico baseado em regras, para que o exemplo rode offline contra
-um PostgreSQL local; definir `ANTHROPIC_API_KEY` ativa em tempo de
-execução o cliente real do Claude com uso de ferramentas
-(`Services/ClaudeLlmClient.cs`).
+um PostgreSQL local. `USE_LOCAL_MODEL` seleciona primeiro o Ollama;
+caso contrário, definir `ANTHROPIC_API_KEY` ativa em tempo de execução o
+cliente real do Claude com uso de ferramentas (`Services/ClaudeLlmClient.cs`).
 
 | Caminho | O que é |
 | ---- | ---------- |
@@ -135,7 +135,7 @@ mesmo catálogo que o agente usa, visível como verdade de referência.
 
 | Estágio | Implementação |
 | ----- | -------------- |
-| (1) Planejador (LLM) | `Services/ClaudeLlmClient.cs` (uso de ferramentas da Anthropic, ativo quando `ANTHROPIC_API_KEY` está definida) ou `Services/RuleBasedLlmClient.cs` (stub determinístico, o padrão offline) |
+| (1) Planejador (LLM) | `Services/OllamaLlmClient.cs` quando `USE_LOCAL_MODEL` não está vazia; caso contrário, `Services/ClaudeLlmClient.cs` quando `ANTHROPIC_API_KEY` não está vazia, ou `Services/RuleBasedLlmClient.cs` (stub determinístico, o padrão offline) |
 | (2) Recuperador de esquema | `Services/SchemaCatalog.cs` (ciente de FK) |
 | (3) Gerador de SQL | compartilhado com (1) neste exemplo |
 | (4) Validador / Guardrail | `Services/SqlValidator.cs` (estático + barreira EXPLAIN) |
@@ -153,9 +153,9 @@ topo dos arquivos (`https://yuruna.link/4286c679-0007`).
 conectadas: Razor Pages para a interface de chat, um `DataSource` do
 Npgsql para a conexão somente leitura com o PostgreSQL e os serviços do
 agente (SchemaCatalog -> SqlValidator -> AgentOrchestrator). O
-orquestrador usa por padrão a "LLM" determinística baseada em regras;
-quando `ANTHROPIC_API_KEY` está definida, o caminho do ClaudeLlmClient
-entra em seu lugar pela mesma interface `ILlmClient`.
+orquestrador usa por padrão a "LLM" determinística baseada em regras.
+Uma `USE_LOCAL_MODEL` não vazia seleciona o Ollama; caso contrário, uma
+`ANTHROPIC_API_KEY` não vazia seleciona o Claude pela mesma interface `ILlmClient`.
 `Services/PostgresConnectionString.cs` escolhe a string de conexão (veja
 [Executar a aplicação .NET](#2--executar-a-aplicação-net)) e interrompe a
 inicialização em vez de recorrer a uma senha embutida.
@@ -178,16 +178,18 @@ confiança e o mesmo texto que uma LLM real produziria em um canal
 "plan", de modo que a interface mostra um raciocínio de agente realista.
 
 **`Services/SchemaCatalog.cs`** -- o estágio "(2) Recuperador de
-esquema". Em tempo de compilação: inspeciona `information_schema` +
-`pg_constraint` para materializar metadados por coluna (nome, tipo,
-aceita nulo, valores de amostra), texto descritivo por tabela (a partir
-de `COMMENT ON`) e o grafo de chaves estrangeiras como um arquivo
-paralelo. Em tempo de consulta: `get_relevant_schema(question, k)` usa
-pontuação híbrida (sobreposição de palavras-chave mais similaridade de
-substring nas docstrings) com expansão de FK de um salto, para que a LLM
-nunca precise inventar parceiros de JOIN, e retorna uma fatia compacta de
-prompt (alvo < 2 KB). Um sistema em produção usaria um índice vetorial de
-verdade (pgvector ou um armazenamento hospedado); mantê-lo determinístico
+esquema". Na primeira solicitação em tempo de execução, inspeciona `pg_class`,
+`information_schema` e `pg_constraint` para montar em memória comentários das
+tabelas, metadados por coluna (nome, tipo, aceita nulo) e arestas de chaves
+estrangeiras de saída. Não coleta valores de amostra nem grava um arquivo paralelo.
+`GetRelevantSchemaAsync(question, k)` pontua os tokens da pergunta em relação aos
+nomes de tabelas, nomes de colunas e comentários, atribuindo maior peso às
+correspondências exatas com nomes de tabelas e colunas. Seleciona até `k` tabelas
+correspondentes (padrão 6); quando nenhuma tem pontuação positiva, parte de
+`customer`, `subscription`, `plan_tier` e `churn_event`. Acrescenta os vizinhos
+diretos ligados pelas FKs de saída e formata a fatia de esquema sem limite de
+tamanho em bytes. Um sistema em produção usaria um índice vetorial de verdade
+(pgvector ou um armazenamento hospedado); mantê-lo determinístico
 mantém o exemplo offline e reproduzível. Carregamentos bem-sucedidos do catálogo
 são compartilhados e armazenados em cache; uma falha permite nova tentativa na
 próxima solicitação. Chamadores simultâneos compartilham um carregamento, e o
@@ -223,9 +225,10 @@ o papel de "(3) Gerador de SQL (LLM)" no orquestrador. Retorna um
 
 **`Services/OllamaLlmClient.cs`** -- `ILlmClient` local-first apoiado em
 um servidor Ollama (padrão `http://127.0.0.1:11434`) executando um modelo
-de código local (por exemplo, `qwen3-coder`); ativado por
-`USE_LOCAL_MODEL` / `OLLAMA_HOST`, mantendo o esquema e as perguntas no
-dispositivo em vez de chamar uma API de terceiros. Espelha o contrato de
+de código local (por exemplo, `qwen3-coder`); ativado por `USE_LOCAL_MODEL`.
+`OLLAMA_HOST` substitui o endpoint; não seleciona o cliente. A geração local
+mantém o esquema e as perguntas no dispositivo em vez de chamar uma API de
+terceiros. Espelha o contrato de
 saída estruturada do `ClaudeLlmClient`: um `Refused=true` interpretado é
 um `LlmDecision` normal, e todos os outros modos de falha lançam
 `LlmClientException`. Uma decisão aceita deve conter SQL não vazio; uma recusa
@@ -318,8 +321,25 @@ e é implantado pelo modelo de três fases do Yuruna. As peças estão no lugar:
   um checkpoint dele; a sequência `.test` restaura esse checkpoint, configura
   o PostgreSQL, implanta e verifica `HTTP 200`. Ambas rodam sem supervisão.
 
-A mesma seleção de `ILlmClient` vale no contêiner implantado: defina
-`ANTHROPIC_API_KEY` para rodar com o Claude, deixe-a indefinida para
+A configuração do banco desativa o xtrace ao lidar com senhas e depois restaura
+o estado de rastreamento do chamador. As senhas passam por comandos internos do
+shell, pela entrada padrão e por arquivos acessíveis apenas ao proprietário.
+Antes de `ALTER ROLE`, a sessão do PostgreSQL desativa o registro de instruções,
+de duração e de instruções com erro; os erros do `psql` são capturados e têm os
+segredos ocultados, pois podem repetir o SQL enviado. Cada execução substitui o
+arquivo de senha e restringe um diretório existente ao modo 700, devolvendo a
+propriedade ao usuário do executor de testes mesmo quando a configuração roda
+como root.
+
+As regras de autenticação aceitam o CIDR dos pods do Flannel e as redes
+diretamente conectadas (`samenet`) usando `scram-sha-256`, cobrindo endereços de
+origem tanto de pods quanto de nós. A verificação TCP final segue a rota do pod
+para `status.hostIP:5432`. Uma falha nessa verificação gera um aviso, pois a
+interface ainda pode servir HTTP sem acesso ao banco de dados.
+
+A mesma seleção de `ILlmClient` vale no contêiner implantado: uma
+`USE_LOCAL_MODEL` não vazia seleciona primeiro o Ollama; caso contrário, defina
+`ANTHROPIC_API_KEY` para rodar com o Claude, ou deixe ambas indefinidas para
 rodar o cliente offline baseado em regras.
 
 <a id="4286c679-0009"></a>
@@ -329,15 +349,16 @@ rodar o cliente offline baseado em regras.
 A imagem não contém certificado nem senha. Gere o certificado HTTPS de
 desenvolvimento **antes** da compilação Docker / Yuruna. O `Set-Component`
 executa `copy-pfx.ps1`, que apenas verifica se `$HOME/.aspnet/https/aspnetapp.pfx`
-abre com a senha de `ASPNETCORE_Kestrel__Certificates__Default__Password` e
-falha de forma explícita, com o comando exato a ser executado, quando isso não
-acontece. Em seguida o `Set-Workload` executa `create-cert-secret.ps1`, que
+abre com a senha de `ASPNETCORE_Kestrel__Certificates__Default__Password` ou,
+quando ela não está definida ou está vazia, com a senha do arquivo ao lado do PFX.
+Ele falha de forma explícita, com o comando exato a ser executado, quando o
+certificado não pode ser aberto. Em seguida o `Set-Workload` executa `create-cert-secret.ps1`, que
 exporta esse certificado novamente, com uma senha recém-gerada, para o Secret
 `text-to-sql-ui-pod-cert`; o chart monta o certificado em `/https` e lê a senha
 por `secretKeyRef`. Os convidados (VMs) guardam a senha do certificado de
 desenvolvimento em `~/.aspnet/https/aspnetapp.pfx.password` (legível somente pelo
 proprietário), e o exemplo lê esse arquivo quando
-`ASPNETCORE_Kestrel__Certificates__Default__Password` não está definida.
+`ASPNETCORE_Kestrel__Certificates__Default__Password` não está definida ou está vazia.
 
 ```powershell
 dotnet dev-certs https --check --trust              # check
@@ -364,8 +385,8 @@ exemplo continua podendo ser copiado e compilado de forma independente.
 **Verificação local**
 
 O executável de testes da política e do leitor de resultados não tem
-dependências externas: ele vincula as fontes reais de produção e roda com o
-SDK .NET 8; a aplicação continua no .NET 10. Na raiz do repositório:
+dependências externas: ele vincula as fontes reais de produção e tem como alvo
+o .NET 10, como a aplicação. Na raiz do repositório:
 
 ```powershell
 dotnet run --project example/text-to-sql/tests/SqlPolicy.Tests
@@ -437,6 +458,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Última revisão: 2026.10.04
+Última revisão: 2026.10.11
 
 Voltar para [yuruna-project](../../../../README.md) - [Yuruna](https://yuruna.com)

@@ -1,28 +1,32 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 # reference: https://kubernetes.github.io/ingress-nginx/user-guide/basic-usage/
+# --- REGION: apiVersion
 apiVersion: networking.k8s.io/v1
 kind: Ingress
+# --- REGION: metadata
 metadata:
   name: ingress-to-text-to-sql-ui
   namespace: {{ .Values.namespace }}
   labels:
     app: text-to-sql-ui
+  # --- REGION: annotations
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/use-regex: "true"
-    # ssl-redirect stays "false": the yuruna framework smoke test (test/test-localhost.sh
-    # in the yuruna repo) probes
-    # http://localhost and accepts only 200. "true" answers plaintext HTTP with a 308 redirect
-    # to HTTPS, and the probe does not follow redirects, so it would never see 200.
+    # The HTTP smoke check requires 200 without following HTTPS redirects.
+    # See https://yuruna.link/42f64340-0005
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+# --- REGION: spec
 spec:
   ingressClassName: {{ required "ingressClass is required for the TLS ingress" .Values.ingressClass }}
+  # --- REGION: tls
   tls:
   - hosts:
     - {{ required "appHost is required for the TLS ingress" .Values.appHost }}
     secretName: {{ required "appTlsSecret is required for the TLS ingress" .Values.appTlsSecret }}
+  # --- REGION: rules
   rules:
   - host: {{ required "appHost is required for the TLS ingress" .Values.appHost }}
     http:

@@ -1,24 +1,38 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
-# Requires the Secret website-pod-cert in the pod's namespace; create it with
-# create-cert-secret.ps1 (see README.md).
+# Requires website-pod-cert in this namespace; create it with create-cert-secret.ps1.
+# See https://yuruna.link/42f64340-0004
+# --- REGION: apiVersion
 apiVersion: v1
 kind: Pod
+# --- REGION: metadata
 metadata:
   name: website-pod
   labels:
     app: website-pod
+# --- REGION: spec
 spec:
-  # The key is readable by its owner and group only; the .NET base images give their
-  # non-root user and group the ID 1654.
-  securityContext:
-    fsGroup: 1654
+  # --- REGION: containers
   containers:
     - name: website-app
       image: "localhost:5000/website/website:latest"
+      imagePullPolicy: Always
+      # --- REGION: ports
       ports:
         - containerPort: 80
         - containerPort: 443
+      # --- REGION: resources
+      # See https://yuruna.link/42e220c4-0009
+      resources:
+        requests:
+          ephemeral-storage: "256Mi"
+          memory: "256Mi"
+          cpu: "200m"
+        limits:
+          ephemeral-storage: "1Gi"
+          memory: "256Mi"
+          cpu: "200m"
+      # --- REGION: env
       env:
       - name: ASPNETCORE_URLS
         value: "https://+;http://+"
@@ -31,10 +45,34 @@ spec:
             key: password
       - name: ASPNETCORE_Kestrel__Certificates__Default__Path
         value: "/https/aspnetapp.pfx"
+      # --- REGION: volumeMounts
       volumeMounts:
         - name: pod-certificate
           mountPath: /https
           readOnly: true
+      # --- REGION: readinessProbe
+      # See https://yuruna.link/42f64340-0005
+      readinessProbe:
+        httpGet:
+          path: /
+          port: 443
+          scheme: HTTPS
+        initialDelaySeconds: 5
+        periodSeconds: 5
+        failureThreshold: 12
+      # --- REGION: livenessProbe
+      # See https://yuruna.link/42f64340-0005
+      livenessProbe:
+        tcpSocket:
+          port: 443
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        failureThreshold: 6
+  # --- REGION: securityContext
+  # See https://yuruna.link/42f64340-0004
+  securityContext:
+    fsGroup: 1654
+  # --- REGION: volumes
   volumes:
     - name: pod-certificate
       secret:

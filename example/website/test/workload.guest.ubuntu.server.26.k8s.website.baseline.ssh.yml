@@ -4,7 +4,7 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 
 sequenceGuid: 4207c826-8f03-45dc-b6ea-4de80820f492
-sequenceRevision: 2
+sequenceRevision: 3
 
 description: "Ubuntu Server 26.04 (SSH): build a managed Kubernetes baseline for the website."
 descriptionLocalized:
@@ -22,11 +22,26 @@ snapshotPolicy:
   sourceFiles:
     - guest/ubuntu.server.26/*.sh
     - host/*/guest.ubuntu.server.26/*.ps1
+    - host/*/modules/*UbuntuServer*.ps1
+    - host/*/modules/Yuruna.Host.psm1
     - host/modules/Yuruna.UbuntuImage.psm1
+    - host/modules/Yuruna.Image.psm1
     - host/vmconfig/ubuntu.server.*
+    - host/vmconfig/guest-dhcp.network-config
+    - host/macos.utm/guest.ubuntu.server.26/config.plist.template
+    - automation/Yuruna.CloudInitTemplate.psm1
+    - automation/Yuruna.Common.psm1
+    - automation/Yuruna.GitHubSource.psm1
+    - automation/Yuruna.GuestSeed.psm1
     - automation/fetch-and-execute.sh
+    - automation/yuruna-fetch-context.sh
+    - automation/yuruna-network.sh
+    - automation/yuruna-host-locate.sh
     - automation/yuruna-retry.sh
     - automation/yuruna-versions.sh
+    - test/modules/Test.Ssh.psm1
+    - test/modules/Test.Config.psm1
+    - test/modules/Test.CachingProxyService.psm1
     - test/sequences/start.guest.ubuntu.server.26*.yml
     - project/example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml
 variables:

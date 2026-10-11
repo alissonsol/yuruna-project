@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 2026.10.04
+.VERSION 2026.10.11
 .GUID 4225b001-c90f-4210-ba9a-b5d1da7ee415
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
@@ -17,32 +17,89 @@ $module = Import-Module (Join-Path $PSScriptRoot 'Example.Build.psm1') -Force -P
 $root = Split-Path -Parent $PSScriptRoot
 
 & $module {
+    $ambientProxy = [Environment]::GetEnvironmentVariable('http_proxy')
+    $fixture = Join-Path ([IO.Path]::GetTempPath()) ('yuruna-cache-discovery-' + [guid]::NewGuid().ToString('N'))
+    $script:CacheProbeCount = 0
+    $script:CacheProbeAvailable = $false
+    # --- REGION: Invoke-WebRequest
+    function Invoke-WebRequest {
+        param([string]$Uri, [string]$Method, [int]$TimeoutSec)
+        $script:CacheProbeCount++
+        if ($Uri -cne 'http://yuruna-caching-proxy-service:5000/v2/' -or $Method -cne 'Get' -or $TimeoutSec -ne 10) {
+            throw 'Cache discovery must probe the conventional registry with a ten-second bound'
+        }
+        if (-not $script:CacheProbeAvailable) { throw 'fixture cache unavailable' }
+    }
+    try {
+        $null = [IO.Directory]::CreateDirectory($fixture)
+        $hostEnvironment = Join-Path $fixture 'host.env'
+        foreach ($case in @(
+            @{ Name = 'proxy before host file'; Proxy = 'http://proxy.test:3128'; Host = 'YURUNA_CACHING_PROXY_SERVICE_IP=file.test'; Probe = $true; Expected = 'proxy.test'; Calls = 0 },
+            @{ Name = 'HTTPS proxy'; Proxy = 'https://secure.test:8443'; Host = ''; Probe = $false; Expected = 'secure.test'; Calls = 0 },
+            @{ Name = 'case-insensitive URI scheme'; Proxy = 'HTTPS://secure.test:8443'; Host = ''; Probe = $false; Expected = 'secure.test'; Calls = 0 },
+            @{ Name = 'first host assignment'; Proxy = ''; Host = "YURUNA_CACHING_PROXY_SERVICE_IP=first.test`nYURUNA_CACHING_PROXY_SERVICE_IP=second.test"; Probe = $true; Expected = 'first.test'; Calls = 0 },
+            @{ Name = 'first nonempty host assignment'; Proxy = ''; Host = "YURUNA_CACHING_PROXY_SERVICE_IP=`nYURUNA_CACHING_PROXY_SERVICE_IP=file.test"; Probe = $false; Expected = 'file.test'; Calls = 0 },
+            @{ Name = 'host assignment with comment'; Proxy = ''; Host = 'YURUNA_CACHING_PROXY_SERVICE_IP=file.test # cache'; Probe = $false; Expected = 'file.test'; Calls = 0 },
+            @{ Name = 'invalid proxy falls back'; Proxy = 'direct'; Host = 'YURUNA_CACHING_PROXY_SERVICE_IP=file.test'; Probe = $false; Expected = 'file.test'; Calls = 0 },
+            @{ Name = 'empty proxy host falls back'; Proxy = 'http://:3128'; Host = 'YURUNA_CACHING_PROXY_SERVICE_IP=file.test'; Probe = $false; Expected = 'file.test'; Calls = 0 },
+            @{ Name = 'empty assignment probes'; Proxy = ''; Host = 'YURUNA_CACHING_PROXY_SERVICE_IP='; Probe = $true; Expected = 'yuruna-caching-proxy-service'; Calls = 1 },
+            @{ Name = 'unrelated assignment probes'; Proxy = ''; Host = 'OTHER_CACHE=file.test'; Probe = $true; Expected = 'yuruna-caching-proxy-service'; Calls = 1 },
+            @{ Name = 'absent file probes'; Proxy = ''; Host = $null; Probe = $true; Expected = 'yuruna-caching-proxy-service'; Calls = 1 },
+            @{ Name = 'direct lab has no cache'; Proxy = ''; Host = $null; Probe = $false; Expected = ''; Calls = 1 }
+        )) {
+            [Environment]::SetEnvironmentVariable('http_proxy', $case.Proxy)
+            if ($null -eq $case.Host) { [IO.File]::Delete($hostEnvironment) }
+            else { [IO.File]::WriteAllText($hostEnvironment, $case.Host, [Text.UTF8Encoding]::new($false)) }
+            $script:CacheProbeAvailable = $case.Probe
+            $script:CacheProbeCount = 0
+            $found = Get-ExampleCachingProxyHost -HostEnvironmentPath $hostEnvironment
+            if ($found -cne $case.Expected -or $script:CacheProbeCount -ne $case.Calls) {
+                throw "Cache discovery failed '$($case.Name)': host=$found probes=$script:CacheProbeCount"
+            }
+        }
+    } finally {
+        [Environment]::SetEnvironmentVariable('http_proxy', $(if ($null -eq $ambientProxy) { [NullString]::Value } else { $ambientProxy }))
+        if (Test-Path -LiteralPath $fixture) { Remove-Item -LiteralPath $fixture -Recurse -Force }
+    }
+}
+
+& $module {
     $script:Calls = [Collections.Generic.List[string]]::new()
     $script:AlreadyServed = $false
     $script:LocalImage = 'mcr.microsoft.com/dotnet/sdk:10.0'
     $script:PushExit = 0
     $script:LASTEXITCODE = 0
+    $script:CacheHost = ''
+    $script:CacheDiscoveryCount = 0
+    $script:PullExit = 0
+    # --- REGION: Get-ExampleCachingProxyHost
+    function Get-ExampleCachingProxyHost { $script:CacheDiscoveryCount++; return $script:CacheHost }
+    # --- REGION: Invoke-WebRequest
     function Invoke-WebRequest {
         if (-not $script:AlreadyServed) { throw 'fixture cache miss' }
     }
+    # --- REGION: docker
     function docker {
         $script:Calls.Add(($args -join ' '))
         $script:LASTEXITCODE = 0
         if ($args[0] -eq 'image') { $script:LocalImage }
     }
+    # --- REGION: Invoke-BoundedDocker
     function Invoke-BoundedDocker {
         param([int]$TimeoutSeconds, [string[]]$DockerArgs)
         if ($TimeoutSeconds -ne 300) { throw 'Seed command lost its deadline' }
         $script:Calls.Add(($DockerArgs -join ' '))
         if ($DockerArgs[0] -eq 'push') { return $script:PushExit }
+        if ($DockerArgs[0] -eq 'pull' -and $DockerArgs[1] -like 'cache.test:5000/*') { return $script:PullExit }
         return 0
     }
     $script:AlreadyServed = $true
-    if ((Invoke-ExampleBaseImageSeed -BaseImage 'dotnet/sdk:10.0') -ne 0 -or $script:Calls.Count -ne 0) {
+    if ((Invoke-ExampleBaseImageSeed -BaseImage 'dotnet/sdk:10.0') -ne 0 -or $script:Calls.Count -ne 0 -or $script:CacheDiscoveryCount -ne 0) {
         throw 'A served manifest must skip Docker work'
     }
     $script:AlreadyServed = $false
     if ((Invoke-ExampleBaseImageSeed -BaseImage 'dotnet/sdk:10.0') -ne 0 -or
+        $script:CacheDiscoveryCount -ne 0 -or
         -not ($script:Calls | Where-Object { $_ -like 'tag mcr.microsoft.com/dotnet/sdk:10.0 *' }) -or
         -not ($script:Calls | Where-Object { $_ -like 'push */dotnet/sdk:10.0' })) {
         throw 'A local base image must be tagged and pushed'
@@ -58,11 +115,32 @@ $root = Split-Path -Parent $PSScriptRoot
         -not ($script:Calls | Where-Object { $_ -like 'pull */dotnet/sdk:10.0' })) {
         throw 'A missing local image must be pulled before being pushed'
     }
+    $script:CacheHost = 'cache.test'
+    $script:Calls.Clear()
+    if ((Invoke-ExampleBaseImageSeed -BaseImage 'dotnet/sdk:10.0') -ne 0 -or
+        ($script:Calls | Where-Object { $_ -like 'pull *' }) -cne 'pull cache.test:5000/dotnet/sdk:10.0') {
+        throw 'An assigned cache must be the first source and a successful cached pull must skip upstream'
+    }
+    $script:PullExit = 17
+    $script:Calls.Clear()
+    if ((Invoke-ExampleBaseImageSeed -BaseImage 'dotnet/sdk:10.0') -ne 0 -or
+        (($script:Calls | Where-Object { $_ -like 'pull *' }) -join '|') -cne 'pull cache.test:5000/dotnet/sdk:10.0|pull mcr.microsoft.com/dotnet/sdk:10.0') {
+        throw 'A failed cache pull must preserve the existing bounded upstream fallback'
+    }
+    $script:PullExit = 0
+    foreach ($cache in 'cache.test', '') {
+        $script:CacheHost = $cache
+        $script:CacheDiscoveryCount = 0
+        if ((Invoke-ExampleBaseImageSeed -BaseImage @('dotnet/sdk:10.0', 'dotnet/aspnet:10.0')) -ne 0 -or $script:CacheDiscoveryCount -ne 1) {
+            throw 'A seed run must discover the cache only once for all missing base images, including when no cache exists'
+        }
+    }
 }
 
 # The ambient values would change what these tests prove; both are restored in the finally.
 $ambient = @{}
-foreach ($name in 'ASPNETCORE_Kestrel__Certificates__Default__Password', 'YURUNA_EXAMPLE_SELF_SIGNED_CERT', 'PATH', 'USERPROFILE', 'HOME') {
+foreach ($name in 'ASPNETCORE_Kestrel__Certificates__Default__Password', 'YURUNA_EXAMPLE_SELF_SIGNED_CERT', 'PATH', 'USERPROFILE', 'HOME',
+    'KUBECTL_LOG', 'KUBECTL_STDIN', 'KUBECTL_EXIT', 'DOCKER_ENV_LOG', 'DOCKER_CALL_LOG', 'YURUNA_TEST_PFX_PASSWORD') {
     $ambient[$name] = [Environment]::GetEnvironmentVariable($name)
 }
 $fixture = Join-Path ([IO.Path]::GetTempPath()) ('yuruna-example-build-' + [guid]::NewGuid().ToString('N'))
@@ -80,15 +158,18 @@ try {
         $script:Calls = [Collections.Generic.List[string]]::new()
         $script:Stdin = $null
         $script:KubectlExit = 0
+        $script:KubectlFailOn = ''
         $variable = 'ASPNETCORE_Kestrel__Certificates__Default__Password'
         $loader = 'System.Security.Cryptography.X509Certificates.X509CertificateLoader' -as [type]
+        # --- REGION: kubectl
         function kubectl {
             $script:Calls.Add(($args -join ' '))
             $captured = @($input)
             if ($captured.Count -gt 0) { $script:Stdin = ($captured -join "`n") }
-            $global:LASTEXITCODE = $script:KubectlExit
-            if ($script:KubectlExit -eq 0) { 'fixture ok' } else { 'Error from server (Forbidden): fixture denial' }
+            $global:LASTEXITCODE = if (-not $script:KubectlFailOn -or $script:KubectlFailOn -eq $args[0]) { $script:KubectlExit } else { 0 }
+            if ($global:LASTEXITCODE -eq 0) { 'fixture ok' } else { "Error from server (Forbidden): fixture denial $($script:Stdin)" }
         }
+        # --- REGION: Open-Pfx
         function Open-Pfx {
             param([byte[]]$Bytes, [string]$Unlock)
             $flags = [Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable
@@ -96,6 +177,7 @@ try {
             return [Security.Cryptography.X509Certificates.X509Certificate2]::new($Bytes, $Unlock, $flags)
         }
         # Runs the Secret function and returns its exit code, every other stream as one text, and the Secret it sent.
+        # --- REGION: Invoke-Scenario
         function Invoke-Scenario {
             param([hashtable]$Arguments)
             $script:Calls.Clear()
@@ -106,10 +188,12 @@ try {
             $secret = if ($script:Stdin) { $script:Stdin | ConvertFrom-Json } else { $null }
             return [pscustomobject]@{ Exit = $exitCodes[-1]; Text = $text; Secret = $secret; Calls = ($script:Calls -join "`n") }
         }
+        # --- REGION: Get-SecretPassword
         function Get-SecretPassword {
             param($Secret)
             return [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($Secret.data.password))
         }
+        # --- REGION: Assert-NoLeak
         function Assert-NoLeak {
             param($Result, [string[]]$Forbidden, [string]$Scenario)
             foreach ($value in $Forbidden) {
@@ -186,6 +270,7 @@ try {
         # The password file beside the PFX ('<pfx>.password') supplies the password when the variable is
         # unset, the way the guest provisioning scripts leave it. The variable wins whenever it is set, and
         # a file that is empty after its trailing line breaks are removed counts as absent.
+        # --- REGION: Find-Openssl
         function Find-Openssl {
             $found = Get-Command openssl -ErrorAction SilentlyContinue | Select-Object -First 1
             if ($found) { return $found.Source }
@@ -195,6 +280,7 @@ try {
             return ($candidates | Where-Object { Test-Path -LiteralPath $_ -PathType Leaf } | Select-Object -First 1)
         }
         # The Ubuntu provisioning script's two commands; the password reaches openssl through the environment.
+        # --- REGION: Export-GuestStylePfx
         function Export-GuestStylePfx {
             param([string]$Openssl, [string]$Directory, [string]$Unlock)
             $key = Join-Path $Directory 'aspnetapp.key'
@@ -210,6 +296,7 @@ try {
             return $pfx
         }
         # Opens through the component phase check and through the Secret step, and carries the certificate into the Secret.
+        # --- REGION: Assert-PasswordAccepted
         function Assert-PasswordAccepted {
             param([string]$Path, [string]$Thumbprint, [string[]]$Forbidden, [string]$Scenario)
             Assert-ExampleDevelopmentCertificate -CertificatePath $Path
@@ -223,6 +310,7 @@ try {
         }
         # Stops both steps before anything reaches the cluster. The message names the variable and the file, and says
         # which of them supplied the password that failed ($Source is the sentence it must contain).
+        # --- REGION: Assert-PasswordRefused
         function Assert-PasswordRefused {
             param([string]$Path, [string[]]$Forbidden, [string]$Scenario, [string]$Source)
             $sidecar = "$Path.password"
@@ -354,7 +442,12 @@ try {
         $script:KubectlExit = 1
         $run = Invoke-Scenario @{ Namespace = 'fixture-ns'; SecretName = 'fixture-pod-cert'; SelfSigned = $true }
         if ($run.Exit -ne 1 -or $run.Text -notlike '*fixture denial*') { throw "A kubectl failure must fail the step: $($run.Text)" }
+        $script:KubectlFailOn = 'create'
+        $run = Invoke-Scenario @{ Namespace = 'fixture-ns'; SecretName = 'fixture-pod-cert'; SelfSigned = $true }
+        if ($run.Exit -ne 1 -or $run.Text -notlike '*fixture denial*' -or $run.Text -notlike '*<redacted>*') { throw 'A create refusal must retain its cause while redacting the submitted Secret' }
+        Assert-NoLeak -Result $run -Forbidden @((Get-SecretPassword -Secret $run.Secret), $run.Secret.data.password, $run.Secret.data.'aspnetapp.pfx') -Scenario 'A create refusal echoing the Secret'
         $script:KubectlExit = 0
+        $script:KubectlFailOn = ''
 
         # Names are checked before they reach kubectl.
         $rejected = $false
@@ -406,7 +499,7 @@ try {
 
     # The developer run scripts hand the password to Docker by name. With the variable unset they take it from the
     # password file beside the PFX, for that run only. A docker stand-in records its calls and the value its
-    # environment held; the .cmd stand-in never returns to the batch file, so only its first call is seen.
+    # environment held; the batch launcher must call a .cmd stand-in and resume after it returns.
     $passwordName = 'ASPNETCORE_Kestrel__Certificates__Default__Password'
     $devHome = Join-Path $fixture 'developer profile'
     $devHttps = Join-Path $devHome '.aspnet/https'
@@ -430,6 +523,7 @@ exit 0
         [IO.File]::WriteAllText($dockerStub, $dockerText.Replace("`r`n", "`n").Replace('__NAME__', $passwordName))
         & chmod +x $dockerStub
     }
+    # --- REGION: Invoke-DeveloperScript
     function Invoke-DeveloperScript {
         param([string]$Path, $VariableValue)
         foreach ($log in $devEnvLog, $devCallLog) { if (Test-Path -LiteralPath $log) { Remove-Item -LiteralPath $log -Force } }
@@ -496,7 +590,7 @@ exit 0
             )) {
                 if ($null -eq $case.File) { Remove-Item -LiteralPath $devSidecar -Force -ErrorAction SilentlyContinue } else { [IO.File]::WriteAllText($devSidecar, $case.File) }
                 $run = Invoke-DeveloperScript -Path $devCmd -VariableValue $case.Variable
-                if ($run.Exit -ne 0 -or $run.Calls -ne 'build' -or $run.Value -cne $case.Expect) { throw "docker-run-dev.cmd passed the wrong password to Docker (exit $($run.Exit), calls '$($run.Calls)'): $($run.Output)" }
+                if ($run.Exit -ne 0 -or $run.Calls -ne 'build,run' -or $run.Value -cne $case.Expect) { throw "docker-run-dev.cmd passed the wrong password to Docker (exit $($run.Exit), calls '$($run.Calls)'): $($run.Output)" }
                 foreach ($secret in @($devPassword, $otherPassword)) { if ($run.Output.Contains($secret)) { throw 'docker-run-dev.cmd echoed a password' } }
             }
         } else {
@@ -628,7 +722,6 @@ exit 0
 } finally {
     # Only a null string removes a variable; $null would leave it defined and empty.
     foreach ($name in $ambient.Keys) { [Environment]::SetEnvironmentVariable($name, $(if ($null -eq $ambient[$name]) { [NullString]::Value } else { $ambient[$name] })) }
-    foreach ($name in 'KUBECTL_LOG', 'KUBECTL_STDIN', 'KUBECTL_EXIT', 'DOCKER_ENV_LOG', 'DOCKER_CALL_LOG', 'YURUNA_TEST_PFX_PASSWORD') { [Environment]::SetEnvironmentVariable($name, [NullString]::Value) }
     Remove-Module $module -ErrorAction SilentlyContinue
     $resolved = [IO.Path]::GetFullPath($fixture)
     $tempRoot = [IO.Path]::GetFullPath([IO.Path]::GetTempPath()).TrimEnd('\', '/') + [IO.Path]::DirectorySeparatorChar
@@ -637,4 +730,7 @@ exit 0
         Remove-Item -LiteralPath $resolved -Recurse -Force
     }
 }
-Write-Output 'Example build module: seed, certificate Secret, pod certificate wiring, and independent-context checks passed.'
+foreach ($name in $ambient.Keys) {
+    if ([Environment]::GetEnvironmentVariable($name) -cne $ambient[$name]) { throw "The test did not restore the original environment value of $name" }
+}
+Write-Output 'Example build module: cache discovery, seed, certificate Secret, pod certificate wiring, and independent-context checks passed.'

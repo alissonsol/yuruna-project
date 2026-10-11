@@ -1,20 +1,26 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# --- REGION: apiVersion
 apiVersion: apps/v1
 kind: Deployment
+# --- REGION: metadata
 metadata:
   name: text-to-sql-ui
   namespace: {{ .Values.namespace }}
+# --- REGION: spec
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: text-to-sql-ui
   template:
+    # --- REGION: metadata
     metadata:
       labels:
         app: text-to-sql-ui
+    # --- REGION: spec
     spec:
+      # --- REGION: containers
       containers:
       - name: text-to-sql-ui
         # See https://yuruna.link/42010605-0005
@@ -24,6 +30,7 @@ spec:
         {{- $dbSecret := required "Helm values is missing 'appDbSecret'. Check that config/<env>/workloads.yml globalVariables names the Secret that components/frontend/text-to-sql-ui/create-db-secret.ps1 creates before the chart is installed." .Values.appDbSecret }}
         image: {{ $reg }}/{{ required "Helm values is missing 'containerPrefix'." .Values.containerPrefix }}/text-to-sql-ui:latest
         imagePullPolicy: Always
+        # --- REGION: ports
         ports:
         - name: port80
           containerPort: 80
@@ -40,6 +47,7 @@ spec:
             ephemeral-storage: "1Gi"
             memory: "128Mi"
             cpu: "200m"
+        # --- REGION: env
         env:
         # See https://yuruna.link/42e220c4-0009
         - name: HOST_IP
@@ -60,8 +68,7 @@ spec:
           value: "https://+;http://+"
         - name: ASPNETCORE_HTTPS_PORT
           value: "443"
-        # The certificate and its password live only in the Secret, which is created for
-        # each deployment with a generated password (see the website component README).
+        # See https://yuruna.link/42f64340-0004
         - name: ASPNETCORE_Kestrel__Certificates__Default__Password
           valueFrom:
             secretKeyRef:
@@ -69,10 +76,12 @@ spec:
               key: password
         - name: ASPNETCORE_Kestrel__Certificates__Default__Path
           value: "/https/aspnetapp.pfx"
+        # --- REGION: volumeMounts
         volumeMounts:
         - name: pod-certificate
           mountPath: /https
           readOnly: true
+        # --- REGION: readinessProbe
         readinessProbe:
           httpGet:
             path: /
@@ -81,13 +90,22 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 5
           failureThreshold: 12
+        # --- REGION: livenessProbe
+        # See https://yuruna.link/42f64340-0005
+        livenessProbe:
+          tcpSocket:
+            port: 443
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 6
+      # --- REGION: imagePullSecrets
       imagePullSecrets:
         - name: registry-credential
-      # The key is readable by its owner and group only. The .NET base images give their
-      # non-root user and group the ID 1654, so the group lets that user read the key if the
-      # image ever drops root; the process runs as root today and reads it either way.
+      # --- REGION: securityContext
+      # See https://yuruna.link/42f64340-0004
       securityContext:
         fsGroup: 1654
+      # --- REGION: volumes
       volumes:
       - name: pod-certificate
         secret:
@@ -97,15 +115,19 @@ spec:
           - key: aspnetapp.pfx
             path: aspnetapp.pfx
 ---
+# --- REGION: apiVersion
 apiVersion: v1
 kind: Service
+# --- REGION: metadata
 metadata:
   name: text-to-sql-ui
   namespace: {{ .Values.namespace }}
   labels:
     app: text-to-sql-ui
+# --- REGION: spec
 spec:
   type: NodePort
+  # --- REGION: ports
   ports:
     - name: port80
       port: 80

@@ -31,9 +31,11 @@ Set-Workload.ps1  TO-SET localhost
 - **Cargas de trabalho** -- descrição das cargas de trabalho do projeto.
   O `config/localhost/workloads.yml` incluído é uma estrutura mínima
   (namespace + segredo de pull do registry + um espaço reservado
-  `TO-SET`). Para um pipeline completo em localhost com TLS (mkcert), um
-  ingress nginx e um emissor do cert-manager, copie e adapte
-  [example/website](../../../example/website/config/localhost/workloads.yml).
+  `TO-SET`). Para um pipeline completo em localhost com TLS (mkcert) e um
+  ingress nginx, copie e adapte
+  [example/website](../../../example/website/config/localhost/workloads.yml). Sua
+  [configuração do Azure](../../../example/website/config/azure/workloads.yml)
+  demonstra o cert-manager.
 - **Validação** -- como validar a funcionalidade do sistema.
 
 ---
@@ -42,6 +44,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Última revisão: 2026.10.04
+Última revisão: 2026.10.11
 
 Voltar para [yuruna-project](../../../README.md) - [Yuruna](https://yuruna.com)

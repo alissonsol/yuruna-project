@@ -1,20 +1,26 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# --- REGION: apiVersion
 apiVersion: apps/v1
 kind: Deployment
+# --- REGION: metadata
 metadata:
   name: website
   namespace: {{ .Values.namespace }}
+# --- REGION: spec
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: website
   template:
+    # --- REGION: metadata
     metadata:
       labels:
         app: website
+    # --- REGION: spec
     spec:
+      # --- REGION: containers
       containers:
       - name: website
         # See https://yuruna.link/42010605-0005
@@ -23,6 +29,7 @@ spec:
         {{- $certSecret := required "Helm values is missing 'websitePodCertSecret'. Check that config/<env>/workloads.yml globalVariables names the Secret that components/frontend/website/create-cert-secret.ps1 creates before the chart is installed." .Values.websitePodCertSecret }}
         image: {{ $reg }}/{{ required "Helm values is missing 'containerPrefix'." .Values.containerPrefix }}/website:latest
         imagePullPolicy: Always
+        # --- REGION: ports
         ports:
         - name: port80
           containerPort: 80
@@ -39,13 +46,13 @@ spec:
             ephemeral-storage: "1Gi"
             memory: "256Mi"
             cpu: "200m"
+        # --- REGION: env
         env:
         - name: ASPNETCORE_URLS
           value: "https://+;http://+"
         - name: ASPNETCORE_HTTPS_PORT
           value: "443"
-        # The certificate and its password live only in the Secret, which is created for
-        # each deployment with a generated password (see the website component README).
+        # See https://yuruna.link/42f64340-0004
         - name: ASPNETCORE_Kestrel__Certificates__Default__Password
           valueFrom:
             secretKeyRef:
@@ -53,10 +60,12 @@ spec:
               key: password
         - name: ASPNETCORE_Kestrel__Certificates__Default__Path
           value: "/https/aspnetapp.pfx"
+        # --- REGION: volumeMounts
         volumeMounts:
         - name: pod-certificate
           mountPath: /https
           readOnly: true
+        # --- REGION: readinessProbe
         readinessProbe:
           httpGet:
             path: /
@@ -65,24 +74,22 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 5
           failureThreshold: 12
-        # Readiness alone cannot recover a process that comes up but never binds
-        # the port: the pod stays 0/1 until the deploy's own wait expires, which
-        # surfaces as a chart timeout rather than as the stuck container it is.
-        # Liveness restarts it instead. The delay is generous next to the ~10s a
-        # healthy start takes, so an ordinarily slow boot is never killed.
+        # --- REGION: livenessProbe
+        # See https://yuruna.link/42f64340-0005
         livenessProbe:
           tcpSocket:
             port: 443
           initialDelaySeconds: 60
           periodSeconds: 10
           failureThreshold: 6
+      # --- REGION: imagePullSecrets
       imagePullSecrets:
         - name: registry-credential
-      # The key is readable by its owner and group only. The .NET base images give their
-      # non-root user and group the ID 1654, so the group lets that user read the key if the
-      # image ever drops root; the process runs as root today and reads it either way.
+      # --- REGION: securityContext
+      # See https://yuruna.link/42f64340-0004
       securityContext:
         fsGroup: 1654
+      # --- REGION: volumes
       volumes:
       - name: pod-certificate
         secret:
@@ -92,15 +99,19 @@ spec:
           - key: aspnetapp.pfx
             path: aspnetapp.pfx
 ---
+# --- REGION: apiVersion
 apiVersion: v1
 kind: Service
+# --- REGION: metadata
 metadata:
   name: website
   namespace: {{ .Values.namespace }}
   labels:
     app: website
+# --- REGION: spec
 spec:
   type: NodePort
+  # --- REGION: ports
   ports:
     - name: port80
       port: 80

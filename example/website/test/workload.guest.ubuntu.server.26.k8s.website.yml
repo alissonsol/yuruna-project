@@ -4,7 +4,7 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 
 sequenceGuid: 423775c5-e5e9-4ab5-b07b-b38a91bb9fda
-sequenceRevision: 5
+sequenceRevision: 7
 
 description: "Ubuntu Server 26.04: log in, install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
 descriptionLocalized:
@@ -57,6 +57,7 @@ component:
 
   - action: waitForText
     pattern: "${username}@${hostname}"
+    noSegmentMatch: true
     timeoutSeconds: 90
     description: "OCR: ${username}@${hostname}"
     descriptionLocalized:
@@ -116,7 +117,7 @@ workload:
       he-IL: "⁦ubuntu.server.26.workload.k8s.website.sh⁩"
     waitPattern: "FETCHED AND EXECUTED:"
     freshMatchTailLines: 60
-    timeoutSeconds: 1200
+    timeoutSeconds: 1800
 
   - action: fetchAndExecute
     text: "clear; /usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"

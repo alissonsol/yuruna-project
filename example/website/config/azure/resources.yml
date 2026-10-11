@@ -21,7 +21,8 @@ globalVariables:
   nodeType:              "Standard_D2_v2"
   nodeCount:             3
 
-# Careful: if the template needs a variable (variables.tf) and it is not defined globally or locally below then the script will be stuck waiting input
+# Define every required Terraform variable globally or in the resource;
+# a missing value leaves provisioning waiting for interactive input.
 # --- REGION: resources
 resources:
 - name:                  "defaultResourceGroup"

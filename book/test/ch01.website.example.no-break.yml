@@ -4,7 +4,7 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 
 sequenceGuid: 42001283-d9e8-4f13-a78e-5c5f2206926e
-sequenceRevision: 1
+sequenceRevision: 2
 
 description: "Amazon Linux 2023 used for simple access to a website"
 keystrokeMechanism: gui
@@ -38,8 +38,11 @@ component:
 
   - action: waitForText
     pattern: "${username}@${hostname}"
+    noSegmentMatch: true
     timeoutSeconds: 90
     description: "OCR: ${username}@${hostname}"
+
+  - snippet: shellInputPrime
 
 # --- REGION: workload
 workload:

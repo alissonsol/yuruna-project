@@ -24,5 +24,7 @@ param(
     [Parameter(Mandatory)][string]$Namespace,
     [Parameter(Mandatory)][string]$SecretName
 )
+# --- REGION: Import build helpers
 Import-Module (Join-Path $PSScriptRoot 'Example.Build.psm1') -Force
+# --- REGION: Create certificate Secret
 exit (Invoke-ExampleCertificateSecret -Namespace $Namespace -SecretName $SecretName)

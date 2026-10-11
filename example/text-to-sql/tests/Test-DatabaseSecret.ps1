@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 2026.10.04
+.VERSION 2026.10.11
 .GUID 42a7af8e-a2dc-48dd-8ac0-3c92a1d7e80a
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
@@ -155,7 +155,9 @@ try {
     [Environment]::SetEnvironmentVariable('USERPROFILE', $sandboxHome)
     $run = Invoke-Creator -Arguments @('-Namespace', 'fixture-ns', '-SecretName', 'fixture-db')
     Assert-That ($run.Exit -eq 0 -and (Get-SecretValue -Secret $run.Secret) -ceq $replacement) "The default sidecar location is not ~/.text-to-sql/agent_ro.password: $($run.Text)"
-    foreach ($name in 'HOME', 'USERPROFILE') { [Environment]::SetEnvironmentVariable($name, $ambient[$name]) }
+    foreach ($name in 'HOME', 'USERPROFILE') {
+        [Environment]::SetEnvironmentVariable($name, $(if ($null -eq $ambient[$name]) { [NullString]::Value } else { $ambient[$name] }))
+    }
 
     # The deployment engine runs the script in-process (& script), where the step's status is $LASTEXITCODE.
     # It must be 0 only when the Secret exists, whatever an earlier native command left behind.
@@ -260,12 +262,17 @@ try {
         Write-Warning 'helm or powershell-yaml is not installed; the rendered-chart checks were skipped.'
     }
 } finally {
-    foreach ($name in $variables) { [Environment]::SetEnvironmentVariable($name, $ambient[$name]) }
+    foreach ($name in $variables) {
+        [Environment]::SetEnvironmentVariable($name, $(if ($null -eq $ambient[$name]) { [NullString]::Value } else { $ambient[$name] }))
+    }
     $resolved = [IO.Path]::GetFullPath($fixture)
     $tempRoot = [IO.Path]::GetFullPath([IO.Path]::GetTempPath()).TrimEnd('\', '/') + [IO.Path]::DirectorySeparatorChar
     if ($resolved.StartsWith($tempRoot, [StringComparison]::OrdinalIgnoreCase) -and
         [IO.Path]::GetFileName($resolved) -like 'yuruna-db-secret-*' -and (Test-Path -LiteralPath $resolved)) {
         Remove-Item -LiteralPath $resolved -Recurse -Force
     }
+}
+foreach ($name in $variables) {
+    Assert-That ([Environment]::GetEnvironmentVariable($name) -ceq $ambient[$name]) "The test must restore the original environment value of $name"
 }
 Write-Output "Database secret: $checks checks passed (sidecar reading, Secret contents, failure messages, secrecy, wiring)."

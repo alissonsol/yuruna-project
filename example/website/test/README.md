@@ -31,8 +31,9 @@ their password records do not overwrite one another.
 
 The producer and consumer share `snapshotPolicy`: expire after 24 hours and
 rebuild when checkout revisions, declared source hashes or guest identity
-change. The source list includes image-builder definitions, cloud-init seeds,
-guest installers, start sequences and the baseline sequence. This records
+change. The source list includes release wrappers and shared builders for each
+hypervisor, image acquisition helpers, cloud-init rendering and network seeds,
+guest fetch helpers, guest installers, start sequences and the baseline sequence. This records
 version inputs, rather than claiming a digest of the ISO actually installed.
 A manifest whose ownership cannot be verified stops the run; it never triggers
 automatic deletion of an unrecognized VM.
@@ -56,6 +57,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.10.04
+Last review: 2026.10.11
 
 Back to [Website example](../README.md) - [yuruna-project](../../../README.md) - [Yuruna](https://yuruna.com)

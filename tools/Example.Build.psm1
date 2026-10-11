@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 2026.10.04
+.VERSION 2026.10.11
 .GUID 42aa6d6d-83ef-4b17-b241-3a1d6bc163d8
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
@@ -14,37 +14,149 @@
 
 # --- REGION: Invoke-BoundedDocker
 function Invoke-BoundedDocker {
+    <# .SYNOPSIS
+        Run Docker with literal arguments, concurrent output capture, and a process-tree deadline.
+    #>
+    [CmdletBinding()]
+    [OutputType([int])]
     param(
-        [Parameter(Mandatory)][Alias("StallSeconds")][int]$TimeoutSeconds,
-        [Parameter(Mandatory)][string[]]$DockerArgs
+        [Parameter(Mandatory)][Alias("StallSeconds")][ValidateRange(1, [int]::MaxValue)][int]$TimeoutSeconds,
+        [Parameter(Mandatory)][AllowEmptyString()][string[]]$DockerArgs
     )
-    $outFile = $null
-    $errFile = $null
-    try {
-        $outFile = (New-TemporaryFile).FullName
-        $errFile = (New-TemporaryFile).FullName
-        $process = Start-Process -FilePath 'docker' -ArgumentList $DockerArgs -NoNewWindow -PassThru `
-            -RedirectStandardOutput $outFile -RedirectStandardError $errFile
-        $completed = $process.WaitForExit($TimeoutSeconds * 1000)
-        if (-not $completed) {
-            try { $process.Kill($true) } catch { Write-Debug "kill: $($_.Exception.Message)" }
-            $process.WaitForExit()
+    # Tree enumeration and pipe disposal can themselves wait on a child. Keep
+    # them off the caller so inherited handles cannot defeat the deadline.
+    if (-not ('Yuruna.ExampleDockerCleanup' -as [type])) {
+        Add-Type -TypeDefinition @'
+using System;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+namespace Yuruna {
+    public static class ExampleDockerCleanup {
+        public static Task Kill(Process process) {
+            return Task.Run(() => { try { process.Kill(true); } catch { } });
         }
-        # Relay docker's output on the information stream: the success
-        # stream must carry ONLY the exit code, because callers compare
-        # the function's return value against 0 as a scalar.
-        Get-Content -Path $outFile, $errFile -ErrorAction SilentlyContinue |
-            ForEach-Object { Write-Information $_ -InformationAction Continue }
-        if (-not $completed) {
-            Write-Warning "docker $($DockerArgs -join ' ') exceeded ${TimeoutSeconds}s; treated as failed."
-            return 124
-        }
-        return $process.ExitCode
-    } finally {
-        foreach ($tempFile in @($outFile, $errFile)) {
-            if ($tempFile) { Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue }
+        public static Task Dispose(Process process, CancellationTokenSource cancellation, Task kill) {
+            return Task.Run(async () => {
+                try { cancellation.Cancel(); } catch { }
+                if (kill != null) { try { await kill.ConfigureAwait(false); } catch { } }
+                try { process.Dispose(); } catch { }
+                try { cancellation.Dispose(); } catch { }
+            });
         }
     }
+}
+'@
+    }
+    $command = Get-Command -Name docker -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+    if (-not $command) { Write-Warning 'docker CLI not found.'; return 1 }
+    $start = [Diagnostics.ProcessStartInfo]::new()
+    $start.FileName = $command.Source
+    $start.UseShellExecute = $false
+    $start.CreateNoWindow = $true
+    $start.RedirectStandardInput = $true
+    $start.RedirectStandardOutput = $true
+    $start.RedirectStandardError = $true
+    foreach ($argument in $DockerArgs) { $start.ArgumentList.Add($argument) }
+    $process = $null
+    try {
+        $process = [Diagnostics.Process]::Start($start)
+        $process.StandardInput.Close()
+    } catch {
+        if ($process) { $process.Dispose() }
+        Write-Warning "Cannot start docker: $($_.Exception.Message)"
+        return 1
+    }
+    $clock = [Diagnostics.Stopwatch]::StartNew()
+    $capMs = [long]$TimeoutSeconds * 1000
+    $reserveMs = [Math]::Min(1000L, [Math]::Max(500L, [long][Math]::Floor($capMs / 10)))
+    $executionMs = $capMs - $reserveMs
+    $cancellation = [Threading.CancellationTokenSource]::new()
+    $buffers = @([char[]]::new(8192), [char[]]::new(8192))
+    $streams = @($process.StandardOutput, $process.StandardError)
+    $captured = @([Text.StringBuilder]::new(), [Text.StringBuilder]::new())
+    $pending = @($streams[0].ReadAsync([Memory[char]]::new($buffers[0]), $cancellation.Token).AsTask(),
+        $streams[1].ReadAsync([Memory[char]]::new($buffers[1]), $cancellation.Token).AsTask())
+    $eof = @($false, $false)
+    $exited = $false
+    $kill = $null
+    $readFailed = $false
+    $exitCode = 124
+    $drainLimitMs = $capMs
+    try {
+        while (-not ($exited -and $eof[0] -and $eof[1])) {
+            if (-not $exited -and $process.HasExited) {
+                $exited = $true
+                $exitCode = $process.ExitCode
+                $drainLimitMs = [Math]::Min($capMs, $clock.ElapsedMilliseconds + 2000)
+            }
+            if ($exited -and $eof[0] -and $eof[1]) { break }
+            if (-not $exited -and -not $kill -and $clock.ElapsedMilliseconds -ge $executionMs) {
+                $kill = [Yuruna.ExampleDockerCleanup]::Kill($process)
+            }
+            $remaining = [Math]::Min($capMs, $drainLimitMs) - $clock.ElapsedMilliseconds
+            if ($remaining -le 0) { break }
+            $tasks = [Collections.Generic.List[Threading.Tasks.Task]]::new()
+            foreach ($index in 0, 1) { if (-not $eof[$index]) { $tasks.Add($pending[$index]) } }
+            if ($tasks.Count -gt 0) {
+                $null = [Threading.Tasks.Task]::WaitAny($tasks.ToArray(), [int][Math]::Min(100L, $remaining))
+            } else {
+                Start-Sleep -Milliseconds ([int][Math]::Min(100L, $remaining))
+            }
+            foreach ($index in 0, 1) {
+                if ($eof[$index] -or -not $pending[$index].IsCompleted) { continue }
+                try { $count = $pending[$index].GetAwaiter().GetResult() }
+                catch { $readFailed = $true; $eof[$index] = $true; continue }
+                if ($count -eq 0) { $eof[$index] = $true; continue }
+                $null = $captured[$index].Append($buffers[$index], 0, $count)
+                $pending[$index] = $streams[$index].ReadAsync([Memory[char]]::new($buffers[$index]), $cancellation.Token).AsTask()
+            }
+        }
+    } finally {
+        $cleanup = [Yuruna.ExampleDockerCleanup]::Dispose($process, $cancellation, $kill)
+        $remaining = [Math]::Max(0L, $capMs - $clock.ElapsedMilliseconds)
+        if ($remaining -gt 0) { $null = $cleanup.Wait([int][Math]::Min(1000L, $remaining)) }
+    }
+    # Keep output off the success stream: seed callers compare one scalar code.
+    foreach ($text in $captured) {
+        $reader = [IO.StringReader]::new($text.ToString())
+        while ($null -ne ($line = $reader.ReadLine())) { Write-Information $line -InformationAction Continue }
+        $reader.Dispose()
+    }
+    if ($kill -or -not $exited -or -not $eof[0] -or -not $eof[1] -or $readFailed) {
+        Write-Warning "docker exceeded its ${TimeoutSeconds}s execution/output deadline; treated as failed."
+        return 124
+    }
+    return $exitCode
+}
+
+# --- REGION: Get-ExampleCachingProxyHost
+function Get-ExampleCachingProxyHost {
+    <# .SYNOPSIS
+        Resolve the caching proxy with the same precedence as the guest registry helper.
+    #>
+    [CmdletBinding()]
+    [OutputType([string])]
+    param([string]$HostEnvironmentPath = '/etc/yuruna/host.env')
+
+    if ($env:http_proxy -match '^https?://([^:/]+)') { return $Matches[1] }
+    # The guest can retain its cache assignment after the proxy environment is cleared.
+    try {
+        if (Test-Path -LiteralPath $HostEnvironmentPath -PathType Leaf) {
+            foreach ($line in [IO.File]::ReadAllLines($HostEnvironmentPath)) {
+                if ($line -match '^YURUNA_CACHING_PROXY_SERVICE_IP=([^\s]+)') { return $Matches[1] }
+            }
+        }
+    } catch {
+        Write-Debug "caching proxy environment: $($_.Exception.Message)"
+    }
+    try {
+        Invoke-WebRequest -Uri 'http://yuruna-caching-proxy-service:5000/v2/' -Method Get -TimeoutSec 10 -ErrorAction Stop | Out-Null
+        return 'yuruna-caching-proxy-service'
+    } catch {
+        Write-Debug "caching proxy discovery: $($_.Exception.Message)"
+    }
+    return ''
 }
 
 # --- REGION: Invoke-ExampleBaseImageSeed
@@ -66,9 +178,8 @@ function Invoke-ExampleBaseImageSeed {
 
     $acceptHeader = 'application/vnd.oci.image.index.v1+json, application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.list.v2+json, application/vnd.docker.distribution.manifest.v2+json'
 
-    # --- REGION: Locate caching proxy
-    $cacheHost = ''
-    if ($env:http_proxy -match '^https?://([^:/]+)') { $cacheHost = $Matches[1] }
+    # Served manifests and local images need no cache discovery or network probe.
+    $cacheHost = $null
 
     # --- REGION: Seed base images
     foreach ($ref in $BaseImage) {
@@ -91,6 +202,8 @@ function Invoke-ExampleBaseImageSeed {
             Select-Object -First 1
 
         if (-not $localRef) {
+            # --- REGION: Locate caching proxy
+            if ($null -eq $cacheHost) { $cacheHost = Get-ExampleCachingProxyHost }
             $sources = @()
             if (-not [string]::IsNullOrWhiteSpace($cacheHost)) { $sources += "${cacheHost}:5000/" }
             $sources += 'mcr.microsoft.com/'
@@ -253,6 +366,19 @@ function Assert-ExampleDevelopmentCertificate {
     $certificate.Dispose()
 }
 
+# --- REGION: Protect-ExampleSecretText
+function Protect-ExampleSecretText {
+    <# .SYNOPSIS
+        Keep Secret values out of errors returned by kubectl.
+    #>
+    [OutputType([string])]
+    param([string]$Text, [string[]]$Sensitive)
+    foreach ($value in $Sensitive) {
+        if (-not [string]::IsNullOrEmpty($value)) { $Text = $Text.Replace($value, '<redacted>') }
+    }
+    return $Text
+}
+
 # --- REGION: Invoke-ExampleCertificateSecret
 function Invoke-ExampleCertificateSecret {
     <# .SYNOPSIS
@@ -271,6 +397,7 @@ function Invoke-ExampleCertificateSecret {
         [switch]$SelfSigned
     )
     $certificate = $null
+    $sensitive = @()
     try {
         if ($SelfSigned -or (Test-ExampleSelfSignedRequested)) {
             $certificate = Get-ExampleSelfSignedCertificate
@@ -281,14 +408,17 @@ function Invoke-ExampleCertificateSecret {
         }
         $password = Get-ExampleRandomPassword
         $pfx = $certificate.Export([Security.Cryptography.X509Certificates.X509ContentType]::Pfx, $password)
+        $encodedPfx = [Convert]::ToBase64String($pfx)
+        $encodedPassword = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($password))
+        $sensitive = @($password, $encodedPassword, $encodedPfx)
         $manifest = [ordered]@{
             apiVersion = 'v1'
             kind       = 'Secret'
             metadata   = [ordered]@{ name = $SecretName; namespace = $Namespace }
             type       = 'Opaque'
             data       = [ordered]@{
-                'aspnetapp.pfx' = [Convert]::ToBase64String($pfx)
-                'password'      = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($password))
+                'aspnetapp.pfx' = $encodedPfx
+                'password'      = $encodedPassword
             }
         } | ConvertTo-Json -Depth 4 -Compress
 
@@ -296,18 +426,21 @@ function Invoke-ExampleCertificateSecret {
         # data out of a last-applied-configuration annotation.
         $deleted = & kubectl delete secret $SecretName --namespace $Namespace --ignore-not-found=true 2>&1
         if ($LASTEXITCODE -ne 0) {
-            Write-Error -ErrorAction Continue "Cannot replace Secret '$SecretName' in namespace '$Namespace': $($deleted -join ' ')"
+            $detail = Protect-ExampleSecretText -Text ($deleted -join ' ') -Sensitive $sensitive
+            Write-Error -ErrorAction Continue "Cannot replace Secret '$SecretName' in namespace '$Namespace': $detail"
             return 1
         }
         $created = $manifest | & kubectl create --namespace $Namespace -f - 2>&1
         if ($LASTEXITCODE -ne 0) {
-            Write-Error -ErrorAction Continue "Cannot create Secret '$SecretName' in namespace '$Namespace': $($created -join ' ')"
+            $detail = Protect-ExampleSecretText -Text ($created -join ' ') -Sensitive $sensitive
+            Write-Error -ErrorAction Continue "Cannot create Secret '$SecretName' in namespace '$Namespace': $detail"
             return 1
         }
         Write-Information "Secret '$SecretName' created in namespace '$Namespace' from $origin."
         return 0
     } catch {
-        Write-Error -ErrorAction Continue "Cannot create Secret '$SecretName' in namespace '$Namespace': $($_.Exception.Message)"
+        $detail = Protect-ExampleSecretText -Text $_.Exception.Message -Sensitive $sensitive
+        Write-Error -ErrorAction Continue "Cannot create Secret '$SecretName' in namespace '$Namespace': $detail"
         return 1
     } finally {
         if ($certificate) { $certificate.Dispose() }

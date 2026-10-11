@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 2026.10.04
+.VERSION 2026.10.11
 .GUID 42813fa1-cf84-4809-b9f3-c711fb218e2c
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
@@ -15,22 +15,8 @@
 #>
 
 @{
-    # PSScriptAnalyzer settings for the yuruna-project repo.
-    # Companion to yuruna/PSScriptAnalyzerSettings.psd1: the rule set
-    # below is kept aligned with the framework's, but the surrounding
-    # PSScriptInfo block (GUID, repo URL) is per-repo and must NOT be
-    # copied across.
-    #
-    # Auto-discovered by `Invoke-ScriptAnalyzer -Path . -Recurse`.
-    # Findings of every severity are reported; Information-severity
-    # (low-priority) results are NOT filtered out.
-    # PSUseBOMForUnicodeEncodedFile fires on a PowerShell file that contains
-    # non-ASCII bytes and carries no BOM. Do NOT satisfy it by adding a BOM:
-    # the pre-commit hook in the framework repo rejects a BOM in any file, so
-    # the two rules would deadlock. Keep PowerShell sources ASCII-only, which
-    # is what the framework's tools/Test-AsciiNoBom.ps1 enforces and what makes
-    # this rule silent. When a file must be rewritten, use
-    # `[System.Text.UTF8Encoding]::new($false)` -- the BOM-LESS overload.
+    # Keep analyzer rules aligned with the framework; metadata identifies this repository.
+    # See https://yuruna.link/4255e584-0003
 
     IncludeDefaultRules = $true
 

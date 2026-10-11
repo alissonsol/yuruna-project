@@ -20,11 +20,20 @@ possam ser versionados e compartilhados de forma independente.
   - [example/text-to-sql/](../../example/text-to-sql/) -- **Versão inicial.**
     Text-to-SQL agêntico somente leitura em ASP.NET Core + PostgreSQL.
     Roda localmente e implanta pelo modelo completo de três fases do
-    Yuruna; o Claude é ativado quando `ANTHROPIC_API_KEY` está definida.
+    Yuruna; o Claude é ativado quando `ANTHROPIC_API_KEY` está definida,
+    a menos que `USE_LOCAL_MODEL` selecione o Ollama.
 
 <a id="4255e584-0003"></a>
 
 ## Saiba mais
+
+As configurações do analisador do PowerShell usam o conjunto padrão de regras do
+framework e relatam todos os níveis de severidade. Preserve os metadados dos
+scripts de cada repositório ao sincronizar as regras. Os arquivos-fonte do
+PowerShell usam ASCII sem marca de ordem de bytes: acrescentar um BOM não permite
+atender simultaneamente à regra do analisador para Unicode e à proibição de BOM
+do framework. Grave os arquivos editados com
+`[System.Text.UTF8Encoding]::new($false)`.
 
 - Declarações de software, formatos de inventário e manutenção automática: [Lista de materiais de software](../sbom/README.md).
 - Idiomas e campos traduzidos do projeto: [Texto exibido do projeto](../globalization.md). Português (Brasil): [documentos traduzidos](index.md).
@@ -39,6 +48,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Última revisão: 2026.10.04
+Última revisão: 2026.10.11
 
 Voltar para [Yuruna](https://yuruna.com)
