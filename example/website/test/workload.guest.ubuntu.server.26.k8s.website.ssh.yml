@@ -12,6 +12,7 @@ descriptionLocalized:
   zh-CN: "Ubuntu Server 26.04（SSH）：安装Kubernetes，将网站部署到localhost集群，验证HTTP 200。"
   he-IL: "Ubuntu Server ⁦26.04⁩ (SSH): התקינו את Kubernetes, פרסו את האתר באשכול localhost וודאו שמתקבל HTTP 200."
 keystrokeMechanism: ssh
+
 # --- REGION: resource
 resource:
   ubuntu.server.26:

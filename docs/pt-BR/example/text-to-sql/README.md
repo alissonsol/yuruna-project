@@ -321,6 +321,12 @@ e é implantado pelo modelo de três fases do Yuruna. As peças estão no lugar:
   um checkpoint dele; a sequência `.test` restaura esse checkpoint, configura
   o PostgreSQL, implanta e verifica `HTTP 200`. Ambas rodam sem supervisão.
 
+A sequência de base encadeia `start.guest` diretamente. A carga de trabalho
+geral do convidado também instala um JDK, o .NET SDK e o VS Code. Esta
+implantação compila a aplicação dentro do Docker e não precisa dessas
+ferramentas no convidado. A etapa de atualização já deixa o PowerShell e as
+cópias dos repositórios do framework e do projeto disponíveis.
+
 A configuração do banco desativa o xtrace ao lidar com senhas e depois restaura
 o estado de rastreamento do chamador. As senhas passam por comandos internos do
 shell, pela entrada padrão e por arquivos acessíveis apenas ao proprietário.
@@ -405,6 +411,16 @@ de `pwsh` e `python` (no Windows, do `usr\bin\bash.exe` do Git for Windows) e
 acrescentam as verificações do chart quando o `helm` e o módulo `powershell-yaml`
 estão instalados. Não é preciso cluster nem PostgreSQL.
 
+O teste do banco de dados em Python copia o script real do convidado para um
+diretório raiz descartável e reescreve seus caminhos absolutos para esse local.
+Os substitutos de `sudo`, `psql`, `getent`, `chmod` e comandos relacionados
+registram os argumentos e a entrada padrão; o `openssl` é executado normalmente.
+No Windows, o teste usa o `usr/bin/bash.exe` do Git for Windows; o inicializador
+`bin/bash.exe` colocaria os comandos reais antes dos substitutos no `PATH`.
+Defina `DB_SCRIPT_BASH` para selecionar outro executável do Bash ou
+`TEXT_TO_SQL_ROOT` para selecionar uma cópia alterada de `example/text-to-sql`
+ao verificar os contratos.
+
 Depois de carregar o esquema em um banco PostgreSQL descartável, verifique as
 permissões do papel e o esquema que ele pode ler, usando o proprietário do banco:
 
@@ -458,6 +474,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Última revisão: 2026.10.11.1
+Última revisão: 2026.10.14
 
 Voltar para [yuruna-project](../../../../README.md) - [Yuruna](https://yuruna.com)

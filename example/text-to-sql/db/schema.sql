@@ -1,6 +1,5 @@
 -- LICENSEURI https://yuruna.link/license
 -- Copyright (c) 2019-2026 by Alisson Sol et al.
--- ----------------------------------------------------------------------------
 -- Yuruna Text-to-SQL example schema: a small SaaS-style subscriptions
 -- warehouse with intentionally diverse table sizes, a deliberate naming
 -- mismatch, and a FK graph that exercises schema retrieval.
@@ -11,7 +10,6 @@
 -- The deep-dive notes are kept inline as COMMENT ON ... so the schema
 -- retriever has real prose to embed (mirrors what a production warehouse
 -- catalog looks like).
--- ----------------------------------------------------------------------------
 
 DROP TABLE IF EXISTS churn_event       CASCADE;
 DROP TABLE IF EXISTS invoice           CASCADE;
@@ -21,8 +19,7 @@ DROP TABLE IF EXISTS plan_tier         CASCADE;
 DROP TABLE IF EXISTS acquisition_channel CASCADE;
 DROP TABLE IF EXISTS geography         CASCADE;
 
--- -- Reference tables --------------------------------------------------------
-
+-- --- REGION: Reference tables
 CREATE TABLE geography (
     geo_id        SERIAL PRIMARY KEY,
     iso_country   CHAR(2)   NOT NULL UNIQUE,
@@ -51,8 +48,7 @@ CREATE TABLE plan_tier (
 COMMENT ON TABLE  plan_tier IS 'Pricing tier dimension. tier_code values: Starter, Pro, Enterprise.';
 COMMENT ON COLUMN plan_tier.tier_code IS 'Plan tier code. RENAMED 2026-Q1 from plan_code -> tier_code.';
 
--- -- Core entities -----------------------------------------------------------
-
+-- --- REGION: Core entities
 CREATE TABLE customer (
     customer_id   SERIAL PRIMARY KEY,
     customer_uuid UUID      NOT NULL DEFAULT gen_random_uuid() UNIQUE,
@@ -91,8 +87,7 @@ CREATE TABLE churn_event (
 );
 COMMENT ON TABLE  churn_event IS 'One row per cancellation. Use this table to compute churn rate. Join via subscription_id.';
 
--- -- Indexes -----------------------------------------------------------------
-
+-- --- REGION: Indexes
 CREATE INDEX idx_subscription_tier        ON subscription(tier_id);
 CREATE INDEX idx_subscription_customer    ON subscription(customer_id);
 CREATE INDEX idx_subscription_started_at  ON subscription(started_at);
@@ -102,8 +97,7 @@ CREATE INDEX idx_churn_happened_at        ON churn_event(happened_at);
 CREATE INDEX idx_customer_geo             ON customer(geo_id);
 CREATE INDEX idx_customer_channel         ON customer(channel_id);
 
--- -- Seed data --------------------------------------------------------------
-
+-- --- REGION: Seed data
 INSERT INTO geography (iso_country, region, country_name) VALUES
   ('DE','EMEA','Germany'),
   ('FR','EMEA','France'),
@@ -182,10 +176,9 @@ SELECT
 FROM subscription s
 WHERE s.cancelled_at IS NOT NULL;
 
--- -- Convenience views (the agent should NOT need these -- they exist so an
--- answer like "use a materialized view for known shapes" is concretely
--- visible). --
-
+-- --- REGION: Convenience views
+-- The agent should not need these views; they exist so an answer like "use a
+-- materialized view for known shapes" is concretely visible.
 CREATE OR REPLACE VIEW v_active_subscription AS
 SELECT s.*, p.tier_code, c.geo_id, g.region, c.channel_id, ch.channel_name
 FROM subscription s
@@ -195,7 +188,7 @@ JOIN geography             g  ON g.geo_id     = c.geo_id
 JOIN acquisition_channel   ch ON ch.channel_id = c.channel_id
 WHERE s.cancelled_at IS NULL;
 
--- -- Roles for the action-gating layer --------------------------------------
+-- --- REGION: Roles for the action-gating layer
 -- A read-only role the .NET app connects as. The agent NEVER connects as
 -- the schema owner. This is what action-gating looks like at the DB layer.
 --
@@ -242,7 +235,8 @@ GRANT SELECT (churn_event_id, subscription_id, happened_at, reason_code) ON chur
 GRANT SELECT (subscription_id, customer_id, tier_id, started_at, cancelled_at, seat_count,
     tier_code, geo_id, region, channel_id, channel_name) ON v_active_subscription TO yuruna_agent_ro;
 
--- -- Sanity counts (psql will echo these) ------------------------------------
+-- --- REGION: Sanity counts
+-- psql echoes these counts when the file loads.
 SELECT 'geography'           AS table_name, COUNT(*) AS row_count FROM geography
 UNION ALL SELECT 'acquisition_channel', COUNT(*) FROM acquisition_channel
 UNION ALL SELECT 'plan_tier',           COUNT(*) FROM plan_tier

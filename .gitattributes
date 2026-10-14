@@ -1,15 +1,11 @@
 # Yuruna project line-ending policy. Mirrors yuruna/.gitattributes.
 #
-# A Yuruna host clones this repo into <yuruna-repo-root>/project/ each
-# cycle and serves files byte-faithfully over HTTP to the Linux guest
-# VMs under test. If a developer's git is configured with
-# core.autocrlf=true (the Windows default after some "Git for Windows"
-# installers), `*.sh` files are checked out as CRLF, the status server
-# serves CRLF bytes, and the guest's bash chokes with `$'\r': command
-# not found` (or, worse, a mangled `set: pipefail\r: invalid option
-# name` from `set -euo pipefail`) on the very first script line. This
-# file forces LF on every text type a Linux guest reads, regardless of
-# any per-developer config.
+# A Yuruna host clones this repo into <yuruna-repo-root>/project/ each cycle and
+# serves its files byte-faithfully to the Linux guest VMs under test. A CRLF
+# checkout (core.autocrlf=true) would reach the guest as CRLF bytes and break
+# bash on the first script line (`$'\r': command not found`), so every text type
+# a guest reads is pinned to LF here.
+# See https://yuruna.link/429fb30b-0011
 
 # Files consumed by Linux guests -- must always be LF.
 # `user-data` and `meta-data` are cloud-init seed names without an

@@ -1,20 +1,6 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
-"""Run the real guest database script in a disposable root with fixture commands.
-
-The script is the one a Yuruna guest fetches and runs as the harness user. Here its
-absolute paths point into a temporary root, and fixture sudo, psql, getent, chmod and
-friends sit first on PATH to record every argument list and everything psql reads on
-standard input. openssl is the real one. The contract: the role password is new on
-every run, is hexadecimal, and is never in an argument list, an output stream or an
-xtrace; it reaches psql only on standard input; and a one-line owner-only copy is left
-for the workload step.
-
-Run with: python db_script_contracts.py
-On Windows the script runs under Git for Windows' usr/bin/bash.exe (DB_SCRIPT_BASH names
-another bash). Set TEXT_TO_SQL_ROOT to the example/text-to-sql folder of an altered copy
-to check that the tests notice the alteration.
-"""
+"""Run guest database fixtures; see https://yuruna.link/4286c679-0009."""
 import os
 from pathlib import Path
 import re

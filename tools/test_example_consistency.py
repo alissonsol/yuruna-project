@@ -98,6 +98,17 @@ class ExampleConsistency(unittest.TestCase):
                     normalized.append(text)
                 self.assertEqual(*normalized)
 
+    def test_snapshot_producer_and_consumer_declare_the_shared_installers(self):
+        for release in (24, 26):
+            with self.subTest(release=release):
+                inputs = []
+                for kind in ("baseline", "warm"):
+                    path = WEBSITE / f"test/workload.guest.ubuntu.server.{release}.k8s.website.{kind}.ssh.yml"
+                    source_files = yaml_key_block(read_source(path), "sourceFiles", 2)
+                    self.assertEqual(source_files.count("- guest/shared/ubuntu.*.sh"), 1)
+                    inputs.append(source_files)
+                self.assertEqual(*inputs)
+
     def test_every_entrypoint_resolves_the_same_guest_home(self):
         expected = guest_user_region(WORKLOADS[0])
         for path in WORKLOADS + [DATABASE]:

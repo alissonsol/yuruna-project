@@ -12,6 +12,7 @@ descriptionLocalized:
   zh-CN: "Ubuntu Server 24.04：登录，安装Kubernetes，将网站部署到localhost集群，验证HTTP 200。"
   he-IL: "Ubuntu Server ⁦24.04⁩: התחברו, התקינו את Kubernetes, פרסו את האתר באשכול localhost וודאו שמתקבל HTTP 200."
 keystrokeMechanism: gui
+
 # --- REGION: resource
 resource:
   ubuntu.server.24:

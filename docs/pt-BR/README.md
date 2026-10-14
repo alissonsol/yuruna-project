@@ -37,6 +37,7 @@ do framework. Grave os arquivos editados com
 
 - Declarações de software, formatos de inventário e manutenção automática: [Lista de materiais de software](../sbom/README.md).
 - Idiomas e campos traduzidos do projeto: [Texto exibido do projeto](../globalization.md). Português (Brasil): [documentos traduzidos](index.md).
+- Terminologia do framework: [Linha de base, Configuração, Implementação e Telemetria](https://yuruna.link/42fa6f45-0041). As declarações do projeto descrevem a Configuração; o comportamento em execução descreve a Implementação; os resultados coletados são Telemetria. As linhas de base de snapshots mantêm seu significado existente.
 - [Arquitetura](https://github.com/alissonsol/yuruna/blob/main/docs/architecture.md) do framework
 - Conectividade e configuração: [Soluções alternativas e FAQ](https://github.com/alissonsol/yuruna/blob/main/docs/workarounds.md)
 - Contribuindo: [CONTRIBUTING.md](https://github.com/alissonsol/yuruna/blob/main/CONTRIBUTING.md)
@@ -48,6 +49,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Última revisão: 2026.10.11.1
+Última revisão: 2026.10.14
 
 Voltar para [Yuruna](https://yuruna.com)

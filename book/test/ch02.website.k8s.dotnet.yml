@@ -8,6 +8,7 @@ sequenceRevision: 6
 
 description: "Ubuntu Server 24.04 (book ch02): log in, install Kubernetes, deploy website to localhost cluster, verify HTTP 200."
 keystrokeMechanism: gui
+
 # --- REGION: resource
 resource:
   ubuntu.server.24:

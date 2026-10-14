@@ -4,7 +4,7 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 
 sequenceGuid: 425b9d12-45f9-4dbc-aa2c-d862daf76235
-sequenceRevision: 2
+sequenceRevision: 3
 
 description: "Ubuntu Server 26.04 (SSH): restore the Kubernetes baseline, deploy the website, and verify HTTP 200."
 descriptionLocalized:
@@ -12,6 +12,7 @@ descriptionLocalized:
   zh-CN: "Ubuntu Server 26.04（SSH）：恢复Kubernetes基线，部署网站并验证HTTP 200。"
   he-IL: "Ubuntu Server ⁦26.04⁩ (SSH): שחזרו את תצורת הבסיס של Kubernetes, פרסו את האתר וודאו שמתקבל HTTP 200."
 keystrokeMechanism: ssh
+
 # --- REGION: resource
 resource:
   ubuntu.server.26:
@@ -23,6 +24,7 @@ snapshotPolicy:
   rebuildOnMismatch: true
   sourceFiles:
     - guest/ubuntu.server.26/*.sh
+    - guest/shared/ubuntu.*.sh
     - host/*/guest.ubuntu.server.26/*.ps1
     - host/*/modules/*UbuntuServer*.ps1
     - host/*/modules/Yuruna.Host.psm1

@@ -14,6 +14,7 @@ descriptionLocalized:
   zh-CN: "Ubuntu Server 24.04：还原快照，安装并配置PostgreSQL，部署text-to-sql，验证HTTP 200。"
   he-IL: "Ubuntu Server ⁦24.04⁩: שחזרו תמונת מצב, התקינו + הגדירו PostgreSQL, פרסו text-to-sql וודאו שהתקבל HTTP 200."
 keystrokeMechanism: gui
+
 # --- REGION: resource
 resource:
   ubuntu.server.24:

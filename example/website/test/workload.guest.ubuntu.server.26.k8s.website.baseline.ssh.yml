@@ -4,7 +4,7 @@
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 
 sequenceGuid: 4207c826-8f03-45dc-b6ea-4de80820f492
-sequenceRevision: 3
+sequenceRevision: 4
 
 description: "Ubuntu Server 26.04 (SSH): build a managed Kubernetes baseline for the website."
 descriptionLocalized:
@@ -12,6 +12,7 @@ descriptionLocalized:
   zh-CN: "Ubuntu Server 26.04（SSH）：为网站构建受管Kubernetes基线。"
   he-IL: "Ubuntu Server ⁦26.04⁩ (SSH): בנו תצורת בסיס מנוהלת של Kubernetes עבור האתר."
 keystrokeMechanism: ssh
+
 # --- REGION: resource
 resource:
   ubuntu.server.26:
@@ -21,6 +22,7 @@ snapshotPolicy:
   rebuildOnMismatch: true
   sourceFiles:
     - guest/ubuntu.server.26/*.sh
+    - guest/shared/ubuntu.*.sh
     - host/*/guest.ubuntu.server.26/*.ps1
     - host/*/modules/*UbuntuServer*.ps1
     - host/*/modules/Yuruna.Host.psm1

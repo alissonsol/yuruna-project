@@ -5,7 +5,7 @@
 [github.com/alissonsol/yuruna](https://github.com/alissonsol/yuruna);
 this repo tracks user-facing project templates and end-to-end examples.
 
-## 2026.10.11.1
+## 2026.10.14
 
 - **Helm chart metadata.** Same-day CalVer patches use SemVer build metadata
   for the chart version while preserving the exact release in `appVersion`, so
@@ -78,6 +78,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.10.11.1
+Last review: 2026.10.14
 
 Back to [yuruna-project](README.md) - [Yuruna](https://yuruna.com)

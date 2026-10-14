@@ -12,11 +12,8 @@ descriptionLocalized:
   zh-CN: "Ubuntu Server 24.04：登录，安装Kubernetes，为部署text-to-sql做好准备。"
   he-IL: "Ubuntu Server ⁦24.04⁩: התחברו, התקינו Kubernetes והתכוננו לפריסת text-to-sql."
 keystrokeMechanism: gui
-# Chain start.guest directly. The workload.guest chain
-# additionally installs a JDK, .NET SDK, and VS Code
-# (ubuntu.server.24.code.sh), which text-to-sql does not use and only adds
-# install time + failure surface to an unattended cycle. update.sh already
-# leaves pwsh + the framework/project repos in place.
+
+# See https://yuruna.link/4286c679-0008
 # --- REGION: resource
 resource:
   ubuntu.server.24:

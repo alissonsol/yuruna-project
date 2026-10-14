@@ -296,6 +296,11 @@ and deploys through the Yuruna three-phase model. The pieces are in place:
   checkpoints it; the `.test` sequence restores that checkpoint, sets up
   PostgreSQL, deploys, and asserts `HTTP 200`. Both run unattended.
 
+The baseline chains `start.guest` directly. The general guest workload also
+installs a JDK, .NET SDK, and VS Code. This deployment builds its application
+inside Docker and does not need those tools on the guest. The update phase
+already leaves PowerShell and the framework/project checkouts available.
+
 Database setup disables xtrace while handling passwords and restores the caller's
 trace state afterward. Passwords travel through shell builtins, standard input,
 and owner-only files. Before `ALTER ROLE`, the PostgreSQL session disables
@@ -375,6 +380,14 @@ They need `pwsh` and `python` (on Windows, Git for Windows' `usr\bin\bash.exe`),
 and add the chart checks when `helm` and the `powershell-yaml` module are
 installed. No cluster or PostgreSQL is needed.
 
+The Python database fixture copies the real guest script into a disposable root
+and rewrites its absolute paths there. Stand-ins for `sudo`, `psql`, `getent`,
+`chmod`, and related commands record arguments and standard input; `openssl`
+runs normally. On Windows it uses Git for Windows' `usr/bin/bash.exe`; the
+`bin/bash.exe` wrapper would put real commands before the fixtures on `PATH`.
+Set `DB_SCRIPT_BASH` to select another Bash executable or `TEXT_TO_SQL_ROOT`
+to select an altered copy of `example/text-to-sql` when checking the contracts.
+
 After loading the schema in a disposable PostgreSQL database, verify the role's
 permissions and readable schema as the database owner:
 
@@ -427,6 +440,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.10.11.1
+Last review: 2026.10.14
 
 Back to [yuruna-project](../../README.md) - [Yuruna](https://yuruna.com)
