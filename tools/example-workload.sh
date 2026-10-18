@@ -148,6 +148,16 @@ for attempt in $(seq 1 "$registry_attempts"); do
             echo "       This pull has no upstream fallback on purpose: reaching docker.io" >&2
             echo "       directly from a guest behind a cache is rate limited and fails" >&2
             echo "       anyway." >&2
+            # docker's error text reads the same for a guest that lost its own
+            # address and for a cache that is down; the engine's network library,
+            # where the guest image carries it, names which one this guest sees.
+            if [ -r /usr/local/lib/yuruna/yuruna-network.sh ]; then
+                # shellcheck disable=SC1091
+                . /usr/local/lib/yuruna/yuruna-network.sh
+            fi
+            if command -v yuruna_net_tcp_verdict >/dev/null 2>&1; then
+                echo "       This guest's view of the path: $(yuruna_net_tcp_verdict "$CACHE_HOST" 5000 2>/dev/null || true)" >&2
+            fi
             echo "       Check that the caching proxy's zot is up:" >&2
             echo "           curl -fsS http://${CACHE_HOST}:5000/v2/" >&2
             echo "" >&2

@@ -12,6 +12,7 @@ Thumbs.db
 # Claude
 .claude/
 CLAUDE.md
+!/CLAUDE.md
 
 # Yuruna test harness SSH keys are generated per-host on first run and now
 # live under test/status/ssh/ (covered by the umbrella status-subdirs

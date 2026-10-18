@@ -1,7 +1,7 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.7",
-  "serialNumber": "urn:uuid:12feb7b2-2682-55c9-919f-ee41dbe9b9a8",
+  "serialNumber": "urn:uuid:4b25b04f-53d9-53f2-8ecd-649dd9578b86",
   "version": 1,
   "metadata": {
     "component": {
@@ -11,14 +11,14 @@
       "properties": [
         {
           "name": "yuruna:source-inputs-sha256",
-          "value": "b87757a9122c6847345aa20f4fd9a232ff3f04c9ec7b6ae135de05ecd695f92d"
+          "value": "8aab19e8127139b2199b2b757b45da8371242fd3bdadfc72802b02f9ae9cdedb"
         },
         {
           "name": "yuruna:inventory-kind",
           "value": "declared-source"
         }
       ],
-      "version": "2026.10.14"
+      "version": "2026.10.18"
     }
   },
   "components": [
