@@ -3,7 +3,7 @@
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
   "name": "yuruna-project-repository",
-  "documentNamespace": "https://github.com/alissonsol/yuruna-project/sbom/repository/f60f8f44d3ccffdc58ece607b757e72cefe24bcd489753ae9b136ee6208d64ed",
+  "documentNamespace": "https://github.com/alissonsol/yuruna-project/sbom/repository/819d8657045d2575d7c2101775feb497c1f284709d2abc29e40cee8a63094477",
   "creationInfo": {
     "created": "2026-10-03T16:48:41Z",
     "creators": [
@@ -25,8 +25,8 @@
       "licenseDeclared": "LicenseRef-Yuruna",
       "copyrightText": "NOASSERTION",
       "supplier": "Organization: Alisson Sol et al.",
-      "comment": "Declared repository inventory; source-inputs SHA256 f60f8f44d3ccffdc58ece607b757e72cefe24bcd489753ae9b136ee6208d64ed. Not an installed-system scan.",
-      "versionInfo": "2026.10.18.1"
+      "comment": "Declared repository inventory; source-inputs SHA256 819d8657045d2575d7c2101775feb497c1f284709d2abc29e40cee8a63094477. Not an installed-system scan.",
+      "versionInfo": "2026.10.18.2"
     },
     {
       "name": "jquery-validate",
