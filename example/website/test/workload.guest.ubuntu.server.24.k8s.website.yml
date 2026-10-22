@@ -128,7 +128,7 @@ workload:
       zh-CN: "test-localhost.sh"
       he-IL: "⁦test-localhost.sh⁩"
     waitPattern: "200 OK"
-    # Allow KVM command delivery, the 180-second HTTP readiness wait, and OCR.
+    # Allow command delivery, the 180-second HTTP readiness wait, and OCR.
     timeoutSeconds: 420
 
   - action: saveSystemDiagnostic

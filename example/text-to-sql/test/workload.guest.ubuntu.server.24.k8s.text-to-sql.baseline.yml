@@ -32,6 +32,7 @@ component:
       zh-CN: "登录并重试"
       he-IL: "התחברות + ניסיון חוזר"
     steps:
+      # start.guest reboots at the end; prime the console before logging in.
       - snippet: firstLoginPrime
 
       - action: passwdPrompt

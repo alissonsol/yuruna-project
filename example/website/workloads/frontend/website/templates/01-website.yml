@@ -66,6 +66,7 @@ spec:
           mountPath: /https
           readOnly: true
         # --- REGION: readinessProbe
+        # See https://yuruna.link/42f64340-0005
         readinessProbe:
           httpGet:
             path: /

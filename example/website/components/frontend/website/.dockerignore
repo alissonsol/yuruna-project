@@ -1,3 +1,5 @@
+# LICENSEURI https://yuruna.link/license
+# Copyright (c) 2019-2026 by Alisson Sol et al.
 **/.classpath
 **/.dockerignore
 **/.env
@@ -21,6 +23,8 @@
 **/obj
 **/secrets.dev.yaml
 **/values.dev.yaml
+# Key material never enters a build stage; the pod receives its certificate from
+# a Kubernetes Secret at run time.
 **/*.pfx
 **/*.p12
 **/*.pem
