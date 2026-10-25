@@ -5,10 +5,10 @@
 [github.com/alissonsol/yuruna](https://github.com/alissonsol/yuruna);
 this repo tracks user-facing project templates and end-to-end examples.
 
-## 2026.10.22
+## 2026.10.25
 
 - Align script versions, example Helm chart metadata, and generated inventories
-  with framework release `2026.10.22`.
+  with framework release `2026.10.25`.
 
 ## 2026.10.14
 
@@ -83,6 +83,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.10.22
+Last review: 2026.10.25
 
 Back to [yuruna-project](README.md) - [Yuruna](https://yuruna.com)
