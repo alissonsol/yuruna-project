@@ -1,5 +1,6 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# GUID: 4262a9dd-c4ca-4033-9876-8bce456473e0
 # Workloads information - localhost
 # See https://yuruna.link/42e220c4-0012
 ---
@@ -17,7 +18,7 @@ workloads:
 - context: "${env:runTag}-${env:project}-${env:runId}"
   deployments:
     # Idempotent cleanup + namespace setup.
-    - kubectl: "delete namespace ${env:namespace} --ignore-not-found=true --v=1"
+    - kubectl: "delete namespace ${env:namespace} --ignore-not-found=true --timeout=300s --v=1"
     - kubectl: "create namespace ${env:namespace} --v=1"
     - kubectl: "config set-context --current --namespace=${env:namespace} --v=1"
     # Image-pull secret so the cluster can pull from your registry.

@@ -1,5 +1,6 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
+// GUID: 42270e13-adb7-421f-aec8-7b8a2e5af1c6
 // Deterministic offline ILlmClient stand-in; see README service notes:
 // https://yuruna.link/4286c679-0007
 

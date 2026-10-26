@@ -34,3 +34,13 @@ sistema.
 A interface do próprio aplicativo de exemplo (em `example/*/components/`)
 não faz parte deste conjunto: ela pertence ao aplicativo, não à interface
 de operação do Yuruna.
+
+---
+
+LICENSEURI https://yuruna.link/license
+
+Copyright (c) 2019-2026 by Alisson Sol et al.
+
+Última revisão: 2026.10.26
+
+Voltar para [Yuruna](https://yuruna.com)

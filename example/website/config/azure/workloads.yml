@@ -1,5 +1,6 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# GUID: 42426d9a-8a11-4a6b-8e9a-9223091259af
 # Workloads information - azure
 ---
 # --- REGION: globalVariables
@@ -35,8 +36,8 @@ workloads:
     _frontendIp: "$([Environment]::GetEnvironmentVariable(\"${env:contextName}.frontendIp\"))"
   deployments:
     # Uninstall previous workloads: idempotent
-    - kubectl: "delete namespace ${env:namespace} --ignore-not-found=true --v=1"
-    - kubectl: "delete namespace ingress-ns --ignore-not-found=true --v=1"
+    - kubectl: "delete namespace ${env:namespace} --ignore-not-found=true --timeout=300s --v=1"
+    - kubectl: "delete namespace ingress-ns --ignore-not-found=true --timeout=300s --v=1"
     # See https://yuruna.link/42e220c4-0009
     - kubectl: "delete crd,clusterrole,clusterrolebinding,validatingwebhookconfiguration,mutatingwebhookconfiguration --selector app.kubernetes.io/instance=cert-manager --ignore-not-found=true --v=1"
     - kubectl: "delete role,rolebinding --namespace kube-system --selector app.kubernetes.io/instance=cert-manager --ignore-not-found=true --v=1"

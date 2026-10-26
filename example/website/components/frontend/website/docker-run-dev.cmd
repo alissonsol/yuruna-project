@@ -1,5 +1,6 @@
 @REM LICENSEURI https://yuruna.link/license
 @REM Copyright (c) 2019-2026 by Alisson Sol et al.
+@REM GUID: 4228a313-5733-4b6e-b2b7-b533f2abb707
 @REM --- REGION: Prepare build
 @echo off
 setlocal

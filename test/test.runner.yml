@@ -1,5 +1,6 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# GUID: 426a1810-37c6-4a68-b6f8-0b331b9054e6
 # Per-cycle runner definition. The runner reads this at cycle start
 # to know which top-level sequences to run continuously, one cycle after
 # another.

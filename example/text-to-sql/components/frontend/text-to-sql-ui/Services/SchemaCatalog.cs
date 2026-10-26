@@ -1,5 +1,6 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
+// GUID: 42475407-5851-4f4a-bbdc-2c99f7344271
 // Schema retriever stage: catalog introspection + hybrid scoring; see README
 // service notes: https://yuruna.link/4286c679-0007
 

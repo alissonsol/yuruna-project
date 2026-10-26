@@ -1,5 +1,6 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
+// GUID: 425c81c4-b086-44c5-803a-41062f4bd9c3
 
 using System.Data;
 using Microsoft.Extensions.Logging.Abstractions;

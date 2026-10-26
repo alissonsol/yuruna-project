@@ -1,7 +1,7 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.7",
-  "serialNumber": "urn:uuid:15e76bb4-87e5-58d2-bd4a-152796ca3442",
+  "serialNumber": "urn:uuid:9c3fea01-e36e-57a7-82b5-aced8e2558af",
   "version": 1,
   "metadata": {
     "component": {
@@ -11,14 +11,14 @@
       "properties": [
         {
           "name": "yuruna:source-inputs-sha256",
-          "value": "091003a43cdae54ca050a4137508a7fda2163116339cba8eb02b5c1d772609ac"
+          "value": "680aedb0d12fa4d63a0ab8a4aacc62c5a021031b5c161d1fae9f37ac062dc8b1"
         },
         {
           "name": "yuruna:inventory-kind",
           "value": "declared-source"
         }
       ],
-      "version": "2026.10.25"
+      "version": "2026.10.26"
     }
   },
   "components": [
@@ -77,7 +77,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"docker\", \"evidence\": [{\"detail\": \"Dockerfile FROM declaration\", \"line\": 10, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile\"}, {\"detail\": \"Dockerfile FROM declaration\", \"line\": 10, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"notes\": [\"Container OS/package contents were not scanned; tag-only images are mutable.\", \"FROM expression ${REGISTRY}dotnet/aspnet:10.0 uses declared ARG defaults; builds can override them.\"], \"scope\": \"runtime\", \"versionConstraint\": \"10.0\"}"
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"docker\", \"evidence\": [{\"detail\": \"Dockerfile FROM declaration\", \"line\": 11, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile\"}, {\"detail\": \"Dockerfile FROM declaration\", \"line\": 11, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"notes\": [\"Container OS/package contents were not scanned; tag-only images are mutable.\", \"FROM expression ${REGISTRY}dotnet/aspnet:10.0 uses declared ARG defaults; builds can override them.\"], \"scope\": \"runtime\", \"versionConstraint\": \"10.0\"}"
         }
       ]
     },
@@ -88,7 +88,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"docker\", \"evidence\": [{\"detail\": \"Dockerfile FROM declaration\", \"line\": 16, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile\"}, {\"detail\": \"Dockerfile FROM declaration\", \"line\": 16, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"notes\": [\"Container OS/package contents were not scanned; tag-only images are mutable.\", \"FROM expression ${REGISTRY}dotnet/sdk:10.0 uses declared ARG defaults; builds can override them.\"], \"scope\": \"build\", \"versionConstraint\": \"10.0\"}"
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"docker\", \"evidence\": [{\"detail\": \"Dockerfile FROM declaration\", \"line\": 17, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile\"}, {\"detail\": \"Dockerfile FROM declaration\", \"line\": 17, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"notes\": [\"Container OS/package contents were not scanned; tag-only images are mutable.\", \"FROM expression ${REGISTRY}dotnet/sdk:10.0 uses declared ARG defaults; builds can override them.\"], \"scope\": \"build\", \"versionConstraint\": \"10.0\"}"
         }
       ]
     },
@@ -99,7 +99,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"Declared dependency\", \"line\": 13, \"path\": \"example/text-to-sql/tests/ServiceContracts.Tests/ServiceContracts.Tests.csproj\"}, {\"detail\": \"Declared dependency\", \"line\": 13, \"path\": \"example/text-to-sql/tests/SqlPolicy.Tests/SqlPolicy.Tests.csproj\"}], \"notes\": [\"No transitive NuGet graph was resolved.\"], \"scope\": \"test\"}"
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"Declared dependency\", \"line\": 14, \"path\": \"example/text-to-sql/tests/ServiceContracts.Tests/ServiceContracts.Tests.csproj\"}, {\"detail\": \"Declared dependency\", \"line\": 14, \"path\": \"example/text-to-sql/tests/SqlPolicy.Tests/SqlPolicy.Tests.csproj\"}], \"notes\": [\"No transitive NuGet graph was resolved.\"], \"scope\": \"test\"}"
         }
       ]
     },
@@ -110,7 +110,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"MSBuild project\", \"line\": 3, \"path\": \"example/text-to-sql/tests/ServiceContracts.Tests/ServiceContracts.Tests.csproj\"}], \"notes\": [\"NuGet transitive dependencies are unresolved without tracked restore locks/assets.\", \"Target framework declaration: net10.0.\"], \"scope\": \"test\"}"
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"MSBuild project\", \"line\": 4, \"path\": \"example/text-to-sql/tests/ServiceContracts.Tests/ServiceContracts.Tests.csproj\"}], \"notes\": [\"NuGet transitive dependencies are unresolved without tracked restore locks/assets.\", \"Target framework declaration: net10.0.\"], \"scope\": \"test\"}"
         }
       ]
     },
@@ -121,7 +121,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"MSBuild project\", \"line\": 3, \"path\": \"example/text-to-sql/tests/SqlPolicy.Tests/SqlPolicy.Tests.csproj\"}], \"notes\": [\"NuGet transitive dependencies are unresolved without tracked restore locks/assets.\", \"Target framework declaration: net10.0.\"], \"scope\": \"test\"}"
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"MSBuild project\", \"line\": 4, \"path\": \"example/text-to-sql/tests/SqlPolicy.Tests/SqlPolicy.Tests.csproj\"}], \"notes\": [\"NuGet transitive dependencies are unresolved without tracked restore locks/assets.\", \"Target framework declaration: net10.0.\"], \"scope\": \"test\"}"
         }
       ]
     },
@@ -132,7 +132,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"MSBuild project\", \"line\": 3, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/text-to-sql-ui.csproj\"}], \"notes\": [\"NuGet transitive dependencies are unresolved without tracked restore locks/assets.\", \"Target framework declaration: net10.0.\"], \"scope\": \"runtime\"}"
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"MSBuild project\", \"line\": 4, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/text-to-sql-ui.csproj\"}], \"notes\": [\"NuGet transitive dependencies are unresolved without tracked restore locks/assets.\", \"Target framework declaration: net10.0.\"], \"scope\": \"runtime\"}"
         }
       ]
     },
@@ -143,7 +143,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"MSBuild project\", \"line\": 3, \"path\": \"example/website/components/frontend/website/website.csproj\"}], \"notes\": [\"NuGet transitive dependencies are unresolved without tracked restore locks/assets.\", \"Target framework declaration: net10.0.\"], \"scope\": \"runtime\"}"
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"dotnet\", \"evidence\": [{\"detail\": \"MSBuild project\", \"line\": 4, \"path\": \"example/website/components/frontend/website/website.csproj\"}], \"notes\": [\"NuGet transitive dependencies are unresolved without tracked restore locks/assets.\", \"Target framework declaration: net10.0.\"], \"scope\": \"runtime\"}"
         }
       ]
     },
@@ -154,7 +154,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"unresolved\", \"ecosystem\": \"git\", \"evidence\": [{\"detail\": \"Index snapshot and generated-file staging use the installed Git CLI\", \"line\": 38, \"path\": \"tools/Sync-Sbom.py\"}], \"notes\": [\"The repository does not pin the installed Git version.\"], \"scope\": \"build\"}"
+          "value": "{\"completeness\": \"unresolved\", \"ecosystem\": \"git\", \"evidence\": [{\"detail\": \"Index snapshot and generated-file staging use the installed Git CLI\", \"line\": 39, \"path\": \"tools/Sync-Sbom.py\"}], \"notes\": [\"The repository does not pin the installed Git version.\"], \"scope\": \"build\"}"
         }
       ]
     },
@@ -209,7 +209,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"unresolved\", \"ecosystem\": \"helm\", \"evidence\": [{\"detail\": \"External Helm chart declaration\", \"line\": 55, \"path\": \"example/website/config/azure/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://charts.jetstack.io\", \"line\": 53, \"path\": \"example/website/config/azure/workloads.yml\"}], \"notes\": [\"Chart archives, transitive chart dependencies, and rendered container images were not resolved.\", \"Declared chart reference: jetstack/cert-manager.\", \"Helm repository/source URL: https://charts.jetstack.io.\", \"Version range or expression is retained as declared; no runtime value was inferred.\"], \"scope\": \"runtime\", \"versionConstraint\": \"${env:certManagerLatest}\"}"
+          "value": "{\"completeness\": \"unresolved\", \"ecosystem\": \"helm\", \"evidence\": [{\"detail\": \"External Helm chart declaration\", \"line\": 56, \"path\": \"example/website/config/azure/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://charts.jetstack.io\", \"line\": 54, \"path\": \"example/website/config/azure/workloads.yml\"}], \"notes\": [\"Chart archives, transitive chart dependencies, and rendered container images were not resolved.\", \"Declared chart reference: jetstack/cert-manager.\", \"Helm repository/source URL: https://charts.jetstack.io.\", \"Version range or expression is retained as declared; no runtime value was inferred.\"], \"scope\": \"runtime\", \"versionConstraint\": \"${env:certManagerLatest}\"}"
         }
       ]
     },
@@ -220,7 +220,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"unresolved\", \"ecosystem\": \"helm\", \"evidence\": [{\"detail\": \"External Helm chart declaration\", \"line\": 53, \"path\": \"example/website/config/aws/workloads.yml\"}, {\"detail\": \"External Helm chart declaration\", \"line\": 56, \"path\": \"example/website/config/localhost/workloads.yml\"}, {\"detail\": \"External Helm chart declaration\", \"line\": 60, \"path\": \"example/text-to-sql/config/localhost/workloads.yml\"}, {\"detail\": \"External Helm chart declaration\", \"line\": 63, \"path\": \"example/website/config/azure/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 46, \"path\": \"example/website/config/aws/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 50, \"path\": \"example/website/config/azure/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 54, \"path\": \"example/website/config/localhost/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 58, \"path\": \"example/text-to-sql/config/localhost/workloads.yml\"}], \"notes\": [\"Chart archives, transitive chart dependencies, and rendered container images were not resolved.\", \"Declared chart reference: ingress-nginx/ingress-nginx.\", \"Helm repository/source URL: https://kubernetes.github.io/ingress-nginx.\", \"No chart version was declared; repository state selects the version at deployment time.\"], \"scope\": \"runtime\"}"
+          "value": "{\"completeness\": \"unresolved\", \"ecosystem\": \"helm\", \"evidence\": [{\"detail\": \"External Helm chart declaration\", \"line\": 54, \"path\": \"example/website/config/aws/workloads.yml\"}, {\"detail\": \"External Helm chart declaration\", \"line\": 55, \"path\": \"example/website/config/localhost/workloads.yml\"}, {\"detail\": \"External Helm chart declaration\", \"line\": 59, \"path\": \"example/text-to-sql/config/localhost/workloads.yml\"}, {\"detail\": \"External Helm chart declaration\", \"line\": 64, \"path\": \"example/website/config/azure/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 47, \"path\": \"example/website/config/aws/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 51, \"path\": \"example/website/config/azure/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 53, \"path\": \"example/website/config/localhost/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 57, \"path\": \"example/text-to-sql/config/localhost/workloads.yml\"}], \"notes\": [\"Chart archives, transitive chart dependencies, and rendered container images were not resolved.\", \"Declared chart reference: ingress-nginx/ingress-nginx.\", \"Helm repository/source URL: https://kubernetes.github.io/ingress-nginx.\", \"No chart version was declared; repository state selects the version at deployment time.\"], \"scope\": \"runtime\"}"
         }
       ]
     },
@@ -231,7 +231,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"nuget\", \"evidence\": [{\"detail\": \"Declared dependency\", \"line\": 15, \"path\": \"example/website/components/frontend/website/website.csproj\"}], \"notes\": [\"No transitive NuGet graph was resolved.\"], \"scope\": \"build\"}"
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"nuget\", \"evidence\": [{\"detail\": \"Declared dependency\", \"line\": 16, \"path\": \"example/website/components/frontend/website/website.csproj\"}], \"notes\": [\"No transitive NuGet graph was resolved.\"], \"scope\": \"build\"}"
         }
       ],
       "version": "1.23.0",
@@ -244,7 +244,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"nuget\", \"evidence\": [{\"detail\": \"Declared dependency\", \"line\": 14, \"path\": \"example/text-to-sql/tests/ServiceContracts.Tests/ServiceContracts.Tests.csproj\"}, {\"detail\": \"Declared dependency\", \"line\": 16, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/text-to-sql-ui.csproj\"}], \"notes\": [\"No transitive NuGet graph was resolved.\"], \"scope\": \"runtime\"}"
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"nuget\", \"evidence\": [{\"detail\": \"Declared dependency\", \"line\": 15, \"path\": \"example/text-to-sql/tests/ServiceContracts.Tests/ServiceContracts.Tests.csproj\"}, {\"detail\": \"Declared dependency\", \"line\": 17, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/text-to-sql-ui.csproj\"}], \"notes\": [\"No transitive NuGet graph was resolved.\"], \"scope\": \"runtime\"}"
         }
       ],
       "version": "10.0.3",
@@ -257,7 +257,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"python\", \"evidence\": [{\"detail\": \"SBOM collector uses Python 3.11 tomllib and the standard library\", \"line\": 12, \"path\": \"tools/sbom_dependencies.py\"}], \"notes\": [\"No Python package installation is required.\"], \"scope\": \"build\", \"versionConstraint\": \">=3.11\"}"
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"python\", \"evidence\": [{\"detail\": \"SBOM collector uses Python 3.11 tomllib and the standard library\", \"line\": 13, \"path\": \"tools/sbom_dependencies.py\"}], \"notes\": [\"No Python package installation is required.\"], \"scope\": \"build\", \"versionConstraint\": \">=3.11\"}"
         }
       ]
     }

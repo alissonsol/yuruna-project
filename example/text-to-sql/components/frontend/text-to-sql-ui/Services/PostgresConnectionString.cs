@@ -1,5 +1,6 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
+// GUID: 424c807d-802c-4c26-b2b3-d47bec94a71d
 using Npgsql;
 
 namespace TextToSqlUi.Services;

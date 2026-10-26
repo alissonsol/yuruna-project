@@ -1,5 +1,6 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# GUID: 42c1b144-5a38-45df-92a8-f82685e63477
 # Workloads information - localhost
 ---
 # --- REGION: globalVariables
@@ -31,13 +32,11 @@ workloads:
     tls-crt: "$(Join-Path -Path ${env:workFolder} -ChildPath \"website-tls.crt\")"
     tls-key: "$(Join-Path -Path ${env:workFolder} -ChildPath \"website-tls.key\")"
   deployments:
-    # Uninstall previous workloads: idempotent
-    - kubectl: "delete namespace ${env:namespace} --ignore-not-found=true --v=1"
-    - kubectl: "delete namespace ingress-ns --ignore-not-found=true --v=1"
-    # See https://yuruna.link/42e220c4-0009
-    - kubectl: "delete namespace cert-manager --ignore-not-found=true --v=1"
-    - kubectl: "delete crd,clusterrole,clusterrolebinding,validatingwebhookconfiguration,mutatingwebhookconfiguration --selector app.kubernetes.io/instance=cert-manager --ignore-not-found=true --v=1"
-    - kubectl: "delete role,rolebinding --namespace kube-system --selector app.kubernetes.io/instance=cert-manager --ignore-not-found=true --v=1"
+    # Uninstall previous workloads: idempotent. Remove only what this
+    # configuration installs, and give every namespace delete a deadline.
+    # See https://yuruna.link/42e220c4-0012
+    - kubectl: "delete namespace ${env:namespace} --ignore-not-found=true --timeout=300s --v=1"
+    - kubectl: "delete namespace ingress-ns --ignore-not-found=true --timeout=300s --v=1"
     - kubectl: "delete clusterrole nginx-ingress-ingress-nginx --ignore-not-found=true"
     - kubectl: "delete clusterrolebinding nginx-ingress-ingress-nginx --ignore-not-found=true"
     # Install dependencies

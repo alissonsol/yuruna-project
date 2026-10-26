@@ -2,139 +2,140 @@
   "schema": "yuruna.sbom-inventory/v1",
   "generator": "tools/Sync-Sbom.py",
   "name": "yuruna-project",
-  "sourceInputsSha256": "091003a43cdae54ca050a4137508a7fda2163116339cba8eb02b5c1d772609ac",
+  "sourceInputsSha256": "680aedb0d12fa4d63a0ab8a4aacc62c5a021031b5c161d1fae9f37ac062dc8b1",
   "sourceFiles": {
     ".gitattributes": "ff39823f16565ee86dcb2b3e796471eecaf142d5461070054acf295af5012c6a",
     ".gitignore": "66151ab71e6c13a41d91062b313889eeca1ddbafeee2b95cc3396cb80662dbff",
     "AGENTS.md": "922383a64c07560724695aa1c3f153d3874a1cbab6204ad03e8b4a64fb6f285d",
-    "CHANGELOG.md": "537f5eb55c57b7ea0b4cf15f90518d8e55150216a15d6b148b64750c98b87604",
-    "LICENSE.md": "879c8a9c6ebb097d8ce3cc061236171f318dd08f0132cbd5e7a9592e1317d89b",
-    "PSScriptAnalyzerSettings.psd1": "7a11ebfd54f4b2a9b6b63573780845eb939a7e8829fa973e660d401358bd44eb",
-    "README.md": "5d3c39746eb6ff6b005372ff1517b03d69e64a77736f8f2dda43f74aea79c57b",
-    "VERSION": "3081467a259629016066b91af6bd5b2befb1feb843d1d95c438992b97b649c3f",
+    "CHANGELOG.md": "9efc838b2590d66d9ebb7f358a8cc01604e084fa3316966c1bdb44e3ab525b09",
+    "LICENSE.md": "5f73af5718d861e65ab1677ec4952517f5fd5fe8298b324d3c78696591a53aa0",
+    "PSScriptAnalyzerSettings.psd1": "8d59caee90356c6251ab123914460bc7f54ea06e27c56c26664e77e201885d83",
+    "README.md": "d5d93e9375be2eaa27a2cfc292fa47d3e6766310611843817f6e6bbd44a7753f",
+    "VERSION": "d9f5b0a3f3651fe19feb868926871b2fe75e05af43bfc2db5f0b1754c4689584",
     "book/test/ch01.website.example.no-break.yml": "8ba6e34c2beb243ae72e1e0374876874008470388f761b1c2cc2cd790a771160",
     "book/test/ch01.website.example.yml": "d2097a1df030343ba49c1c21b3dab9eb06597134f0235c0d4bbe107ab8f42306",
     "book/test/ch02.website.k8s.dotnet.no-break.yml": "b19c5659e58ec6558b93c6f57b541912985b7c7883aeee11ff2bb835cc5b30c0",
     "book/test/ch02.website.k8s.dotnet.yml": "3eefeccb084c4c82b0221120157712d6239f665ba641056a14a6d343d04ad2db",
     "docs/globalization.md": "f74e3968b59b49d9eb059c825d88260d65a717aaf365fd6a750ab7ba74a8d461",
-    "docs/pt-BR/README.md": "0451419b9cb53aaf32b0f34a7b7005db43d0096a3671d62805fa650dc94496aa",
-    "docs/pt-BR/example/README.md": "ac221ce244f5140220b3c361c6b886551225c1e35cefc8eb160cf69b8ea2db1c",
-    "docs/pt-BR/example/text-to-sql/README.md": "e387b06362b47c6572955c395a3816849b3233bd6d1bb0de0fa26f801c726e71",
-    "docs/pt-BR/example/website/README.md": "13b66d58b178c5ce1c8c92aa7769401fbd17d426850f9ba4814e8d32413b9463",
-    "docs/pt-BR/example/website/components/frontend/website/README.md": "a78441caf7f24f3ebb7cf973f301f545070b1e46b7b5d9ea7eb2a3d070dbbc2d",
-    "docs/pt-BR/index.md": "03f91c6615d9893defdf51247f20bbccb4cbdab0da227ed15dedc045af7cdcd2",
-    "docs/pt-BR/template/README.md": "53ca301aa30c4121b8d8aee53ef1ecaa063ffc8e250d413ba3b58b29f0d7c328",
-    "example/README.md": "2b70a1bc3bfc59f05e5ddb3b09b2b4edd9ac5c21eb93af10f406fbecc146104c",
-    "example/text-to-sql/README.md": "29d267d657a00efe0400d6ebb480417d53010c2ec1d6afff867e2fca450c982e",
+    "docs/pt-BR/README.md": "8ad446866c5a0e92862669795942788b3e37428c975209f1ef8596c8ebef7f22",
+    "docs/pt-BR/example/README.md": "0da4c227685f48b8138c70ecc6f029fc8eda6b741e72fb1ba5fcabfd11d50865",
+    "docs/pt-BR/example/text-to-sql/README.md": "16a380ea898b938f4f8da1f1897eba66e49bd3206f7ad17e04720a7a39266460",
+    "docs/pt-BR/example/website/README.md": "c43cd03c55aa5b76efec2a2bad5b98670b8b8fcee13ba52eb70aeccb574a6d53",
+    "docs/pt-BR/example/website/components/frontend/website/README.md": "76748c2ef887c7587118e92bbec35c63b456d7d67d51507a51a4ea0d68967ef1",
+    "docs/pt-BR/index.md": "a9a724bc636f5915ac504008a72d24eba138ed16db12257bc3564be833529e29",
+    "docs/pt-BR/template/README.md": "d5dd55259e97037796c4db73ce5f7286b561fa44e2d08dfc4ce6de72386e3b21",
+    "example/README.md": "6eda64c5b984aaaf0cac9e6500113ab491379069f5362d420bc3efc6ca6767cc",
+    "example/nested.host/test/install-yuruna.sh": "73dd043097cb42b1aa3696387a771680766fe04e006184c13da46ef93e18a16b",
+    "example/text-to-sql/README.md": "5c0c5723133d3ff59da5be8f5cc19042043e54db937378533664b336cb2d99be",
     "example/text-to-sql/components/frontend/text-to-sql-ui/.dockerignore": "5c132e38fc56c258e88a5d4d13195d329b78b7e90d4639268612d2d849155c52",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile": "c7061e77acee913416349958be66139eca95ae7fe8ca496e3286e8c7f2c7d871",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Example.Build.psm1": "9ce51271bbd3f2ae28b8aebdf6f442f97dfe1afcd2bd5ba57c72b49b8648c727",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/About.cshtml": "2411722dc114bd1e1f89c4a20250a0f70306ec8ccc0770a79283f3fef241cf7f",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/Error.cshtml": "6e9602b94c3f7d12100f3f34cb4ed693406a4077d2deb4253bc3f1d7e3a2cf8f",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/Error.cshtml.cs": "caa53191ae36ca92e53df004b0ec69867958f31a85c948457e69d8f49dc36414",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/Index.cshtml": "f4ee35276c080b39feb40c842ae22ee8f5ef00c6b651b5d3d214d0c29a4e3c35",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/Index.cshtml.cs": "b42e0f59f0fe1ce35b945a160b47f0b7efdc0c1a2cc81cbfceef97c4f87ba00f",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/Schema.cshtml": "1ec893363c70b1294b492685c0135a643d16b757aba4045d74fde6ffbcf90549",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/Schema.cshtml.cs": "82b0709b92cf5723d4b845675a2b7e6fe2ee25861856ad16eaa95b4ad566cf6d",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/Shared/_Layout.cshtml": "e073fd466214f322719dc3b10059c0594773c882486e68edde07949ec9cc48bb",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/_ViewImports.cshtml": "296cb8c645eff321a41596050b71ce35f98b8b86e96f4ea2f2ee08d7b1ce271d",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/_ViewStart.cshtml": "72b323b9c2c6ab7bf3aa07d9dcd3b0ee937b27996ddbc31566f641cafd52a84b",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Program.cs": "61701d34f8a1563be5ac9a4de64ca729f615410376d38908dedd103ce841b502",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile": "910f6685207fc4298bb3fdc6b8022cce1fc439223632adbf15f9fe9c9d52a732",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Example.Build.psm1": "f84d6d94250a0478fe0958b1278d579348c099e7ffc28f05054bfdeb8c349dbd",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/About.cshtml": "68daa899e56e2abf0efee771f1a90bcca8203e1f14e9c02ae64300b0436bb0ec",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/Error.cshtml": "a9e76deedc361c172861a6a876fae3cc325bf46ec1698c6207cf3ebf51c15bb7",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/Error.cshtml.cs": "fa9b056041db6d20666d58a209d9ca01075080191fffcccfa54cc64ef6e1e913",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/Index.cshtml": "0e1f6b26920a8d8cf65e81cd95b5369059f1e5460d569c931e2aaa765ba0b823",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/Index.cshtml.cs": "b18f48b807639717ed930c7543d87bce8b1f18d0d4f0d9216da0fe7eac5c3146",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/Schema.cshtml": "2ff787581c7cdf1acb8dccdbbde9e1fa119f07cc71f81da699c3dd0fc22be7c9",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/Schema.cshtml.cs": "86c04e4a5f3590bceef90d2f0974b8f6a16fab9b55bc37d5ff72391e04299612",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/Shared/_Layout.cshtml": "e6a2d2e0a8ee82297c7853ab00621c9df051d87257f7333f0ff2dc554fdde0d5",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/_ViewImports.cshtml": "6017c876ed2268cb9293854c4fb0003ea251ab4de1442e7a77a642fa03bf53de",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Pages/_ViewStart.cshtml": "048849283392e051fe7b9c17ff97ed27ded9df80e0bade8032d64dd3177534cf",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Program.cs": "6ae9f8b82fcddd125f7d3176283c7f032a2c6dc010499677e7712a82627f8d65",
     "example/text-to-sql/components/frontend/text-to-sql-ui/Properties/launchSettings.json": "d14970828d9242b716b7b4e06ba71ba9cfb281179c3790dde1af55267c07f8b5",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/AgentOrchestrator.cs": "2724f21b7092507e44c10bafd59d572512125cba99e7834bc5c982c2715680c9",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/ClaudeLlmClient.cs": "2df6205877866555014db1a2cd37ce3d512dc74766819218c0557e360067450b",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/ILlmClient.cs": "d6bd5f0f57c28fcb70a93578df00b9121b16817c1af4197f57442ff4819aed11",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/LlmHttpRetry.cs": "0c48194e707dd671cb784af0320eee5c296cc3e01a3eed8f85481ac7cdb91207",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/OllamaLlmClient.cs": "ba69084bb9b179cf8b8acb1b952c04374198ce1bd6c60a72b218fdf2a23db75f",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/PostgresConnectionString.cs": "07d9b471d2962a172846d30d8d5d66cc6274d9146527dff459e89b20a2f9b4c6",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/RuleBasedLlmClient.cs": "c95b27904b71a8d781ebd2d5cbac9868996eeaaa4b3bed6f3e5a74c15d2dd5a3",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/SchemaCatalog.cs": "3dd5c05e3fe02a283a5b765ee1dd2fc0c3d56ca4c1f0b6a430f4cff54a0ea95e",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/ServiceMessages.cs": "9391231ac7d9caf42d00dd0b9b669c7c6f6250552d325acbb1ab85ae7d90cdaf",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/AgentOrchestrator.cs": "4604fbf2769e5fa2d4752240e3c70de5f4e891e163431ac7f75446e826a1af78",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/ClaudeLlmClient.cs": "d18cafa6453413d5763b67888753494a9d0f0527a3491ceab4f66ce6326425bd",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/ILlmClient.cs": "95981cb709a20697ae7d59226080f7d9aa277ab240326ef1ad2f946c59d0fa08",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/LlmHttpRetry.cs": "96f2e668f187cded880ba177f941fa6338794882dd79f5c0d9feb2b515775a96",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/OllamaLlmClient.cs": "a7e7c79799e727b0847c59579d517df574c6839d8e122e500968cf0f1fc2b61f",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/PostgresConnectionString.cs": "031151d5ea87ac24ca4cee997f86a0bfe325fff48ef94896e87da40ccdcf6d0b",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/RuleBasedLlmClient.cs": "b0dff1e59b844c695be27669c39b703d2f9d4163f52930aea1c94f6fa95cfcdb",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/SchemaCatalog.cs": "58ec0d400fa27f6260ed9b1ca94511c05e76d36e3f5a06389a04e34fbf530e97",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/ServiceMessages.cs": "86bb7effe93252539e41fea69855172b154fc712387e61b3bdcbeb1268227e0e",
     "example/text-to-sql/components/frontend/text-to-sql-ui/Services/ServiceMessages.he-IL.resx": "29d0f05df5dd949e44910422abe906d91ccd5851120341d80922a169ec6313c0",
     "example/text-to-sql/components/frontend/text-to-sql-ui/Services/ServiceMessages.pt-BR.resx": "faab68a0cb05d495bb22f953fc9418aa2100b57fdf025d77005f75f41d06fb13",
     "example/text-to-sql/components/frontend/text-to-sql-ui/Services/ServiceMessages.resx": "3ac5bbad183d0104cb64d038e8980287bca489918e1fdab6a42fd6e69cf5a22c",
     "example/text-to-sql/components/frontend/text-to-sql-ui/Services/ServiceMessages.zh-CN.resx": "52828c7732c32b8512b8fb5263b8630a777020895bd0a5c5353ecdeb55e5d8c9",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/SqlQueryPolicy.cs": "bc7963b81d1578a058aafa09adede413b05f7ea30606c82dbc144cf8a0b1b487",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/SqlResultReader.cs": "b6c2c2eb4e7b8ba12497f8adb0e39b15ca74975a0c80862ad70f41b9f790e965",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/SqlValidator.cs": "6f133074ec7709ebe55d066275cec28a83e78ac164d2592132334fc3b6c56df8",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/SqlQueryPolicy.cs": "af988f231525eab4e2447eb9e591d080264b5d0caba7dca5648d284afd21c9eb",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/SqlResultReader.cs": "e734e90583df4e68c9e6bdfda76d9a6aa399d7a90c86e1c9f053ed7a4775fc0b",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/Services/SqlValidator.cs": "f194236b09ef86337da5c9455d197647aab18e6ed4216dd992b277c72244a204",
     "example/text-to-sql/components/frontend/text-to-sql-ui/appsettings.Development.json": "c7760b2cd71c2903e6c9939086d7d248f907c1962abd3e14303d628040407162",
     "example/text-to-sql/components/frontend/text-to-sql-ui/appsettings.json": "4cd1a1a05541678b83c85fdd543741cad0c953dc12c89f3681b057c518ea67d8",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/copy-pfx.ps1": "7108ee3a522de07281acc6edf03391085903e12b430d5549418734f9de347f68",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/create-cert-secret.ps1": "7ecf9c2d6d0b192cd786a97ca74b49aa7eaf06939422295c7f97a72484e78255",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/create-db-secret.ps1": "39ea1a12a557985b585cc256e155311a57196acfa4c0a4232513f04e5ccc028a",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/seed-base-images.ps1": "ca05860c24baa9a1fea9feaff2b52f388068fbf6afbd38c57c19d2593238fda2",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/text-to-sql-ui.csproj": "d79ce30b5b72227024667972de84257a1feb0917db668f44c2708f2ea57c6468",
-    "example/text-to-sql/components/frontend/text-to-sql-ui/wwwroot/css/site.css": "0a2727335bd5d937c8fd5871f989ea9d8a26f221be0e770daa9ad7d3780727ff",
-    "example/text-to-sql/config/localhost/components.yml": "a69fa347b003e32bff84c1da2261b7bd14ad7427a168705dc8221f4dfcdf79d6",
-    "example/text-to-sql/config/localhost/resources.yml": "8289f5d17267e6b38bc64888a041b4001971dbb5d201387509742895998079e6",
-    "example/text-to-sql/config/localhost/workloads.yml": "b6a9a2cb0e225c206126e63bf76ee607cf9630e044cc9e46250c9de67ed69c16",
-    "example/text-to-sql/db/schema.sql": "f558f94de36c0c9ca2b5dcecee447c637dd43f413ed8aa632619c74101b9466b",
-    "example/text-to-sql/db/test-agent-permissions.sql": "a50396eb20fa66efa91237cb9ed56ee47b0d5a4d463522c43bc4e56ffa37aa08",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/copy-pfx.ps1": "522a2f433df79d86c603caf220e646c31d3fae5ae25a0765e87052a9bd2d5d61",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/create-cert-secret.ps1": "fd6e6b0ff573f1d72c85e046a765297eb61361e992972e63c9ed6fea01dac910",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/create-db-secret.ps1": "dbe284ab2c1e5ff263c23f504627c63d02d1c537e7994a2bbbdd11b74c39121f",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/seed-base-images.ps1": "0e5b74d3516390ca3b660374ebbdd90abd873102ec1dccebe767663163d27869",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/text-to-sql-ui.csproj": "c47f129a88da245d07f0a4945ceb608ab13ba2ee2ecd0eda137d34735667c994",
+    "example/text-to-sql/components/frontend/text-to-sql-ui/wwwroot/css/site.css": "f900c62ca0d235fd9ea72e033e796c5ef1cccd59a7d30342cb67848c345cd1b3",
+    "example/text-to-sql/config/localhost/components.yml": "7592f7edea5ba49474521668631006329967c6d847c7a1241f065ad565a03430",
+    "example/text-to-sql/config/localhost/resources.yml": "26a333dddd7a4aeee74af2d85db31e36df21842b9775d25ca37c3cd07c643053",
+    "example/text-to-sql/config/localhost/workloads.yml": "96f244836203fb31528fea6aca31b27618a6ad80d748fb5050e6d0929588ae8e",
+    "example/text-to-sql/db/schema.sql": "2afc6f3b2cbfe6bbaeeabd46dad227308414d0372bb1d21ff524f816e06a0a4c",
+    "example/text-to-sql/db/test-agent-permissions.sql": "6a4164969b9a6dce9601fbcdeb31d303f7b5c842f80b9600afde57fe7f8daba6",
     "example/text-to-sql/resources/placeholder": "60a8de4c3a9312789ab1aa9e41118485a14d5fab4b7dbaf56bdcbd95cfe918ef",
-    "example/text-to-sql/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.text-to-sql.db.sh": "5d8c00533d2055829f2ab311a08f6cbe806f90f79e019add28c5f7e503b6113a",
-    "example/text-to-sql/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.text-to-sql.sh": "a41fc545f06ef6ed18a1c50808d0eecb11366cff5834977858d47371ac44cccb",
+    "example/text-to-sql/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.text-to-sql.db.sh": "a9f52db2866d245663df01616bae0d5de98fe3ea2e0b44514e73c07dbc0e8d26",
+    "example/text-to-sql/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.text-to-sql.sh": "ee0620afccd26d65f178b5ee57751bbf795bc78bdfadc809843e3c8a3c6e0dc5",
     "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml": "616e3f2123ca7242795bfe513e71734b2fe35385c39b26d1171ea9489c8d0206",
     "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml": "a95225b78222793548c4d865d2b06ce6a20921f82df8cb8ba8af7308c366fa16",
-    "example/text-to-sql/tests/ServiceContracts.Tests/Program.cs": "d6e4a9b5e94685bdd6f65817cba7d0d8e005a1dd4a5972385d824ad2fc504a6f",
-    "example/text-to-sql/tests/ServiceContracts.Tests/ServiceContracts.Tests.csproj": "0e14b0460cbfafa31a8f44ccf2f6d8035766c60209b1bcace9e33cf8b29827cc",
-    "example/text-to-sql/tests/ServiceContracts.Tests/check_messages.py": "c3db9294d33ecb0d346e48fbb7e429a4482f515a46c2bbb4efbc334bd882ca0f",
-    "example/text-to-sql/tests/SqlPolicy.Tests/Program.cs": "d61ecae9f1d345b8be7f8d042eafef20a49b3a5134ea1dd8304389d432dfb508",
-    "example/text-to-sql/tests/SqlPolicy.Tests/SqlPolicy.Tests.csproj": "b3f9e592beff0f58593dea409014e3f2ef9e02c64f2ad2fa2c7451ea4008df9c",
-    "example/text-to-sql/tests/Test-DatabaseSecret.ps1": "874dc721587a8eb25bd5719af4676f06ea9e193e77102fa69c8994ce8448ed57",
-    "example/text-to-sql/tests/db_script_contracts.py": "9a9c45592b5a08ed286c0f5726a61bf7987a7e739196a1b414dfb417131ba3b1",
+    "example/text-to-sql/tests/ServiceContracts.Tests/Program.cs": "c8c93d248c0e4a9418e3ca00b3d327ab4684092a86d1e4043e20e9ad987827e2",
+    "example/text-to-sql/tests/ServiceContracts.Tests/ServiceContracts.Tests.csproj": "bf6ae647022230f7ccfe8d8febda5db47c7032d834e5c259c8a7225b1d066d52",
+    "example/text-to-sql/tests/ServiceContracts.Tests/check_messages.py": "c075edb167a1cd53dd48229cca3cb1a847ad98484799c1ca832ee13a1baa20b5",
+    "example/text-to-sql/tests/SqlPolicy.Tests/Program.cs": "e5a0277fcc02218dc4cdefd31e6276622b516c1e8aa33125abe4fad98941fedd",
+    "example/text-to-sql/tests/SqlPolicy.Tests/SqlPolicy.Tests.csproj": "ca9e0ca7b9d8a03ecbcf1c1f43139ae98f092fb35716ef3ae72cda7443c4473c",
+    "example/text-to-sql/tests/Test-DatabaseSecret.ps1": "dd82147e4a9e132e5ea064072ed7af6bc67562c15122d29f3e42b6c99be6ebd1",
+    "example/text-to-sql/tests/db_script_contracts.py": "d3c50c35f412a1ada0706edb5ef186b91eaefb87530dd696bfe0f1107a8c2b36",
     "example/text-to-sql/workloads/frontend/text-to-sql-ui/.helmignore": "bb987e6a8ef45a99255d1d632812482d5f0f3255ea841520b4d90342df5fe2b3",
-    "example/text-to-sql/workloads/frontend/text-to-sql-ui/Chart.yaml": "63e5c5e339dee833c58d80f4bb13fc1749616e0e6808f32475ebf40344a235a5",
-    "example/text-to-sql/workloads/frontend/text-to-sql-ui/templates/01-text-to-sql-ui.yml": "16e62773c7c3dd67c960065592d52288ebfd98a444792354ae7a86d2ebe02214",
-    "example/text-to-sql/workloads/frontend/text-to-sql-ui/templates/03-ingress-to-text-to-sql-ui-with-tls.yml": "8a5a6240da8623aab5aca3545c8a520f8fb70461189d31bee0c8476df6270d68",
-    "example/text-to-sql/workloads/frontend/text-to-sql-ui/values.yaml": "49893fa10ed5fd40cb65db2444da48367492ed3ac61b5f99f21d32eef9c8c313",
-    "example/website/README.md": "45bd7bb811465f421858b5d11f042fbe2c60a58c89ba4e00c9c925e0ddb8251b",
+    "example/text-to-sql/workloads/frontend/text-to-sql-ui/Chart.yaml": "eeda7470fa96b30dcdbc5812ebfc1f0370d125e3f144e40a840c81c7c57ba9a1",
+    "example/text-to-sql/workloads/frontend/text-to-sql-ui/templates/01-text-to-sql-ui.yml": "2119deaee93b6fa242fad6c9a64c4f939e88d096262905d3636047b4b281d5dd",
+    "example/text-to-sql/workloads/frontend/text-to-sql-ui/templates/03-ingress-to-text-to-sql-ui-with-tls.yml": "5e93c2fd642953b782637cc708e3497a78f7c7b048e62f978e01b767a42ac29f",
+    "example/text-to-sql/workloads/frontend/text-to-sql-ui/values.yaml": "0fc6d0c6bdbf3fff924733c245689d81639a4648caaa47616f60a397d7091911",
+    "example/website/README.md": "efa3d32cbb4c482f17036f70b5c7afd933f49214ced87652a08dc0867abc8d58",
     "example/website/components/frontend/website/.dockerignore": "03c7879f9701871a9fb87055cee1d027cc4471914b14792b4e73807e940301da",
-    "example/website/components/frontend/website/Dockerfile": "0987ce4e96adb4f9b0f2b83567b429e2835e68f364acbb63d2a494ce60a7b224",
-    "example/website/components/frontend/website/Example.Build.psm1": "9ce51271bbd3f2ae28b8aebdf6f442f97dfe1afcd2bd5ba57c72b49b8648c727",
-    "example/website/components/frontend/website/Pages/Error.cshtml": "98f8bae952f2758991d73089e6f8812a702928e41d82f38bc41be642c8f5d3a3",
-    "example/website/components/frontend/website/Pages/Error.cshtml.cs": "54a198e3c2eedd397addac2a97aec3a3fb226b3da9e9030e0b66698aa4f9a18a",
-    "example/website/components/frontend/website/Pages/Index.cshtml": "298b6da997533183f481b25c34c9adfc50989925d1d49dde2ef1dd034c8c89fd",
-    "example/website/components/frontend/website/Pages/Index.cshtml.cs": "24933823acecaaffb431b2c3d8b78d85fa87dd33445d0f2928782e8ce6632007",
-    "example/website/components/frontend/website/Pages/Privacy.cshtml": "376511000955a01318f5bdae8dfd4045a46a66cb2038cbf6d187f4ebdcc50104",
-    "example/website/components/frontend/website/Pages/Privacy.cshtml.cs": "804146f50eedae00245925e6d3520b409936f7544a7a9eb6c39dd12f694b3cc8",
-    "example/website/components/frontend/website/Pages/Shared/_Layout.cshtml": "3a7b00c7ca9806c2bec8272d0937fe3cba5b221c17bee3f22f08709650c439f3",
-    "example/website/components/frontend/website/Pages/Shared/_Layout.cshtml.css": "cda296fd12352bba9d92ee42b18fa158f09369a655fa2538c71c3abdec510355",
-    "example/website/components/frontend/website/Pages/Shared/_ValidationScriptsPartial.cshtml": "a92b9a76e9d8084109669263a4331fe844c25fcc60d32841cec54bbc52140e2c",
-    "example/website/components/frontend/website/Pages/_ViewImports.cshtml": "1184a3978fc8df30fa0fd7147cbe209a66359cdbb00cc440d4bf388e1c29699c",
-    "example/website/components/frontend/website/Pages/_ViewStart.cshtml": "72b323b9c2c6ab7bf3aa07d9dcd3b0ee937b27996ddbc31566f641cafd52a84b",
-    "example/website/components/frontend/website/Program.cs": "3bb97a0c855f8b9a1589221c0bae79873cbc158d9da125ae1b7d1785245cdcb8",
+    "example/website/components/frontend/website/Dockerfile": "b1fde97619ccb7b629147c0ecfd1f9ccf029c0746bb85d3c2aeb8916f1bf9236",
+    "example/website/components/frontend/website/Example.Build.psm1": "f84d6d94250a0478fe0958b1278d579348c099e7ffc28f05054bfdeb8c349dbd",
+    "example/website/components/frontend/website/Pages/Error.cshtml": "8d8616a6ab1f1815ac40421d8bb688a0bc9fea58f677c1abf589588083fdefc6",
+    "example/website/components/frontend/website/Pages/Error.cshtml.cs": "04efe94fe73ffbf6773fbb5b58da32b58831700c6b31a58b8dea8880dc00b73a",
+    "example/website/components/frontend/website/Pages/Index.cshtml": "ec55aeda1ec51b942161b34c277bf1cf6656d613a2687187df3f381ad0fed973",
+    "example/website/components/frontend/website/Pages/Index.cshtml.cs": "8b2fe45e369982c12ceaeb7ce8cdea00c2987e34a5731e4ce81f6a5585929e63",
+    "example/website/components/frontend/website/Pages/Privacy.cshtml": "6d5a048ad9f7227f9752710da45a06008a14b1e63db905d81a262b0e2f1414ae",
+    "example/website/components/frontend/website/Pages/Privacy.cshtml.cs": "8dc3b828aae90c77fa046dc0c0f38fb9167f7374058ca60ddcab6000bb5e957c",
+    "example/website/components/frontend/website/Pages/Shared/_Layout.cshtml": "ddf1446bee34aeae10d26d9d89344ea085e5f843eb235065e2a5be666e855927",
+    "example/website/components/frontend/website/Pages/Shared/_Layout.cshtml.css": "a4d8e90cfb9491e63739fc696621439188b9d776b3ed3df9ca4dbb6766548526",
+    "example/website/components/frontend/website/Pages/Shared/_ValidationScriptsPartial.cshtml": "be8c332d431cb4b35f987cd6b4f2eec24ceb8c2189fc9abf4163f6b57d3c2773",
+    "example/website/components/frontend/website/Pages/_ViewImports.cshtml": "21a10e91dbbf9d3f895c34add67470160c52742caa9efe231b5d7ac989d7f475",
+    "example/website/components/frontend/website/Pages/_ViewStart.cshtml": "cf0a3eabb4e249f58b16e9bdbe621febe76f39729879b97ca9c51307dac1f312",
+    "example/website/components/frontend/website/Program.cs": "ac71c985b9013e3b436b20dbb8d40d4453962f7fc9f15a18095830402f775dc3",
     "example/website/components/frontend/website/Properties/launchSettings.json": "4bfcd4fa755c4c41416f74929a807e77a3998d941d2d5ac623af9ab051991798",
-    "example/website/components/frontend/website/README.md": "8390fde89e229e16a33709a57af437bb6fea702dace3a65bdf008565fe69f799",
+    "example/website/components/frontend/website/README.md": "1c55367157bf965dad4355682e1ec1c1966e76c405b6d89016dbd291cd5568c4",
     "example/website/components/frontend/website/appsettings.Development.json": "ab25244dd1ea008dcbd08fe9220282aeeb9d64a12c0e2926e71955174f3bb857",
     "example/website/components/frontend/website/appsettings.json": "2d8bb40059df22089b94c025be8baad5a869b72d4d755d199c872f03bfe6f225",
-    "example/website/components/frontend/website/copy-pfx.ps1": "6f73a25e698bee5cd6c07cc1d9330b2813cc10b1697290999f0f96d126ef5845",
-    "example/website/components/frontend/website/create-cert-secret.ps1": "375007f0baf0a6fcc9da2bbfc21452c3a86dc8c52bfa1e98ab65b4355cebc791",
-    "example/website/components/frontend/website/docker-run-dev.cmd": "db1bf030a925a766a42050f50d6e964174fdf672e804ac4980c13700d0c569c7",
-    "example/website/components/frontend/website/docker-run-dev.ps1": "55a50467ada9cc347f351a29cb57665f3c7087661f652ad3b73cb83194a80c95",
+    "example/website/components/frontend/website/copy-pfx.ps1": "a21af8234f70d17ffab3e963df70f48df4bbf66b2e5a82b340a0339e91391850",
+    "example/website/components/frontend/website/create-cert-secret.ps1": "a9821908ef33bae108204b26ead984320bb9e1abd262933815123884abd02dd9",
+    "example/website/components/frontend/website/docker-run-dev.cmd": "6c9ce1826c5e8f0899d49505e3a883f65981b99251addf42b2d771f063c9ba9c",
+    "example/website/components/frontend/website/docker-run-dev.ps1": "fff1ae77204de86524c5aaa15e4a62bdd1db8f8757e717a938317220972ef64e",
     "example/website/components/frontend/website/libman.json": "003798ad7d6a0f8599f6cd0892256bc10a047840b26e91de7998247d097f1a8e",
-    "example/website/components/frontend/website/seed-base-images.ps1": "7ac33b21be0c9742649745f197e14d35757cda322c1b8aa9a87257aa795ee6e2",
-    "example/website/components/frontend/website/website-pod.yaml": "d320d37fdd7ec53491c96671fa2f344cd3827a1a1c471a3fa99c5f92fd57cd5b",
-    "example/website/components/frontend/website/website-service.yaml": "2942c558105537249802d4ec7c60a801c7b7637a624ff385699816580b3d1d6c",
-    "example/website/components/frontend/website/website.csproj": "3803141b6082477ad0048bfb76b9b137f8ea95a30652726db6fe2d693bec474c",
+    "example/website/components/frontend/website/seed-base-images.ps1": "7a79e13bd6392115927678d2254565d4546547c6199b4fd2245d206c84f41597",
+    "example/website/components/frontend/website/website-pod.yaml": "ea1e280ff314e87acef02125fccfb9d96650a1680574b830553fd0c1f7575f7b",
+    "example/website/components/frontend/website/website-service.yaml": "67554e03ac1067a6e3bd38def309cbc8f6704844daeb303b1512b6c766dde167",
+    "example/website/components/frontend/website/website.csproj": "aa947e6c660f020250c5c55501e3797a0ccadae2bf267af9bec8fff8593abf58",
     "example/website/components/frontend/website/website.sln": "a16e125ce2f1b17a74fb9ca6c9aeb271da814ee3a6449ad87a2e583f23ad6d9d",
-    "example/website/components/frontend/website/wwwroot/css/site.css": "85cf5eda62fed42888b12cae597304852a3a20649fe068a85f75bd497e2d0335",
+    "example/website/components/frontend/website/wwwroot/css/site.css": "63babf9962f61f732fe24f3bf1fc13699bb6c09d8daf93bb5dbc9e3a1a0b39fa",
     "example/website/components/frontend/website/wwwroot/favicon.ico": "26dc5ff4bfb9213291735808465e156d4a4691135f3815e3613761243e1f69c3",
-    "example/website/components/frontend/website/wwwroot/js/site.js": "6c523f523143031c534ebe63afc696b12468d8af14aee93f38fed3899fab1fec",
-    "example/website/config/aws/components.yml": "44aa0ce7b0d86bfde1554bc3b21d7cc9d77c89b3006e2aeae328d5633c87386a",
-    "example/website/config/aws/resources.yml": "16313252a2999143259558654c26a1ff1844e0270a775139bd74ffd4ad3332d1",
-    "example/website/config/aws/workloads.yml": "ab98ecdf1588bcb07510757862f0d94c28b07313f9a9d31f16c43fd2a454d3bd",
-    "example/website/config/azure/components.yml": "7768b76a019295bec7dfd9561a3ef7d18b50f1a2d2b1f263f3e3182489356832",
-    "example/website/config/azure/resources.yml": "171beb6926d03bf22b7b3b666bc8bbcdbd4c6c2bada6ca00fd9a25d364cbcf5b",
-    "example/website/config/azure/workloads.yml": "4516b40ec6b883afeff8bed51ab881c39cc01d71aa2ba8b185c098cbb990ce06",
-    "example/website/config/localhost/components.yml": "8ba8e59f8f6c310fd60028767d3e07ad891da40fe872b2e74c07e7bff2cdb181",
-    "example/website/config/localhost/resources.yml": "4680c6b0ea0dedaf3124988f3d0a6f3e143f23bede0eebd3a580c5805e5e33ee",
-    "example/website/config/localhost/workloads.yml": "7f68a4680f3407540d8082bc66f329e725585f938b489ad5d066c35328c28258",
+    "example/website/components/frontend/website/wwwroot/js/site.js": "95713701227608265fb3beac5e77180592a360c5d429320424cf4cbfdfeb9ec7",
+    "example/website/config/aws/components.yml": "3d7451df62ae1a76b5c18debd68fc336e916a7c724192d7b9f6bace102102871",
+    "example/website/config/aws/resources.yml": "48d913d8825ffb8d5416c8a1b5e5ccdbf41046ddad45aed555e6fc19d272ef28",
+    "example/website/config/aws/workloads.yml": "cd3e1aed7d2df67886427587f2f326319423013eb90d6c32457d87838b9f0d29",
+    "example/website/config/azure/components.yml": "42d1e0231096de3e708669cfcaf0119765ab3b8edd2287b7c78b650ef3a4fcc4",
+    "example/website/config/azure/resources.yml": "b66a10df3285f54d2fa63b846d64a02e860bc80c69bb0cbcea78b8c5e2dbac5f",
+    "example/website/config/azure/workloads.yml": "cbb18db6b71b260e75256cb0b43030e2c9eab964fd8034815f0a539f46a1bc62",
+    "example/website/config/localhost/components.yml": "5e1bf137535b9eec923bf634c6286b76630e9ec96b880a4e598e61e425a58819",
+    "example/website/config/localhost/resources.yml": "66d66d75476b92531bd33c96079ef2529bea6ad68592205093c8d403bcf2b38b",
+    "example/website/config/localhost/workloads.yml": "28ba921813b1919f7299a692a80852a1bb5c789114513443fba9e4ba9b8b56ad",
     "example/website/resources/placeholder": "60a8de4c3a9312789ab1aa9e41118485a14d5fab4b7dbaf56bdcbd95cfe918ef",
-    "example/website/test/README.md": "e0d293020e4b4c5db20ef6a44b85ce8c6fb900d6e195f78b896e780cee224577",
-    "example/website/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.website.sh": "cff470e779d41ce4f0433c388f6ef6abd203790c2bda000272ece442c831669b",
-    "example/website/test/ubuntu.server.26/ubuntu.server.26.workload.k8s.website.sh": "cff470e779d41ce4f0433c388f6ef6abd203790c2bda000272ece442c831669b",
-    "example/website/test/website.ubuntu24.warm.yml": "4871c89178f07a38d143601347ba675b3104559cfb9ec9d915f318e4df321918",
-    "example/website/test/website.ubuntu26.warm.yml": "fd68eb5c33e89c44212bd8b08e22ab33e9184c590ccb95040e274b1ff11694d8",
+    "example/website/test/README.md": "a14335fc3404b17eb10b201740c311802f6507737cf6ee6f7bb8e1e5eaa0c1c1",
+    "example/website/test/ubuntu.server.24/ubuntu.server.24.workload.k8s.website.sh": "5a26eb32c39693f2fb5490305eab4e8fffd6f36e12e2ef1b86b8a23d24fde2d6",
+    "example/website/test/ubuntu.server.26/ubuntu.server.26.workload.k8s.website.sh": "51b166748d4182b07822c0a6c0baeb1bf1aa99b552d68ae74ca185362c6fc1fa",
+    "example/website/test/website.ubuntu24.warm.yml": "595d8b469bc68d1e3b53b4f9b0e9c1b28c4f43c3d8044b4c115a52d02e33abec",
+    "example/website/test/website.ubuntu26.warm.yml": "35e9f3bb867894c920a0ad3cd6640d406b09434bacd6e5682a84ba736117b18f",
     "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml": "5c503869e495701f71ab959157c44e7b241bacd54e93b1d40d6e4afebabf45a6",
     "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml": "6ed41ff63a699812a0e110f6150e0f060699838d6457121d13b69b120ec7adaf",
     "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml": "d8a40bacbb52305671e145df5b8216eea866e35cdc5dbecbcab99cb919ca2c82",
@@ -144,31 +145,31 @@
     "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml": "576911f64b689f10338757d32500d39f8041dc2d6c336b444fdd9898667a5fe4",
     "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml": "6b828aeed74f7e4f6b3f828cbbb30cfab3cce6f00040184bd2441b7b5cc39df4",
     "example/website/workloads/frontend/website/.helmignore": "bb987e6a8ef45a99255d1d632812482d5f0f3255ea841520b4d90342df5fe2b3",
-    "example/website/workloads/frontend/website/Chart.yaml": "05dab1484b5338c3b7fddddd42e275e1a1b3bd2de4738993c14fdaa75d921010",
-    "example/website/workloads/frontend/website/templates/01-website.yml": "af07fdc624d04a1a7fa08efafb5aa67dd64cb8f438da81f0cbd3e9706513a2b7",
-    "example/website/workloads/frontend/website/templates/03-ingress-to-website-with-tls.yml": "27f75f3b6f2320e23a03b72f662d985088ae41661eaba1152317c5e2da2f8b0c",
-    "example/website/workloads/frontend/website/values.yaml": "49893fa10ed5fd40cb65db2444da48367492ed3ac61b5f99f21d32eef9c8c313",
+    "example/website/workloads/frontend/website/Chart.yaml": "cc71dfd775d45c9b8fc09587ccf75bf60fe22861b002b3cfaea19c721fc49f8b",
+    "example/website/workloads/frontend/website/templates/01-website.yml": "4f42ff8d8147a625456fa76ab3a78beca1e0c0d8ad043eb3193afba8f9012287",
+    "example/website/workloads/frontend/website/templates/03-ingress-to-website-with-tls.yml": "28c6fd9f9aa94a35206a4366a198f262628b9a22bd641d3cc9b6e69330dc6e9d",
+    "example/website/workloads/frontend/website/values.yaml": "64a68dce587ea18523aefbc52199adc839d2ad8b4f038577d802842cdffad7b6",
     "globalization/project-locale-source-hashes.json": "c8c722f8c62534b456b3505a48d0c40c34c9ed2cc55472807bcaad1fa981e277",
-    "template/README.md": "20721db8e643ec62397deffdd2ab850071ad4a3b5c12347f3900b8f64faa12c5",
+    "template/README.md": "4e15c836146c6e95213f29c57da53b0250bde5182c9abb5907474a6821bf2ad3",
     "template/components/yrn42template/placeholder": "7e9468317b96e261eed4f6247448e59eb5e8c618d18e9e5905fa9f7465d282cd",
-    "template/config/localhost/components.yml": "65f16b99e15b962f7b14bf4ee580493b13990e5b115cc9a79fced292f02054f8",
-    "template/config/localhost/resources.yml": "7ebcf5327368cffc32252d2b85d7891a75c97fd3dc793f5c4ee10daa7926b1b1",
-    "template/config/localhost/workloads.yml": "571c9e7fb83c7081aa8b7a06c99e49292b2cacea2c86d69e2a3caaa4fcad453a",
+    "template/config/localhost/components.yml": "1a1942f9f4f861103e1b1c5365fb8a98fff580fe2bfef7f1f05046ca0628d4ae",
+    "template/config/localhost/resources.yml": "deaee7449676659d75d1f41535df364f86871ccde50ecca90b7bef86bd900261",
+    "template/config/localhost/workloads.yml": "1d4fe57eacff9166e9629a070cecbde4b8bba6656ef264b5cc2be3497be3d5d5",
     "template/resources/placeholder": "60a8de4c3a9312789ab1aa9e41118485a14d5fab4b7dbaf56bdcbd95cfe918ef",
-    "template/workloads/yrn42template/echoParams.ps1": "bb50ffbfcb53b737f72e1298bb24205f65d76732166851a4eac03adb198b4a71",
-    "test/test.runner.yml": "c5ca609172f04666d6ae9bcdde212839d1ef7d855a996415b8daa9c272f93744",
-    "tools/Example.Build.psm1": "9ce51271bbd3f2ae28b8aebdf6f442f97dfe1afcd2bd5ba57c72b49b8648c727",
-    "tools/README.md": "e0543199caa88c82a48d7122a528cf72fce2c3b9661fc63679591d74a3e5539b",
-    "tools/Sync-ExampleBuildModule.ps1": "16cd3dcfbb6f1c89bda193817260919745c013f75382ef15245130a6415e50d7",
-    "tools/Sync-Sbom.py": "011170678f77e5baf9340a02ae8772522e5c2fdd13769283b2ccd3228221b4d0",
-    "tools/Test-ExampleBuild.ps1": "e125df1a8795ae1663d816ac5d52235ba875f2a630558fff5e51f6d6f8a81260",
-    "tools/example-workload.sh": "bf2eda844e259873f1b0432888f8a8b8eb64e94b6db0898691e91f8375be24da",
+    "template/workloads/yrn42template/echoParams.ps1": "68375bec49d6b8c4b98177929502c348892bb51c09180d225c808b2661fe3153",
+    "test/test.runner.yml": "32aaf4a1891a69926b78300492f7d954b5ed0a8be7f5ba70ccedbda986d739a0",
+    "tools/Example.Build.psm1": "f84d6d94250a0478fe0958b1278d579348c099e7ffc28f05054bfdeb8c349dbd",
+    "tools/README.md": "1e1d85d6fa54c12efc862b09eb89b4bc9e7d9eb53833f8eaade087087b91dfe3",
+    "tools/Sync-ExampleBuildModule.ps1": "4f3cc2de9ec8e2903c9987da4db70f991be264c7afd4134b1cb2bc02feeedd30",
+    "tools/Sync-Sbom.py": "b5aa6e7d61de433e40dcdd6fc1128ea4331f67c0ec5131e7262a3174f919ff1e",
+    "tools/Test-ExampleBuild.ps1": "f4a8349d59a6ac29fe231584f7d4bbc64df6eab66e4fd37a72aeec3a711f2334",
+    "tools/example-workload.sh": "7428ee7b73d84f295d4790065eeb8d34fc9614771320dda725dee0a3c3ecd3cb",
     "tools/sbom-policy.json": "4f88067b9d60d44edbbd848cbde8b129d6ff9893cd112a9579491d3c9db99192",
-    "tools/sbom_dependencies.py": "0d9996f03969b568adf0a0d9d03b58c3a2ad8ecf08f9fd618e99c25f9fe154ec",
-    "tools/sbom_provisioning.py": "31ac68bd9c4b715e3e76a2ab5b5f285b70d076d907c034c1662d2ff28e0434af",
-    "tools/test_example_consistency.py": "79ec4f4efa4cdc7ba210db3ced1d0b49fd5aa5e118c0e118caa7306bc7a0ab7b",
-    "tools/test_navigation.cjs": "d20b2cbe0117ab5926ace6ea40abf5c1b1dd9ed15474eeb0bc40957869bdd8d4",
-    "tools/test_navigation.test.cjs": "ea2a876cbed9b784a0d7a95bd0bf4e9b44a8c84537c3629da5b45df0c33a16d4"
+    "tools/sbom_dependencies.py": "57639d0b00ca55d5f0d64e748de51b932a3f680cc15ddd06e5a657a0e8ca3659",
+    "tools/sbom_provisioning.py": "35d763c9d1812f2beac6c77f2be900a3061b4d46cd805752326f7724d0cead50",
+    "tools/test_example_consistency.py": "6be9b5bee3df8f1ce78ef3cb1db06d7962240400936f0f1273c233595a27efe0",
+    "tools/test_navigation.cjs": "c3027b6c0a0e7d7315c7dafe654ed217f888f102a0dbdbc0df87941e46fc01cc",
+    "tools/test_navigation.test.cjs": "aca8ea50a33ee18a6b6950cb83db0aea4cfd415313e2b5e399efc4cd19b73e68"
   },
   "counts": {
     "repository": 21,
@@ -265,12 +266,12 @@
         "evidence": [
           {
             "path": "example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile",
-            "line": 10,
+            "line": 11,
             "detail": "Dockerfile FROM declaration"
           },
           {
             "path": "example/website/components/frontend/website/Dockerfile",
-            "line": 10,
+            "line": 11,
             "detail": "Dockerfile FROM declaration"
           }
         ],
@@ -291,12 +292,12 @@
         "evidence": [
           {
             "path": "example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile",
-            "line": 16,
+            "line": 17,
             "detail": "Dockerfile FROM declaration"
           },
           {
             "path": "example/website/components/frontend/website/Dockerfile",
-            "line": 16,
+            "line": 17,
             "detail": "Dockerfile FROM declaration"
           }
         ],
@@ -317,12 +318,12 @@
         "evidence": [
           {
             "path": "example/text-to-sql/tests/ServiceContracts.Tests/ServiceContracts.Tests.csproj",
-            "line": 13,
+            "line": 14,
             "detail": "Declared dependency"
           },
           {
             "path": "example/text-to-sql/tests/SqlPolicy.Tests/SqlPolicy.Tests.csproj",
-            "line": 13,
+            "line": 14,
             "detail": "Declared dependency"
           }
         ],
@@ -341,7 +342,7 @@
         "evidence": [
           {
             "path": "example/text-to-sql/tests/ServiceContracts.Tests/ServiceContracts.Tests.csproj",
-            "line": 3,
+            "line": 4,
             "detail": "MSBuild project"
           }
         ],
@@ -364,7 +365,7 @@
         "evidence": [
           {
             "path": "example/text-to-sql/tests/SqlPolicy.Tests/SqlPolicy.Tests.csproj",
-            "line": 3,
+            "line": 4,
             "detail": "MSBuild project"
           }
         ],
@@ -386,7 +387,7 @@
         "evidence": [
           {
             "path": "example/text-to-sql/components/frontend/text-to-sql-ui/text-to-sql-ui.csproj",
-            "line": 3,
+            "line": 4,
             "detail": "MSBuild project"
           }
         ],
@@ -408,7 +409,7 @@
         "evidence": [
           {
             "path": "example/website/components/frontend/website/website.csproj",
-            "line": 3,
+            "line": 4,
             "detail": "MSBuild project"
           }
         ],
@@ -431,7 +432,7 @@
         "evidence": [
           {
             "path": "tools/Sync-Sbom.py",
-            "line": 38,
+            "line": 39,
             "detail": "Index snapshot and generated-file staging use the installed Git CLI"
           }
         ],
@@ -524,12 +525,12 @@
         "evidence": [
           {
             "path": "example/website/config/azure/workloads.yml",
-            "line": 55,
+            "line": 56,
             "detail": "External Helm chart declaration"
           },
           {
             "path": "example/website/config/azure/workloads.yml",
-            "line": 53,
+            "line": 54,
             "detail": "Helm repository declaration: https://charts.jetstack.io"
           }
         ],
@@ -552,42 +553,42 @@
         "evidence": [
           {
             "path": "example/website/config/aws/workloads.yml",
-            "line": 53,
+            "line": 54,
             "detail": "External Helm chart declaration"
           },
           {
             "path": "example/website/config/localhost/workloads.yml",
-            "line": 56,
+            "line": 55,
             "detail": "External Helm chart declaration"
           },
           {
             "path": "example/text-to-sql/config/localhost/workloads.yml",
-            "line": 60,
+            "line": 59,
             "detail": "External Helm chart declaration"
           },
           {
             "path": "example/website/config/azure/workloads.yml",
-            "line": 63,
+            "line": 64,
             "detail": "External Helm chart declaration"
           },
           {
             "path": "example/website/config/aws/workloads.yml",
-            "line": 46,
+            "line": 47,
             "detail": "Helm repository declaration: https://kubernetes.github.io/ingress-nginx"
           },
           {
             "path": "example/website/config/azure/workloads.yml",
-            "line": 50,
+            "line": 51,
             "detail": "Helm repository declaration: https://kubernetes.github.io/ingress-nginx"
           },
           {
             "path": "example/website/config/localhost/workloads.yml",
-            "line": 54,
+            "line": 53,
             "detail": "Helm repository declaration: https://kubernetes.github.io/ingress-nginx"
           },
           {
             "path": "example/text-to-sql/config/localhost/workloads.yml",
-            "line": 58,
+            "line": 57,
             "detail": "Helm repository declaration: https://kubernetes.github.io/ingress-nginx"
           }
         ],
@@ -609,7 +610,7 @@
         "evidence": [
           {
             "path": "example/website/components/frontend/website/website.csproj",
-            "line": 15,
+            "line": 16,
             "detail": "Declared dependency"
           }
         ],
@@ -630,12 +631,12 @@
         "evidence": [
           {
             "path": "example/text-to-sql/tests/ServiceContracts.Tests/ServiceContracts.Tests.csproj",
-            "line": 14,
+            "line": 15,
             "detail": "Declared dependency"
           },
           {
             "path": "example/text-to-sql/components/frontend/text-to-sql-ui/text-to-sql-ui.csproj",
-            "line": 16,
+            "line": 17,
             "detail": "Declared dependency"
           }
         ],
@@ -658,7 +659,7 @@
         "evidence": [
           {
             "path": "tools/sbom_dependencies.py",
-            "line": 12,
+            "line": 13,
             "detail": "SBOM collector uses Python 3.11 tomllib and the standard library"
           }
         ],
@@ -678,7 +679,7 @@
         "evidence": [
           {
             "path": "example/website/components/frontend/website/Dockerfile",
-            "line": 22,
+            "line": 23,
             "detail": "target=container; action=nuget tool install; requested=Microsoft.Web.LibraryManager.Cli; conditional provisioning input"
           }
         ],
@@ -699,7 +700,7 @@
         "evidence": [
           {
             "path": "example/website/components/frontend/website/website-pod.yaml",
-            "line": 18,
+            "line": 19,
             "detail": "target=shared-or-configured; action=container image declaration; reference=localhost:5000/website/website:latest; tags may move; transitive image contents unresolved"
           }
         ],
@@ -720,12 +721,12 @@
         "evidence": [
           {
             "path": "example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile",
-            "line": 10,
+            "line": 11,
             "detail": "target=container; action=Dockerfile FROM; reference=mcr.microsoft.com/dotnet/aspnet:10.0; tags may move; transitive image contents unresolved"
           },
           {
             "path": "example/website/components/frontend/website/Dockerfile",
-            "line": 10,
+            "line": 11,
             "detail": "target=container; action=Dockerfile FROM; reference=mcr.microsoft.com/dotnet/aspnet:10.0; tags may move; transitive image contents unresolved"
           }
         ],
@@ -746,12 +747,12 @@
         "evidence": [
           {
             "path": "example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile",
-            "line": 16,
+            "line": 17,
             "detail": "target=container; action=Dockerfile FROM; reference=mcr.microsoft.com/dotnet/sdk:10.0; tags may move; transitive image contents unresolved"
           },
           {
             "path": "example/website/components/frontend/website/Dockerfile",
-            "line": 16,
+            "line": 17,
             "detail": "target=container; action=Dockerfile FROM; reference=mcr.microsoft.com/dotnet/sdk:10.0; tags may move; transitive image contents unresolved"
           }
         ],
@@ -772,12 +773,12 @@
         "evidence": [
           {
             "path": "tools/example-workload.sh",
-            "line": 121,
+            "line": 134,
             "detail": "target=shared-or-configured; action=container pull; reference=registry:2; tags may move; transitive image contents unresolved"
           },
           {
             "path": "tools/example-workload.sh",
-            "line": 130,
+            "line": 143,
             "detail": "target=shared-or-configured; action=container run; reference=registry:2; tags may move; transitive image contents unresolved"
           }
         ],
@@ -819,7 +820,7 @@
         "evidence": [
           {
             "path": "tools/example-workload.sh",
-            "line": 121,
+            "line": 134,
             "detail": "target=shared-or-configured; action=container pull; reference=yuruna-caching-proxy-service:5000/library/registry:2; tags may move; transitive image contents unresolved"
           }
         ],
@@ -835,20 +836,26 @@
   },
   "coverage": [
     {
+      "path": "example/nested.host/test/install-yuruna.sh",
+      "line": 26,
+      "detail": "download action has no literal software-artifact URL: curl -fsSL --retry 3 \"$BASE/$file?nocache=$nocache\" -o \"$work/$(basename \"$file\")\" ||",
+      "status": "unresolved"
+    },
+    {
       "path": "example/text-to-sql/workloads/frontend/text-to-sql-ui/templates/01-text-to-sql-ui.yml",
-      "line": 31,
+      "line": 32,
       "detail": "container image declaration: unresolved image reference {{",
       "status": "unresolved"
     },
     {
       "path": "example/website/workloads/frontend/website/templates/01-website.yml",
-      "line": 30,
+      "line": 31,
       "detail": "container image declaration: unresolved image reference {{",
       "status": "unresolved"
     },
     {
       "path": "tools/example-workload.sh",
-      "line": 313,
+      "line": 326,
       "detail": "container pull: unresolved image reference ${prefix}${ref}",
       "status": "unresolved"
     }

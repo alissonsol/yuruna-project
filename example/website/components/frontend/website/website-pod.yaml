@@ -1,5 +1,6 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# GUID: 424f3268-2b53-4f64-a583-06d964d79558
 # Requires website-pod-cert in this namespace; create it with create-cert-secret.ps1.
 # See https://yuruna.link/42f64340-0004
 # --- REGION: apiVersion

@@ -1,7 +1,20 @@
 #!/bin/bash
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# GUID: 421c0697-f83c-428f-a3b0-1d19ee9bf6b2
 # Shared local registry and image build operations; callers own deployment.
+# --- REGION: example_fail
+# Ends the script under the failure class the runner files it as: one
+# YURUNA_RESULT line, the record a failed deploy entry point also prints, which
+# the ssh verbs read in place of a generic script error. A console run keeps
+# the failure pattern it matched. The guidance above each call stays on stderr.
+example_fail() {
+    local class="$1" message
+    message=$(printf '%s' "$2" | sed 's/\\/\\\\/g; s/"/\\"/g')
+    printf 'YURUNA_RESULT {"success":false,"canonicalFailureClass":"%s","errorMessage":"%s"}\n' "$class" "$message"
+    exit 1
+}
+
 # --- REGION: example_registry_prepare
 example_registry_prepare() {
 # --- REGION: run_bounded
@@ -161,7 +174,7 @@ for attempt in $(seq 1 "$registry_attempts"); do
             echo "       Check that the caching proxy's zot is up:" >&2
             echo "           curl -fsS http://${CACHE_HOST}:5000/v2/" >&2
             echo "" >&2
-            exit 1
+            example_fail network_timeout "the caching proxy registry stayed unreachable"
         else
             # Naming the cache here would invent one. This lab has none, so the
             # upstream was the only source and the guest's own egress is what
@@ -173,7 +186,7 @@ for attempt in $(seq 1 "$registry_attempts"); do
             echo "       Check the guest's egress to docker.io:" >&2
             echo "           curl -fsS https://registry-1.docker.io/v2/" >&2
             echo "" >&2
-            exit 1
+            example_fail network_timeout "docker.io stayed unreachable and the lab has no caching proxy"
         fi
     fi
     # --- REGION: https://yuruna.link/42e220c4-0009
@@ -211,11 +224,11 @@ for attempt in $(seq 1 "$registry_attempts"); do
             echo "                into the guest base via cloud-init." >&2
         fi
         echo "" >&2
-        exit 1
+        example_fail network_timeout "the registry image pull hit an upstream rate limit"
     fi
     if [ "$attempt" -ge "$registry_attempts" ]; then
         echo "ERROR: could not start the registry container after ${registry_attempts} attempts" >&2
-        exit 1
+        example_fail provisioning_failure "the local registry container did not start"
     fi
     echo "retrying registry start in ${registry_delay}s" >&2
     sleep "$registry_delay"
@@ -343,14 +356,14 @@ for ref in "${BASE_IMAGES[@]}"; do
             echo "       source in a lab with no caching proxy. Check the guest's" >&2
             echo "       network egress." >&2
         fi
-        exit 1
+        example_fail network_timeout "a base image could not be acquired from any source"
     fi
     echo "Base image ${ref} available as ${local_ref}"
     docker tag "$local_ref" "${LOCAL_REGISTRY}/${ref}"
     if ! run_bounded 300 docker push "${LOCAL_REGISTRY}/${ref}"; then
         echo "ERROR: pushing ${ref} into ${LOCAL_REGISTRY} failed -- the local" >&2
         echo "       registry container is down or wedged (docker ps; docker logs registry)." >&2
-        exit 1
+        example_fail provisioning_failure "pushing a base image into the local registry failed"
     fi
 done
 REGISTRY="${LOCAL_REGISTRY}/"
@@ -372,7 +385,7 @@ for attempt in $(seq 1 "$build_attempts"); do
     fi
     if [ "$attempt" -ge "$build_attempts" ]; then
         echo "ERROR: docker build failed after ${build_attempts} attempts" >&2
-        exit 1
+        example_fail script_error "docker build failed after every attempt"
     fi
     echo "docker build attempt ${attempt}/${build_attempts} failed; retrying in ${build_delay}s" >&2
     sleep "$build_delay"
@@ -386,7 +399,7 @@ docker tag "${example_name}/${component_name}:latest" "${LOCAL_REGISTRY}/${examp
 if ! run_bounded 300 docker push "${LOCAL_REGISTRY}/${example_name}/${component_name}:latest"; then
     echo "ERROR: pushing ${example_name}/${component_name} into ${LOCAL_REGISTRY} failed -- the local" >&2
     echo "       registry container is down or wedged (docker ps; docker logs registry)." >&2
-    exit 1
+    example_fail provisioning_failure "pushing the application image into the local registry failed"
 fi
 
 example_prune_build_cache

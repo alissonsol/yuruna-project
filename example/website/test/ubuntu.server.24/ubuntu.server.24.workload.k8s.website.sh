@@ -1,7 +1,8 @@
 #!/bin/bash
-# Version: 2026.10.25
+# Version: 2026.10.26
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# GUID: 4222b02c-6cda-4d22-b89d-b9a92f868485
 # --- REGION: Initialize environment
 set -euo pipefail
 

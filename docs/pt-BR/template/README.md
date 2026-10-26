@@ -44,6 +44,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Última revisão: 2026.10.25
+Última revisão: 2026.10.26
 
 Voltar para [yuruna-project](../../../README.md) - [Yuruna](https://yuruna.com)

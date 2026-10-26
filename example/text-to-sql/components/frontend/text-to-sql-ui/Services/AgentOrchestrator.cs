@@ -1,5 +1,6 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
+// GUID: 42d034d7-a14d-4727-8aef-4b8b80e773e2
 // Planner + retry loop for the agent pipeline; stage map in README service
 // notes: https://yuruna.link/4286c679-0007
 

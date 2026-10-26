@@ -1,5 +1,6 @@
 <!-- LICENSEURI https://yuruna.link/license -->
 <!-- Copyright (c) 2019-2026 by Alisson Sol et al. -->
+<!-- GUID: 42e55f38-d3ea-4579-bbaf-6d43a74483d1 -->
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>

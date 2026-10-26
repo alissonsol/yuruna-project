@@ -1,10 +1,11 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# GUID: 427efc61-899f-49e9-9bcb-583626b47232
 apiVersion: v2
 name: yrn42website-uxname
 description: A simple .NET C# website container deployed to a Kubernetes cluster.
 
 type: application
-version: 2026.10.25
-appVersion: "2026.10.25"
+version: 2026.10.26
+appVersion: "2026.10.26"
 icon: https://github.com/cncf/artwork/blob/master/projects/helm/icon/color/helm-icon-color.svg

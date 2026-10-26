@@ -2,6 +2,7 @@
 
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# GUID: 42799012-6962-4bd0-9353-0d9c7431ddf0
 
 name: website.ubuntu26.warm
 description: "Run the Ubuntu 26 website through managed snapshot planning."

@@ -1,5 +1,6 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# GUID: 428c6bb1-7d8b-4cc9-9ba4-3489c4b33dda
 # --- REGION: apiVersion
 apiVersion: v1
 kind: Service

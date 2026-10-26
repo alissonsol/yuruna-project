@@ -1,5 +1,6 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
+// GUID: 42589387-2c00-4f37-82c0-312f24c313d4
 // ASP.NET Core host wiring for the agent pipeline; see README service notes:
 // https://yuruna.link/4286c679-0007
 using Npgsql;

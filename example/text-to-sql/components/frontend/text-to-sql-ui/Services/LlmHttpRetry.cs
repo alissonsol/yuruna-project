@@ -1,5 +1,6 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
+// GUID: 420d9e47-e67e-4b50-aa86-813db9cb79c5
 using System.Diagnostics;
 using System.Text;
 

@@ -1,5 +1,6 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# GUID: 420d96e9-aa71-4ce7-9955-c4e7d7f597cf
 # Workloads information - aws
 ---
 # --- REGION: globalVariables
@@ -35,8 +36,8 @@ workloads:
     _frontendIp: "$([Environment]::GetEnvironmentVariable(\"${env:contextName}.frontendIp\"))"
   deployments:
   # Uninstall previous workloads: idempotent
-  - kubectl: "delete namespace ${env:namespace} --ignore-not-found=true --v=1"
-  - kubectl: "delete namespace ingress-ns --ignore-not-found=true --v=1"
+  - kubectl: "delete namespace ${env:namespace} --ignore-not-found=true --timeout=300s --v=1"
+  - kubectl: "delete namespace ingress-ns --ignore-not-found=true --timeout=300s --v=1"
   - kubectl: "delete clusterrole nginx-ingress-ingress-nginx --ignore-not-found=true"
   - kubectl: "delete clusterrolebinding nginx-ingress-ingress-nginx --ignore-not-found=true"
   # Install dependencies

@@ -2,6 +2,7 @@
 
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# GUID: 4246c4c3-e078-424c-8936-6a2f73053889
 
 name: website.ubuntu24.warm
 description: "Run the Ubuntu 24 website through managed snapshot planning."

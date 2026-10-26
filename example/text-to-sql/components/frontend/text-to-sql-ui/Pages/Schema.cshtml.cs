@@ -1,5 +1,6 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
+// GUID: 427baa9f-6c79-4fc6-94c9-d358b5515276
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TextToSqlUi.Services;
 

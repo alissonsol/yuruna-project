@@ -1,5 +1,6 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# GUID: 425c1dbb-2e7b-4d72-95ba-ac2e3120c482
 # reference: https://kubernetes.github.io/ingress-nginx/user-guide/basic-usage/
 # --- REGION: apiVersion
 apiVersion: networking.k8s.io/v1

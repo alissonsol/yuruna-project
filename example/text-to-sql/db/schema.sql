@@ -1,5 +1,6 @@
 -- LICENSEURI https://yuruna.link/license
 -- Copyright (c) 2019-2026 by Alisson Sol et al.
+-- GUID: 427b6459-4d00-4467-b121-d9bffa98c24a
 -- Yuruna Text-to-SQL example schema: a small SaaS-style subscriptions
 -- warehouse with intentionally diverse table sizes, a deliberate naming
 -- mismatch, and a FK graph that exercises schema retrieval.

@@ -1,5 +1,6 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# GUID: 42d98dd5-f2ba-4cb0-9a16-3852085101f1
 """Check service resource keys, placeholders, source hashes, and draft provenance."""
 import hashlib
 from pathlib import Path

@@ -12,7 +12,9 @@ for entrypoints that do not call Set-Component. Entrypoints source it
 from the extracted project checkout, pass example/component names explicitly,
 and keep deployment and readiness checks local. Preserve this file when serving
 or copying project archives. Registry, pull, build, and push failures stop before
-deployment. Each workload exports `YURUNA_EXAMPLE_SELF_SIGNED_CERT=1` before publishing, so the
+deployment, through `example_fail <class> <message>`: it prints one
+`YURUNA_RESULT` line naming a canonical failure class, which the runner's ssh
+verbs read in place of a generic script error, and exits 1. Each workload exports `YURUNA_EXAMPLE_SELF_SIGNED_CERT=1` before publishing, so the
 deployment gives the pod a throwaway certificate: a run then needs neither the
 guest's development certificate nor the password file beside it, and the image
 carries none.
@@ -53,3 +55,13 @@ account lookups without running a deployment. On Windows the source parity
 checks run while the POSIX command fixture is skipped. Shared behavior belongs
 in the same named regions; identity metadata and release-specific configuration
 remain local. See [source consistency](https://yuruna.link/42e220c4-0009).
+
+---
+
+LICENSEURI https://yuruna.link/license
+
+Copyright (c) 2019-2026 by Alisson Sol et al.
+
+Last review: 2026.10.26
+
+Back to [yuruna-project](../README.md) - [Yuruna](https://yuruna.com)

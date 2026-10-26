@@ -1,5 +1,6 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
+// GUID: 42a675db-3ca2-4a07-b45f-5bbf91f3ca4d
 // ILlmClient backed by a local Ollama server; see README service notes:
 // https://yuruna.link/4286c679-0007
 

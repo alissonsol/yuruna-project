@@ -1,5 +1,6 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# GUID: 422d37af-b7c3-46d7-af79-2fb1a7b020dd
 """Run guest database fixtures; see https://yuruna.link/4286c679-0009."""
 import os
 from pathlib import Path

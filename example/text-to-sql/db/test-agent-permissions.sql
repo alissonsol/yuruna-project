@@ -1,5 +1,6 @@
 -- LICENSEURI https://yuruna.link/license
 -- Copyright (c) 2019-2026 by Alisson Sol et al.
+-- GUID: 4209610c-8ca7-4140-92e4-c82ca7f41c08
 -- Run with psql -v ON_ERROR_STOP=1 as the schema owner in a disposable database
 -- after loading schema.sql. Assertions run as the actual application role.
 BEGIN;

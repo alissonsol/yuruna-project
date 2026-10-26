@@ -1,7 +1,9 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# GUID: 42bcbf63-32cc-455f-a16d-2f97d9b752d8
 """Check shared example contracts; OS and application identities remain local."""
 
+import json
 import os
 from pathlib import Path
 import re
@@ -32,7 +34,7 @@ def read_source(path):
 
 # --- REGION: source_without_identity
 def source_without_identity(text):
-    return re.sub(r"(?m)^(?:\.GUID |sequenceGuid: |sequenceRevision: ).*\n", "", text)
+    return re.sub(r"(?m)^(?:\.GUID |# GUID: |sequenceGuid: |sequenceRevision: ).*\n", "", text)
 
 
 # --- REGION: guest_user_region
@@ -63,11 +65,11 @@ def yaml_key_block(text, name, indentation):
 # --- REGION: ExampleConsistency
 class ExampleConsistency(unittest.TestCase):
     def test_website_releases_share_the_deployment_script(self):
-        self.assertEqual(read_source(WORKLOADS[0]), read_source(WORKLOADS[1]))
+        self.assertEqual(source_without_identity(read_source(WORKLOADS[0])), source_without_identity(read_source(WORKLOADS[1])))
 
     def test_applications_share_deployment_phases(self):
-        website = read_source(WORKLOADS[0])
-        application = read_source(WORKLOADS[2]).replace("text-to-sql-ui", "website").replace("text-to-sql", "website")
+        website = source_without_identity(read_source(WORKLOADS[0]))
+        application = source_without_identity(read_source(WORKLOADS[2])).replace("text-to-sql-ui", "website").replace("text-to-sql", "website")
         self.assertEqual(website, application)
         self.assertEqual(re.findall(r"(?m)^# --- REGION: (.+)$", website), [
             "Initialize environment", "Resolve guest user", "Prepare Kubernetes configuration",
@@ -82,8 +84,8 @@ class ExampleConsistency(unittest.TestCase):
                 self.assertEqual(source_without_identity(website), source_without_identity(application))
 
     def test_local_resources_differ_only_by_project(self):
-        self.assertEqual(read_source(WEBSITE / "config/localhost/resources.yml"),
-                         read_source(TEXT_TO_SQL / "config/localhost/resources.yml").replace('"text-to-sql"', '"website"'))
+        self.assertEqual(source_without_identity(read_source(WEBSITE / "config/localhost/resources.yml")),
+                         source_without_identity(read_source(TEXT_TO_SQL / "config/localhost/resources.yml")).replace('"text-to-sql"', '"website"'))
 
     def test_website_sequences_differ_only_by_release_and_identity(self):
         for suffix in ("yml", "ssh.yml", "baseline.ssh.yml", "warm.ssh.yml"):
@@ -156,8 +158,8 @@ class ExampleConsistency(unittest.TestCase):
         self.assertIn('value: "8001"', yaml_key_block(standalone, "env", 6))
 
     def test_ingresses_share_the_same_tls_and_http_smoke_contract(self):
-        website = read_source(WEBSITE / "workloads/frontend/website/templates/03-ingress-to-website-with-tls.yml")
-        application = read_source(TEXT_TO_SQL / "workloads/frontend/text-to-sql-ui/templates/03-ingress-to-text-to-sql-ui-with-tls.yml")
+        website = source_without_identity(read_source(WEBSITE / "workloads/frontend/website/templates/03-ingress-to-website-with-tls.yml"))
+        application = source_without_identity(read_source(TEXT_TO_SQL / "workloads/frontend/text-to-sql-ui/templates/03-ingress-to-text-to-sql-ui-with-tls.yml"))
         application = application.replace("text-to-sql-ui", "website").replace("appHost", "websiteHost").replace("appTlsSecret", "websiteTlsSecret")
         self.assertEqual(website, application)
         self.assertIn('nginx.ingress.kubernetes.io/ssl-redirect: "false"', website)
@@ -180,6 +182,27 @@ class ExampleConsistency(unittest.TestCase):
                     while lines[next_index].lstrip().startswith("#"):
                         next_index += 1
                     self.assertRegex(lines[next_index], "^" + re.escape(region[1] + region[2]) + ":")
+
+    @unittest.skipUnless(BASH and os.name != "nt", "requires a POSIX Bash fixture")
+    def test_failure_exits_print_the_record_the_runner_reads(self):
+        source = read_source(ROOT / "tools/example-workload.sh")
+        snippet = source.split("# --- REGION: example_fail\n", 1)[1].split("\n# --- REGION:", 1)[0]
+        result = subprocess.run([BASH, "-c", snippet + "\nexample_fail network_timeout 'a \"quoted\" back\\slash'"],
+                                capture_output=True, text=True, check=False)
+        self.assertEqual(result.returncode, 1, "the record ends the script as a failure")
+        line = result.stdout.strip()
+        self.assertTrue(line.startswith("YURUNA_RESULT "), line)
+        record = json.loads(line[len("YURUNA_RESULT "):])
+        self.assertEqual(record["canonicalFailureClass"], "network_timeout")
+        self.assertEqual(record["errorMessage"], 'a "quoted" back\\slash')
+        self.assertIs(record["success"], False)
+        classes = set(re.findall(r"(?m)^\s*example_fail (\S+) ", source))
+        self.assertTrue(classes, "the failure exits name their class")
+        taxonomy = ROOT.parent / "yuruna/test/modules/Test.FailureTaxonomy.psm1"
+        if taxonomy.exists():
+            block = read_source(taxonomy).split("$script:FailureClassEnum = @(", 1)[1].split("\n)", 1)[0]
+            canonical = set(re.findall(r"'([a-z_]+)'", block))
+            self.assertLessEqual(classes, canonical, "the runner files only canonical classes")
 
     @unittest.skipUnless(BASH and os.name != "nt", "requires a POSIX Bash fixture")
     def test_cache_discovery_preserves_proxy_file_probe_precedence(self):

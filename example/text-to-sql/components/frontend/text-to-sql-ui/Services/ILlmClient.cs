@@ -1,5 +1,6 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
+// GUID: 429a070d-fc5a-4eb1-99e5-a4470c8110b5
 // Pluggable seam between the orchestrator and an LLM implementation; see
 // README service notes: https://yuruna.link/4286c679-0007
 

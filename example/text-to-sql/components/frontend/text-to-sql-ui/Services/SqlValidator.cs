@@ -1,5 +1,6 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
+// GUID: 42804b9e-d47b-493b-b54e-4a9023b2e796
 // Validator stage: static SQL checks + EXPLAIN cost gate; see README service
 // notes: https://yuruna.link/4286c679-0007
 

@@ -5,10 +5,22 @@
 [github.com/alissonsol/yuruna](https://github.com/alissonsol/yuruna);
 this repo tracks user-facing project templates and end-to-end examples.
 
-## 2026.10.25
+## 2026.10.26
 
 - Align script versions, example Helm chart metadata, and generated inventories
-  with framework release `2026.10.25`.
+  with framework release `2026.10.26`.
+- **Behavior change.** The localhost website and text-to-SQL configurations no
+  longer delete cert-manager, which they never install, so a cert-manager that
+  another project runs on the same cluster survives a deployment. Every
+  namespace delete in the examples and the template now gives up after 300
+  seconds instead of waiting on a stuck finalizer.
+- **Retried image builds.** Both localhost examples set `buildRetry: 3`: an
+  image build that ends on a passing fault, such as a registry connection that
+  dropped, runs again; a build error still fails at once.
+- **Verified nested-host install.** The nested-host sequence runs
+  `install/ubuntu.kvm.sh` only after the release key matches its pinned
+  fingerprint, the manifest signature verifies and the installer matches its
+  manifest row.
 
 ## 2026.10.14
 
@@ -83,6 +95,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.10.25
+Last review: 2026.10.26
 
 Back to [yuruna-project](README.md) - [Yuruna](https://yuruna.com)

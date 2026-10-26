@@ -1,7 +1,7 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.7",
-  "serialNumber": "urn:uuid:1f16ea55-5efe-57b2-ab47-9278f1044a55",
+  "serialNumber": "urn:uuid:1259cf02-0c82-5feb-9c01-00e3072e537b",
   "version": 1,
   "metadata": {
     "component": {
@@ -11,14 +11,14 @@
       "properties": [
         {
           "name": "yuruna:source-inputs-sha256",
-          "value": "091003a43cdae54ca050a4137508a7fda2163116339cba8eb02b5c1d772609ac"
+          "value": "680aedb0d12fa4d63a0ab8a4aacc62c5a021031b5c161d1fae9f37ac062dc8b1"
         },
         {
           "name": "yuruna:inventory-kind",
           "value": "declared-source"
         }
       ],
-      "version": "2026.10.25"
+      "version": "2026.10.26"
     }
   },
   "components": [
@@ -29,7 +29,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"source-declared\", \"ecosystem\": \"nuget\", \"evidence\": [{\"detail\": \"target=container; action=nuget tool install; requested=Microsoft.Web.LibraryManager.Cli; conditional provisioning input\", \"line\": 22, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"group\": \"yuruna-project:guests:container\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\"}"
+          "value": "{\"completeness\": \"source-declared\", \"ecosystem\": \"nuget\", \"evidence\": [{\"detail\": \"target=container; action=nuget tool install; requested=Microsoft.Web.LibraryManager.Cli; conditional provisioning input\", \"line\": 23, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"group\": \"yuruna-project:guests:container\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\"}"
         }
       ],
       "version": "3.0.114",
@@ -43,7 +43,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=shared-or-configured; action=container image declaration; reference=localhost:5000/website/website:latest; tags may move; transitive image contents unresolved\", \"line\": 18, \"path\": \"example/website/components/frontend/website/website-pod.yaml\"}], \"group\": \"yuruna-project:guests:shared-or-configured\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\", \"versionConstraint\": \"latest\"}"
+          "value": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=shared-or-configured; action=container image declaration; reference=localhost:5000/website/website:latest; tags may move; transitive image contents unresolved\", \"line\": 19, \"path\": \"example/website/components/frontend/website/website-pod.yaml\"}], \"group\": \"yuruna-project:guests:shared-or-configured\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\", \"versionConstraint\": \"latest\"}"
         }
       ],
       "group": "yuruna-project:guests:shared-or-configured"
@@ -55,7 +55,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=container; action=Dockerfile FROM; reference=mcr.microsoft.com/dotnet/aspnet:10.0; tags may move; transitive image contents unresolved\", \"line\": 10, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile\"}, {\"detail\": \"target=container; action=Dockerfile FROM; reference=mcr.microsoft.com/dotnet/aspnet:10.0; tags may move; transitive image contents unresolved\", \"line\": 10, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"group\": \"yuruna-project:guests:container\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\", \"versionConstraint\": \"10.0\"}"
+          "value": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=container; action=Dockerfile FROM; reference=mcr.microsoft.com/dotnet/aspnet:10.0; tags may move; transitive image contents unresolved\", \"line\": 11, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile\"}, {\"detail\": \"target=container; action=Dockerfile FROM; reference=mcr.microsoft.com/dotnet/aspnet:10.0; tags may move; transitive image contents unresolved\", \"line\": 11, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"group\": \"yuruna-project:guests:container\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\", \"versionConstraint\": \"10.0\"}"
         }
       ],
       "group": "yuruna-project:guests:container"
@@ -67,7 +67,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=container; action=Dockerfile FROM; reference=mcr.microsoft.com/dotnet/sdk:10.0; tags may move; transitive image contents unresolved\", \"line\": 16, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile\"}, {\"detail\": \"target=container; action=Dockerfile FROM; reference=mcr.microsoft.com/dotnet/sdk:10.0; tags may move; transitive image contents unresolved\", \"line\": 16, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"group\": \"yuruna-project:guests:container\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"build\", \"versionConstraint\": \"10.0\"}"
+          "value": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=container; action=Dockerfile FROM; reference=mcr.microsoft.com/dotnet/sdk:10.0; tags may move; transitive image contents unresolved\", \"line\": 17, \"path\": \"example/text-to-sql/components/frontend/text-to-sql-ui/Dockerfile\"}, {\"detail\": \"target=container; action=Dockerfile FROM; reference=mcr.microsoft.com/dotnet/sdk:10.0; tags may move; transitive image contents unresolved\", \"line\": 17, \"path\": \"example/website/components/frontend/website/Dockerfile\"}], \"group\": \"yuruna-project:guests:container\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"build\", \"versionConstraint\": \"10.0\"}"
         }
       ],
       "group": "yuruna-project:guests:container"
@@ -79,7 +79,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=shared-or-configured; action=container pull; reference=registry:2; tags may move; transitive image contents unresolved\", \"line\": 121, \"path\": \"tools/example-workload.sh\"}, {\"detail\": \"target=shared-or-configured; action=container run; reference=registry:2; tags may move; transitive image contents unresolved\", \"line\": 130, \"path\": \"tools/example-workload.sh\"}], \"group\": \"yuruna-project:guests:shared-or-configured\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\", \"versionConstraint\": \"2\"}"
+          "value": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=shared-or-configured; action=container pull; reference=registry:2; tags may move; transitive image contents unresolved\", \"line\": 134, \"path\": \"tools/example-workload.sh\"}, {\"detail\": \"target=shared-or-configured; action=container run; reference=registry:2; tags may move; transitive image contents unresolved\", \"line\": 143, \"path\": \"tools/example-workload.sh\"}], \"group\": \"yuruna-project:guests:shared-or-configured\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\", \"versionConstraint\": \"2\"}"
         }
       ],
       "group": "yuruna-project:guests:shared-or-configured"
@@ -103,7 +103,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=shared-or-configured; action=container pull; reference=yuruna-caching-proxy-service:5000/library/registry:2; tags may move; transitive image contents unresolved\", \"line\": 121, \"path\": \"tools/example-workload.sh\"}], \"group\": \"yuruna-project:guests:shared-or-configured\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\", \"versionConstraint\": \"2\"}"
+          "value": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=shared-or-configured; action=container pull; reference=yuruna-caching-proxy-service:5000/library/registry:2; tags may move; transitive image contents unresolved\", \"line\": 134, \"path\": \"tools/example-workload.sh\"}], \"group\": \"yuruna-project:guests:shared-or-configured\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\", \"versionConstraint\": \"2\"}"
         }
       ],
       "group": "yuruna-project:guests:shared-or-configured"

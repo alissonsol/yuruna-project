@@ -1,5 +1,6 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
+// GUID: 4231e854-fcb8-4fa1-8137-1099ba6367eb
 // ILlmClient backed by the Anthropic Messages API; see README service notes:
 // https://yuruna.link/4286c679-0007
 

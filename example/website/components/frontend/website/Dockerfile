@@ -1,5 +1,6 @@
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
+# GUID: 42fc5c98-ecbd-4691-9d61-eb9f54bdaa9b
 
 # --- REGION: Base image registry
 # Seeded project builds pass a local registry prefix; bare builds use MCR.

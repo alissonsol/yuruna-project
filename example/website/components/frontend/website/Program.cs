@@ -1,5 +1,6 @@
 // LICENSEURI https://yuruna.link/license
 // Copyright (c) 2019-2026 by Alisson Sol et al.
+// GUID: 42bddc8d-21f0-46ca-972a-2859c24c59c5
 // --- REGION: Initialize application
 var builder = WebApplication.CreateBuilder(args);
 
