@@ -89,7 +89,7 @@ warm_manifest() {
             echo "  -> cache holds ${repo}:${tag} (answered in ${elapsed}s)"
             ;;
         ''|000)
-            # See https://yuruna.link/42010605-0005
+            # See https://yuruna.link/42010605-009f
             case "$probe_rc" in
                 7)  echo "  -> cache refused the connection after ${elapsed}s -- nothing is listening on ${CACHE_HOST}:5000; pulling anyway" >&2 ;;
                 6)  echo "  -> cache host ${CACHE_HOST} did not resolve; pulling anyway" >&2 ;;
@@ -114,6 +114,18 @@ if [ -n "$CACHE_HOST" ]; then
 else
     REGISTRY_PULL_REF="$REGISTRY_IMAGE"
 fi
+# The deployment client and the node that pulls from the registry share this
+# guest, so the port is published on the loopback address only: open to the
+# LAN, it would take pushes from any machine there. A container an earlier run
+# published on every address is created again.
+REGISTRY_PUBLISH="127.0.0.1:5000:5000"
+if docker inspect registry >/dev/null 2>&1; then
+    registry_bind=$(docker inspect -f '{{range (index .HostConfig.PortBindings "5000/tcp")}}{{.HostIp}} {{end}}' registry 2>/dev/null || true)
+    if [ "$registry_bind" != "127.0.0.1 " ]; then
+        echo "Re-creating the registry container to publish port 5000 on 127.0.0.1 only"
+        docker rm -f registry >/dev/null 2>&1 || true
+    fi
+fi
 # --- REGION: https://yuruna.link/42f6b05f-0019
 # Wait through a cache VM restart: 10+20+40+80 allows 150 seconds for zot to return.
 registry_attempts=5
@@ -129,7 +141,7 @@ for attempt in $(seq 1 "$registry_attempts"); do
     registry_local=""
     docker_out=""
     if ! registry_local=$(find_local_image "$REGISTRY_IMAGE"); then
-        # See https://yuruna.link/42010605-0005
+        # See https://yuruna.link/42010605-009e
         warm_manifest "library/registry" "2"
         if docker_out=$(run_bounded "$PULL_STALL" docker pull "$REGISTRY_PULL_REF" 2>&1); then
             registry_local="$REGISTRY_PULL_REF"
@@ -140,7 +152,7 @@ for attempt in $(seq 1 "$registry_attempts"); do
         # has to answer to it -- and answer FROM the store, resolving
         # nothing over the network.
         [ "$registry_local" = "$REGISTRY_IMAGE" ] || docker tag "$registry_local" "$REGISTRY_IMAGE"
-        if docker_out=$(run_bounded 180 docker run -d -p 5000:5000 --restart=always --name registry "$REGISTRY_IMAGE" 2>&1); then
+        if docker_out=$(run_bounded 180 docker run -d -p "$REGISTRY_PUBLISH" --restart=always --name registry "$REGISTRY_IMAGE" 2>&1); then
             break
         fi
     fi
@@ -250,10 +262,20 @@ cd "$REAL_HOME/yuruna/project/example/${example_name}/components/frontend/${comp
 # See https://yuruna.link/42f64340-0004
 export YURUNA_EXAMPLE_SELF_SIGNED_CERT=1
 
-# The list mirrors the Dockerfile's FROM lines.
-BASE_IMAGES=("dotnet/sdk:10.0" "dotnet/aspnet:10.0")
-# The upstream that serves them, named to the cache by the probe below.
-BASE_IMAGES_UPSTREAM="mcr.microsoft.com"
+# The Dockerfile is the only place the base-image identity is written: its
+# FROM ${REGISTRY} lines name the images, and the REGISTRY default names the
+# upstream that serves them, which the probe below names to the cache.
+BASE_IMAGES=()
+while IFS= read -r base_ref; do
+    case " ${BASE_IMAGES[*]} " in *" ${base_ref} "*) ;; *) BASE_IMAGES+=("$base_ref") ;; esac
+done < <(sed -nE 's/^[[:space:]]*[Ff][Rr][Oo][Mm][[:space:]]+(--[^[:space:]]+[[:space:]]+)*\$\{REGISTRY\}([^[:space:]]+).*/\2/p' Dockerfile)
+BASE_IMAGES_UPSTREAM=$(sed -nE 's/^[[:space:]]*[Aa][Rr][Gg][[:space:]]+REGISTRY=([^[:space:]]+)[[:space:]]*$/\1/p' Dockerfile | tail -n 1)
+BASE_IMAGES_UPSTREAM="${BASE_IMAGES_UPSTREAM%/}"
+if [ "${#BASE_IMAGES[@]}" -eq 0 ] || [ -z "$BASE_IMAGES_UPSTREAM" ]; then
+    echo "ERROR: $(pwd)/Dockerfile names no base image through \${REGISTRY}, or gives REGISTRY" >&2
+    echo "       no default upstream, so the images to seed are unknown." >&2
+    example_fail script_error "the Dockerfile does not name its base images and their upstream"
+fi
 LOCAL_REGISTRY="localhost:5000"
 
 # Probe missing manifests with a 30-second cap; on zot, the GET also starts sync.
@@ -288,7 +310,7 @@ all_base_images_local() {
 }
 
 # --- REGION: Acquire base images
-# See https://yuruna.link/42010605-0005
+# See https://yuruna.link/42010605-009d
 acquire_rounds=2
 acquire_delay=10
 stalled_candidates=""

@@ -19,7 +19,7 @@ globalVariables:
   # Secret holding the pod's HTTPS certificate and its generated password; created
   # by create-cert-secret.ps1 below and mounted by the chart.
   websitePodCertSecret:  "website-pod-cert"
-  # See https://yuruna.link/42010605-0005
+  # See https://yuruna.link/42010605-00a4
   _registryLocation:     "$(($([Environment]::GetEnvironmentVariable(\"${env:registryName}.registryLocation\")) -split '/')[0])"
   _registryRegion:       "$((${env:_registryLocation} -split '[.]')[3])"
   dockerServer:          "${env:_registryLocation}"

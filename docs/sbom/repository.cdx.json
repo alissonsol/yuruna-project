@@ -1,7 +1,7 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.7",
-  "serialNumber": "urn:uuid:9c3fea01-e36e-57a7-82b5-aced8e2558af",
+  "serialNumber": "urn:uuid:8d57bb62-1757-5cae-87d9-87c4c9457911",
   "version": 1,
   "metadata": {
     "component": {
@@ -11,14 +11,14 @@
       "properties": [
         {
           "name": "yuruna:source-inputs-sha256",
-          "value": "680aedb0d12fa4d63a0ab8a4aacc62c5a021031b5c161d1fae9f37ac062dc8b1"
+          "value": "b82a71d26896bcd83fbfc66b61905e2c0111fbf9ee371b1c65f7f1df952ed95c"
         },
         {
           "name": "yuruna:inventory-kind",
           "value": "declared-source"
         }
       ],
-      "version": "2026.10.26"
+      "version": "2026.10.30"
     }
   },
   "components": [
@@ -165,7 +165,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"helm-config\", \"evidence\": [{\"detail\": \"Yuruna Helm action declarations\", \"line\": 1, \"path\": \"example/text-to-sql/config/localhost/workloads.yml\"}], \"notes\": [], \"scope\": \"runtime\"}"
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"helm-config\", \"evidence\": [{\"detail\": \"Yuruna Helm action declarations\", \"line\": 1, \"path\": \"example/text-to-sql/config/localhost/workloads.yml\"}], \"notes\": [\"Helm coverage at line 66: chart expression is not a literal package identity.\"], \"scope\": \"runtime\"}"
         }
       ]
     },
@@ -198,7 +198,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"helm-config\", \"evidence\": [{\"detail\": \"Yuruna Helm action declarations\", \"line\": 1, \"path\": \"example/website/config/localhost/workloads.yml\"}], \"notes\": [], \"scope\": \"runtime\"}"
+          "value": "{\"completeness\": \"declared\", \"ecosystem\": \"helm-config\", \"evidence\": [{\"detail\": \"Yuruna Helm action declarations\", \"line\": 1, \"path\": \"example/website/config/localhost/workloads.yml\"}], \"notes\": [\"Helm coverage at line 62: chart expression is not a literal package identity.\"], \"scope\": \"runtime\"}"
         }
       ]
     },
@@ -220,7 +220,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"unresolved\", \"ecosystem\": \"helm\", \"evidence\": [{\"detail\": \"External Helm chart declaration\", \"line\": 54, \"path\": \"example/website/config/aws/workloads.yml\"}, {\"detail\": \"External Helm chart declaration\", \"line\": 55, \"path\": \"example/website/config/localhost/workloads.yml\"}, {\"detail\": \"External Helm chart declaration\", \"line\": 59, \"path\": \"example/text-to-sql/config/localhost/workloads.yml\"}, {\"detail\": \"External Helm chart declaration\", \"line\": 64, \"path\": \"example/website/config/azure/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 47, \"path\": \"example/website/config/aws/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 51, \"path\": \"example/website/config/azure/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 53, \"path\": \"example/website/config/localhost/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 57, \"path\": \"example/text-to-sql/config/localhost/workloads.yml\"}], \"notes\": [\"Chart archives, transitive chart dependencies, and rendered container images were not resolved.\", \"Declared chart reference: ingress-nginx/ingress-nginx.\", \"Helm repository/source URL: https://kubernetes.github.io/ingress-nginx.\", \"No chart version was declared; repository state selects the version at deployment time.\"], \"scope\": \"runtime\"}"
+          "value": "{\"completeness\": \"unresolved\", \"ecosystem\": \"helm\", \"evidence\": [{\"detail\": \"External Helm chart declaration\", \"line\": 54, \"path\": \"example/website/config/aws/workloads.yml\"}, {\"detail\": \"External Helm chart declaration\", \"line\": 60, \"path\": \"example/website/config/localhost/workloads.yml\"}, {\"detail\": \"External Helm chart declaration\", \"line\": 64, \"path\": \"example/text-to-sql/config/localhost/workloads.yml\"}, {\"detail\": \"External Helm chart declaration\", \"line\": 64, \"path\": \"example/website/config/azure/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 47, \"path\": \"example/website/config/aws/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 51, \"path\": \"example/website/config/azure/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 58, \"path\": \"example/website/config/localhost/workloads.yml\"}, {\"detail\": \"Helm repository declaration: https://kubernetes.github.io/ingress-nginx\", \"line\": 62, \"path\": \"example/text-to-sql/config/localhost/workloads.yml\"}], \"notes\": [\"Chart archives, transitive chart dependencies, and rendered container images were not resolved.\", \"Declared chart reference: ingress-nginx/ingress-nginx.\", \"Helm repository/source URL: https://kubernetes.github.io/ingress-nginx.\", \"No chart version was declared; repository state selects the version at deployment time.\", \"Version range or expression is retained as declared; no runtime value was inferred.\"], \"scope\": \"runtime\", \"versionConstraint\": \"${env:ingressChartVersion}\"}"
         }
       ]
     },

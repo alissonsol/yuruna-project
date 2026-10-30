@@ -13,8 +13,6 @@ metadata:
     app: website
   # --- REGION: annotations
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/use-regex: "true"
     # The HTTP smoke check requires 200 without following HTTPS redirects.
     # See https://yuruna.link/42f64340-0005
     nginx.ingress.kubernetes.io/ssl-redirect: "false"

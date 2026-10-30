@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 2026.10.26
+.VERSION 2026.10.30
 .GUID 4225b001-c90f-4210-ba9a-b5d1da7ee415
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
@@ -91,6 +91,33 @@ foreach ($chartFile in @(
 }
 
 & $module {
+    # The Dockerfile is the only source of the base-image identity.
+    $dockerfiles = Join-Path ([IO.Path]::GetTempPath()) ('yuruna-dockerfile-base-' + [guid]::NewGuid().ToString('N'))
+    $null = [IO.Directory]::CreateDirectory($dockerfiles)
+    $script:SdkDockerfile = Join-Path $dockerfiles 'sdk.Dockerfile'
+    $script:BothDockerfile = Join-Path $dockerfiles 'both.Dockerfile'
+    [IO.File]::WriteAllText($script:SdkDockerfile, "ARG REGISTRY=mcr.microsoft.com/`nFROM `${REGISTRY}dotnet/sdk:10.0 AS build`n", [Text.UTF8Encoding]::new($false))
+    [IO.File]::WriteAllText($script:BothDockerfile, "ARG REGISTRY=mcr.microsoft.com/`nfrom `${REGISTRY}dotnet/aspnet:10.0 AS base`nFROM --platform=linux/amd64 `${REGISTRY}dotnet/sdk:10.0 AS build`nFROM build AS publish`nFROM `${REGISTRY}dotnet/sdk:10.0 AS again`nFROM base AS final`n", [Text.UTF8Encoding]::new($false))
+    $parsed = Get-ExampleDockerfileBaseImage -DockerfilePath $script:BothDockerfile
+    if ($parsed.Upstream -cne 'mcr.microsoft.com/' -or ($parsed.Image -join '|') -cne 'dotnet/aspnet:10.0|dotnet/sdk:10.0') {
+        throw "The Dockerfile's REGISTRY-prefixed FROM lines must name each base image once, with the REGISTRY default as upstream: $($parsed.Image -join '|') from $($parsed.Upstream)"
+    }
+    $noSlash = Join-Path $dockerfiles 'noslash.Dockerfile'
+    [IO.File]::WriteAllText($noSlash, "ARG REGISTRY=registry.test`nFROM `${REGISTRY}base:1`n", [Text.UTF8Encoding]::new($false))
+    if ((Get-ExampleDockerfileBaseImage -DockerfilePath $noSlash).Upstream -cne 'registry.test/') {
+        throw 'The upstream must end in the separator the image reference follows'
+    }
+    $noDefault = Join-Path $dockerfiles 'nodefault.Dockerfile'
+    [IO.File]::WriteAllText($noDefault, "ARG REGISTRY`nFROM `${REGISTRY}dotnet/sdk:10.0`n", [Text.UTF8Encoding]::new($false))
+    $refused = $false
+    try { $null = Get-ExampleDockerfileBaseImage -DockerfilePath $noDefault } catch { $refused = $_.Exception.Message -like '*gives REGISTRY no default upstream*' }
+    if (-not $refused) { throw 'A Dockerfile that names base images through REGISTRY without a default upstream must be refused' }
+    foreach ($example in @('example/website/components/frontend/website', 'example/text-to-sql/components/frontend/text-to-sql-ui')) {
+        $declared = Get-ExampleDockerfileBaseImage -DockerfilePath (Join-Path $root "$example/Dockerfile")
+        if ($declared.Image.Count -lt 1 -or $declared.Upstream -cne 'mcr.microsoft.com/') {
+            throw "$example/Dockerfile must name its base images through REGISTRY with the MCR default"
+        }
+    }
     $script:Calls = [Collections.Generic.List[string]]::new()
     $script:AlreadyServed = $false
     $script:LocalImage = 'mcr.microsoft.com/dotnet/sdk:10.0'
@@ -121,36 +148,36 @@ foreach ($chartFile in @(
         return 0
     }
     $script:AlreadyServed = $true
-    if ((Invoke-ExampleBaseImageSeed -BaseImage 'dotnet/sdk:10.0') -ne 0 -or $script:Calls.Count -ne 0 -or $script:CacheDiscoveryCount -ne 0) {
+    if ((Invoke-ExampleBaseImageSeed -DockerfilePath $script:SdkDockerfile) -ne 0 -or $script:Calls.Count -ne 0 -or $script:CacheDiscoveryCount -ne 0) {
         throw 'A served manifest must skip Docker work'
     }
     $script:AlreadyServed = $false
-    if ((Invoke-ExampleBaseImageSeed -BaseImage 'dotnet/sdk:10.0') -ne 0 -or
+    if ((Invoke-ExampleBaseImageSeed -DockerfilePath $script:SdkDockerfile) -ne 0 -or
         $script:CacheDiscoveryCount -ne 0 -or
         -not ($script:Calls | Where-Object { $_ -like 'tag mcr.microsoft.com/dotnet/sdk:10.0 *' }) -or
         -not ($script:Calls | Where-Object { $_ -like 'push */dotnet/sdk:10.0' })) {
         throw 'A local base image must be tagged and pushed'
     }
     $script:PushExit = 17
-    if ((Invoke-ExampleBaseImageSeed -BaseImage 'dotnet/sdk:10.0' -WarningAction SilentlyContinue) -ne 1) {
+    if ((Invoke-ExampleBaseImageSeed -DockerfilePath $script:SdkDockerfile -WarningAction SilentlyContinue) -ne 1) {
         throw 'Push failure must fail the seed step'
     }
     $script:PushExit = 0
     $script:LocalImage = ''
     $script:Calls.Clear()
-    if ((Invoke-ExampleBaseImageSeed -BaseImage 'dotnet/sdk:10.0') -ne 0 -or
+    if ((Invoke-ExampleBaseImageSeed -DockerfilePath $script:SdkDockerfile) -ne 0 -or
         -not ($script:Calls | Where-Object { $_ -like 'pull */dotnet/sdk:10.0' })) {
         throw 'A missing local image must be pulled before being pushed'
     }
     $script:CacheHost = 'cache.test'
     $script:Calls.Clear()
-    if ((Invoke-ExampleBaseImageSeed -BaseImage 'dotnet/sdk:10.0') -ne 0 -or
+    if ((Invoke-ExampleBaseImageSeed -DockerfilePath $script:SdkDockerfile) -ne 0 -or
         ($script:Calls | Where-Object { $_ -like 'pull *' }) -cne 'pull cache.test:5000/dotnet/sdk:10.0') {
         throw 'An assigned cache must be the first source and a successful cached pull must skip upstream'
     }
     $script:PullExit = 17
     $script:Calls.Clear()
-    if ((Invoke-ExampleBaseImageSeed -BaseImage 'dotnet/sdk:10.0') -ne 0 -or
+    if ((Invoke-ExampleBaseImageSeed -DockerfilePath $script:SdkDockerfile) -ne 0 -or
         (($script:Calls | Where-Object { $_ -like 'pull *' }) -join '|') -cne 'pull cache.test:5000/dotnet/sdk:10.0|pull mcr.microsoft.com/dotnet/sdk:10.0') {
         throw 'A failed cache pull must preserve the existing bounded upstream fallback'
     }
@@ -158,10 +185,11 @@ foreach ($chartFile in @(
     foreach ($cache in 'cache.test', '') {
         $script:CacheHost = $cache
         $script:CacheDiscoveryCount = 0
-        if ((Invoke-ExampleBaseImageSeed -BaseImage @('dotnet/sdk:10.0', 'dotnet/aspnet:10.0')) -ne 0 -or $script:CacheDiscoveryCount -ne 1) {
+        if ((Invoke-ExampleBaseImageSeed -DockerfilePath $script:BothDockerfile) -ne 0 -or $script:CacheDiscoveryCount -ne 1) {
             throw 'A seed run must discover the cache only once for all missing base images, including when no cache exists'
         }
     }
+    Remove-Item -LiteralPath $dockerfiles -Recurse -Force
 }
 
 # The ambient values would change what these tests prove; both are restored in the finally.

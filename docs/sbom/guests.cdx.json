@@ -1,7 +1,7 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.7",
-  "serialNumber": "urn:uuid:1259cf02-0c82-5feb-9c01-00e3072e537b",
+  "serialNumber": "urn:uuid:eeded90d-4683-5d5f-8c83-78adfc1b0b23",
   "version": 1,
   "metadata": {
     "component": {
@@ -11,14 +11,14 @@
       "properties": [
         {
           "name": "yuruna:source-inputs-sha256",
-          "value": "680aedb0d12fa4d63a0ab8a4aacc62c5a021031b5c161d1fae9f37ac062dc8b1"
+          "value": "b82a71d26896bcd83fbfc66b61905e2c0111fbf9ee371b1c65f7f1df952ed95c"
         },
         {
           "name": "yuruna:inventory-kind",
           "value": "declared-source"
         }
       ],
-      "version": "2026.10.26"
+      "version": "2026.10.30"
     }
   },
   "components": [
@@ -79,7 +79,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=shared-or-configured; action=container pull; reference=registry:2; tags may move; transitive image contents unresolved\", \"line\": 134, \"path\": \"tools/example-workload.sh\"}, {\"detail\": \"target=shared-or-configured; action=container run; reference=registry:2; tags may move; transitive image contents unresolved\", \"line\": 143, \"path\": \"tools/example-workload.sh\"}], \"group\": \"yuruna-project:guests:shared-or-configured\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\", \"versionConstraint\": \"2\"}"
+          "value": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=shared-or-configured; action=container pull; reference=registry:2; tags may move; transitive image contents unresolved\", \"line\": 146, \"path\": \"tools/example-workload.sh\"}, {\"detail\": \"target=shared-or-configured; action=container run; reference=registry:2; tags may move; transitive image contents unresolved\", \"line\": 155, \"path\": \"tools/example-workload.sh\"}], \"group\": \"yuruna-project:guests:shared-or-configured\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\", \"versionConstraint\": \"2\"}"
         }
       ],
       "group": "yuruna-project:guests:shared-or-configured"
@@ -103,7 +103,7 @@
       "properties": [
         {
           "name": "yuruna:declaration",
-          "value": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=shared-or-configured; action=container pull; reference=yuruna-caching-proxy-service:5000/library/registry:2; tags may move; transitive image contents unresolved\", \"line\": 134, \"path\": \"tools/example-workload.sh\"}], \"group\": \"yuruna-project:guests:shared-or-configured\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\", \"versionConstraint\": \"2\"}"
+          "value": "{\"completeness\": \"source-declared\", \"ecosystem\": \"oci\", \"evidence\": [{\"detail\": \"target=shared-or-configured; action=container pull; reference=yuruna-caching-proxy-service:5000/library/registry:2; tags may move; transitive image contents unresolved\", \"line\": 146, \"path\": \"tools/example-workload.sh\"}], \"group\": \"yuruna-project:guests:shared-or-configured\", \"notes\": [\"Conditional source declaration; installed state and transitive dependencies are not resolved.\"], \"scope\": \"runtime\", \"versionConstraint\": \"2\"}"
         }
       ],
       "group": "yuruna-project:guests:shared-or-configured"

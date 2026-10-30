@@ -340,8 +340,11 @@ como root.
 As regras de autenticação aceitam o CIDR dos pods do Flannel e as redes
 diretamente conectadas (`samenet`) usando `scram-sha-256`, cobrindo endereços de
 origem tanto de pods quanto de nós. A verificação TCP final segue a rota do pod
-para `status.hostIP:5432`. Uma falha nessa verificação gera um aviso, pois a
-interface ainda pode servir HTTP sem acesso ao banco de dados.
+para `status.hostIP:5432` com a senha armazenada. Uma falha nessa verificação
+interrompe a etapa, pois a interface ainda serviria HTTP 200 enquanto todas as
+consultas no pod falhariam; cinco tentativas com dois segundos de intervalo dão
+tempo para o listener do cluster reiniciado subir, e um endereço de nó que não
+pode ser determinado também faz a etapa falhar.
 
 A mesma seleção de `ILlmClient` vale no contêiner implantado: uma
 `USE_LOCAL_MODEL` não vazia seleciona primeiro o Ollama; caso contrário, defina
@@ -474,6 +477,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Última revisão: 2026.10.26
+Última revisão: 2026.10.30
 
 Voltar para [yuruna-project](../../../../README.md) - [Yuruna](https://yuruna.com)

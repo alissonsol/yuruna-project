@@ -28,6 +28,7 @@ snapshotPolicy:
     - host/*/guest.ubuntu.server.24/*.ps1
     - host/*/modules/*UbuntuServer*.ps1
     - host/*/modules/Yuruna.Host.psm1
+    - host/*/modules/Yuruna.Host.*.ps1
     - host/modules/Yuruna.UbuntuImage.psm1
     - host/modules/Yuruna.Image.psm1
     - host/vmconfig/ubuntu.server.*

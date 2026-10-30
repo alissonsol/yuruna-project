@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 2026.10.26
+.VERSION 2026.10.30
 .GUID 428a1651-f4d0-45c5-9d0a-9adbc129e83c
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
@@ -16,7 +16,7 @@
 
 #requires -version 7
 
-# See https://yuruna.link/42010605-0005
+# See https://yuruna.link/42010605-00a2
 [CmdletBinding()]
 param(
     [Parameter(Mandatory)][ValidatePattern('^[a-z0-9]([-a-z0-9]*[a-z0-9])?$')][string]$Namespace,

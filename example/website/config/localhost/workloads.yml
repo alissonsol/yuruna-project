@@ -22,6 +22,10 @@ globalVariables:
   dockerUsername:        "placeholder"
   dockerPassword:        "placeholder"
   ingressClass:          "nginx"
+  # The ingress controller chart release and the SHA-256 its repository's index
+  # publishes for that file; the chart pins its controller image by digest.
+  ingressChartVersion:   "4.15.1"
+  ingressChartSha256:    "3eff0bd18151d6e6b1c441463410571443dda1ac78292cb189346628de784f0c"
 
 # --- REGION: workloads
 workloads:
@@ -49,11 +53,14 @@ workloads:
     - shell: "mkcert -key-file \"${env:tls-key}\" -cert-file \"${env:tls-crt}\" ${env:websiteDomain} \"*.${env:websiteDomain}\" localhost \"*.localhost\" 127.0.0.1 ::1 ${env:_hostname} ${env:_frontendIp}"
     - kubectl: "delete secret ${env:websiteTlsSecret} --namespace=${env:namespace} --ignore-not-found=true"
     - kubectl: "create secret tls ${env:websiteTlsSecret} --key \"${env:tls-key}\" --cert \"${env:tls-crt}\" --namespace=${env:namespace}"
-    # Ingress
+    # Ingress: install the pinned chart release from a downloaded file only
+    # after the file matches its pinned digest.
     - helm: "repo add ingress-nginx https://kubernetes.github.io/ingress-nginx"
     - helm: "repo update"
+    - helm: "pull ingress-nginx/ingress-nginx --version ${env:ingressChartVersion} --destination ."
+    - shell: "if ((Get-FileHash -Algorithm SHA256 -LiteralPath 'ingress-nginx-${env:ingressChartVersion}.tgz').Hash -ne '${env:ingressChartSha256}') { throw 'ingress-nginx-${env:ingressChartVersion}.tgz does not match its pinned SHA-256' }"
     - helm: >
-        install nginx-ingress ingress-nginx/ingress-nginx
+        install nginx-ingress ./ingress-nginx-${env:ingressChartVersion}.tgz
         --namespace ingress-ns
         --create-namespace
         --set controller.replicaCount=1

@@ -80,12 +80,12 @@ python tools/Sync-Sbom.py --update --staged --stage
 The project hook also keeps its existing translation maintenance. Hook activation
 is local Git configuration and is not propagated by cloning the repository.
 
-Back to [yuruna-project](../../README.md).
-
 ---
 
 LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.10.26
+Last review: 2026.10.30
+
+Back to [yuruna-project](../../README.md).

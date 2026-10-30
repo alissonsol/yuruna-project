@@ -25,6 +25,14 @@ BASH = shutil.which("bash")
 DEPLOYMENTS = [WEBSITE / "workloads/frontend/website/templates/01-website.yml",
                TEXT_TO_SQL / "workloads/frontend/text-to-sql-ui/templates/01-text-to-sql-ui.yml"]
 STANDALONE_POD = WEBSITE / "components/frontend/website/website-pod.yaml"
+LOCAL_WORKLOADS = [WEBSITE / "config/localhost/workloads.yml", TEXT_TO_SQL / "config/localhost/workloads.yml"]
+# Deployment entries only text-to-sql has, because only it reads a database.
+TEXT_TO_SQL_ONLY_DEPLOYMENTS = """    # Same ordering and secrecy rules for the database password: the script reads the
+    # owner-only file that the database setup step wrote and sends the Secret to kubectl
+    # on standard input.
+    - shell: "& '${env:project_root}/components/frontend/website/create-db-secret.ps1' -Namespace ${env:namespace} -SecretName ${env:appDbSecret}"
+"""
+PWSH = shutil.which("pwsh")
 
 
 # --- REGION: read_source
@@ -41,6 +49,20 @@ def source_without_identity(text):
 def guest_user_region(path):
     text = read_source(path)
     return text.split("# --- REGION: Resolve guest user\n", 1)[1].split("\n# --- REGION:", 1)[0].strip()
+
+
+# --- REGION: workloads_as_website
+def workloads_as_website(text):
+    for name, website in (("text-to-sql-ui", "website"), ("text-to-sql", "website"), ("appPodCertSecret", "websitePodCertSecret"),
+                          ("appTlsSecret", "websiteTlsSecret"), ("appDomain", "websiteDomain"), ("appHost", "websiteHost")):
+        text = text.replace(name, website)
+    return text
+
+
+# --- REGION: global_variables
+def global_variables(text):
+    block = text.split("\nglobalVariables:\n", 1)[1].split("\n\n", 1)[0]
+    return dict(re.findall(r'(?m)^  ([A-Za-z_][\w-]*):\s+(.+?)\s*$', block))
 
 
 # --- REGION: yaml_key_block
@@ -82,6 +104,51 @@ class ExampleConsistency(unittest.TestCase):
                 website = read_source(WEBSITE / "components/frontend/website" / name)
                 application = read_source(TEXT_TO_SQL / "components/frontend/text-to-sql-ui" / name)
                 self.assertEqual(source_without_identity(website), source_without_identity(application))
+
+    def test_local_deployments_share_every_step_but_the_database_secret(self):
+        website, application = (read_source(path).split("\n  deployments:\n", 1)[1] for path in LOCAL_WORKLOADS)
+        application = workloads_as_website(application)
+        self.assertEqual(application.count(TEXT_TO_SQL_ONLY_DEPLOYMENTS), 1, "the declared text-to-sql step moved or changed")
+        self.assertEqual(website, application.replace(TEXT_TO_SQL_ONLY_DEPLOYMENTS, ""))
+
+    def test_local_deployments_share_their_infrastructure_variables(self):
+        website, application = (global_variables(read_source(path)) for path in LOCAL_WORKLOADS)
+        shared = ("certManagerIssuerEmail", "_registryLocation", "dockerServer", "dockerUsername", "dockerPassword",
+                  "ingressClass", "ingressChartVersion", "ingressChartSha256")
+        for name in shared:
+            with self.subTest(variable=name):
+                self.assertIn(name, website)
+                self.assertEqual(website[name], application.get(name))
+        self.assertRegex(website["ingressChartVersion"], r'^"\d+\.\d+\.\d+"$')
+        self.assertRegex(website["ingressChartSha256"], r'^"[0-9a-f]{64}"$')
+
+    def test_ingress_chart_installs_only_the_downloaded_file_that_matches_its_digest(self):
+        deployments = read_source(LOCAL_WORKLOADS[0]).split("\n  deployments:\n", 1)[1]
+        pull = '- helm: "pull ingress-nginx/ingress-nginx --version ${env:ingressChartVersion} --destination ."'
+        check = re.search(r'(?m)^    - shell: "(if \(\(Get-FileHash .+)"$', deployments)
+        install = "install nginx-ingress ./ingress-nginx-${env:ingressChartVersion}.tgz"
+        self.assertIsNotNone(check)
+        self.assertLess(deployments.index(pull), deployments.index(check.group(0)))
+        self.assertLess(deployments.index(check.group(0)), deployments.index(install))
+        self.assertNotIn("install nginx-ingress ingress-nginx/ingress-nginx", deployments)
+        if not PWSH:
+            self.skipTest("pwsh runs the digest step; the order of the steps was checked")
+        import hashlib
+        with tempfile.TemporaryDirectory(prefix="yuruna-example-chart-") as temporary:
+            chart = Path(temporary, "ingress-nginx-9.8.7.tgz")
+            chart.write_bytes(b"fixture chart bytes")
+            digest = hashlib.sha256(chart.read_bytes()).hexdigest()
+            # The deployment engine expands the value as a double-quoted string, then evaluates it.
+            command = "$e = $ExecutionContext.InvokeCommand.ExpandString($env:STEP); Invoke-Expression $e"
+            for label, pinned, expected_exit in (("matching file", digest, 0), ("altered file", "0" * 64, 1)):
+                with self.subTest(case=label):
+                    env = dict(os.environ, STEP=check.group(1).replace('\\"', '"'), ingressChartVersion="9.8.7",
+                               ingressChartSha256=pinned)
+                    result = subprocess.run([PWSH, "-NoProfile", "-NonInteractive", "-Command", command], cwd=temporary,
+                                            env=env, capture_output=True, text=True, timeout=120)
+                    self.assertEqual(result.returncode, expected_exit, result.stdout + result.stderr)
+                    if expected_exit:
+                        self.assertIn("does not match its pinned SHA-256", result.stdout + result.stderr)
 
     def test_local_resources_differ_only_by_project(self):
         self.assertEqual(source_without_identity(read_source(WEBSITE / "config/localhost/resources.yml")),
@@ -164,6 +231,16 @@ class ExampleConsistency(unittest.TestCase):
         self.assertEqual(website, application)
         self.assertIn('nginx.ingress.kubernetes.io/ssl-redirect: "false"', website)
         self.assertIn('nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"', website)
+
+    def test_ingresses_forward_the_request_path_unchanged(self):
+        # ingress-nginx replaces the whole request URI with rewrite-target; without a
+        # capture-group reference every page, script and stylesheet request would be
+        # answered with the root document.
+        for path in (WEBSITE / "workloads/frontend/website/templates/03-ingress-to-website-with-tls.yml",
+                     TEXT_TO_SQL / "workloads/frontend/text-to-sql-ui/templates/03-ingress-to-text-to-sql-ui-with-tls.yml"):
+            with self.subTest(ingress=path.name):
+                for target in re.findall(r"(?m)^\s*nginx\.ingress\.kubernetes\.io/rewrite-target:\s*(\S+)", read_source(path)):
+                    self.assertRegex(target, r"\$\d", "rewrite-target without a capture group rewrites every path")
 
     def test_manifest_regions_name_the_next_yaml_key_exactly(self):
         paths = DEPLOYMENTS + [STANDALONE_POD, WEBSITE / "components/frontend/website/website-service.yaml"]
@@ -252,6 +329,85 @@ class ExampleConsistency(unittest.TestCase):
                     for call in calls:
                         self.assertIn("--max-time 10", call)
                         self.assertIn("http://yuruna-caching-proxy-service:5000/v2/", call)
+
+    @unittest.skipUnless(BASH and os.name != "nt", "requires a POSIX Bash fixture")
+    def test_base_images_and_their_upstream_come_from_the_dockerfile(self):
+        source = read_source(ROOT / "tools/example-workload.sh")
+        fail = source.split("# --- REGION: example_fail\n", 1)[1].split("\n# --- REGION:", 1)[0]
+        start = source.index("# The Dockerfile is the only place the base-image identity is written")
+        end = source.index('LOCAL_REGISTRY="localhost:5000"', start)
+        snippet = fail + "\n" + source[start:end] + 'printf "%s\\n" "$BASE_IMAGES_UPSTREAM" "${BASE_IMAGES[@]}"\n'
+        self.assertNotIn("dotnet/", snippet, "the helper must not restate an image name")
+        examples = [WEBSITE / "components/frontend/website/Dockerfile",
+                    TEXT_TO_SQL / "components/frontend/text-to-sql-ui/Dockerfile"]
+        cases = [(path.name + " of " + path.parents[3].name, read_source(path), 0,
+                  ["mcr.microsoft.com", "dotnet/aspnet:10.0", "dotnet/sdk:10.0"]) for path in examples]
+        cases += [
+            ("duplicates, flags and case", "ARG REGISTRY=registry.test/\nfrom ${REGISTRY}a:1 AS x\n"
+             "FROM --platform=linux/amd64 ${REGISTRY}b:2 AS y\nFROM x AS z\nFROM ${REGISTRY}a:1\n", 0,
+             ["registry.test", "a:1", "b:2"]),
+            ("no REGISTRY default", "ARG REGISTRY\nFROM ${REGISTRY}a:1\n", 1, None),
+            ("no REGISTRY-prefixed image", "ARG REGISTRY=registry.test/\nFROM debian:13\n", 1, None),
+        ]
+        for label, dockerfile, expected_exit, expected in cases:
+            with self.subTest(case=label), tempfile.TemporaryDirectory(prefix="yuruna-example-base-") as temporary:
+                Path(temporary, "Dockerfile").write_text(dockerfile, encoding="utf-8")
+                result = subprocess.run([BASH, "-c", "set -euo pipefail\n" + snippet], cwd=temporary,
+                                        capture_output=True, text=True, timeout=60)
+                self.assertEqual(result.returncode, expected_exit, result.stdout + result.stderr)
+                if expected is None:
+                    self.assertIn('"canonicalFailureClass":"script_error"', result.stdout)
+                else:
+                    self.assertEqual(result.stdout.splitlines(), expected)
+
+    @unittest.skipUnless(BASH and os.name != "nt", "requires a POSIX Bash fixture")
+    def test_registry_is_published_on_the_loopback_address_only(self):
+        source = read_source(ROOT / "tools/example-workload.sh").replace("/etc/yuruna/host.env", '"$HOST_ENV_FIXTURE"')
+        docker = textwrap.dedent("""\
+            #!/bin/sh
+            printf '%s\\n' "$*" >> "$FIXTURE/docker.log"
+            case "$1" in
+              inspect)
+                [ -f "$FIXTURE/container" ] || exit 1
+                [ "$2" = -f ] && printf '%s \\n' "$(cat "$FIXTURE/container")"
+                exit 0 ;;
+              start) [ -f "$FIXTURE/container" ] ;;
+              rm) rm -f "$FIXTURE/container" ;;
+              image) printf 'registry:2\\n' ;;
+              run) printf '%s' "$4" > "$FIXTURE/container"; echo fixture-id ;;
+              *) exit 0 ;;
+            esac
+            """)
+        cases = [
+            ("no container yet", None, True, False),
+            ("container published on every address", "", True, True),
+            ("container published on another address", "0.0.0.0", True, True),
+            ("loopback container is reused", "127.0.0.1", False, False),
+        ]
+        for label, existing, expect_run, expect_remove in cases:
+            with self.subTest(case=label), tempfile.TemporaryDirectory(prefix="yuruna-example-registry-") as temporary:
+                fixture = Path(temporary)
+                (fixture / "docker").write_text(docker, encoding="utf-8")
+                (fixture / "curl").write_text("#!/bin/sh\nexit 7\n", encoding="utf-8")
+                for name in ("docker", "curl"):
+                    (fixture / name).chmod(0o755)
+                if existing is not None:
+                    (fixture / "container").write_text(existing, encoding="utf-8")
+                env = dict(os.environ, PATH=str(fixture) + os.pathsep + os.environ["PATH"], FIXTURE=str(fixture),
+                           HOST_ENV_FIXTURE=str(fixture / "host.env"), http_proxy="")
+                result = subprocess.run([BASH, "-c", "set -euo pipefail\n" + source + "\nexample_registry_prepare\n"],
+                                        cwd=fixture, env=env, capture_output=True, text=True, timeout=120)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                calls = read_source(fixture / "docker.log").splitlines()
+                runs = [call for call in calls if call.startswith("run ")]
+                removed = "rm -f registry" in calls[:calls.index("start registry")]
+                self.assertEqual(removed, expect_remove, calls)
+                if expect_run:
+                    self.assertEqual(len(runs), 1, calls)
+                    self.assertIn("-p 127.0.0.1:5000:5000 ", runs[0])
+                else:
+                    self.assertEqual(runs, [], calls)
+                self.assertEqual(read_source(fixture / "container"), "127.0.0.1:5000:5000" if expect_run else "127.0.0.1")
 
     @unittest.skipUnless(BASH and os.name != "nt", "requires a POSIX Bash fixture")
     def test_guest_user_resolution_preserves_literal_paths_and_fails_closed(self):

@@ -81,7 +81,10 @@ if [ "$from_stdin" = 1 ]; then
 fi
 case " $* " in
   *" -h "*)
-    if [ "${PGPASSWORD:-}" = "$(cat "$FIXTURE/server.password" 2>/dev/null)" ] && [ -n "${PGPASSWORD:-}" ]; then echo 5; exit 0; fi
+    # FAIL_TCP_LOGINS refuses that many TCP logins first, like a listener still coming up.
+    tries=$(( $(cat "$FIXTURE/tcp.count" 2>/dev/null || echo 0) + 1 ))
+    echo "$tries" > "$FIXTURE/tcp.count"
+    if [ "$tries" -gt "${FAIL_TCP_LOGINS:-0}" ] && [ "${PGPASSWORD:-}" = "$(cat "$FIXTURE/server.password" 2>/dev/null)" ] && [ -n "${PGPASSWORD:-}" ]; then echo 5; exit 0; fi
     echo 'psql: error: password authentication failed' >&2
     exit 2 ;;
   *"SHOW server_version"*) echo 18.0 ;;
@@ -114,7 +117,7 @@ exec "$@"
 class Sandbox:
     """A disposable root, a copy of the script confined to it, and the logs the fixtures write."""
 
-    def __init__(self, directory, openssl=None):
+    def __init__(self, directory, openssl=None, overrides=None):
         self.root = Path(directory)
         posix = msys(self.root)
         self.log = self.root / 'log'
@@ -142,6 +145,7 @@ class Sandbox:
         commands = dict(COMMANDS)
         if openssl is not None:
             commands['openssl'] = openssl
+        commands.update(overrides or {})
         for name, body in commands.items():
             path = self.root / 'bin' / name
             path.write_bytes(('#!/bin/sh\n' + body).replace('\r\n', '\n').encode())
@@ -156,10 +160,11 @@ class Sandbox:
         })
         self.env = env
 
-    def run(self, xtrace=False, fail_alter=False):
+    def run(self, xtrace=False, fail_alter=False, extra_env=None):
         env = dict(self.env)
         if fail_alter:
             env['FAIL_ALTER'] = '1'
+        env.update(extra_env or {})
         command = [BASH] + (['-x'] if xtrace else []) + [msys(self.script)]
         return subprocess.run(command, env=env, capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=600)
 
@@ -319,6 +324,34 @@ class OtherScenarios(unittest.TestCase):
             self.assertIn('could not set the yuruna_agent_ro password', result.stderr)
             self.assertIn('<redacted>', result.stderr, "psql's report quotes the statement and must be redacted")
             self.assertFalse(box.sidecar.exists(), 'a password the server never accepted must not be stored')
+
+    def test_a_failed_tcp_login_stops_the_step_instead_of_warning(self):
+        with tempfile.TemporaryDirectory() as directory:
+            box = Sandbox(directory)
+            result = box.run(extra_env={'FAIL_TCP_LOGINS': '99'})
+            self.assertNotEqual(result.returncode, 0, 'the deployed pod dials this path, so the step must fail')
+            self.assertIn(f'TCP login as yuruna_agent_ro to {NODE_IP}:5432 failed', result.stderr)
+            self.assertNotIn('text-to-sql PostgreSQL ready', result.stdout)
+            self.assertNotIn('TCP login over', result.stdout)
+            probes = [line for line in box.argv().splitlines() if line.startswith('psql\t-w\t-h\t' + NODE_IP)]
+            self.assertEqual(len(probes), 5, 'a bounded number of attempts, then the failure')
+
+    def test_a_login_that_succeeds_after_the_listener_comes_up_passes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            box = Sandbox(directory)
+            result = box.run(extra_env={'FAIL_TCP_LOGINS': '2'})
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertIn(f'yuruna_agent_ro TCP login over {NODE_IP}:5432 OK', result.stdout)
+            probes = [line for line in box.argv().splitlines() if line.startswith('psql\t-w\t-h\t' + NODE_IP)]
+            self.assertEqual(len(probes), 3)
+
+    def test_an_unknown_node_address_stops_the_step(self):
+        with tempfile.TemporaryDirectory() as directory:
+            box = Sandbox(directory, overrides={'ip': ':\n', 'hostname': ':\n'})
+            result = box.run()
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('could not determine the node IP address', result.stderr)
+            self.assertNotIn('text-to-sql PostgreSQL ready', result.stdout)
 
     def test_output_that_is_not_hex_is_refused_before_it_can_reach_sql(self):
         with tempfile.TemporaryDirectory() as directory:

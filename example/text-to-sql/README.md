@@ -311,8 +311,11 @@ returned to the harness user even when setup runs as root.
 
 The authentication rules admit the Flannel pod CIDR and directly connected
 networks (`samenet`) using `scram-sha-256`, covering both pod-IP and node-IP source
-addresses. The final TCP probe follows the pod's `status.hostIP:5432` route. A
-failed probe warns because the UI can still serve HTTP without database access.
+addresses. The final TCP probe follows the pod's `status.hostIP:5432` route
+with the stored password. A failed probe stops the step, because the UI would
+still serve HTTP 200 while every query in the pod failed; five attempts two
+seconds apart let the restarted cluster's listener come up first, and a node
+address that cannot be determined fails the step too.
 
 The same `ILlmClient` selection applies in the deployed container:
 a nonempty `USE_LOCAL_MODEL` selects Ollama first; otherwise set
@@ -440,6 +443,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.10.26
+Last review: 2026.10.30
 
 Back to [yuruna-project](../../README.md) - [Yuruna](https://yuruna.com)

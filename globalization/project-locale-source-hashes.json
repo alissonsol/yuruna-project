@@ -3,10 +3,913 @@
   "hashAlgorithm": "sha256-utf8-nfc-scalar-v1",
   "entries": [
     {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "he-IL",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "pt-BR",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/component/0/steps/1/description",
+      "locale": "he-IL",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/component/0/steps/1/description",
+      "locale": "pt-BR",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/component/0/steps/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/component/0/steps/2/description",
+      "locale": "he-IL",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/component/0/steps/2/description",
+      "locale": "pt-BR",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/component/0/steps/2/description",
+      "locale": "zh-CN",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "he-IL",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "pt-BR",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/description",
+      "locale": "he-IL",
+      "sourceHash": "f1f482a7a986f48b06438da573bf908d541c47ee4fe47fe33350c8b0b76c2ab8",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/description",
+      "locale": "pt-BR",
+      "sourceHash": "f1f482a7a986f48b06438da573bf908d541c47ee4fe47fe33350c8b0b76c2ab8",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/description",
+      "locale": "zh-CN",
+      "sourceHash": "f1f482a7a986f48b06438da573bf908d541c47ee4fe47fe33350c8b0b76c2ab8",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "he-IL",
+      "sourceHash": "1b81c84c1b42faf82b05c9a01744a83f61aeb57fa2d2254867f3d6b9156ca05e",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "pt-BR",
+      "sourceHash": "1b81c84c1b42faf82b05c9a01744a83f61aeb57fa2d2254867f3d6b9156ca05e",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "1b81c84c1b42faf82b05c9a01744a83f61aeb57fa2d2254867f3d6b9156ca05e",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "he-IL",
+      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "pt-BR",
+      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.no-break.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "he-IL",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "pt-BR",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/component/0/steps/1/description",
+      "locale": "he-IL",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/component/0/steps/1/description",
+      "locale": "pt-BR",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/component/0/steps/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/component/0/steps/2/description",
+      "locale": "he-IL",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/component/0/steps/2/description",
+      "locale": "pt-BR",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/component/0/steps/2/description",
+      "locale": "zh-CN",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "he-IL",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "pt-BR",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/description",
+      "locale": "he-IL",
+      "sourceHash": "f1f482a7a986f48b06438da573bf908d541c47ee4fe47fe33350c8b0b76c2ab8",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/description",
+      "locale": "pt-BR",
+      "sourceHash": "f1f482a7a986f48b06438da573bf908d541c47ee4fe47fe33350c8b0b76c2ab8",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/description",
+      "locale": "zh-CN",
+      "sourceHash": "f1f482a7a986f48b06438da573bf908d541c47ee4fe47fe33350c8b0b76c2ab8",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "he-IL",
+      "sourceHash": "1b81c84c1b42faf82b05c9a01744a83f61aeb57fa2d2254867f3d6b9156ca05e",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "pt-BR",
+      "sourceHash": "1b81c84c1b42faf82b05c9a01744a83f61aeb57fa2d2254867f3d6b9156ca05e",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "1b81c84c1b42faf82b05c9a01744a83f61aeb57fa2d2254867f3d6b9156ca05e",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "he-IL",
+      "sourceHash": "6df35e37fd3ee6500a92f9941b182bcbd4aa9126b84329f48bfdfd3b0cd960ef",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "pt-BR",
+      "sourceHash": "6df35e37fd3ee6500a92f9941b182bcbd4aa9126b84329f48bfdfd3b0cd960ef",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "6df35e37fd3ee6500a92f9941b182bcbd4aa9126b84329f48bfdfd3b0cd960ef",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "he-IL",
+      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "pt-BR",
+      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch01.website.example.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "zh-CN",
+      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "he-IL",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "pt-BR",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/component/0/steps/1/description",
+      "locale": "he-IL",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/component/0/steps/1/description",
+      "locale": "pt-BR",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/component/0/steps/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/component/0/steps/2/description",
+      "locale": "he-IL",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/component/0/steps/2/description",
+      "locale": "pt-BR",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/component/0/steps/2/description",
+      "locale": "zh-CN",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "he-IL",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "pt-BR",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/description",
+      "locale": "he-IL",
+      "sourceHash": "784cb70f056b914eba36921155b138a1b5b988dbda173bb164ed2072159b22f1",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/description",
+      "locale": "pt-BR",
+      "sourceHash": "784cb70f056b914eba36921155b138a1b5b988dbda173bb164ed2072159b22f1",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/description",
+      "locale": "zh-CN",
+      "sourceHash": "784cb70f056b914eba36921155b138a1b5b988dbda173bb164ed2072159b22f1",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "he-IL",
+      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "pt-BR",
+      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "he-IL",
+      "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "pt-BR",
+      "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "he-IL",
+      "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "pt-BR",
+      "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "zh-CN",
+      "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/3/description",
+      "locale": "he-IL",
+      "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/3/description",
+      "locale": "pt-BR",
+      "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/3/description",
+      "locale": "zh-CN",
+      "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/4/description",
+      "locale": "he-IL",
+      "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/4/description",
+      "locale": "pt-BR",
+      "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/4/description",
+      "locale": "zh-CN",
+      "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/5/description",
+      "locale": "he-IL",
+      "sourceHash": "24531bb4adf769bb8519c6d3f9808d219ccbe32eb7d595554db2d4a06c5e02cc",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/5/description",
+      "locale": "pt-BR",
+      "sourceHash": "24531bb4adf769bb8519c6d3f9808d219ccbe32eb7d595554db2d4a06c5e02cc",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/5/description",
+      "locale": "zh-CN",
+      "sourceHash": "24531bb4adf769bb8519c6d3f9808d219ccbe32eb7d595554db2d4a06c5e02cc",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/6/description",
+      "locale": "he-IL",
+      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/6/description",
+      "locale": "pt-BR",
+      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/6/description",
+      "locale": "zh-CN",
+      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/7/description",
+      "locale": "he-IL",
+      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/7/description",
+      "locale": "pt-BR",
+      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.no-break.yml",
+      "fieldPath": "/workload/7/description",
+      "locale": "zh-CN",
+      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "he-IL",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "pt-BR",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/component/0/steps/1/description",
+      "locale": "he-IL",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/component/0/steps/1/description",
+      "locale": "pt-BR",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/component/0/steps/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/component/0/steps/2/description",
+      "locale": "he-IL",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/component/0/steps/2/description",
+      "locale": "pt-BR",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/component/0/steps/2/description",
+      "locale": "zh-CN",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "he-IL",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "pt-BR",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/description",
+      "locale": "he-IL",
+      "sourceHash": "c1009bcbf5a85891235dfd22d5785417675989df337c45c746cd0aa1a1566089",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/description",
+      "locale": "pt-BR",
+      "sourceHash": "c1009bcbf5a85891235dfd22d5785417675989df337c45c746cd0aa1a1566089",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/description",
+      "locale": "zh-CN",
+      "sourceHash": "c1009bcbf5a85891235dfd22d5785417675989df337c45c746cd0aa1a1566089",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "he-IL",
+      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "pt-BR",
+      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "he-IL",
+      "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "pt-BR",
+      "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "he-IL",
+      "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "pt-BR",
+      "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "zh-CN",
+      "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/3/description",
+      "locale": "he-IL",
+      "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/3/description",
+      "locale": "pt-BR",
+      "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/3/description",
+      "locale": "zh-CN",
+      "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/4/description",
+      "locale": "he-IL",
+      "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/4/description",
+      "locale": "pt-BR",
+      "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/4/description",
+      "locale": "zh-CN",
+      "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/5/description",
+      "locale": "he-IL",
+      "sourceHash": "24531bb4adf769bb8519c6d3f9808d219ccbe32eb7d595554db2d4a06c5e02cc",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/5/description",
+      "locale": "pt-BR",
+      "sourceHash": "24531bb4adf769bb8519c6d3f9808d219ccbe32eb7d595554db2d4a06c5e02cc",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/5/description",
+      "locale": "zh-CN",
+      "sourceHash": "24531bb4adf769bb8519c6d3f9808d219ccbe32eb7d595554db2d4a06c5e02cc",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/6/description",
+      "locale": "he-IL",
+      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/6/description",
+      "locale": "pt-BR",
+      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/6/description",
+      "locale": "zh-CN",
+      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/7/description",
+      "locale": "he-IL",
+      "sourceHash": "6df35e37fd3ee6500a92f9941b182bcbd4aa9126b84329f48bfdfd3b0cd960ef",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/7/description",
+      "locale": "pt-BR",
+      "sourceHash": "6df35e37fd3ee6500a92f9941b182bcbd4aa9126b84329f48bfdfd3b0cd960ef",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/7/description",
+      "locale": "zh-CN",
+      "sourceHash": "6df35e37fd3ee6500a92f9941b182bcbd4aa9126b84329f48bfdfd3b0cd960ef",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/8/description",
+      "locale": "he-IL",
+      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/8/description",
+      "locale": "pt-BR",
+      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
+      "origin": "machine"
+    },
+    {
+      "path": "book/test/ch02.website.k8s.dotnet.yml",
+      "fieldPath": "/workload/8/description",
+      "locale": "zh-CN",
+      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "he-IL",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "origin": "machine"
+    },
+    {
       "locale": "pt-BR",
       "fieldPath": "/component/0/description",
       "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/component/0/steps/1/description",
+      "locale": "he-IL",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "origin": "machine"
     },
     {
       "locale": "pt-BR",
@@ -15,10 +918,38 @@
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml"
     },
     {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/component/0/steps/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/component/0/steps/2/description",
+      "locale": "he-IL",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "origin": "machine"
+    },
+    {
       "locale": "pt-BR",
       "fieldPath": "/component/0/steps/2/description",
       "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/component/0/steps/2/description",
+      "locale": "zh-CN",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "he-IL",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
+      "origin": "machine"
     },
     {
       "locale": "pt-BR",
@@ -27,10 +958,38 @@
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml"
     },
     {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/description",
+      "locale": "he-IL",
+      "sourceHash": "b115092c6431ff8117799eb2c7d698fdc371a87dcd6230ab6dac81fb6cc5f163",
+      "origin": "machine"
+    },
+    {
       "locale": "pt-BR",
       "fieldPath": "/description",
       "sourceHash": "b115092c6431ff8117799eb2c7d698fdc371a87dcd6230ab6dac81fb6cc5f163",
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/description",
+      "locale": "zh-CN",
+      "sourceHash": "b115092c6431ff8117799eb2c7d698fdc371a87dcd6230ab6dac81fb6cc5f163",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "he-IL",
+      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
+      "origin": "machine"
     },
     {
       "locale": "pt-BR",
@@ -39,10 +998,38 @@
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml"
     },
     {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "he-IL",
+      "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
+      "origin": "machine"
+    },
+    {
       "locale": "pt-BR",
       "fieldPath": "/workload/1/description",
       "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "he-IL",
+      "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
+      "origin": "machine"
     },
     {
       "locale": "pt-BR",
@@ -51,10 +1038,38 @@
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml"
     },
     {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "zh-CN",
+      "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/workload/3/description",
+      "locale": "he-IL",
+      "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
+      "origin": "machine"
+    },
+    {
       "locale": "pt-BR",
       "fieldPath": "/workload/3/description",
       "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/workload/3/description",
+      "locale": "zh-CN",
+      "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/workload/4/description",
+      "locale": "he-IL",
+      "sourceHash": "c139674fb9e4236f8a2bac88f1043667732818593bafeb95e18306c48567b047",
+      "origin": "machine"
     },
     {
       "locale": "pt-BR",
@@ -63,10 +1078,38 @@
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml"
     },
     {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
+      "fieldPath": "/workload/4/description",
+      "locale": "zh-CN",
+      "sourceHash": "c139674fb9e4236f8a2bac88f1043667732818593bafeb95e18306c48567b047",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "he-IL",
+      "sourceHash": "7e20521298f2fd249cc4181aab65d0058ba5e9d0c281d73fdc83b957dc5d9dbd",
+      "origin": "machine"
+    },
+    {
       "locale": "pt-BR",
       "fieldPath": "/component/0/description",
       "sourceHash": "7e20521298f2fd249cc4181aab65d0058ba5e9d0c281d73fdc83b957dc5d9dbd",
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "7e20521298f2fd249cc4181aab65d0058ba5e9d0c281d73fdc83b957dc5d9dbd",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "he-IL",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "origin": "machine"
     },
     {
       "locale": "pt-BR",
@@ -75,10 +1118,38 @@
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml"
     },
     {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/component/1/steps/1/description",
+      "locale": "he-IL",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "origin": "machine"
+    },
+    {
       "locale": "pt-BR",
       "fieldPath": "/component/1/steps/1/description",
       "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/component/1/steps/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/component/1/steps/2/description",
+      "locale": "he-IL",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "origin": "machine"
     },
     {
       "locale": "pt-BR",
@@ -87,10 +1158,38 @@
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml"
     },
     {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/component/1/steps/2/description",
+      "locale": "zh-CN",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/component/2/description",
+      "locale": "he-IL",
+      "sourceHash": "eb65a6b79882323d16835db20a93dde2c08a4db9f4a4a45cad29d21d7ffa2675",
+      "origin": "machine"
+    },
+    {
       "locale": "pt-BR",
       "fieldPath": "/component/2/description",
       "sourceHash": "eb65a6b79882323d16835db20a93dde2c08a4db9f4a4a45cad29d21d7ffa2675",
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/component/2/description",
+      "locale": "zh-CN",
+      "sourceHash": "eb65a6b79882323d16835db20a93dde2c08a4db9f4a4a45cad29d21d7ffa2675",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/description",
+      "locale": "he-IL",
+      "sourceHash": "a4135c7c706d2e13f481404ab5e75fab81b725168686dde69924d90276851e30",
+      "origin": "machine"
     },
     {
       "locale": "pt-BR",
@@ -99,10 +1198,38 @@
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml"
     },
     {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/description",
+      "locale": "zh-CN",
+      "sourceHash": "a4135c7c706d2e13f481404ab5e75fab81b725168686dde69924d90276851e30",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "he-IL",
+      "sourceHash": "356ef8399fa5035aec0d26823c6261e4609d09107a5e4749a254d81391aa6054",
+      "origin": "machine"
+    },
+    {
       "locale": "pt-BR",
       "fieldPath": "/workload/0/description",
       "sourceHash": "356ef8399fa5035aec0d26823c6261e4609d09107a5e4749a254d81391aa6054",
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "356ef8399fa5035aec0d26823c6261e4609d09107a5e4749a254d81391aa6054",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "he-IL",
+      "sourceHash": "35da1a31338d40fbf92c4dcd86cac6c472f0e6f5d42a07822608f998575a78d5",
+      "origin": "machine"
     },
     {
       "locale": "pt-BR",
@@ -111,10 +1238,38 @@
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml"
     },
     {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "35da1a31338d40fbf92c4dcd86cac6c472f0e6f5d42a07822608f998575a78d5",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "he-IL",
+      "sourceHash": "1db0f3cc773aaf45171d0660f6107006aa701a406800501e6ebaf0a2e83e83d6",
+      "origin": "machine"
+    },
+    {
       "locale": "pt-BR",
       "fieldPath": "/workload/2/description",
       "sourceHash": "1db0f3cc773aaf45171d0660f6107006aa701a406800501e6ebaf0a2e83e83d6",
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "zh-CN",
+      "sourceHash": "1db0f3cc773aaf45171d0660f6107006aa701a406800501e6ebaf0a2e83e83d6",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/workload/3/description",
+      "locale": "he-IL",
+      "sourceHash": "006bf581acae338d8534cef6703f6c1e0e760671ccb069c2497ce40696c4f9d2",
+      "origin": "machine"
     },
     {
       "locale": "pt-BR",
@@ -123,10 +1278,38 @@
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml"
     },
     {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/workload/3/description",
+      "locale": "zh-CN",
+      "sourceHash": "006bf581acae338d8534cef6703f6c1e0e760671ccb069c2497ce40696c4f9d2",
+      "origin": "machine"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/workload/4/description",
+      "locale": "he-IL",
+      "sourceHash": "68e89257ac4f92a748c39cfea22d908047c693ea55924ba89de84ae2eeead2e9",
+      "origin": "machine"
+    },
+    {
       "locale": "pt-BR",
       "fieldPath": "/workload/4/description",
       "sourceHash": "68e89257ac4f92a748c39cfea22d908047c693ea55924ba89de84ae2eeead2e9",
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml"
+    },
+    {
+      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
+      "fieldPath": "/workload/4/description",
+      "locale": "zh-CN",
+      "sourceHash": "68e89257ac4f92a748c39cfea22d908047c693ea55924ba89de84ae2eeead2e9",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/website.ubuntu24.warm.yml",
+      "fieldPath": "/description",
+      "locale": "he-IL",
+      "sourceHash": "a667aa642d56447673b40a6de96bedc82fd54babe9f18a28b8c39b8922f31934",
+      "origin": "machine"
     },
     {
       "locale": "pt-BR",
@@ -135,849 +1318,66 @@
       "path": "example/website/test/website.ubuntu24.warm.yml"
     },
     {
+      "path": "example/website/test/website.ubuntu24.warm.yml",
+      "fieldPath": "/description",
+      "locale": "zh-CN",
+      "sourceHash": "a667aa642d56447673b40a6de96bedc82fd54babe9f18a28b8c39b8922f31934",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/website.ubuntu24.warm.yml",
+      "fieldPath": "/steps/0/description",
+      "locale": "he-IL",
+      "sourceHash": "adabd21f230784e27420849da88c587ae826ad015c0632fe06a4a98bedaa689e",
+      "origin": "machine"
+    },
+    {
       "locale": "pt-BR",
       "fieldPath": "/steps/0/description",
       "sourceHash": "adabd21f230784e27420849da88c587ae826ad015c0632fe06a4a98bedaa689e",
       "path": "example/website/test/website.ubuntu24.warm.yml"
     },
     {
+      "path": "example/website/test/website.ubuntu24.warm.yml",
+      "fieldPath": "/steps/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "adabd21f230784e27420849da88c587ae826ad015c0632fe06a4a98bedaa689e",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/website.ubuntu26.warm.yml",
+      "fieldPath": "/description",
+      "locale": "he-IL",
+      "sourceHash": "180281dc9f5739d3d79ad572f35249fb82032af25d0a61cf56b953ab99c58c79",
+      "origin": "machine"
+    },
+    {
       "locale": "pt-BR",
       "fieldPath": "/description",
       "sourceHash": "180281dc9f5739d3d79ad572f35249fb82032af25d0a61cf56b953ab99c58c79",
       "path": "example/website/test/website.ubuntu26.warm.yml"
     },
     {
+      "path": "example/website/test/website.ubuntu26.warm.yml",
+      "fieldPath": "/description",
+      "locale": "zh-CN",
+      "sourceHash": "180281dc9f5739d3d79ad572f35249fb82032af25d0a61cf56b953ab99c58c79",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/website.ubuntu26.warm.yml",
+      "fieldPath": "/steps/0/description",
+      "locale": "he-IL",
+      "sourceHash": "adabd21f230784e27420849da88c587ae826ad015c0632fe06a4a98bedaa689e",
+      "origin": "machine"
+    },
+    {
       "locale": "pt-BR",
       "fieldPath": "/steps/0/description",
       "sourceHash": "adabd21f230784e27420849da88c587ae826ad015c0632fe06a4a98bedaa689e",
       "path": "example/website/test/website.ubuntu26.warm.yml"
     },
     {
-      "locale": "pt-BR",
-      "fieldPath": "/component/0/description",
-      "sourceHash": "c93b4c8baa5866feb8a8ac12f9ac724b190b4dfa1adc3f599aca441df3f29e21",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/description",
-      "sourceHash": "c4c8b6901830dfc599845b9bc29de13784b280c59006ef26bfbcb2c550674d98",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/0/description",
-      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/1/description",
-      "sourceHash": "7c1e11227ca842e1bffd31079d49dc6057f79defa3f07b8cb92f3380c1ada18b",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/2/description",
-      "sourceHash": "1abcd651e8038a422f9af8ff7975206aaf7111067603f3b73c5c7a141b7846c0",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/0/description",
-      "sourceHash": "c93b4c8baa5866feb8a8ac12f9ac724b190b4dfa1adc3f599aca441df3f29e21",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/1/description",
-      "sourceHash": "7bb52c5da52735728708009f195ca250a9839196c73c8f48f8eba8dfe972cf21",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/description",
-      "sourceHash": "765007177f28f34b590a5b425e69701a1de59c59321911794cb017c8b75ef090",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/0/description",
-      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/1/description",
-      "sourceHash": "088776b74cae5eae23501636005538c4f1b747ec8bbd78c814ef4f5f6a157993",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/2/description",
-      "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/3/description",
-      "sourceHash": "554508f11c3ad586134554bd839f3afde4711b0bad5112e9262cb629e4ebd3eb",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/0/description",
-      "sourceHash": "3c211ba9d3556d655e08f1d807cf0221942680cebb20e2cd89b9f3321a295a84",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/1/description",
-      "sourceHash": "fbe0e847184cdbd28d1c9c69e235e874c5c240110f7287bbc113290a44e86153",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/2/description",
-      "sourceHash": "06c2411db6690c9814580003d23274cb9fc3021ec0865498505f9def6bc2909f",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/description",
-      "sourceHash": "96a24ed7537f25d38dfebfd6932e627f3f61191f95757cf2f03cf32913a87783",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/0/description",
-      "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/1/description",
-      "sourceHash": "253453ed0b159b84133c5693616785d1c7cfd93e6a736acfdc5328d76de86d99",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/2/description",
-      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/0/description",
-      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/0/steps/1/description",
-      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/0/steps/2/description",
-      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/1/description",
-      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/description",
-      "sourceHash": "329f504f0ca02a6ec5dc14291b6c13196fd099d8712244235f29bc8c4190979d",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/0/description",
-      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/1/description",
-      "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/2/description",
-      "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/3/description",
-      "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/4/description",
-      "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/5/description",
-      "sourceHash": "24531bb4adf769bb8519c6d3f9808d219ccbe32eb7d595554db2d4a06c5e02cc",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/6/description",
-      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/7/description",
-      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/0/description",
-      "sourceHash": "c93b4c8baa5866feb8a8ac12f9ac724b190b4dfa1adc3f599aca441df3f29e21",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/description",
-      "sourceHash": "cb9b2b49cdc6eed0e234d54137c50fe97be96d0bca053347471a03bd9268fcd8",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/0/description",
-      "sourceHash": "1af7e381c1cc68096aa669e740099c8ec2d559fa19bec05b8a8e36da1f62c8df",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/1/description",
-      "sourceHash": "7c1e11227ca842e1bffd31079d49dc6057f79defa3f07b8cb92f3380c1ada18b",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/2/description",
-      "sourceHash": "1abcd651e8038a422f9af8ff7975206aaf7111067603f3b73c5c7a141b7846c0",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/0/description",
-      "sourceHash": "c93b4c8baa5866feb8a8ac12f9ac724b190b4dfa1adc3f599aca441df3f29e21",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/1/description",
-      "sourceHash": "7bb52c5da52735728708009f195ca250a9839196c73c8f48f8eba8dfe972cf21",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/description",
-      "sourceHash": "f24cf7769050ebb6aa4383476155b1afe023caee037b06c2f51de335751c9a31",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/0/description",
-      "sourceHash": "1af7e381c1cc68096aa669e740099c8ec2d559fa19bec05b8a8e36da1f62c8df",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/1/description",
-      "sourceHash": "088776b74cae5eae23501636005538c4f1b747ec8bbd78c814ef4f5f6a157993",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/2/description",
-      "sourceHash": "fb99c92f1e3dd731bebbf5a1aab3ea42703f0721352fe8bcf433a2a4883edc9f",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/3/description",
-      "sourceHash": "554508f11c3ad586134554bd839f3afde4711b0bad5112e9262cb629e4ebd3eb",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/0/description",
-      "sourceHash": "3c211ba9d3556d655e08f1d807cf0221942680cebb20e2cd89b9f3321a295a84",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/1/description",
-      "sourceHash": "fbe0e847184cdbd28d1c9c69e235e874c5c240110f7287bbc113290a44e86153",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/2/description",
-      "sourceHash": "06c2411db6690c9814580003d23274cb9fc3021ec0865498505f9def6bc2909f",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/description",
-      "sourceHash": "76635d6b071eeaec6da5a69de14f741577e936c6786715862761c4f176412aac",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/0/description",
-      "sourceHash": "fb99c92f1e3dd731bebbf5a1aab3ea42703f0721352fe8bcf433a2a4883edc9f",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/1/description",
-      "sourceHash": "253453ed0b159b84133c5693616785d1c7cfd93e6a736acfdc5328d76de86d99",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/2/description",
-      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/0/description",
-      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/0/steps/1/description",
-      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/0/steps/2/description",
-      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/component/1/description",
-      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/description",
-      "sourceHash": "45176bb64548907e62d84a5dc35bce31b647047e181a668e203aef7b46ffcf64",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/0/description",
-      "sourceHash": "1af7e381c1cc68096aa669e740099c8ec2d559fa19bec05b8a8e36da1f62c8df",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/1/description",
-      "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/2/description",
-      "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/3/description",
-      "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/4/description",
-      "sourceHash": "fb99c92f1e3dd731bebbf5a1aab3ea42703f0721352fe8bcf433a2a4883edc9f",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/5/description",
-      "sourceHash": "24531bb4adf769bb8519c6d3f9808d219ccbe32eb7d595554db2d4a06c5e02cc",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/6/description",
-      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
-    },
-    {
-      "locale": "pt-BR",
-      "fieldPath": "/workload/7/description",
-      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
-      "fieldPath": "/workload/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
-      "fieldPath": "/workload/2/description",
-      "locale": "zh-CN",
-      "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
-      "fieldPath": "/workload/3/description",
-      "locale": "zh-CN",
-      "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
-      "fieldPath": "/workload/4/description",
-      "locale": "zh-CN",
-      "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
-      "fieldPath": "/workload/5/description",
-      "locale": "zh-CN",
-      "sourceHash": "24531bb4adf769bb8519c6d3f9808d219ccbe32eb7d595554db2d4a06c5e02cc",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
-      "fieldPath": "/workload/6/description",
-      "locale": "zh-CN",
-      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
-      "fieldPath": "/workload/7/description",
-      "locale": "zh-CN",
-      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml",
-      "fieldPath": "/component/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "c93b4c8baa5866feb8a8ac12f9ac724b190b4dfa1adc3f599aca441df3f29e21",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml",
-      "fieldPath": "/description",
-      "locale": "zh-CN",
-      "sourceHash": "cb9b2b49cdc6eed0e234d54137c50fe97be96d0bca053347471a03bd9268fcd8",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml",
-      "fieldPath": "/workload/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "1af7e381c1cc68096aa669e740099c8ec2d559fa19bec05b8a8e36da1f62c8df",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml",
-      "fieldPath": "/workload/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "7c1e11227ca842e1bffd31079d49dc6057f79defa3f07b8cb92f3380c1ada18b",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml",
-      "fieldPath": "/workload/2/description",
-      "locale": "zh-CN",
-      "sourceHash": "1abcd651e8038a422f9af8ff7975206aaf7111067603f3b73c5c7a141b7846c0",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml",
-      "fieldPath": "/component/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "c93b4c8baa5866feb8a8ac12f9ac724b190b4dfa1adc3f599aca441df3f29e21",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml",
-      "fieldPath": "/component/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "7bb52c5da52735728708009f195ca250a9839196c73c8f48f8eba8dfe972cf21",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml",
-      "fieldPath": "/description",
-      "locale": "zh-CN",
-      "sourceHash": "f24cf7769050ebb6aa4383476155b1afe023caee037b06c2f51de335751c9a31",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml",
-      "fieldPath": "/workload/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "1af7e381c1cc68096aa669e740099c8ec2d559fa19bec05b8a8e36da1f62c8df",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml",
-      "fieldPath": "/workload/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "088776b74cae5eae23501636005538c4f1b747ec8bbd78c814ef4f5f6a157993",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml",
-      "fieldPath": "/workload/2/description",
-      "locale": "zh-CN",
-      "sourceHash": "fb99c92f1e3dd731bebbf5a1aab3ea42703f0721352fe8bcf433a2a4883edc9f",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml",
-      "fieldPath": "/workload/3/description",
-      "locale": "zh-CN",
-      "sourceHash": "554508f11c3ad586134554bd839f3afde4711b0bad5112e9262cb629e4ebd3eb",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml",
-      "fieldPath": "/component/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "3c211ba9d3556d655e08f1d807cf0221942680cebb20e2cd89b9f3321a295a84",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml",
-      "fieldPath": "/component/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "fbe0e847184cdbd28d1c9c69e235e874c5c240110f7287bbc113290a44e86153",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml",
-      "fieldPath": "/component/2/description",
-      "locale": "zh-CN",
-      "sourceHash": "06c2411db6690c9814580003d23274cb9fc3021ec0865498505f9def6bc2909f",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml",
-      "fieldPath": "/description",
-      "locale": "zh-CN",
-      "sourceHash": "76635d6b071eeaec6da5a69de14f741577e936c6786715862761c4f176412aac",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml",
-      "fieldPath": "/workload/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "fb99c92f1e3dd731bebbf5a1aab3ea42703f0721352fe8bcf433a2a4883edc9f",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml",
-      "fieldPath": "/workload/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "253453ed0b159b84133c5693616785d1c7cfd93e6a736acfdc5328d76de86d99",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml",
-      "fieldPath": "/workload/2/description",
-      "locale": "zh-CN",
-      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
-      "fieldPath": "/component/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
-      "fieldPath": "/component/0/steps/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
-      "fieldPath": "/component/0/steps/2/description",
-      "locale": "zh-CN",
-      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
-      "fieldPath": "/component/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
-      "fieldPath": "/description",
-      "locale": "zh-CN",
-      "sourceHash": "45176bb64548907e62d84a5dc35bce31b647047e181a668e203aef7b46ffcf64",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
-      "fieldPath": "/workload/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "1af7e381c1cc68096aa669e740099c8ec2d559fa19bec05b8a8e36da1f62c8df",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
-      "fieldPath": "/workload/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
-      "fieldPath": "/workload/2/description",
-      "locale": "zh-CN",
-      "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
-      "fieldPath": "/workload/3/description",
-      "locale": "zh-CN",
-      "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
-      "fieldPath": "/workload/4/description",
-      "locale": "zh-CN",
-      "sourceHash": "fb99c92f1e3dd731bebbf5a1aab3ea42703f0721352fe8bcf433a2a4883edc9f",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
-      "fieldPath": "/workload/5/description",
-      "locale": "zh-CN",
-      "sourceHash": "24531bb4adf769bb8519c6d3f9808d219ccbe32eb7d595554db2d4a06c5e02cc",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
-      "fieldPath": "/workload/6/description",
-      "locale": "zh-CN",
-      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
-      "fieldPath": "/workload/7/description",
-      "locale": "zh-CN",
-      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/component/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/component/0/steps/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/component/0/steps/2/description",
-      "locale": "zh-CN",
-      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/component/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/description",
-      "locale": "zh-CN",
-      "sourceHash": "b115092c6431ff8117799eb2c7d698fdc371a87dcd6230ab6dac81fb6cc5f163",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/workload/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/workload/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/workload/2/description",
-      "locale": "zh-CN",
-      "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/workload/3/description",
-      "locale": "zh-CN",
-      "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/workload/4/description",
-      "locale": "zh-CN",
-      "sourceHash": "c139674fb9e4236f8a2bac88f1043667732818593bafeb95e18306c48567b047",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/component/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "7e20521298f2fd249cc4181aab65d0058ba5e9d0c281d73fdc83b957dc5d9dbd",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/component/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/component/1/steps/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/component/1/steps/2/description",
-      "locale": "zh-CN",
-      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/component/2/description",
-      "locale": "zh-CN",
-      "sourceHash": "eb65a6b79882323d16835db20a93dde2c08a4db9f4a4a45cad29d21d7ffa2675",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/description",
-      "locale": "zh-CN",
-      "sourceHash": "a4135c7c706d2e13f481404ab5e75fab81b725168686dde69924d90276851e30",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/workload/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "356ef8399fa5035aec0d26823c6261e4609d09107a5e4749a254d81391aa6054",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/workload/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "35da1a31338d40fbf92c4dcd86cac6c472f0e6f5d42a07822608f998575a78d5",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/workload/2/description",
-      "locale": "zh-CN",
-      "sourceHash": "1db0f3cc773aaf45171d0660f6107006aa701a406800501e6ebaf0a2e83e83d6",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/workload/3/description",
-      "locale": "zh-CN",
-      "sourceHash": "006bf581acae338d8534cef6703f6c1e0e760671ccb069c2497ce40696c4f9d2",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/workload/4/description",
-      "locale": "zh-CN",
-      "sourceHash": "68e89257ac4f92a748c39cfea22d908047c693ea55924ba89de84ae2eeead2e9",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/website.ubuntu24.warm.yml",
-      "fieldPath": "/description",
-      "locale": "zh-CN",
-      "sourceHash": "a667aa642d56447673b40a6de96bedc82fd54babe9f18a28b8c39b8922f31934",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/website.ubuntu24.warm.yml",
-      "fieldPath": "/steps/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "adabd21f230784e27420849da88c587ae826ad015c0632fe06a4a98bedaa689e",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/website.ubuntu26.warm.yml",
-      "fieldPath": "/description",
-      "locale": "zh-CN",
-      "sourceHash": "180281dc9f5739d3d79ad572f35249fb82032af25d0a61cf56b953ab99c58c79",
-      "origin": "machine"
-    },
-    {
       "path": "example/website/test/website.ubuntu26.warm.yml",
       "fieldPath": "/steps/0/description",
       "locale": "zh-CN",
@@ -987,357 +1387,20 @@
     {
       "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml",
       "fieldPath": "/component/0/description",
-      "locale": "zh-CN",
+      "locale": "he-IL",
       "sourceHash": "c93b4c8baa5866feb8a8ac12f9ac724b190b4dfa1adc3f599aca441df3f29e21",
       "origin": "machine"
     },
     {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml",
-      "fieldPath": "/description",
-      "locale": "zh-CN",
-      "sourceHash": "c4c8b6901830dfc599845b9bc29de13784b280c59006ef26bfbcb2c550674d98",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml",
-      "fieldPath": "/workload/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml",
-      "fieldPath": "/workload/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "7c1e11227ca842e1bffd31079d49dc6057f79defa3f07b8cb92f3380c1ada18b",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml",
-      "fieldPath": "/workload/2/description",
-      "locale": "zh-CN",
-      "sourceHash": "1abcd651e8038a422f9af8ff7975206aaf7111067603f3b73c5c7a141b7846c0",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml",
+      "locale": "pt-BR",
       "fieldPath": "/component/0/description",
-      "locale": "zh-CN",
       "sourceHash": "c93b4c8baa5866feb8a8ac12f9ac724b190b4dfa1adc3f599aca441df3f29e21",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml",
-      "fieldPath": "/component/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "7bb52c5da52735728708009f195ca250a9839196c73c8f48f8eba8dfe972cf21",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml",
-      "fieldPath": "/description",
-      "locale": "zh-CN",
-      "sourceHash": "765007177f28f34b590a5b425e69701a1de59c59321911794cb017c8b75ef090",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml",
-      "fieldPath": "/workload/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml",
-      "fieldPath": "/workload/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "088776b74cae5eae23501636005538c4f1b747ec8bbd78c814ef4f5f6a157993",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml",
-      "fieldPath": "/workload/2/description",
-      "locale": "zh-CN",
-      "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml",
-      "fieldPath": "/workload/3/description",
-      "locale": "zh-CN",
-      "sourceHash": "554508f11c3ad586134554bd839f3afde4711b0bad5112e9262cb629e4ebd3eb",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml",
-      "fieldPath": "/component/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "3c211ba9d3556d655e08f1d807cf0221942680cebb20e2cd89b9f3321a295a84",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml",
-      "fieldPath": "/component/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "fbe0e847184cdbd28d1c9c69e235e874c5c240110f7287bbc113290a44e86153",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml",
-      "fieldPath": "/component/2/description",
-      "locale": "zh-CN",
-      "sourceHash": "06c2411db6690c9814580003d23274cb9fc3021ec0865498505f9def6bc2909f",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml",
-      "fieldPath": "/description",
-      "locale": "zh-CN",
-      "sourceHash": "96a24ed7537f25d38dfebfd6932e627f3f61191f95757cf2f03cf32913a87783",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml",
-      "fieldPath": "/workload/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml",
-      "fieldPath": "/workload/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "253453ed0b159b84133c5693616785d1c7cfd93e6a736acfdc5328d76de86d99",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml",
-      "fieldPath": "/workload/2/description",
-      "locale": "zh-CN",
-      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
-      "fieldPath": "/component/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
-      "fieldPath": "/component/0/steps/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
-      "fieldPath": "/component/0/steps/2/description",
-      "locale": "zh-CN",
-      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
-      "fieldPath": "/component/1/description",
-      "locale": "zh-CN",
-      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
-      "fieldPath": "/description",
-      "locale": "zh-CN",
-      "sourceHash": "329f504f0ca02a6ec5dc14291b6c13196fd099d8712244235f29bc8c4190979d",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
-      "fieldPath": "/workload/0/description",
-      "locale": "zh-CN",
-      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/component/0/description",
-      "locale": "he-IL",
-      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/component/0/steps/1/description",
-      "locale": "he-IL",
-      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/component/0/steps/2/description",
-      "locale": "he-IL",
-      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/component/1/description",
-      "locale": "he-IL",
-      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/description",
-      "locale": "he-IL",
-      "sourceHash": "b115092c6431ff8117799eb2c7d698fdc371a87dcd6230ab6dac81fb6cc5f163",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/workload/0/description",
-      "locale": "he-IL",
-      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/workload/1/description",
-      "locale": "he-IL",
-      "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/workload/2/description",
-      "locale": "he-IL",
-      "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/workload/3/description",
-      "locale": "he-IL",
-      "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.baseline.yml",
-      "fieldPath": "/workload/4/description",
-      "locale": "he-IL",
-      "sourceHash": "c139674fb9e4236f8a2bac88f1043667732818593bafeb95e18306c48567b047",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/component/0/description",
-      "locale": "he-IL",
-      "sourceHash": "7e20521298f2fd249cc4181aab65d0058ba5e9d0c281d73fdc83b957dc5d9dbd",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/component/1/description",
-      "locale": "he-IL",
-      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/component/1/steps/1/description",
-      "locale": "he-IL",
-      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/component/1/steps/2/description",
-      "locale": "he-IL",
-      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/component/2/description",
-      "locale": "he-IL",
-      "sourceHash": "eb65a6b79882323d16835db20a93dde2c08a4db9f4a4a45cad29d21d7ffa2675",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/description",
-      "locale": "he-IL",
-      "sourceHash": "a4135c7c706d2e13f481404ab5e75fab81b725168686dde69924d90276851e30",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/workload/0/description",
-      "locale": "he-IL",
-      "sourceHash": "356ef8399fa5035aec0d26823c6261e4609d09107a5e4749a254d81391aa6054",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/workload/1/description",
-      "locale": "he-IL",
-      "sourceHash": "35da1a31338d40fbf92c4dcd86cac6c472f0e6f5d42a07822608f998575a78d5",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/workload/2/description",
-      "locale": "he-IL",
-      "sourceHash": "1db0f3cc773aaf45171d0660f6107006aa701a406800501e6ebaf0a2e83e83d6",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/workload/3/description",
-      "locale": "he-IL",
-      "sourceHash": "006bf581acae338d8534cef6703f6c1e0e760671ccb069c2497ce40696c4f9d2",
-      "origin": "machine"
-    },
-    {
-      "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
-      "fieldPath": "/workload/4/description",
-      "locale": "he-IL",
-      "sourceHash": "68e89257ac4f92a748c39cfea22d908047c693ea55924ba89de84ae2eeead2e9",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/website.ubuntu24.warm.yml",
-      "fieldPath": "/description",
-      "locale": "he-IL",
-      "sourceHash": "a667aa642d56447673b40a6de96bedc82fd54babe9f18a28b8c39b8922f31934",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/website.ubuntu24.warm.yml",
-      "fieldPath": "/steps/0/description",
-      "locale": "he-IL",
-      "sourceHash": "adabd21f230784e27420849da88c587ae826ad015c0632fe06a4a98bedaa689e",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/website.ubuntu26.warm.yml",
-      "fieldPath": "/description",
-      "locale": "he-IL",
-      "sourceHash": "180281dc9f5739d3d79ad572f35249fb82032af25d0a61cf56b953ab99c58c79",
-      "origin": "machine"
-    },
-    {
-      "path": "example/website/test/website.ubuntu26.warm.yml",
-      "fieldPath": "/steps/0/description",
-      "locale": "he-IL",
-      "sourceHash": "adabd21f230784e27420849da88c587ae826ad015c0632fe06a4a98bedaa689e",
-      "origin": "machine"
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml"
     },
     {
       "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml",
       "fieldPath": "/component/0/description",
-      "locale": "he-IL",
+      "locale": "zh-CN",
       "sourceHash": "c93b4c8baa5866feb8a8ac12f9ac724b190b4dfa1adc3f599aca441df3f29e21",
       "origin": "machine"
     },
@@ -1349,9 +1412,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/description",
+      "sourceHash": "c4c8b6901830dfc599845b9bc29de13784b280c59006ef26bfbcb2c550674d98",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml",
+      "fieldPath": "/description",
+      "locale": "zh-CN",
+      "sourceHash": "c4c8b6901830dfc599845b9bc29de13784b280c59006ef26bfbcb2c550674d98",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml",
       "fieldPath": "/workload/0/description",
       "locale": "he-IL",
+      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/0/description",
+      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "zh-CN",
       "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
       "origin": "machine"
     },
@@ -1363,9 +1452,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/1/description",
+      "sourceHash": "7c1e11227ca842e1bffd31079d49dc6057f79defa3f07b8cb92f3380c1ada18b",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "7c1e11227ca842e1bffd31079d49dc6057f79defa3f07b8cb92f3380c1ada18b",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml",
       "fieldPath": "/workload/2/description",
       "locale": "he-IL",
+      "sourceHash": "1abcd651e8038a422f9af8ff7975206aaf7111067603f3b73c5c7a141b7846c0",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/2/description",
+      "sourceHash": "1abcd651e8038a422f9af8ff7975206aaf7111067603f3b73c5c7a141b7846c0",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.baseline.ssh.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "zh-CN",
       "sourceHash": "1abcd651e8038a422f9af8ff7975206aaf7111067603f3b73c5c7a141b7846c0",
       "origin": "machine"
     },
@@ -1377,9 +1492,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/component/0/description",
+      "sourceHash": "c93b4c8baa5866feb8a8ac12f9ac724b190b4dfa1adc3f599aca441df3f29e21",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "c93b4c8baa5866feb8a8ac12f9ac724b190b4dfa1adc3f599aca441df3f29e21",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml",
       "fieldPath": "/component/1/description",
       "locale": "he-IL",
+      "sourceHash": "7bb52c5da52735728708009f195ca250a9839196c73c8f48f8eba8dfe972cf21",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/component/1/description",
+      "sourceHash": "7bb52c5da52735728708009f195ca250a9839196c73c8f48f8eba8dfe972cf21",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "zh-CN",
       "sourceHash": "7bb52c5da52735728708009f195ca250a9839196c73c8f48f8eba8dfe972cf21",
       "origin": "machine"
     },
@@ -1391,9 +1532,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/description",
+      "sourceHash": "765007177f28f34b590a5b425e69701a1de59c59321911794cb017c8b75ef090",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml",
+      "fieldPath": "/description",
+      "locale": "zh-CN",
+      "sourceHash": "765007177f28f34b590a5b425e69701a1de59c59321911794cb017c8b75ef090",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml",
       "fieldPath": "/workload/0/description",
       "locale": "he-IL",
+      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/0/description",
+      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "zh-CN",
       "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
       "origin": "machine"
     },
@@ -1405,9 +1572,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/1/description",
+      "sourceHash": "088776b74cae5eae23501636005538c4f1b747ec8bbd78c814ef4f5f6a157993",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "088776b74cae5eae23501636005538c4f1b747ec8bbd78c814ef4f5f6a157993",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml",
       "fieldPath": "/workload/2/description",
       "locale": "he-IL",
+      "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/2/description",
+      "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "zh-CN",
       "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
       "origin": "machine"
     },
@@ -1419,9 +1612,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/3/description",
+      "sourceHash": "554508f11c3ad586134554bd839f3afde4711b0bad5112e9262cb629e4ebd3eb",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.ssh.yml",
+      "fieldPath": "/workload/3/description",
+      "locale": "zh-CN",
+      "sourceHash": "554508f11c3ad586134554bd839f3afde4711b0bad5112e9262cb629e4ebd3eb",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml",
       "fieldPath": "/component/0/description",
       "locale": "he-IL",
+      "sourceHash": "3c211ba9d3556d655e08f1d807cf0221942680cebb20e2cd89b9f3321a295a84",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/component/0/description",
+      "sourceHash": "3c211ba9d3556d655e08f1d807cf0221942680cebb20e2cd89b9f3321a295a84",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "zh-CN",
       "sourceHash": "3c211ba9d3556d655e08f1d807cf0221942680cebb20e2cd89b9f3321a295a84",
       "origin": "machine"
     },
@@ -1433,9 +1652,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/component/1/description",
+      "sourceHash": "fbe0e847184cdbd28d1c9c69e235e874c5c240110f7287bbc113290a44e86153",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "fbe0e847184cdbd28d1c9c69e235e874c5c240110f7287bbc113290a44e86153",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml",
       "fieldPath": "/component/2/description",
       "locale": "he-IL",
+      "sourceHash": "06c2411db6690c9814580003d23274cb9fc3021ec0865498505f9def6bc2909f",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/component/2/description",
+      "sourceHash": "06c2411db6690c9814580003d23274cb9fc3021ec0865498505f9def6bc2909f",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml",
+      "fieldPath": "/component/2/description",
+      "locale": "zh-CN",
       "sourceHash": "06c2411db6690c9814580003d23274cb9fc3021ec0865498505f9def6bc2909f",
       "origin": "machine"
     },
@@ -1447,9 +1692,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/description",
+      "sourceHash": "96a24ed7537f25d38dfebfd6932e627f3f61191f95757cf2f03cf32913a87783",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml",
+      "fieldPath": "/description",
+      "locale": "zh-CN",
+      "sourceHash": "96a24ed7537f25d38dfebfd6932e627f3f61191f95757cf2f03cf32913a87783",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml",
       "fieldPath": "/workload/0/description",
       "locale": "he-IL",
+      "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/0/description",
+      "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "zh-CN",
       "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
       "origin": "machine"
     },
@@ -1461,9 +1732,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/1/description",
+      "sourceHash": "253453ed0b159b84133c5693616785d1c7cfd93e6a736acfdc5328d76de86d99",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "253453ed0b159b84133c5693616785d1c7cfd93e6a736acfdc5328d76de86d99",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml",
       "fieldPath": "/workload/2/description",
       "locale": "he-IL",
+      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/2/description",
+      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.warm.ssh.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "zh-CN",
       "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
       "origin": "machine"
     },
@@ -1475,9 +1772,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/component/0/description",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
       "fieldPath": "/component/0/steps/1/description",
       "locale": "he-IL",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/component/0/steps/1/description",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
+      "fieldPath": "/component/0/steps/1/description",
+      "locale": "zh-CN",
       "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
       "origin": "machine"
     },
@@ -1489,9 +1812,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/component/0/steps/2/description",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
+      "fieldPath": "/component/0/steps/2/description",
+      "locale": "zh-CN",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
       "fieldPath": "/component/1/description",
       "locale": "he-IL",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/component/1/description",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "zh-CN",
       "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
       "origin": "machine"
     },
@@ -1503,9 +1852,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/description",
+      "sourceHash": "329f504f0ca02a6ec5dc14291b6c13196fd099d8712244235f29bc8c4190979d",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
+      "fieldPath": "/description",
+      "locale": "zh-CN",
+      "sourceHash": "329f504f0ca02a6ec5dc14291b6c13196fd099d8712244235f29bc8c4190979d",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
       "fieldPath": "/workload/0/description",
       "locale": "he-IL",
+      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/0/description",
+      "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "zh-CN",
       "sourceHash": "d23772441e8883236cfabf5dc025cdc1f919047069e534710b911fb6055ca125",
       "origin": "machine"
     },
@@ -1517,6 +1892,19 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/1/description",
+      "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
       "fieldPath": "/workload/2/description",
       "locale": "he-IL",
@@ -1524,9 +1912,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/2/description",
+      "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "zh-CN",
+      "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
       "fieldPath": "/workload/3/description",
       "locale": "he-IL",
+      "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/3/description",
+      "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
+      "fieldPath": "/workload/3/description",
+      "locale": "zh-CN",
       "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
       "origin": "machine"
     },
@@ -1538,6 +1952,19 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/4/description",
+      "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
+      "fieldPath": "/workload/4/description",
+      "locale": "zh-CN",
+      "sourceHash": "95e907df11bbf2c38a5f0775e68fad0bc1aeb0d7592c13fa4c51fb32fb5e2aae",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
       "fieldPath": "/workload/5/description",
       "locale": "he-IL",
@@ -1545,9 +1972,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/5/description",
+      "sourceHash": "24531bb4adf769bb8519c6d3f9808d219ccbe32eb7d595554db2d4a06c5e02cc",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
+      "fieldPath": "/workload/5/description",
+      "locale": "zh-CN",
+      "sourceHash": "24531bb4adf769bb8519c6d3f9808d219ccbe32eb7d595554db2d4a06c5e02cc",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
       "fieldPath": "/workload/6/description",
       "locale": "he-IL",
+      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/6/description",
+      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
+      "fieldPath": "/workload/6/description",
+      "locale": "zh-CN",
       "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
       "origin": "machine"
     },
@@ -1559,9 +2012,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/7/description",
+      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.24.k8s.website.yml",
+      "fieldPath": "/workload/7/description",
+      "locale": "zh-CN",
+      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml",
       "fieldPath": "/component/0/description",
       "locale": "he-IL",
+      "sourceHash": "c93b4c8baa5866feb8a8ac12f9ac724b190b4dfa1adc3f599aca441df3f29e21",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/component/0/description",
+      "sourceHash": "c93b4c8baa5866feb8a8ac12f9ac724b190b4dfa1adc3f599aca441df3f29e21",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "zh-CN",
       "sourceHash": "c93b4c8baa5866feb8a8ac12f9ac724b190b4dfa1adc3f599aca441df3f29e21",
       "origin": "machine"
     },
@@ -1573,9 +2052,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/description",
+      "sourceHash": "cb9b2b49cdc6eed0e234d54137c50fe97be96d0bca053347471a03bd9268fcd8",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml",
+      "fieldPath": "/description",
+      "locale": "zh-CN",
+      "sourceHash": "cb9b2b49cdc6eed0e234d54137c50fe97be96d0bca053347471a03bd9268fcd8",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml",
       "fieldPath": "/workload/0/description",
       "locale": "he-IL",
+      "sourceHash": "1af7e381c1cc68096aa669e740099c8ec2d559fa19bec05b8a8e36da1f62c8df",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/0/description",
+      "sourceHash": "1af7e381c1cc68096aa669e740099c8ec2d559fa19bec05b8a8e36da1f62c8df",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "zh-CN",
       "sourceHash": "1af7e381c1cc68096aa669e740099c8ec2d559fa19bec05b8a8e36da1f62c8df",
       "origin": "machine"
     },
@@ -1587,9 +2092,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/1/description",
+      "sourceHash": "7c1e11227ca842e1bffd31079d49dc6057f79defa3f07b8cb92f3380c1ada18b",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "7c1e11227ca842e1bffd31079d49dc6057f79defa3f07b8cb92f3380c1ada18b",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml",
       "fieldPath": "/workload/2/description",
       "locale": "he-IL",
+      "sourceHash": "1abcd651e8038a422f9af8ff7975206aaf7111067603f3b73c5c7a141b7846c0",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/2/description",
+      "sourceHash": "1abcd651e8038a422f9af8ff7975206aaf7111067603f3b73c5c7a141b7846c0",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.baseline.ssh.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "zh-CN",
       "sourceHash": "1abcd651e8038a422f9af8ff7975206aaf7111067603f3b73c5c7a141b7846c0",
       "origin": "machine"
     },
@@ -1601,9 +2132,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/component/0/description",
+      "sourceHash": "c93b4c8baa5866feb8a8ac12f9ac724b190b4dfa1adc3f599aca441df3f29e21",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "c93b4c8baa5866feb8a8ac12f9ac724b190b4dfa1adc3f599aca441df3f29e21",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml",
       "fieldPath": "/component/1/description",
       "locale": "he-IL",
+      "sourceHash": "7bb52c5da52735728708009f195ca250a9839196c73c8f48f8eba8dfe972cf21",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/component/1/description",
+      "sourceHash": "7bb52c5da52735728708009f195ca250a9839196c73c8f48f8eba8dfe972cf21",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "zh-CN",
       "sourceHash": "7bb52c5da52735728708009f195ca250a9839196c73c8f48f8eba8dfe972cf21",
       "origin": "machine"
     },
@@ -1615,9 +2172,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/description",
+      "sourceHash": "f24cf7769050ebb6aa4383476155b1afe023caee037b06c2f51de335751c9a31",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml",
+      "fieldPath": "/description",
+      "locale": "zh-CN",
+      "sourceHash": "f24cf7769050ebb6aa4383476155b1afe023caee037b06c2f51de335751c9a31",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml",
       "fieldPath": "/workload/0/description",
       "locale": "he-IL",
+      "sourceHash": "1af7e381c1cc68096aa669e740099c8ec2d559fa19bec05b8a8e36da1f62c8df",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/0/description",
+      "sourceHash": "1af7e381c1cc68096aa669e740099c8ec2d559fa19bec05b8a8e36da1f62c8df",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "zh-CN",
       "sourceHash": "1af7e381c1cc68096aa669e740099c8ec2d559fa19bec05b8a8e36da1f62c8df",
       "origin": "machine"
     },
@@ -1629,9 +2212,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/1/description",
+      "sourceHash": "088776b74cae5eae23501636005538c4f1b747ec8bbd78c814ef4f5f6a157993",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "088776b74cae5eae23501636005538c4f1b747ec8bbd78c814ef4f5f6a157993",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml",
       "fieldPath": "/workload/2/description",
       "locale": "he-IL",
+      "sourceHash": "fb99c92f1e3dd731bebbf5a1aab3ea42703f0721352fe8bcf433a2a4883edc9f",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/2/description",
+      "sourceHash": "fb99c92f1e3dd731bebbf5a1aab3ea42703f0721352fe8bcf433a2a4883edc9f",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "zh-CN",
       "sourceHash": "fb99c92f1e3dd731bebbf5a1aab3ea42703f0721352fe8bcf433a2a4883edc9f",
       "origin": "machine"
     },
@@ -1643,9 +2252,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/3/description",
+      "sourceHash": "554508f11c3ad586134554bd839f3afde4711b0bad5112e9262cb629e4ebd3eb",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.ssh.yml",
+      "fieldPath": "/workload/3/description",
+      "locale": "zh-CN",
+      "sourceHash": "554508f11c3ad586134554bd839f3afde4711b0bad5112e9262cb629e4ebd3eb",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml",
       "fieldPath": "/component/0/description",
       "locale": "he-IL",
+      "sourceHash": "3c211ba9d3556d655e08f1d807cf0221942680cebb20e2cd89b9f3321a295a84",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/component/0/description",
+      "sourceHash": "3c211ba9d3556d655e08f1d807cf0221942680cebb20e2cd89b9f3321a295a84",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "zh-CN",
       "sourceHash": "3c211ba9d3556d655e08f1d807cf0221942680cebb20e2cd89b9f3321a295a84",
       "origin": "machine"
     },
@@ -1657,9 +2292,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/component/1/description",
+      "sourceHash": "fbe0e847184cdbd28d1c9c69e235e874c5c240110f7287bbc113290a44e86153",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "fbe0e847184cdbd28d1c9c69e235e874c5c240110f7287bbc113290a44e86153",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml",
       "fieldPath": "/component/2/description",
       "locale": "he-IL",
+      "sourceHash": "06c2411db6690c9814580003d23274cb9fc3021ec0865498505f9def6bc2909f",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/component/2/description",
+      "sourceHash": "06c2411db6690c9814580003d23274cb9fc3021ec0865498505f9def6bc2909f",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml",
+      "fieldPath": "/component/2/description",
+      "locale": "zh-CN",
       "sourceHash": "06c2411db6690c9814580003d23274cb9fc3021ec0865498505f9def6bc2909f",
       "origin": "machine"
     },
@@ -1671,9 +2332,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/description",
+      "sourceHash": "76635d6b071eeaec6da5a69de14f741577e936c6786715862761c4f176412aac",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml",
+      "fieldPath": "/description",
+      "locale": "zh-CN",
+      "sourceHash": "76635d6b071eeaec6da5a69de14f741577e936c6786715862761c4f176412aac",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml",
       "fieldPath": "/workload/0/description",
       "locale": "he-IL",
+      "sourceHash": "fb99c92f1e3dd731bebbf5a1aab3ea42703f0721352fe8bcf433a2a4883edc9f",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/0/description",
+      "sourceHash": "fb99c92f1e3dd731bebbf5a1aab3ea42703f0721352fe8bcf433a2a4883edc9f",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "zh-CN",
       "sourceHash": "fb99c92f1e3dd731bebbf5a1aab3ea42703f0721352fe8bcf433a2a4883edc9f",
       "origin": "machine"
     },
@@ -1685,9 +2372,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/1/description",
+      "sourceHash": "253453ed0b159b84133c5693616785d1c7cfd93e6a736acfdc5328d76de86d99",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "253453ed0b159b84133c5693616785d1c7cfd93e6a736acfdc5328d76de86d99",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml",
       "fieldPath": "/workload/2/description",
       "locale": "he-IL",
+      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/2/description",
+      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.warm.ssh.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "zh-CN",
       "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
       "origin": "machine"
     },
@@ -1699,9 +2412,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/component/0/description",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "7e45c239af8ceb3c6dc3af397e374bf8dec1434b5efdeaaf9eec1e9608624ce4",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
       "fieldPath": "/component/0/steps/1/description",
       "locale": "he-IL",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/component/0/steps/1/description",
+      "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
+      "fieldPath": "/component/0/steps/1/description",
+      "locale": "zh-CN",
       "sourceHash": "85744378c628dec29dd51d1d2288bd8e0e023a31dae1159f34e0ba70d09506e3",
       "origin": "machine"
     },
@@ -1713,9 +2452,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/component/0/steps/2/description",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
+      "fieldPath": "/component/0/steps/2/description",
+      "locale": "zh-CN",
+      "sourceHash": "e608ec06fdaf57f018a1212eff1ff84a8979e3b6d540ba70574d58e2094ee7d9",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
       "fieldPath": "/component/1/description",
       "locale": "he-IL",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/component/1/description",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "zh-CN",
       "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
       "origin": "machine"
     },
@@ -1727,9 +2492,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/description",
+      "sourceHash": "45176bb64548907e62d84a5dc35bce31b647047e181a668e203aef7b46ffcf64",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
+      "fieldPath": "/description",
+      "locale": "zh-CN",
+      "sourceHash": "45176bb64548907e62d84a5dc35bce31b647047e181a668e203aef7b46ffcf64",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
       "fieldPath": "/workload/0/description",
       "locale": "he-IL",
+      "sourceHash": "1af7e381c1cc68096aa669e740099c8ec2d559fa19bec05b8a8e36da1f62c8df",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/0/description",
+      "sourceHash": "1af7e381c1cc68096aa669e740099c8ec2d559fa19bec05b8a8e36da1f62c8df",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "zh-CN",
       "sourceHash": "1af7e381c1cc68096aa669e740099c8ec2d559fa19bec05b8a8e36da1f62c8df",
       "origin": "machine"
     },
@@ -1741,9 +2532,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/1/description",
+      "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "03b256191ab06c37259b3e8b13a2d0ca4f2f2784b23560e41d4b3bfd61784a0c",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
       "fieldPath": "/workload/2/description",
       "locale": "he-IL",
+      "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/2/description",
+      "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "zh-CN",
       "sourceHash": "b663293119ecf45701e113a2cb9ec09d2c475ad99cdb8908f732489881845e15",
       "origin": "machine"
     },
@@ -1755,9 +2572,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/3/description",
+      "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
+      "fieldPath": "/workload/3/description",
+      "locale": "zh-CN",
+      "sourceHash": "c65d9a2bccaba1a6c9d67a9fc82c7f596d1aceec0e88cfa862c7cb104263ee9a",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
       "fieldPath": "/workload/4/description",
       "locale": "he-IL",
+      "sourceHash": "fb99c92f1e3dd731bebbf5a1aab3ea42703f0721352fe8bcf433a2a4883edc9f",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/4/description",
+      "sourceHash": "fb99c92f1e3dd731bebbf5a1aab3ea42703f0721352fe8bcf433a2a4883edc9f",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
+      "fieldPath": "/workload/4/description",
+      "locale": "zh-CN",
       "sourceHash": "fb99c92f1e3dd731bebbf5a1aab3ea42703f0721352fe8bcf433a2a4883edc9f",
       "origin": "machine"
     },
@@ -1769,6 +2612,19 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/5/description",
+      "sourceHash": "24531bb4adf769bb8519c6d3f9808d219ccbe32eb7d595554db2d4a06c5e02cc",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
+      "fieldPath": "/workload/5/description",
+      "locale": "zh-CN",
+      "sourceHash": "24531bb4adf769bb8519c6d3f9808d219ccbe32eb7d595554db2d4a06c5e02cc",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
       "fieldPath": "/workload/6/description",
       "locale": "he-IL",
@@ -1776,9 +2632,35 @@
       "origin": "machine"
     },
     {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/6/description",
+      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
+      "fieldPath": "/workload/6/description",
+      "locale": "zh-CN",
+      "sourceHash": "73b6786c0a608a6a059050c9258e447ad5e0b000e13dec8c0193395209a2a9ef",
+      "origin": "machine"
+    },
+    {
       "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
       "fieldPath": "/workload/7/description",
       "locale": "he-IL",
+      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
+      "origin": "machine"
+    },
+    {
+      "locale": "pt-BR",
+      "fieldPath": "/workload/7/description",
+      "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.yml",
+      "fieldPath": "/workload/7/description",
+      "locale": "zh-CN",
       "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d",
       "origin": "machine"
     }

@@ -23,7 +23,7 @@ workloads:
     - kubectl: "config set-context --current --namespace=${env:namespace} --v=1"
     # Image-pull secret so the cluster can pull from your registry.
     - kubectl: "create secret docker-registry registry-credential --docker-server=${env:dockerServer} --docker-username=${env:dockerUsername} --docker-password=${env:dockerPassword}"
-    # See https://yuruna.link/42010605-0005
+    # See https://yuruna.link/42010605-00a6
     - shell: 'Write-Information ">> TO-SET: add your component deployment in config/localhost/workloads.yml"'
     - shell: 'Write-Information "-- Check pods:     kubectl get pods --all-namespaces"'
     - shell: 'Write-Information "-- Check services: kubectl get svc --all-namespaces"'

@@ -23,10 +23,10 @@ this checkout's absolute path, and then the full paired gate. A matching
 source hash proves which English text a value translates; the marker says
 whether a person has replaced the draft.
 
-Back to the [project guide](../README.md).
-
 ---
 
 LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
+
+Back to the [project guide](../README.md).

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: 2026.10.26
+# Version: 2026.10.30
 # LICENSEURI https://yuruna.link/license
 # Copyright (c) 2019-2026 by Alisson Sol et al.
 # GUID: 4249dfed-2f1f-40bf-b2f9-d7c3cdd04860
@@ -187,19 +187,31 @@ if [ "${rows:-0}" -lt 1 ]; then
   echo "ERROR: schema/seed did not load (customer table empty)." >&2
   exit 1
 fi
-# Probe the pod's node-IP path; a failed login warns while HTTP remains usable.
+# Probe the pod's node-IP path; a failed login stops the step, because the page
+# would still answer 200 while every query in the pod failed.
 # See https://yuruna.link/4286c679-0008
 NODE_IP=$(ip -4 route get 1.1.1.1 2>/dev/null \
   | awk '{for(i=1;i<=NF;i++) if($i=="src"){print $(i+1); exit}}')
 [ -z "${NODE_IP:-}" ] && NODE_IP=$(hostname -I 2>/dev/null | awk '{print $1}')
-echo "  node IP (pods dial this): ${NODE_IP:-unknown}"
-if [ -n "${NODE_IP:-}" ] && app_role_tcp_login "$NODE_IP"; then
-  echo "  ${APP_ROLE} TCP login over ${NODE_IP}:5432 OK (the deployed pod uses this path)"
-else
-  echo "  WARNING: TCP login as ${APP_ROLE} to ${NODE_IP:-?}:5432 failed." >&2
-  echo "           The UI will still serve 200, but in-pod queries may fail." >&2
-  echo "           Check listen_addresses/pg_hba and that PostgreSQL restarted." >&2
+if [ -z "${NODE_IP:-}" ]; then
+  echo "ERROR: could not determine the node IP address the deployed pod dials." >&2
+  exit 1
 fi
+echo "  node IP (pods dial this): ${NODE_IP}"
+# The cluster restarted moments ago, so a few short retries let its listener
+# on the node address come up before the probe counts as failed.
+tcp_login_ok=false
+for i in 1 2 3 4 5; do
+  if app_role_tcp_login "$NODE_IP"; then tcp_login_ok=true; break; fi
+  if [ "$i" -lt 5 ]; then sleep 2; fi
+done
+if [ "$tcp_login_ok" != true ]; then
+  echo "ERROR: TCP login as ${APP_ROLE} to ${NODE_IP}:5432 failed." >&2
+  echo "       The deployed pod uses this path, so its queries would fail." >&2
+  echo "       Check listen_addresses/pg_hba and that PostgreSQL restarted." >&2
+  exit 1
+fi
+echo "  ${APP_ROLE} TCP login over ${NODE_IP}:5432 OK (the deployed pod uses this path)"
 
 # --- REGION: Completion
 # Definite end-of-script line keeps the headless Hyper-V console repainting up

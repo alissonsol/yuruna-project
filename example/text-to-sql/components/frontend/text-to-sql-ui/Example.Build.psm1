@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 2026.10.26
+.VERSION 2026.10.30
 .GUID 42aa6d6d-83ef-4b17-b241-3a1d6bc163d8
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
@@ -159,14 +159,43 @@ function Get-ExampleCachingProxyHost {
     return ''
 }
 
+# --- REGION: Get-ExampleDockerfileBaseImage
+function Get-ExampleDockerfileBaseImage {
+    <# .SYNOPSIS
+        Read the base images a Dockerfile names through its REGISTRY prefix, and the upstream REGISTRY defaults to.
+    .DESCRIPTION
+        The Dockerfile is the only place the base-image identity is written:
+        its FROM ${REGISTRY}<image> lines name the images and its
+        ARG REGISTRY=<upstream>/ line names where a bare build takes them.
+    #>
+    [CmdletBinding()]
+    [OutputType([pscustomobject])]
+    param([Parameter(Mandatory)][string]$DockerfilePath)
+    $upstream = ''
+    $images = [Collections.Generic.List[string]]::new()
+    foreach ($line in [IO.File]::ReadAllLines($DockerfilePath)) {
+        if ($line -match '^\s*ARG\s+REGISTRY=(\S+)\s*$') {
+            $upstream = $Matches[1]
+        } elseif ($line -match '^\s*FROM\s+(?:--\S+\s+)*\$\{REGISTRY\}(\S+)' -and -not $images.Contains($Matches[1])) {
+            $images.Add($Matches[1])
+        }
+    }
+    if ($images.Count -gt 0 -and [string]::IsNullOrWhiteSpace($upstream)) {
+        throw "${DockerfilePath} names base images through `${REGISTRY} but gives REGISTRY no default upstream."
+    }
+    if ($upstream -and -not $upstream.EndsWith('/')) { $upstream += '/' }
+    return [pscustomobject]@{ Upstream = $upstream; Image = [string[]]$images.ToArray() }
+}
+
 # --- REGION: Invoke-ExampleBaseImageSeed
 function Invoke-ExampleBaseImageSeed {
     <# .SYNOPSIS
-        Populate the configured local registry with the example's base images.
+        Populate the configured local registry with the base images the Dockerfile names.
     #>
     [CmdletBinding()]
     [OutputType([int])]
-    param([string[]]$BaseImage = @('dotnet/sdk:10.0', 'dotnet/aspnet:10.0'))
+    param([Parameter(Mandatory)][string]$DockerfilePath)
+    $base = Get-ExampleDockerfileBaseImage -DockerfilePath $DockerfilePath
     if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
         Write-Warning 'docker CLI not found; cannot seed base images.'
         return 1
@@ -182,7 +211,7 @@ function Invoke-ExampleBaseImageSeed {
     $cacheHost = $null
 
     # --- REGION: Seed base images
-    foreach ($ref in $BaseImage) {
+    foreach ($ref in $base.Image) {
         $repo, $tag = $ref -split ':', 2
 
         $served = $false
@@ -206,7 +235,7 @@ function Invoke-ExampleBaseImageSeed {
             if ($null -eq $cacheHost) { $cacheHost = Get-ExampleCachingProxyHost }
             $sources = @()
             if (-not [string]::IsNullOrWhiteSpace($cacheHost)) { $sources += "${cacheHost}:5000/" }
-            $sources += 'mcr.microsoft.com/'
+            $sources += $base.Upstream
             foreach ($source in $sources) {
                 Write-Information "Pulling ${source}${ref}"
                 if ((Invoke-BoundedDocker -TimeoutSeconds 300 -DockerArgs @('pull', "${source}${ref}")) -eq 0) {
@@ -231,7 +260,7 @@ function Invoke-ExampleBaseImageSeed {
     return 0
 }
 
-# See https://yuruna.link/42010605-0005
+# See https://yuruna.link/42010605-00a0
 $script:SourcePasswordVariable = 'ASPNETCORE_Kestrel__Certificates__Default__Password'
 
 # --- REGION: Test-ExampleSelfSignedRequested
@@ -384,7 +413,7 @@ function Invoke-ExampleCertificateSecret {
     <# .SYNOPSIS
         Create the Kubernetes Secret that carries a pod's HTTPS certificate, protected by a new random password.
     .DESCRIPTION
-        See https://yuruna.link/42010605-0005.
+        See https://yuruna.link/42010605-00a1.
     .OUTPUTS
         0 when the Secret was created, 1 otherwise.
     #>

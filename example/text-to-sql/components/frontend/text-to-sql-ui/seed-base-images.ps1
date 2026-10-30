@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 2026.10.26
+.VERSION 2026.10.30
 .GUID 428c708f-f1f1-4046-96d1-c612d18dbac8
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
@@ -19,4 +19,5 @@
 # --- REGION: Import build helpers
 Import-Module (Join-Path $PSScriptRoot 'Example.Build.psm1') -Force
 # --- REGION: Seed base images
-exit (Invoke-ExampleBaseImageSeed)
+# The Dockerfile beside this script names the images and their upstream.
+exit (Invoke-ExampleBaseImageSeed -DockerfilePath (Join-Path $PSScriptRoot 'Dockerfile'))
