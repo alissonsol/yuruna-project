@@ -107,10 +107,13 @@ warm_manifest() {
 # --- REGION: Start local registry
 # See https://yuruna.link/42f6b05f-0019
 # See https://yuruna.link/42e220c4-0009
-REGISTRY_IMAGE="registry:2"
+# One exact release. The caching proxy keeps this tag warm by name, so another
+# release here also changes the proxy's warm set and needs a proxy rebuild.
+REGISTRY_TAG="2.8.3"
+REGISTRY_IMAGE="registry:${REGISTRY_TAG}"
 # --- REGION: https://yuruna.link/42e220c4-0009
 if [ -n "$CACHE_HOST" ]; then
-    REGISTRY_PULL_REF="${CACHE_HOST}:5000/library/registry:2"
+    REGISTRY_PULL_REF="${CACHE_HOST}:5000/library/registry:${REGISTRY_TAG}"
 else
     REGISTRY_PULL_REF="$REGISTRY_IMAGE"
 fi
@@ -142,7 +145,7 @@ for attempt in $(seq 1 "$registry_attempts"); do
     docker_out=""
     if ! registry_local=$(find_local_image "$REGISTRY_IMAGE"); then
         # See https://yuruna.link/42010605-009e
-        warm_manifest "library/registry" "2"
+        warm_manifest "library/registry" "$REGISTRY_TAG"
         if docker_out=$(run_bounded "$PULL_STALL" docker pull "$REGISTRY_PULL_REF" 2>&1); then
             registry_local="$REGISTRY_PULL_REF"
         fi

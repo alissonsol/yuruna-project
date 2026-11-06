@@ -20,7 +20,10 @@ guest's development certificate nor the password file beside it, and the image
 carries none. The local registry publishes port 5000 on `127.0.0.1` only: the
 deployment client and the node that pulls from it share the guest, and a port
 open to the LAN would take pushes from any machine there. A registry container
-an earlier run published on every address is created again.
+an earlier run published on every address is created again. The registry runs
+one exact release, `registry:2.8.3`, written once as `REGISTRY_TAG`. The
+framework's caching proxy keeps that tag warm by name, so another release also
+changes the proxy's warm set and reaches the cache with a proxy rebuild.
 `Test-ExampleBuild.ps1` verifies the synchronized PowerShell build modules, the
 certificate Secret (generated password, no password in any output or argument, the
 wrapper's exit codes, and redaction when kubectl echoes the submitted Secret), the rendered charts, and that no example ships key material
@@ -75,6 +78,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.10.31
+Last review: 2026.11.05
 
 Back to [yuruna-project](../README.md) - [Yuruna](https://yuruna.com)

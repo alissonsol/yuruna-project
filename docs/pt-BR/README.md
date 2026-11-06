@@ -41,6 +41,7 @@ do framework. Grave os arquivos editados com
 - [Arquitetura](https://github.com/alissonsol/yuruna/blob/main/docs/architecture.md) do framework
 - Conectividade e configuração: [Soluções alternativas e FAQ](https://github.com/alissonsol/yuruna/blob/main/docs/workarounds.md)
 - Contribuindo: [CONTRIBUTING.md](https://github.com/alissonsol/yuruna/blob/main/CONTRIBUTING.md)
+- Hook de commit: o arquivo versionado `tools/githooks/pre-commit` verifica os arquivos preparados para commit segundo o contrato de metadados de fonte do framework, cria rascunhos de tradução para novos textos exibidos do projeto e atualiza as SBOMs. Ele só é executado em um clone que o habilitou uma vez com `git config core.hooksPath tools/githooks`; os scripts de instalação do framework habilitam apenas o hook do checkout do framework.
 - Segurança: [SECURITY.md](https://github.com/alissonsol/yuruna/blob/main/SECURITY.md)
 
 ---
@@ -49,6 +50,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Última revisão: 2026.10.31
+Última revisão: 2026.11.05
 
 Voltar para [Yuruna](https://yuruna.com)

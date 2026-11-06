@@ -38,6 +38,7 @@ a BOM. Write edited files with `[System.Text.UTF8Encoding]::new($false)`.
 - Framework [architecture](https://github.com/alissonsol/yuruna/blob/main/docs/architecture.md)
 - Connectivity & setup: [Workarounds and FAQ](https://github.com/alissonsol/yuruna/blob/main/docs/workarounds.md)
 - Contributing: [CONTRIBUTING.md](https://github.com/alissonsol/yuruna/blob/main/CONTRIBUTING.md)
+- Commit hook: the tracked `tools/githooks/pre-commit` holds staged files to the framework's source-metadata contract, drafts translations for new project display text and refreshes the SBOMs. It runs only in a clone that enabled it once with `git config core.hooksPath tools/githooks`; the framework's install scripts enable only the framework checkout's hook.
 - Security: [SECURITY.md](https://github.com/alissonsol/yuruna/blob/main/SECURITY.md)
 
 ---
@@ -46,6 +47,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.10.31
+Last review: 2026.11.05
 
 Back to [Yuruna](https://yuruna.com)

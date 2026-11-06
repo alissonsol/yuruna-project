@@ -84,6 +84,14 @@ def yaml_key_block(text, name, indentation):
     return textwrap.dedent("\n".join(block))
 
 
+# --- REGION: pinned_registry_image
+def pinned_registry_image():
+    tags = re.findall(r'(?m)^REGISTRY_TAG="([^"]*)"$', read_source(ROOT / "tools/example-workload.sh"))
+    if len(tags) != 1:
+        raise AssertionError(f"Expected one REGISTRY_TAG assignment in tools/example-workload.sh, found {len(tags)}")
+    return "registry:" + tags[0]
+
+
 # --- REGION: ExampleConsistency
 class ExampleConsistency(unittest.TestCase):
     def test_website_releases_share_the_deployment_script(self):
@@ -362,6 +370,7 @@ class ExampleConsistency(unittest.TestCase):
 
     @unittest.skipUnless(BASH and os.name != "nt", "requires a POSIX Bash fixture")
     def test_registry_is_published_on_the_loopback_address_only(self):
+        image = pinned_registry_image()
         source = read_source(ROOT / "tools/example-workload.sh").replace("/etc/yuruna/host.env", '"$HOST_ENV_FIXTURE"')
         docker = textwrap.dedent("""\
             #!/bin/sh
@@ -373,7 +382,7 @@ class ExampleConsistency(unittest.TestCase):
                 exit 0 ;;
               start) [ -f "$FIXTURE/container" ] ;;
               rm) rm -f "$FIXTURE/container" ;;
-              image) printf 'registry:2\\n' ;;
+              image) printf '%s\\n' "$FIXTURE_REGISTRY_IMAGE" ;;
               run) printf '%s' "$4" > "$FIXTURE/container"; echo fixture-id ;;
               *) exit 0 ;;
             esac
@@ -394,7 +403,7 @@ class ExampleConsistency(unittest.TestCase):
                 if existing is not None:
                     (fixture / "container").write_text(existing, encoding="utf-8")
                 env = dict(os.environ, PATH=str(fixture) + os.pathsep + os.environ["PATH"], FIXTURE=str(fixture),
-                           HOST_ENV_FIXTURE=str(fixture / "host.env"), http_proxy="")
+                           HOST_ENV_FIXTURE=str(fixture / "host.env"), http_proxy="", FIXTURE_REGISTRY_IMAGE=image)
                 result = subprocess.run([BASH, "-c", "set -euo pipefail\n" + source + "\nexample_registry_prepare\n"],
                                         cwd=fixture, env=env, capture_output=True, text=True, timeout=120)
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -408,6 +417,54 @@ class ExampleConsistency(unittest.TestCase):
                 else:
                     self.assertEqual(runs, [], calls)
                 self.assertEqual(read_source(fixture / "container"), "127.0.0.1:5000:5000" if expect_run else "127.0.0.1")
+
+    @unittest.skipUnless(BASH and os.name != "nt", "requires a POSIX Bash fixture")
+    def test_registry_runs_one_exact_release_through_the_cache_and_upstream(self):
+        source = read_source(ROOT / "tools/example-workload.sh").replace("/etc/yuruna/host.env", '"$HOST_ENV_FIXTURE"')
+        # No container and an empty store, so every case pulls the registry image once.
+        docker = textwrap.dedent("""\
+            #!/bin/sh
+            printf '%s\\n' "$*" >> "$FIXTURE/docker.log"
+            case "$1" in
+              inspect|start) exit 1 ;;
+            esac
+            exit 0
+            """)
+        curl = textwrap.dedent("""\
+            #!/bin/sh
+            printf '%s\\n' "$*" >> "$FIXTURE/curl.log"
+            case "$*" in
+              *yuruna-caching-proxy-service*) exit 7 ;;
+            esac
+            printf '200 0.1'
+            """)
+        for label, proxy in (("cache configured", "http://cache.test:3128"), ("direct lab", "")):
+            with self.subTest(case=label), tempfile.TemporaryDirectory(prefix="yuruna-example-release-") as temporary:
+                fixture = Path(temporary)
+                for name, text in (("docker", docker), ("curl", curl)):
+                    (fixture / name).write_text(text, encoding="utf-8")
+                    (fixture / name).chmod(0o755)
+                env = dict(os.environ, PATH=str(fixture) + os.pathsep + os.environ["PATH"], FIXTURE=str(fixture),
+                           HOST_ENV_FIXTURE=str(fixture / "host.env"), http_proxy=proxy)
+                result = subprocess.run([BASH, "-c", "set -euo pipefail\n" + source + "\nexample_registry_prepare\n"],
+                                        cwd=fixture, env=env, capture_output=True, text=True, timeout=120)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                calls = read_source(fixture / "docker.log").splitlines()
+                runs = [call for call in calls if call.startswith("run ")]
+                self.assertEqual(len(runs), 1, calls)
+                image = runs[0].rsplit(" ", 1)[1]
+                self.assertRegex(image, r"^registry:\d+\.\d+\.\d+$", "the registry runs one exact release, not a floating line")
+                self.assertEqual(image, pinned_registry_image())
+                tag = image.split(":", 1)[1]
+                pulled = f"cache.test:5000/library/registry:{tag}" if proxy else image
+                self.assertEqual([call for call in calls if call.startswith("pull ")], ["pull " + pulled], calls)
+                self.assertEqual([call for call in calls if call.startswith("tag ")],
+                                 [f"tag {pulled} {image}"] if proxy else [], calls)
+                probes = read_source(fixture / "curl.log").splitlines()
+                warmed = [probe for probe in probes if "/manifests/" in probe]
+                self.assertEqual(len(warmed), 1 if proxy else 0, probes)
+                if proxy:
+                    self.assertTrue(warmed[0].endswith(f" http://cache.test:5000/v2/library/registry/manifests/{tag}"), warmed[0])
 
     @unittest.skipUnless(BASH and os.name != "nt", "requires a POSIX Bash fixture")
     def test_guest_user_resolution_preserves_literal_paths_and_fails_closed(self):
