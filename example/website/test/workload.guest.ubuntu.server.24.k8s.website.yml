@@ -118,7 +118,7 @@ workload:
       he-IL: "⁦ubuntu.server.24.workload.k8s.website.sh⁩"
     waitPattern: "FETCHED AND EXECUTED:"
     freshMatchTailLines: 60
-    timeoutSeconds: 1800
+    timeoutSeconds: 3600
 
   - action: fetchAndExecute
     text: "clear; /usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"

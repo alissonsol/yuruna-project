@@ -107,7 +107,7 @@ workload:
       zh-CN: "ubuntu.server.24.workload.k8s.text-to-sql.sh（构建镜像，部署pod和ingress）"
       he-IL: "⁦ubuntu.server.24.workload.k8s.text-to-sql.sh⁩ (בנו דמות, פרסו pod + ingress)"
     waitPattern: "FETCHED AND EXECUTED:"
-    timeoutSeconds: 1200
+    timeoutSeconds: 3000
 
   - action: fetchAndExecute
     text: "clear; /usr/local/lib/yuruna/fetch-and-execute.sh test/test-localhost.sh"

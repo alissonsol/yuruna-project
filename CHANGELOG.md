@@ -5,6 +5,13 @@
 [github.com/alissonsol/yuruna](https://github.com/alissonsol/yuruna);
 this repo tracks user-facing project templates and end-to-end examples.
 
+## 2026.11.08
+
+- Align script versions, example Helm chart metadata, and generated inventories
+  with framework release `2026.11.08`.
+- The website steps allow an hour and the text-to-SQL step 50 minutes, so a
+  GitHub release outage of about half an hour is waited out.
+
 ## 2026.11.05
 
 - Align script versions, example Helm chart metadata, and generated inventories
@@ -63,7 +70,7 @@ this repo tracks user-facing project templates and end-to-end examples.
 
 - [example/text-to-sql/](example/text-to-sql/) -- the full three-phase
   Yuruna deployment is now wired up. `config/localhost/{resources,
-  components,workloads}.yml`, the helm chart under
+  components,workloads}.yml`, the Helm chart under
   [`workloads/frontend/text-to-sql-ui/`](example/text-to-sql/workloads/frontend/text-to-sql-ui/),
   a `Dockerfile`, and the
   [`test/`](example/text-to-sql/test/) workload deploy the app to
@@ -95,6 +102,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.11.05
+Last review: 2026.11.08
 
 Back to [yuruna-project](README.md) - [Yuruna](https://yuruna.com)

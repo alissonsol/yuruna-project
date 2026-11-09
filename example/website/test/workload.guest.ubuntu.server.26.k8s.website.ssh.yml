@@ -64,7 +64,7 @@ workload:
 
   - action: sshFetchAndExecute
     command: "/usr/local/lib/yuruna/fetch-and-execute.sh project/example/website/test/ubuntu.server.26/ubuntu.server.26.workload.k8s.website.sh"
-    timeoutSeconds: 1800
+    timeoutSeconds: 3600
     description: "ubuntu.server.26.workload.k8s.website.sh"
     descriptionLocalized:
       pt-BR: "ubuntu.server.26.workload.k8s.website.sh"
