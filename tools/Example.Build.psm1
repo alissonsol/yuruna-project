@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 2026.11.08
+.VERSION 2026.11.16
 .GUID 42aa6d6d-83ef-4b17-b241-3a1d6bc163d8
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
@@ -253,7 +253,22 @@ function Invoke-ExampleBaseImageSeed {
         docker tag $localRef "${registry}/${ref}"
         if ($LASTEXITCODE -ne 0) { return 1 }
         if ((Invoke-BoundedDocker -TimeoutSeconds 300 -DockerArgs @('push', "${registry}/${ref}")) -ne 0) {
-            Write-Warning "Pushing ${ref} into ${registry} failed -- is the registry container up?"
+            # A registry that answers plain HTTP while the push failed means the
+            # Docker daemon refused it, not that the registry is down: Docker
+            # Engine 29.10 and later speak HTTPS to a loopback registry unless
+            # insecure-registries names it whenever that key is set.
+            $answers = $false
+            try {
+                Invoke-WebRequest -Uri "http://${registry}/v2/" -Method Head -TimeoutSec 10 -ErrorAction Stop | Out-Null
+                $answers = $true
+            } catch {
+                Write-Debug "registry probe for ${registry}: $($_.Exception.Message)"
+            }
+            if ($answers) {
+                Write-Warning "Pushing ${ref} into ${registry} failed although the registry answers over HTTP, so the Docker daemon refused it. If docker reported 'server gave HTTP response to HTTPS client', add ${registry} to insecure-registries in /etc/docker/daemon.json and restart docker."
+            } else {
+                Write-Warning "Pushing ${ref} into ${registry} failed and http://${registry}/v2/ does not answer -- is the registry container up?"
+            }
             return 1
         }
     }

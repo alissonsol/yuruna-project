@@ -44,12 +44,21 @@ do framework. Grave os arquivos editados com
 - Hook de commit: o arquivo versionado `tools/githooks/pre-commit` verifica os arquivos preparados para commit segundo o contrato de metadados de fonte do framework, cria rascunhos de tradução para novos textos exibidos do projeto e atualiza as SBOMs. Ele só é executado em um clone que o habilitou uma vez com `git config core.hooksPath tools/githooks`; os scripts de instalação do framework habilitam apenas o hook do checkout do framework.
 - Segurança: [SECURITY.md](https://github.com/alissonsol/yuruna/blob/main/SECURITY.md)
 
+O hook de commit encontra a verificação de metadados de fonte e o gerador de
+rascunhos de tradução no checkout do framework ao lado deste repositório, ou
+por meio de `YURUNA_FRAMEWORK_ROOT`. Sem esse checkout, ele ignora os dois,
+avisa que os metadados não foram verificados e permite o commit. Problemas nos
+metadados bloqueiam o commit; a geração de rascunhos apenas emite avisos.
+Textos exibidos do projeto novos ou alterados recebem rascunhos nos idiomas
+que o manifesto do framework marca como suportados. A opção `-Fill` do gerador
+também preenche os idiomas planejados.
+
 ---
 
 LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Última revisão: 2026.11.08
+Última revisão: 2026.11.16
 
 Voltar para [Yuruna](https://yuruna.com)

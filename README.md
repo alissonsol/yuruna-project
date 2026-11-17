@@ -41,12 +41,20 @@ a BOM. Write edited files with `[System.Text.UTF8Encoding]::new($false)`.
 - Commit hook: the tracked `tools/githooks/pre-commit` holds staged files to the framework's source-metadata contract, drafts translations for new project display text and refreshes the SBOMs. It runs only in a clone that enabled it once with `git config core.hooksPath tools/githooks`; the framework's install scripts enable only the framework checkout's hook.
 - Security: [SECURITY.md](https://github.com/alissonsol/yuruna/blob/main/SECURITY.md)
 
+The commit hook finds the source-metadata gate and translation drafter in the
+framework checkout beside this repository, or through `YURUNA_FRAMEWORK_ROOT`.
+Without that checkout it skips both, warns that metadata was not checked, and
+allows the commit. Metadata findings block the commit; translation drafting is
+warn-only. New or changed project display values receive drafts in the locales
+the framework manifest marks supported. The drafter's `-Fill` option also fills
+planned locales.
+
 ---
 
 LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.11.08
+Last review: 2026.11.16
 
 Back to [Yuruna](https://yuruna.com)

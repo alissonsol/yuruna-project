@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 2026.11.08
+.VERSION 2026.11.16
 .GUID 4225b001-c90f-4210-ba9a-b5d1da7ee415
 .AUTHOR Alisson Sol et al.
 .COPYRIGHT (c) 2019-2026 by Alisson Sol et al.
@@ -126,10 +126,16 @@ foreach ($chartFile in @(
     $script:CacheHost = ''
     $script:CacheDiscoveryCount = 0
     $script:PullExit = 0
+    $script:RegistryAnswers = $false
     # --- REGION: Get-ExampleCachingProxyHost
     function Get-ExampleCachingProxyHost { $script:CacheDiscoveryCount++; return $script:CacheHost }
     # --- REGION: Invoke-WebRequest
     function Invoke-WebRequest {
+        $uri = [string]$args[[Array]::IndexOf($args, '-Uri') + 1]
+        if ($uri -like '*/v2/') {
+            if (-not $script:RegistryAnswers) { throw 'fixture registry down' }
+            return
+        }
         if (-not $script:AlreadyServed) { throw 'fixture cache miss' }
     }
     # --- REGION: docker
@@ -159,8 +165,19 @@ foreach ($chartFile in @(
         throw 'A local base image must be tagged and pushed'
     }
     $script:PushExit = 17
-    if ((Invoke-ExampleBaseImageSeed -DockerfilePath $script:SdkDockerfile -WarningAction SilentlyContinue) -ne 1) {
-        throw 'Push failure must fail the seed step'
+    $script:RegistryAnswers = $false
+    $seedWarnings = @()
+    if ((Invoke-ExampleBaseImageSeed -DockerfilePath $script:SdkDockerfile -WarningAction SilentlyContinue -WarningVariable seedWarnings) -ne 1 -or
+        "$seedWarnings" -notlike '*is the registry container up*') {
+        throw 'Push failure with a silent registry must fail the seed step and ask about the registry container'
+    }
+    # A registry that answers while the push fails is a daemon refusal, the
+    # shape Docker Engine 29.10 gives a loopback registry it no longer trusts.
+    $script:RegistryAnswers = $true
+    $seedWarnings = @()
+    if ((Invoke-ExampleBaseImageSeed -DockerfilePath $script:SdkDockerfile -WarningAction SilentlyContinue -WarningVariable seedWarnings) -ne 1 -or
+        "$seedWarnings" -notlike '*insecure-registries*' -or "$seedWarnings" -like '*is the registry container up*') {
+        throw 'A push refused while the registry answers must name insecure-registries, not ask about the container'
     }
     $script:PushExit = 0
     $script:LocalImage = ''

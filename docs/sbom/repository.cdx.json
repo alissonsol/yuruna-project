@@ -1,7 +1,7 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.7",
-  "serialNumber": "urn:uuid:1c74fad9-4a94-51e1-8d8a-e548081ffbab",
+  "serialNumber": "urn:uuid:8f37c103-b5e4-589f-816d-3e1724705e2b",
   "version": 1,
   "metadata": {
     "component": {
@@ -11,14 +11,14 @@
       "properties": [
         {
           "name": "yuruna:source-inputs-sha256",
-          "value": "9eb4373d2da8de4a988cb6a2107f248331f31dd0029681d3150839e958fd6c6e"
+          "value": "727fe9d5552669688e03c054664ebb27291208cd3f472ddda7426ad9e47f09fe"
         },
         {
           "name": "yuruna:inventory-kind",
           "value": "declared-source"
         }
       ],
-      "version": "2026.11.08"
+      "version": "2026.11.16"
     }
   },
   "components": [
@@ -60,7 +60,7 @@
     },
     {
       "type": "library",
-      "bom-ref": "component-739ea0052fe6aa426364",
+      "bom-ref": "component-f60ec61076d471b23b6c",
       "name": "twitter-bootstrap",
       "properties": [
         {
@@ -68,7 +68,7 @@
           "value": "{\"completeness\": \"declared\", \"ecosystem\": \"cdnjs\", \"evidence\": [{\"detail\": \"LibMan browser library\", \"line\": 6, \"path\": \"example/website/components/frontend/website/libman.json\"}], \"notes\": [\"Provider declaration only; restored browser files are not inventoried.\"], \"scope\": \"runtime\"}"
         }
       ],
-      "version": "5.3.8"
+      "version": "5.3.9"
     },
     {
       "type": "container",
@@ -274,7 +274,6 @@
         "component-4b6b54d1176af290a839",
         "component-5b5a4e8f30316aeebb48",
         "component-649c4fdc6abb56b17f9b",
-        "component-739ea0052fe6aa426364",
         "component-982e9d75022f18a3a3e5",
         "component-a918c6f303ac3cfdd0e8",
         "component-af977196b447243ff8e3",
@@ -286,6 +285,7 @@
         "component-e511d5bdbceb38a571f5",
         "component-e54640d022906dab65ef",
         "component-ea2f91e9bbca1611793d",
+        "component-f60ec61076d471b23b6c",
         "component-fe88779c9e0294f0227b"
       ]
     },
