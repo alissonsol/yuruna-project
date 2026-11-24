@@ -76,12 +76,12 @@ SELECT pt.tier_code,
        SUM(pt.monthly_usd * s.seat_count) * 12 AS arr_usd
   FROM subscription s
   JOIN plan_tier pt ON pt.tier_id = s.tier_id
- WHERE s.cancelled_at IS NULL
+ WHERE s.canceled_at IS NULL
  GROUP BY pt.tier_code
  ORDER BY mrr_usd DESC",
                 Plan(@"
   1. MRR = sum of plan_tier.monthly_usd x subscription.seat_count for active subs.
-  2. Active = cancelled_at IS NULL.
+  2. Active = canceled_at IS NULL.
   3. ARR = MRR x 12."));
         }
 
@@ -93,11 +93,11 @@ SELECT g.region, COUNT(*) AS active_subscriptions
   FROM subscription s
   JOIN customer  c ON c.customer_id = s.customer_id
   JOIN geography g ON g.geo_id = c.geo_id
- WHERE s.cancelled_at IS NULL
+ WHERE s.canceled_at IS NULL
  GROUP BY g.region
  ORDER BY active_subscriptions DESC",
                 Plan(@"
-  1. Active = cancelled_at IS NULL.
+  1. Active = canceled_at IS NULL.
   2. Group by macro region."));
         }
 

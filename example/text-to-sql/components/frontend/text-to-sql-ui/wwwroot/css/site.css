@@ -120,8 +120,7 @@ button:hover { background: var(--bg-deep); }
 .pill {
   background: var(--accent); color: var(--ink);
   padding: 3px 11px; border-radius: 999px;
-  font-size: 12px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-size: 12px; font-weight: 700;
 }
 .run-summary.refused .pill { background: var(--warn); }
 .run-summary.fail    .pill { background: var(--bad); color: #fff; }
@@ -152,7 +151,7 @@ button:hover { background: var(--bg-deep); }
 .step-refused { border-left-color: var(--warn); background: var(--warn-soft); }
 .step-fail    { border-left-color: var(--bad);  background: var(--bad-soft); }
 .step-stage   { font-weight: 700; }
-.step-status  { text-transform: uppercase; font-weight: 700; font-size: 12px; color: var(--fg-muted); }
+.step-status  { font-weight: 700; font-size: 12px; color: var(--fg-muted); }
 .step-ms      { color: var(--fg-muted); font-variant-numeric: tabular-nums; }
 .step-note    { color: var(--fg); }
 /* Narrow phones: the fixed 180/90/80px tracks overflow a ~375px viewport,

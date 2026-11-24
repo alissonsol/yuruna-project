@@ -1014,19 +1014,19 @@
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
       "fieldPath": "/component/2/description",
       "locale": "he-IL",
-      "sourceHash": "eb65a6b79882323d16835db20a93dde2c08a4db9f4a4a45cad29d21d7ffa2675"
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88"
     },
     {
       "locale": "pt-BR",
       "fieldPath": "/component/2/description",
-      "sourceHash": "eb65a6b79882323d16835db20a93dde2c08a4db9f4a4a45cad29d21d7ffa2675",
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88",
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml"
     },
     {
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
       "fieldPath": "/component/2/description",
       "locale": "zh-CN",
-      "sourceHash": "eb65a6b79882323d16835db20a93dde2c08a4db9f4a4a45cad29d21d7ffa2675"
+      "sourceHash": "9b07edd4f09d0a0ed48199930f9fbd6b50ca05d15b2196ca2025031a539bfa88"
     },
     {
       "path": "example/text-to-sql/test/workload.guest.ubuntu.server.24.k8s.text-to-sql.test.yml",
@@ -2359,6 +2359,153 @@
       "fieldPath": "/workload/7/description",
       "locale": "zh-CN",
       "sourceHash": "e6b15ea7d48b5f9889dabe68060d163e9f628dc87099fd5a8c9de4c03a53649d"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/description",
+      "locale": "pt-BR",
+      "sourceHash": "12ff201e03d3ffc30ccba46dcb9648654b7f3a1aeb3b07d8b6c84726d720bc24",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/description",
+      "locale": "zh-CN",
+      "sourceHash": "12ff201e03d3ffc30ccba46dcb9648654b7f3a1aeb3b07d8b6c84726d720bc24",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/description",
+      "locale": "he-IL",
+      "sourceHash": "12ff201e03d3ffc30ccba46dcb9648654b7f3a1aeb3b07d8b6c84726d720bc24",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "pt-BR",
+      "sourceHash": "40ff915e0491a8dc5171d2b23c84c40366c04c888a93e2a51e101f3916e1a2b8",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "40ff915e0491a8dc5171d2b23c84c40366c04c888a93e2a51e101f3916e1a2b8",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/component/0/description",
+      "locale": "he-IL",
+      "sourceHash": "40ff915e0491a8dc5171d2b23c84c40366c04c888a93e2a51e101f3916e1a2b8",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "pt-BR",
+      "sourceHash": "987f3c95de1426a038c2aaeb8f8e601f9bb785a1ea2ed3a72ae731502d7d3bc4",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "987f3c95de1426a038c2aaeb8f8e601f9bb785a1ea2ed3a72ae731502d7d3bc4",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/component/1/description",
+      "locale": "he-IL",
+      "sourceHash": "987f3c95de1426a038c2aaeb8f8e601f9bb785a1ea2ed3a72ae731502d7d3bc4",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "pt-BR",
+      "sourceHash": "14f66deb5d509b3fa30cd2fd7f526ad298f967296b6729a1df65de860ddcb3e7",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "zh-CN",
+      "sourceHash": "14f66deb5d509b3fa30cd2fd7f526ad298f967296b6729a1df65de860ddcb3e7",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/workload/0/description",
+      "locale": "he-IL",
+      "sourceHash": "14f66deb5d509b3fa30cd2fd7f526ad298f967296b6729a1df65de860ddcb3e7",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "pt-BR",
+      "sourceHash": "fe2989e8da02b39d8ae25fc6517e71fadadc195bfbae20e1bcc2ca8a270f99b2",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "zh-CN",
+      "sourceHash": "fe2989e8da02b39d8ae25fc6517e71fadadc195bfbae20e1bcc2ca8a270f99b2",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/workload/1/description",
+      "locale": "he-IL",
+      "sourceHash": "fe2989e8da02b39d8ae25fc6517e71fadadc195bfbae20e1bcc2ca8a270f99b2",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "pt-BR",
+      "sourceHash": "d55f7dff4e1ae58cd3846d64f59fba742f87088ddc1f80a0b38679b7b59dcd21",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "zh-CN",
+      "sourceHash": "d55f7dff4e1ae58cd3846d64f59fba742f87088ddc1f80a0b38679b7b59dcd21",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/workload/2/description",
+      "locale": "he-IL",
+      "sourceHash": "d55f7dff4e1ae58cd3846d64f59fba742f87088ddc1f80a0b38679b7b59dcd21",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/workload/3/description",
+      "locale": "pt-BR",
+      "sourceHash": "3c066323d3a3f1039add04ed0616dbd34a41be3e62ed2f74d464d32feb69f3c5",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/workload/3/description",
+      "locale": "zh-CN",
+      "sourceHash": "3c066323d3a3f1039add04ed0616dbd34a41be3e62ed2f74d464d32feb69f3c5",
+      "origin": "machine"
+    },
+    {
+      "path": "example/website/test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml",
+      "fieldPath": "/workload/3/description",
+      "locale": "he-IL",
+      "sourceHash": "3c066323d3a3f1039add04ed0616dbd34a41be3e62ed2f74d464d32feb69f3c5",
+      "origin": "machine"
     }
   ]
 }

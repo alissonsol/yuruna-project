@@ -122,7 +122,7 @@ Experimente estes prompts:
 | ------ | ------------- |
 | `churn rate by plan tier in EMEA` | agregação regional + a armadilha de renomeação `plan_code -> tier_code` |
 | `MRR by tier` | agregação entre `plan_tier` x `subscription` |
-| `active subscriptions by region` | tratamento de NULL em `cancelled_at` |
+| `active subscriptions by region` | tratamento de NULL em `canceled_at` |
 | `top 10 customers by invoice` | a coluna de PII (`customer.email`) **não** é selecionada |
 | `drop table customer` | o validador estático recusa e a linha do tempo mostra a parada no estágio 3 |
 
@@ -477,6 +477,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Última revisão: 2026.11.16
+Última revisão: 2026.11.23
 
 Voltar para [yuruna-project](../../../../README.md) - [Yuruna](https://yuruna.com)

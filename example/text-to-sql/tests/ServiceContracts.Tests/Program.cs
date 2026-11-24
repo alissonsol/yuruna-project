@@ -68,8 +68,8 @@ foreach (var mode in new[] { "hung", "retry" })
     Check(expiry is { BudgetExpired: true, Dependency: "fixture-llm", Host: "fixture", Attempts: 1 }, "Budget expiry lost its identity");
     Check(expiry.Elapsed >= TimeSpan.FromMilliseconds(60), "Elapsed time not recorded");
     if (mode == "hung")
-        Check(expiry.LastErrorKind == LlmFailureKind.Cancelled && expiry.LastStatusCode is null && expired.InnerException is OperationCanceledException,
-            "A first attempt cut off by the budget must report cancelled");
+        Check(expiry.LastErrorKind == LlmFailureKind.Canceled && expiry.LastStatusCode is null && expired.InnerException is OperationCanceledException,
+            "A first attempt cut off by the budget must report canceled");
     else
         Check(expiry.LastErrorKind == LlmFailureKind.HttpStatus && expiry.LastStatusCode == 503 &&
             expired.InnerException is HttpRequestException { StatusCode: HttpStatusCode.ServiceUnavailable },

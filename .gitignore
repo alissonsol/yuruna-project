@@ -363,17 +363,17 @@ crash.log
 # Test configuration (contains credentials)
 test/test-config.json
 
-# Project tree (cloned per cycle from projectRepoUrl)
+# Project tree (cloned per cycle from test.config.yml's repositories.projectUrl)
 project/
 
 # All harness runtime state lives under test/status/<subdir>/ -- one
 # umbrella rule covers every subdirectory the runner creates:
 #   test/status/runtime/    pids, status.json, control flags,
-#                           ipaddresses.txt, caching-proxy.txt, server.err,
+#                           ipaddresses.txt, caching-proxy-service.txt, server.err,
 #                           yuruna-caching-proxy-service.yml, host.uuid,
 #                           .status-service.ps1, etc. See Test.YurunaDir.psm1
 #                           in the yuruna repo -- $env:YURUNA_RUNTIME_DIR
-#                           defaults here so the status server can serve
+#                           defaults here so the status service can serve
 #                           /runtime/<name>.
 #   test/status/log/        HTML transcripts, OCR debug artifacts, failure
 #                           screenshots.

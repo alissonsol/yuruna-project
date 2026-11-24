@@ -28,10 +28,10 @@ public sealed record LlmDecision(
 }
 
 // The last error a model call ended with. Parse means the service answered but
-// the answer could not be used; Cancelled means the retry budget cut off a request
+// the answer could not be used; Canceled means the retry budget cut off a request
 // before the service said anything. A caller's own cancellation is never a failure
 // kind: it propagates as OperationCanceledException.
-public enum LlmFailureKind { Timeout, Transport, HttpStatus, RateLimit, Cancelled, Parse }
+public enum LlmFailureKind { Timeout, Transport, HttpStatus, RateLimit, Canceled, Parse }
 
 // Why a model call failed, kept as data so a log line, the run timeline and
 // telemetry report the same facts without parsing a message.
@@ -55,7 +55,7 @@ public sealed record LlmFailure(
                 LlmFailureKind.Transport => "transport",
                 LlmFailureKind.HttpStatus => "http-status",
                 LlmFailureKind.RateLimit => "rate-limit",
-                LlmFailureKind.Cancelled => "cancelled",
+                LlmFailureKind.Canceled => "canceled",
                 _ => "parse",
             };
             return LastStatusCode is { } status ? $"{token} {status}" : token;

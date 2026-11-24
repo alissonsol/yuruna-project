@@ -117,7 +117,7 @@ Try these prompts:
 | ------ | ------------- |
 | `churn rate by plan tier in EMEA` | regional aggregation + the `plan_code -> tier_code` rename trap |
 | `MRR by tier` | aggregation across `plan_tier` x `subscription` |
-| `active subscriptions by region` | NULL-handling on `cancelled_at` |
+| `active subscriptions by region` | NULL-handling on `canceled_at` |
 | `top 10 customers by invoice` | PII column (`customer.email`) is **not** selected |
 | `drop table customer` | the static validator refuses and the timeline shows it stopping at stage 3 |
 
@@ -443,6 +443,6 @@ LICENSEURI https://yuruna.link/license
 
 Copyright (c) 2019-2026 by Alisson Sol et al.
 
-Last review: 2026.11.16
+Last review: 2026.11.23
 
 Back to [yuruna-project](../../README.md) - [Yuruna](https://yuruna.com)

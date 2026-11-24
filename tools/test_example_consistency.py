@@ -15,6 +15,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 WEBSITE = ROOT / "example/website"
+PAGE_SEQUENCE = WEBSITE / "test/workload.guest.ubuntu.server.26.k8s.website.page.ssh.yml"
 TEXT_TO_SQL = ROOT / "example/text-to-sql"
 WORKLOADS = [
     WEBSITE / f"test/ubuntu.server.{release}/ubuntu.server.{release}.workload.k8s.website.sh"
@@ -174,6 +175,22 @@ class ExampleConsistency(unittest.TestCase):
                         text = text.replace(value, value.replace(str(release), "RELEASE"))
                     normalized.append(text)
                 self.assertEqual(*normalized)
+
+    def test_page_sequence_names_what_the_pages_render(self):
+        sequence = read_source(PAGE_SEQUENCE)
+        pages = WEBSITE / "components/frontend/website/Pages"
+        index, privacy, layout = (read_source(pages / name) for name in ("Index.cshtml", "Privacy.cshtml", "Shared/_Layout.cshtml"))
+        self.assertEqual(re.findall(r'^  - step: "(.+)"$', sequence, re.M), [
+            "open page http://localhost/Privacy", "expect heading 'Privacy Policy'",
+            "click link website", "expect heading 'Welcome to yrn42website-uxname'",
+        ])
+        self.assertIn(">Welcome to yrn42website-uxname</h1>", index)
+        self.assertIn('ViewData["Title"] = "Privacy Policy"', privacy)
+        self.assertIn('<h1>@ViewData["Title"]</h1>', privacy)
+        self.assertEqual(layout.count(">website</a>"), 1)
+        # Two links share the name Privacy, so the sequence follows the site name instead.
+        self.assertEqual(layout.count(">Privacy</a>"), 2)
+        self.assertIn("\n    - workload.guest.ubuntu.server.26.k8s.website.ssh\n", sequence)
 
     def test_snapshot_producer_and_consumer_declare_the_shared_installers(self):
         for release in (24, 26):

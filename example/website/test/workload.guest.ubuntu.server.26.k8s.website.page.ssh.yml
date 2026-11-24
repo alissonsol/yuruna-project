@@ -1,0 +1,85 @@
+# yaml-language-server: $schema=../../../../yuruna/test/schemas/sequence.schema.yml
+
+# LICENSEURI https://yuruna.link/license
+# Copyright (c) 2019-2026 by Alisson Sol et al.
+
+sequenceGuid: 42fc40f3-2c75-4821-b149-335141637597
+sequenceRevision: 1
+
+description: "Ubuntu Server 26.04 (SSH): deploy the website, then check its pages in a browser inside the guest."
+descriptionLocalized:
+  pt-BR: "Servidor Ubuntu 26.04 (SSH): implante o site e depois verifique suas páginas em um navegador dentro do convidado."
+  zh-CN: "Ubuntu Server 26.04（SSH）：部署网站，然后在客户机内的浏览器中检查其页面。"
+  he-IL: "Ubuntu Server ⁦26.04⁩ (SSH): פרסו את האתר, ולאחר מכן בדקו את דפיו בדפדפן בתוך האורח."
+keystrokeMechanism: ssh
+
+# --- REGION: resource
+resource:
+  ubuntu.server.26:
+    # The SSH deployment installs Kubernetes, deploys the website and waits
+    # for HTTP 200, so the page steps start against a site that answers.
+    - workload.guest.ubuntu.server.26.k8s.website.ssh
+variables:
+  username: yuuser26
+  hostname: yuhost26
+
+# --- REGION: component
+component:
+  - action: sshWaitReady
+    timeoutSeconds: 300
+    description: "Wait for sshd before the page check"
+    descriptionLocalized:
+      pt-BR: "Aguarde pelo sshd antes da verificação das páginas"
+      zh-CN: "在页面检查前等待sshd就绪"
+      he-IL: "המתינו ל-sshd לפני בדיקת הדפים"
+
+  # The page steps drive a browser inside the guest; the host needs none.
+  - action: sshFetchAndExecute
+    command: "/usr/local/lib/yuruna/fetch-and-execute.sh guest/shared/ubuntu.browser.sh"
+    timeoutSeconds: 1800
+    description: "ubuntu.browser.sh"
+    descriptionLocalized:
+      pt-BR: "ubuntu.browser.sh"
+      zh-CN: "ubuntu.browser.sh"
+      he-IL: "⁦ubuntu.browser.sh⁩"
+
+# --- REGION: workload
+# See https://yuruna.link/428e4df6-003c
+workload:
+  # These names are unique at every window width: the layout shows Privacy
+  # twice and hides Home on a narrow window.
+  - step: "open page http://localhost/Privacy"
+    on: page
+    timeoutSeconds: 60
+    description: "Open the privacy page through the ingress"
+    descriptionLocalized:
+      pt-BR: "Abra a página de privacidade pelo ingress"
+      zh-CN: "通过ingress打开隐私页面"
+      he-IL: "פתחו את דף הפרטיות דרך ה-ingress"
+
+  - step: "expect heading 'Privacy Policy'"
+    on: page
+    timeoutSeconds: 30
+    description: "The privacy page shows its heading"
+    descriptionLocalized:
+      pt-BR: "A página de privacidade mostra seu título"
+      zh-CN: "隐私页面显示其标题"
+      he-IL: "דף הפרטיות מציג את הכותרת שלו"
+
+  - step: "click link website"
+    on: page
+    timeoutSeconds: 30
+    description: "Follow the site name to the home page"
+    descriptionLocalized:
+      pt-BR: "Siga o nome do site até a página inicial"
+      zh-CN: "点击站点名称进入首页"
+      he-IL: "עקבו אחר שם האתר אל דף הבית"
+
+  - step: "expect heading 'Welcome to yrn42website-uxname'"
+    on: page
+    timeoutSeconds: 30
+    description: "The home page shows its welcome heading"
+    descriptionLocalized:
+      pt-BR: "A página inicial mostra seu título de boas-vindas"
+      zh-CN: "首页显示其欢迎标题"
+      he-IL: "דף הבית מציג את כותרת הפתיחה שלו"

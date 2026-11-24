@@ -81,7 +81,7 @@ internal static class LlmHttpRetry
         catch (OperationCanceledException) when (ct.IsCancellationRequested) { throw; }
         catch (OperationCanceledException ex)
         {
-            var failure = Snapshot(lastKind ?? LlmFailureKind.Cancelled, true);
+            var failure = Snapshot(lastKind ?? LlmFailureKind.Canceled, true);
             throw new LlmClientException(
                 ServiceMessages.Get("RetryDeadline", failure.Attempts, (long)failure.Elapsed.TotalMilliseconds,
                     failure.LastErrorText, failure.Dependency),

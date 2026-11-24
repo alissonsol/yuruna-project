@@ -67,10 +67,10 @@ CREATE TABLE subscription (
     customer_id      INT       NOT NULL REFERENCES customer(customer_id),
     tier_id          INT       NOT NULL REFERENCES plan_tier(tier_id),
     started_at       TIMESTAMPTZ NOT NULL,
-    cancelled_at     TIMESTAMPTZ NULL,         -- NULL = still active
+    canceled_at      TIMESTAMPTZ NULL,         -- NULL = still active
     seat_count       INT       NOT NULL DEFAULT 1
 );
-COMMENT ON TABLE  subscription IS 'Time-bounded subscription per customer. cancelled_at NULL means active.';
+COMMENT ON TABLE  subscription IS 'Time-bounded subscription per customer. canceled_at NULL means active.';
 
 CREATE TABLE invoice (
     invoice_id       SERIAL PRIMARY KEY,
@@ -136,7 +136,7 @@ FROM generate_series(1, 60) gs;
 
 -- Each customer gets exactly one subscription, tier distributed roughly
 -- 50% Starter, 35% Pro, 15% Enterprise.
-INSERT INTO subscription (customer_id, tier_id, started_at, cancelled_at, seat_count)
+INSERT INTO subscription (customer_id, tier_id, started_at, canceled_at, seat_count)
 SELECT
     c.customer_id,
     CASE
@@ -152,7 +152,7 @@ SELECT
         OR (c.customer_id % 13 = 0 AND c.channel_id = 2)
       THEN c.signed_up_at + INTERVAL '90 days'
       ELSE NULL
-    END                                                              AS cancelled_at,
+    END                                                              AS canceled_at,
     (1 + (c.customer_id % 8))                                        AS seat_count
 FROM customer c;
 
@@ -166,16 +166,16 @@ SELECT
 FROM subscription s
 JOIN plan_tier p ON p.tier_id = s.tier_id
 CROSS JOIN generate_series(0, 5) m
-WHERE s.cancelled_at IS NULL OR s.started_at + (m * INTERVAL '1 month') <= s.cancelled_at;
+WHERE s.canceled_at IS NULL OR s.started_at + (m * INTERVAL '1 month') <= s.canceled_at;
 
 -- One churn_event per canceled subscription, reason cycled.
 INSERT INTO churn_event (subscription_id, happened_at, reason_code)
 SELECT
     s.subscription_id,
-    s.cancelled_at::date,
+    s.canceled_at::date,
     (ARRAY['price','missing-feature','competitor','consolidation'])[1 + (s.subscription_id % 4)]
 FROM subscription s
-WHERE s.cancelled_at IS NOT NULL;
+WHERE s.canceled_at IS NOT NULL;
 
 -- --- REGION: Convenience views
 -- The agent should not need these views; they exist so an answer like "use a
@@ -187,7 +187,7 @@ JOIN plan_tier             p  ON p.tier_id    = s.tier_id
 JOIN customer              c  ON c.customer_id = s.customer_id
 JOIN geography             g  ON g.geo_id     = c.geo_id
 JOIN acquisition_channel   ch ON ch.channel_id = c.channel_id
-WHERE s.cancelled_at IS NULL;
+WHERE s.canceled_at IS NULL;
 
 -- --- REGION: Roles for the action-gating layer
 -- A read-only role the .NET app connects as. The agent NEVER connects as
@@ -225,11 +225,11 @@ GRANT SELECT (channel_id, channel_name, channel_kind) ON acquisition_channel TO 
 GRANT SELECT (tier_id, tier_code, monthly_usd) ON plan_tier TO yuruna_agent_ro;
 GRANT SELECT (customer_id, customer_uuid, company_name, geo_id, channel_id, signed_up_at)
     ON customer TO yuruna_agent_ro;
-GRANT SELECT (subscription_id, customer_id, tier_id, started_at, cancelled_at, seat_count)
+GRANT SELECT (subscription_id, customer_id, tier_id, started_at, canceled_at, seat_count)
     ON subscription TO yuruna_agent_ro;
 GRANT SELECT (invoice_id, subscription_id, issued_at, amount_usd, paid) ON invoice TO yuruna_agent_ro;
 GRANT SELECT (churn_event_id, subscription_id, happened_at, reason_code) ON churn_event TO yuruna_agent_ro;
-GRANT SELECT (subscription_id, customer_id, tier_id, started_at, cancelled_at, seat_count,
+GRANT SELECT (subscription_id, customer_id, tier_id, started_at, canceled_at, seat_count,
     tier_code, geo_id, region, channel_id, channel_name) ON v_active_subscription TO yuruna_agent_ro;
 
 -- --- REGION: Sanity counts

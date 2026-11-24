@@ -92,8 +92,8 @@ using (var reader = table.Clone().CreateDataReader())
     Check((await SqlResultReader.ReadRowsAsync(reader, 200)).Count == 0, "Empty result");
 using (var reader = table.CreateDataReader())
 {
-    var cancelled = new CancellationToken(true);
-    try { await SqlResultReader.ReadRowsAsync(reader, 200, cancelled); Check(false, "Cancellation must propagate"); }
+    var canceled = new CancellationToken(true);
+    try { await SqlResultReader.ReadRowsAsync(reader, 200, canceled); Check(false, "Cancellation must propagate"); }
     catch (OperationCanceledException) { assertions++; }
 }
 Console.WriteLine($"SQL policy and result reader: {assertions} assertions passed.");

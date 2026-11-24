@@ -35,7 +35,9 @@ workloads:
     _hostname: "$([Environment]::GetEnvironmentVariable(\"${env:contextName}.hostname\"))"
     _frontendIp: "$([Environment]::GetEnvironmentVariable(\"${env:contextName}.frontendIp\"))"
   deployments:
-  # Uninstall previous workloads: idempotent
+  # Uninstall previous workloads: idempotent. Remove only what this
+  # configuration installs, and give every namespace delete a deadline.
+  # See https://yuruna.link/42e220c4-0012
   - kubectl: "delete namespace ${env:namespace} --ignore-not-found=true --timeout=300s --v=1"
   - kubectl: "delete namespace ingress-ns --ignore-not-found=true --timeout=300s --v=1"
   - kubectl: "delete clusterrole nginx-ingress-ingress-nginx --ignore-not-found=true"

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<SoftwareIdentity xmlns="http://standards.iso.org/iso/19770/-2/2015/schema.xsd" xmlns:sbom="urn:yuruna:sbom:1" name="yuruna-project-repository" tagId="urn:uuid:8f37c103-b5e4-589f-816d-3e1724705e2b" version="2026.11.16" versionScheme="alphanumeric" tagVersion="0" corpus="true">
+<SoftwareIdentity xmlns="http://standards.iso.org/iso/19770/-2/2015/schema.xsd" xmlns:sbom="urn:yuruna:sbom:1" name="yuruna-project-repository" tagId="urn:uuid:d42100bd-1535-5d12-ab26-d07d96e3ba2d" version="2026.11.23" versionScheme="alphanumeric" tagVersion="0" corpus="true">
   <Entity name="Alisson Sol et al." regid="yuruna.com" role="tagCreator" />
   <Meta sbom:generator="tools/Sync-Sbom.py" sbom:scope="repository" sbom:inventory-kind="declared-source" />
   <Link rel="requires" href="swid/repository-ea2f91e9bbca1611793d.swidtag" />

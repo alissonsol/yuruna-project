@@ -69,11 +69,11 @@ component:
     pattern: "${username}@${hostname}"
     noSegmentMatch: true
     timeoutSeconds: 90
-    description: "OCR: ${username}@ (shell prompt)"
+    description: "OCR: ${username}@${hostname}"
     descriptionLocalized:
-      pt-BR: "OCR: ${username}@ (prompt de shell)"
-      zh-CN: "光学字符识别：${username}@（命令行提示符）"
-      he-IL: "זיהוי תווים אופטי: ${username}@ (הנחיית המעטפת)"
+      pt-BR: "OCR: ${username}@${hostname}"
+      zh-CN: "光学字符识别：${username}@${hostname}"
+      he-IL: "זיהוי תווים אופטי: ${username}@${hostname}"
 
   - snippet: shellInputPrime
 
